@@ -74,21 +74,26 @@ export default function QuizPage() {
       saveSession(updated)
       setSession(updated)
 
-      fetch("/api/explain", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          question: currentQuestion.question,
-          options: currentQuestion.options,
-          answer: currentQuestion.answer,
-        }),
-      })
-        .then((r) => r.json())
-        .then((data) => {
-          setExplanation(data.explanation ?? null)
-          setLoadingExplanation(false)
+      // Only call the API for paid users — free users see the locked teaser instead
+      if (session.isUnlocked) {
+        fetch("/api/explain", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            question: currentQuestion.question,
+            options: currentQuestion.options,
+            answer: currentQuestion.answer,
+          }),
         })
-        .catch(() => setLoadingExplanation(false))
+          .then((r) => r.json())
+          .then((data) => {
+            setExplanation(data.explanation ?? null)
+            setLoadingExplanation(false)
+          })
+          .catch(() => setLoadingExplanation(false))
+      } else {
+        setLoadingExplanation(false)
+      }
     },
     [session, selected, currentQuestion]
   )
@@ -279,8 +284,10 @@ export default function QuizPage() {
 
                     {/* Explanation */}
                     <AnimatePresence>
-                      {(loadingExplanation || explanation) && (
+                      {/* Paid: full AI explanation */}
+                      {session.isUnlocked && (loadingExplanation || explanation) && (
                         <motion.p
+                          key="explanation"
                           initial={{ opacity: 0, y: 6 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0 }}
@@ -300,6 +307,29 @@ export default function QuizPage() {
                             </>
                           )}
                         </motion.p>
+                      )}
+
+                      {/* Free + wrong answer: locked teaser */}
+                      {!session.isUnlocked && !answeredCorrectly && (
+                        <motion.a
+                          key="teaser"
+                          href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground border border-border hover:border-accent-green/40 rounded-lg px-3 py-2.5 transition-colors group"
+                        >
+                          <Lock className="w-3.5 h-3.5 text-muted-foreground group-hover:text-accent-green shrink-0 transition-colors" />
+                          <span>
+                            Why is this wrong?{" "}
+                            <span className="text-accent-green font-medium">
+                              Unlock full explanations with PassPlus Pro →
+                            </span>
+                          </span>
+                        </motion.a>
                       )}
                     </AnimatePresence>
 
