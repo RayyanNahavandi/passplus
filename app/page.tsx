@@ -74,7 +74,7 @@ export default function Home() {
               onClick={() => sendGAEvent("event", "quiz_started")}
               className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
             >
-              Start Free Quiz — No Signup Required
+              Start Free Quiz, No Signup Required
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <span className="text-xs text-muted-foreground">
@@ -176,7 +176,7 @@ export default function Home() {
             onClick={() => sendGAEvent("event", "quiz_started")}
             className="flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm min-h-[48px] w-full sm:w-auto justify-center"
           >
-            Start Free Quiz — No Signup Required
+            Start Free Quiz, No Signup Required
             <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>
