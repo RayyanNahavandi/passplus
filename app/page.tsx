@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react"
 import { Zap, CheckCircle, Lock, ArrowRight } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
+import { DiscordBanner } from "@/components/DiscordBanner"
 
 export default function Home() {
   const shouldReduce = useReducedMotion()
@@ -220,19 +221,16 @@ export default function Home() {
         </section>
       )}
 
-      <footer className="border-t border-border px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground/50">
-        <span>
-          PassPlus — Not affiliated with CompTIA. Questions adapted from
-          Professor Messer SY0-701 practice materials.
-        </span>
-        <a
-          href="https://discord.gg/pDRSfvr7D"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
-        >
-          Join the community → discord.gg/pDRSfvr7D
-        </a>
+      {/* Discord */}
+      <section className="border-t border-border px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <DiscordBanner />
+        </div>
+      </section>
+
+      <footer className="border-t border-border px-6 py-5 text-center text-xs text-muted-foreground/50">
+        PassPlus — Not affiliated with CompTIA. Questions adapted from Professor
+        Messer SY0-701 practice materials.
       </footer>
     </main>
   )
