@@ -38,15 +38,14 @@ export default function Home() {
       </nav>
 
       {/* Hero */}
-      <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-24 gap-12">
+      <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-16 sm:py-24 gap-12">
         <div className="flex flex-col items-center gap-6 max-w-3xl w-full">
-          <motion.div
+          <motion.p
             {...fadeUp(0)}
-            className="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-xs text-muted-foreground"
+            className="text-sm text-accent-green font-medium tracking-wide"
           >
-            <Zap className="w-3 h-3 text-accent-green" />
-            CompTIA SY0-701 Practice Exams
-          </motion.div>
+            The free Security+ quiz that doesn&apos;t suck
+          </motion.p>
 
           <motion.h1
             {...fadeUp(0.1)}
@@ -67,20 +66,28 @@ export default function Home() {
           </motion.p>
 
           <motion.div
-            {...fadeUp(0.3)}
-            className="flex flex-col sm:flex-row items-center gap-4"
+            {...fadeUp(0.25)}
+            className="flex flex-col items-center gap-3 w-full sm:w-auto"
           >
             <Link
               href="/quiz"
               onClick={() => sendGAEvent("event", "quiz_started")}
-              className="group flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm min-h-[44px]"
+              className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
             >
-              Start Free — 25 Questions
+              Start Free Quiz — No Signup Required
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <span className="text-xs text-muted-foreground">
-              No sign-up required
+              Join 50+ people studying for SY0-701
             </span>
+          </motion.div>
+
+          <motion.div
+            {...fadeUp(0.3)}
+            className="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-xs text-muted-foreground"
+          >
+            <Zap className="w-3 h-3 text-accent-green" />
+            CompTIA SY0-701 · 245 questions · 3 practice exams
           </motion.div>
         </div>
 
@@ -167,9 +174,9 @@ export default function Home() {
           <Link
             href="/quiz"
             onClick={() => sendGAEvent("event", "quiz_started")}
-            className="flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-8 py-3 rounded-xl transition-colors text-sm min-h-[44px]"
+            className="flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm min-h-[48px] w-full sm:w-auto justify-center"
           >
-            Start Free Quiz
+            Start Free Quiz — No Signup Required
             <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>
