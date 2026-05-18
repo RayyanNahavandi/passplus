@@ -27,6 +27,8 @@ export default function QuizPage() {
   const [selected, setSelected] = useState<"A" | "B" | "C" | "D" | null>(null)
   const [showPaywall, setShowPaywall] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [explanation, setExplanation] = useState<string | null>(null)
+  const [loadingExplanation, setLoadingExplanation] = useState(false)
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
@@ -52,6 +54,8 @@ export default function QuizPage() {
     (choice: "A" | "B" | "C" | "D") => {
       if (!session || selected !== null || !currentQuestion) return
       setSelected(choice)
+      setExplanation(null)
+      setLoadingExplanation(true)
       const correct = choice === currentQuestion.answer
       sendGAEvent("event", "question_answered", {
         correct,
@@ -69,6 +73,22 @@ export default function QuizPage() {
       }
       saveSession(updated)
       setSession(updated)
+
+      fetch("/api/explain", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: currentQuestion.question,
+          options: currentQuestion.options,
+          answer: currentQuestion.answer,
+        }),
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          setExplanation(data.explanation ?? null)
+          setLoadingExplanation(false)
+        })
+        .catch(() => setLoadingExplanation(false))
     },
     [session, selected, currentQuestion]
   )
@@ -81,6 +101,7 @@ export default function QuizPage() {
       sendGAEvent("event", "paywall_shown")
       setShowPaywall(true)
       setSelected(null)
+      setExplanation(null)
       return
     }
 
@@ -94,6 +115,7 @@ export default function QuizPage() {
     saveSession(updated)
     setSession(updated)
     setSelected(null)
+    setExplanation(null)
   }, [session, selected, router])
 
   const handleUnlock = useCallback(() => {
@@ -254,6 +276,32 @@ export default function QuizPage() {
                         </>
                       )}
                     </div>
+
+                    {/* Explanation */}
+                    <AnimatePresence>
+                      {(loadingExplanation || explanation) && (
+                        <motion.p
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="text-sm text-muted-foreground leading-relaxed"
+                        >
+                          {loadingExplanation ? (
+                            <span className="text-muted-foreground/40 italic text-xs">
+                              Loading explanation…
+                            </span>
+                          ) : (
+                            <>
+                              <span className="text-accent-green font-medium">
+                                Why:{" "}
+                              </span>
+                              {explanation}
+                            </>
+                          )}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
 
                     <motion.button
                       initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
