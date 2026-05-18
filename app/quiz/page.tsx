@@ -32,6 +32,12 @@ export default function QuizPage() {
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
+    const completed = localStorage.getItem("passplus_completed") === "true"
+    const unlocked = localStorage.getItem("passplus_unlocked") === "true"
+    if (completed && !unlocked) {
+      router.replace("/")
+      return
+    }
     const existing = loadSession()
     if (existing && existing.currentIndex < existing.questions.length) {
       setSession(existing)
@@ -41,7 +47,7 @@ export default function QuizPage() {
       setSession(s)
     }
     setLoading(false)
-  }, [])
+  }, [router])
 
   const currentQuestion: Question | undefined =
     session?.questions[session.currentIndex]

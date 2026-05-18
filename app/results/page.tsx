@@ -52,6 +52,9 @@ export default function ResultsPage() {
         score: s.score,
         total: Object.keys(s.answers).length,
       })
+      if (!s.isUnlocked) {
+        localStorage.setItem("passplus_completed", "true")
+      }
     }
   }, [])
 

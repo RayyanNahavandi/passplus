@@ -109,10 +109,11 @@ export function clearSession(): void {
   localStorage.removeItem("passplus_session")
 }
 
-// Clears all quiz progress (session + question order) while preserving the
-// unlock flag — paid users keep their access after a reset.
+// Clears all quiz progress (session, question order, completion flag) while
+// preserving the unlock flag — paid users keep their access after a reset.
 export function resetProgress(): void {
   if (typeof window === "undefined") return
   localStorage.removeItem("passplus_session")
   localStorage.removeItem("passplus_question_order")
+  localStorage.removeItem("passplus_completed")
 }

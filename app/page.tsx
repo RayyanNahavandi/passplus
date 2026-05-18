@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
 import { Zap, CheckCircle, Lock, ArrowRight } from "lucide-react"
@@ -8,6 +9,13 @@ import { Logo } from "@/components/Logo"
 
 export default function Home() {
   const shouldReduce = useReducedMotion()
+  const [freeCompleted, setFreeCompleted] = useState(false)
+
+  useEffect(() => {
+    const completed = localStorage.getItem("passplus_completed") === "true"
+    const unlocked = localStorage.getItem("passplus_unlocked") === "true"
+    setFreeCompleted(completed && !unlocked)
+  }, [])
 
   const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: shouldReduce ? 0 : 20 },
@@ -26,15 +34,17 @@ export default function Home() {
           <Logo size={28} />
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </motion.div>
-        <motion.div {...fadeUp(0.05)}>
-          <Link
-            href="/quiz"
-            onClick={() => sendGAEvent("event", "quiz_started")}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Start Quiz →
-          </Link>
-        </motion.div>
+        {!freeCompleted && (
+          <motion.div {...fadeUp(0.05)}>
+            <Link
+              href="/quiz"
+              onClick={() => sendGAEvent("event", "quiz_started")}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Start Quiz →
+            </Link>
+          </motion.div>
+        )}
       </nav>
 
       {/* Hero */}
@@ -69,17 +79,43 @@ export default function Home() {
             {...fadeUp(0.25)}
             className="flex flex-col items-center gap-3 w-full sm:w-auto"
           >
-            <Link
-              href="/quiz"
-              onClick={() => sendGAEvent("event", "quiz_started")}
-              className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
-            >
-              Start Free Quiz, No Signup Required
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <span className="text-xs text-muted-foreground">
-              Join 50+ people studying for SY0-701
-            </span>
+            {freeCompleted ? (
+              <div className="flex flex-col items-center gap-3 w-full sm:w-auto">
+                <div className="flex flex-col items-center gap-1 text-center">
+                  <p className="text-sm font-semibold text-foreground">
+                    You&apos;ve completed your free quiz
+                  </p>
+                  <p className="text-xs text-muted-foreground max-w-xs">
+                    Unlock full access to retake with all 245 questions and get
+                    AI explanations for every answer
+                  </p>
+                </div>
+                <a
+                  href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => sendGAEvent("event", "unlock_clicked")}
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
+                >
+                  Unlock All 245 Questions — $9.99
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </a>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/quiz"
+                  onClick={() => sendGAEvent("event", "quiz_started")}
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
+                >
+                  Start Free Quiz, No Signup Required
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+                <span className="text-xs text-muted-foreground">
+                  Join 50+ people studying for SY0-701
+                </span>
+              </>
+            )}
           </motion.div>
 
           <motion.div
@@ -159,28 +195,30 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border px-6 py-16 text-center">
-        <motion.div
-          initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
-          whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="max-w-md mx-auto flex flex-col gap-5 items-center"
-        >
-          <h2 className="text-xl font-bold">Ready to start?</h2>
-          <p className="text-sm text-muted-foreground">
-            25 free questions, no account needed.
-          </p>
-          <Link
-            href="/quiz"
-            onClick={() => sendGAEvent("event", "quiz_started")}
-            className="flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm min-h-[48px] w-full sm:w-auto justify-center"
+      {!freeCompleted && (
+        <section className="border-t border-border px-6 py-16 text-center">
+          <motion.div
+            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
+            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="max-w-md mx-auto flex flex-col gap-5 items-center"
           >
-            Start Free Quiz, No Signup Required
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </motion.div>
-      </section>
+            <h2 className="text-xl font-bold">Ready to start?</h2>
+            <p className="text-sm text-muted-foreground">
+              25 free questions, no account needed.
+            </p>
+            <Link
+              href="/quiz"
+              onClick={() => sendGAEvent("event", "quiz_started")}
+              className="flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm min-h-[48px] w-full sm:w-auto justify-center"
+            >
+              Start Free Quiz, No Signup Required
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+        </section>
+      )}
 
       <footer className="border-t border-border px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground/50">
         <span>
