@@ -174,9 +174,19 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <footer className="border-t border-border px-6 py-5 text-center text-xs text-muted-foreground/50">
-        PassPlus — Not affiliated with CompTIA. Questions adapted from Professor
-        Messer SY0-701 practice materials.
+      <footer className="border-t border-border px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground/50">
+        <span>
+          PassPlus — Not affiliated with CompTIA. Questions adapted from
+          Professor Messer SY0-701 practice materials.
+        </span>
+        <a
+          href="https://discord.gg/pDRSfvr7D"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
+        >
+          Join the community → discord.gg/pDRSfvr7D
+        </a>
       </footer>
     </main>
   )
