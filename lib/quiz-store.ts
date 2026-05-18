@@ -12,6 +12,8 @@ export interface QuizSession {
   isUnlocked: boolean
 }
 
+const FREE_LIMIT = 25
+
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
   for (let i = a.length - 1; i > 0; i--) {
@@ -30,18 +32,49 @@ export function unlock(): void {
   localStorage.setItem("passplus_unlocked", "true")
 }
 
-export function createSession(mode: "normal" | "missed" = "normal", missedIds?: string[]): QuizSession {
+// Returns (or lazily creates) a device-specific shuffled question order stored
+// in localStorage. Free users always get the same first FREE_LIMIT questions
+// from this order, so restarting never exposes new free questions.
+function getOrCreateQuestionOrder(): Question[] {
+  if (typeof window === "undefined") return shuffle(questions)
+
+  const raw = localStorage.getItem("passplus_question_order")
+  if (raw) {
+    try {
+      const ids = JSON.parse(raw) as string[]
+      const ordered = ids
+        .map((id) => questions.find((q) => q.id === id))
+        .filter(Boolean) as Question[]
+      if (ordered.length >= FREE_LIMIT) return ordered
+    } catch {
+      // corrupt — fall through and recreate
+    }
+  }
+
+  const order = shuffle(questions)
+  localStorage.setItem(
+    "passplus_question_order",
+    JSON.stringify(order.map((q) => q.id))
+  )
+  return order
+}
+
+export function createSession(
+  mode: "normal" | "missed" = "normal",
+  missedIds?: string[]
+): QuizSession {
   const unlocked = isUnlocked()
 
   let pool: Question[]
   if (mode === "missed" && missedIds?.length) {
     pool = shuffle(questions.filter((q) => missedIds.includes(q.id)))
+  } else if (unlocked) {
+    // Unlocked users get a fresh shuffle every session for study variety.
+    pool = shuffle(questions)
   } else {
-    const free = questions.filter((q) => q.tier === "free")
-    const locked = questions.filter((q) => q.tier === "locked")
-    // Shuffle the free pool first so gating is consistent regardless of source order,
-    // then append locked questions for unlocked users.
-    pool = unlocked ? shuffle([...free, ...locked]) : shuffle(free)
+    // Free users always see the same first FREE_LIMIT questions from their
+    // stored order — restarting never reveals new questions.
+    pool = getOrCreateQuestionOrder().slice(0, FREE_LIMIT)
   }
 
   return {
@@ -74,4 +107,12 @@ export function loadSession(): QuizSession | null {
 export function clearSession(): void {
   if (typeof window === "undefined") return
   localStorage.removeItem("passplus_session")
+}
+
+// Clears all quiz progress (session + question order) while preserving the
+// unlock flag — paid users keep their access after a reset.
+export function resetProgress(): void {
+  if (typeof window === "undefined") return
+  localStorage.removeItem("passplus_session")
+  localStorage.removeItem("passplus_question_order")
 }

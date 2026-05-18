@@ -190,12 +190,6 @@ export default function QuizPage() {
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-muted border border-border px-2.5 py-1 rounded-md text-muted-foreground">
                   Exam {currentQuestion?.exam} · Q{currentQuestion?.id}
                 </span>
-                {currentQuestion?.tier === "locked" && !session.isUnlocked && (
-                  <span className="inline-flex items-center gap-1 text-xs text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 px-2 py-1 rounded-md">
-                    <Lock className="w-3 h-3" />
-                    Locked
-                  </span>
-                )}
               </div>
 
               {/* Question text */}

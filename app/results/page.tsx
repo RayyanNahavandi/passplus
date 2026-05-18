@@ -12,6 +12,7 @@ import {
   BookOpen,
   Trophy,
   Target,
+  RotateCcw,
 } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import {
@@ -19,6 +20,7 @@ import {
   clearSession,
   createSession,
   saveSession,
+  resetProgress,
   type QuizSession,
 } from "@/lib/quiz-store"
 import { questions, type Question } from "@/data/questions"
@@ -99,6 +101,11 @@ export default function ResultsPage() {
     const s = createSession("normal")
     saveSession(s)
     router.push("/quiz")
+  }
+
+  const handleResetProgress = () => {
+    resetProgress()
+    router.push("/")
   }
 
   const handlePracticeMissed = () => {
@@ -204,6 +211,16 @@ export default function ResultsPage() {
               <BookOpen className="w-4 h-4" />
               Back Home
             </Link>
+          </motion.div>
+
+          <motion.div variants={shouldReduce ? {} : itemVariants}>
+            <button
+              onClick={handleResetProgress}
+              className="w-full flex items-center justify-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors py-2 min-h-[44px]"
+            >
+              <RotateCcw className="w-3 h-3" />
+              Reset progress
+            </button>
           </motion.div>
 
           {/* Missed questions */}
