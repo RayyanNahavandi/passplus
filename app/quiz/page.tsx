@@ -467,7 +467,12 @@ function PaywallOverlay({
             <motion.button
               whileHover={shouldReduce ? {} : { scale: 1.01 }}
               whileTap={shouldReduce ? {} : { scale: 0.98 }}
-              onClick={onUnlock}
+              onClick={() =>
+                window.open(
+                  "https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00",
+                  "_blank"
+                )
+              }
               className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
             >
               Unlock All 245 Questions — $9.99
@@ -480,11 +485,6 @@ function PaywallOverlay({
             </button>
           </div>
 
-          <p className="text-xs text-muted-foreground/60">
-            Demo:{" "}
-            <code className="text-xs font-mono">passplus_unlocked</code> is set
-            in localStorage — no real payment.
-          </p>
         </div>
       </motion.div>
     </>
