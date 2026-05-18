@@ -2,8 +2,9 @@
 
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Shield, Zap, CheckCircle, Lock, ArrowRight } from "lucide-react"
+import { Zap, CheckCircle, Lock, ArrowRight } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
+import { Logo } from "@/components/Logo"
 
 export default function Home() {
   const shouldReduce = useReducedMotion()
@@ -22,7 +23,7 @@ export default function Home() {
     <main className="flex flex-col min-h-screen bg-background">
       <nav className="border-b border-border px-6 py-4 flex items-center justify-between">
         <motion.div className="flex items-center gap-2" {...fadeUp(0)}>
-          <Shield className="w-4 h-4 text-accent-green" />
+          <Logo size={28} />
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </motion.div>
         <motion.div {...fadeUp(0.05)}>

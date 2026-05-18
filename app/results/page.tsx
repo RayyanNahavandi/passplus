@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, AnimatePresence, useReducedMotion } from "motion/react"
 import {
-  Shield,
   CheckCircle,
   XCircle,
   RefreshCw,
@@ -14,6 +13,7 @@ import {
   Target,
   RotateCcw,
 } from "lucide-react"
+import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import {
   loadSession,
@@ -119,7 +119,7 @@ export default function ResultsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="border-b border-border px-5 py-3 flex items-center gap-2">
-        <Shield className="w-4 h-4 text-accent-green" />
+        <Logo size={28} />
         <span className="font-semibold text-sm tracking-tight">PassPlus</span>
       </header>
 

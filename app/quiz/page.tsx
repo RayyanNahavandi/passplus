@@ -9,7 +9,8 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Shield, Lock, ChevronRight, CheckCircle, XCircle } from "lucide-react"
+import { Lock, ChevronRight, CheckCircle, XCircle } from "lucide-react"
+import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import {
   createSession,
@@ -143,7 +144,7 @@ export default function QuizPage() {
           href="/"
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
         >
-          <Shield className="w-4 h-4 text-accent-green" />
+          <Logo size={28} />
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </Link>
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
