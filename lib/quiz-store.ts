@@ -10,6 +10,8 @@ export interface QuizSession {
   score: number
   mode: "normal" | "missed"
   isUnlocked: boolean
+  examMode?: boolean
+  examStartedAt?: number // epoch ms
 }
 
 const FREE_LIMIT = 25

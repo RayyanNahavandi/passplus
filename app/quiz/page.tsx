@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, ChevronRight, CheckCircle, XCircle } from "lucide-react"
+import { Lock, ChevronRight, CheckCircle, XCircle, Clock, Zap } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import {
@@ -21,6 +21,14 @@ import {
 } from "@/lib/quiz-store"
 import { type Question } from "@/data/questions"
 
+const EXAM_DURATION = 90 * 60 // 5400 seconds
+
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${m}:${s.toString().padStart(2, "0")}`
+}
+
 export default function QuizPage() {
   const router = useRouter()
   const [session, setSession] = useState<QuizSession | null>(null)
@@ -29,6 +37,7 @@ export default function QuizPage() {
   const [loading, setLoading] = useState(true)
   const [explanation, setExplanation] = useState<string | null>(null)
   const [loadingExplanation, setLoadingExplanation] = useState(false)
+  const [timeLeft, setTimeLeft] = useState<number | null>(null)
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
@@ -48,6 +57,52 @@ export default function QuizPage() {
     }
     setLoading(false)
   }, [router])
+
+  // Exam timer — recalculates from examStartedAt each tick for accuracy across tab sleeps
+  const examStartedAt = session?.examStartedAt
+  const isExamMode = session?.examMode === true
+
+  useEffect(() => {
+    if (!isExamMode || !examStartedAt) return
+
+    const tick = () => {
+      const elapsed = Math.floor((Date.now() - examStartedAt) / 1000)
+      const remaining = Math.max(0, EXAM_DURATION - elapsed)
+      setTimeLeft(remaining)
+      if (remaining === 0) {
+        router.push("/results")
+      }
+    }
+
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [isExamMode, examStartedAt, router])
+
+  // Show mode selection when session has no answers, isn't a missed-questions session,
+  // and examMode hasn't been chosen yet (undefined = not yet picked)
+  const showModeSelect =
+    session !== null &&
+    Object.keys(session.answers).length === 0 &&
+    session.mode !== "missed" &&
+    session.examMode === undefined
+
+  const handleStartPractice = useCallback(() => {
+    if (!session) return
+    const updated: QuizSession = { ...session, examMode: false }
+    saveSession(updated)
+    setSession(updated)
+    sendGAEvent("event", "quiz_mode_selected", { mode: "practice" })
+  }, [session])
+
+  const handleStartExam = useCallback(() => {
+    if (!session) return
+    const now = Date.now()
+    const updated: QuizSession = { ...session, examMode: true, examStartedAt: now }
+    saveSession(updated)
+    setSession(updated)
+    sendGAEvent("event", "quiz_mode_selected", { mode: "exam" })
+  }, [session])
 
   const currentQuestion: Question | undefined =
     session?.questions[session.currentIndex]
@@ -80,7 +135,6 @@ export default function QuizPage() {
       saveSession(updated)
       setSession(updated)
 
-      // Only call the API for paid users — free users see the locked teaser instead
       if (session.isUnlocked) {
         fetch("/api/explain", {
           method: "POST",
@@ -153,7 +207,7 @@ export default function QuizPage() {
     )
   }
 
-  if (!session || (!currentQuestion && !showPaywall)) {
+  if (!session || (!currentQuestion && !showPaywall && !showModeSelect)) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <p className="text-muted-foreground text-sm">No questions found.</p>
@@ -169,6 +223,13 @@ export default function QuizPage() {
     !session.isUnlocked &&
     session.currentIndex === session.questions.length - 1
 
+  const timerColor =
+    timeLeft !== null && timeLeft <= 300
+      ? "text-red-400"
+      : timeLeft !== null && timeLeft <= 1200
+      ? "text-yellow-500"
+      : "text-muted-foreground"
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Header */}
@@ -181,16 +242,32 @@ export default function QuizPage() {
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </Link>
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <span>
-            Q{(session.currentIndex + 1)} /{" "}
-            {session.questions.length}
-          </span>
-          <span className="w-px h-3 bg-border" />
-          <span>
-            Score{" "}
-            <span className="text-accent-green font-medium">{session.score}</span>
-          </span>
-          {!session.isUnlocked && (
+          {!showModeSelect && (
+            <>
+              <span>
+                Q{session.currentIndex + 1} /{" "}
+                {session.questions.length}
+              </span>
+              <span className="w-px h-3 bg-border" />
+              <span>
+                Score{" "}
+                <span className="text-accent-green font-medium">{session.score}</span>
+              </span>
+            </>
+          )}
+          {isExamMode && timeLeft !== null && (
+            <>
+              <span className="w-px h-3 bg-border" />
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-3 h-3 shrink-0" />
+                <span className="hidden sm:inline">Time remaining</span>
+                <span className={`font-mono font-semibold tabular-nums ${timerColor}`}>
+                  {formatTime(timeLeft)}
+                </span>
+              </span>
+            </>
+          )}
+          {!session.isUnlocked && !showModeSelect && (
             <>
               <span className="w-px h-3 bg-border" />
               <span className="text-yellow-500">Free</span>
@@ -200,168 +277,177 @@ export default function QuizPage() {
       </header>
 
       {/* Animated progress bar */}
-      <div className="h-px bg-border w-full">
-        <motion.div
-          className="h-full bg-accent-green origin-left"
-          animate={{ width: `${progress}%` }}
-          transition={{ type: "spring", stiffness: 80, damping: 18 }}
-        />
-      </div>
-
-      {/* Quiz content */}
-      <main className="flex-1 flex flex-col items-center px-4 py-10">
-        <div className="w-full max-w-2xl">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={session.currentIndex}
-              initial={shouldReduce ? { opacity: 0 } : { opacity: 0, x: 40 }}
-              animate={shouldReduce ? { opacity: 1 } : { opacity: 1, x: 0 }}
-              exit={shouldReduce ? { opacity: 0 } : { opacity: 0, x: -40 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
-            >
-              {/* Question meta */}
-              <div className="flex items-center gap-2 mb-5">
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-muted border border-border px-2.5 py-1 rounded-md text-muted-foreground">
-                  Exam {currentQuestion?.exam} · Q{currentQuestion?.id}
-                </span>
-              </div>
-
-              {/* Question text */}
-              <div className="bg-card border border-border rounded-2xl p-6 mb-5 shadow-sm">
-                <p className="text-base leading-7 font-medium">
-                  {currentQuestion?.question}
-                </p>
-              </div>
-
-              {/* Options */}
-              <div className="flex flex-col gap-2.5">
-                {(["A", "B", "C", "D"] as const).map((opt, i) => {
-                  const isCorrect = opt === currentQuestion?.answer
-                  const isChosen = selected === opt
-                  let variant: "default" | "correct" | "wrong" = "default"
-                  if (selected !== null) {
-                    if (isCorrect) variant = "correct"
-                    else if (isChosen) variant = "wrong"
-                  }
-                  return (
-                    <OptionButton
-                      key={opt}
-                      label={opt}
-                      text={currentQuestion?.options[opt] ?? ""}
-                      variant={variant}
-                      onClick={() => handleAnswer(opt)}
-                      disabled={selected !== null}
-                      index={i}
-                      shouldReduce={!!shouldReduce}
-                    />
-                  )
-                })}
-              </div>
-
-              {/* Feedback + next */}
-              <AnimatePresence>
-                {selected !== null && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="mt-5 flex flex-col gap-3"
-                  >
-                    <div
-                      className={`flex items-center gap-2 text-sm font-medium ${
-                        answeredCorrectly ? "text-accent-green" : "text-red-400"
-                      }`}
-                    >
-                      {answeredCorrectly ? (
-                        <>
-                          <CheckCircle className="w-4 h-4" />
-                          Correct!
-                        </>
-                      ) : (
-                        <>
-                          <XCircle className="w-4 h-4" />
-                          Wrong — correct answer:{" "}
-                          {currentQuestion?.answer}.{" "}
-                          {currentQuestion?.options[currentQuestion.answer]}
-                        </>
-                      )}
-                    </div>
-
-                    {/* Explanation */}
-                    <AnimatePresence>
-                      {/* Paid: full AI explanation */}
-                      {session.isUnlocked && (loadingExplanation || explanation) && (
-                        <motion.p
-                          key="explanation"
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                          className="text-sm text-muted-foreground leading-relaxed"
-                        >
-                          {loadingExplanation ? (
-                            <span className="text-muted-foreground/40 italic text-xs">
-                              Loading explanation…
-                            </span>
-                          ) : (
-                            <>
-                              <span className="text-accent-green font-medium">
-                                Why:{" "}
-                              </span>
-                              {explanation}
-                            </>
-                          )}
-                        </motion.p>
-                      )}
-
-                      {/* Free + wrong answer: locked teaser */}
-                      {!session.isUnlocked && !answeredCorrectly && (
-                        <motion.a
-                          key="teaser"
-                          href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                          className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground border border-border hover:border-accent-green/40 rounded-lg px-3 py-2.5 transition-colors group"
-                        >
-                          <Lock className="w-3.5 h-3.5 text-muted-foreground group-hover:text-accent-green shrink-0 transition-colors" />
-                          <span>
-                            Why is this wrong?{" "}
-                            <span className="text-accent-green font-medium">
-                              Unlock full explanations with PassPlus Pro →
-                            </span>
-                          </span>
-                        </motion.a>
-                      )}
-                    </AnimatePresence>
-
-                    <motion.button
-                      initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
-                      animate={shouldReduce ? {} : { opacity: 1, y: 0 }}
-                      transition={{ duration: 0.2, delay: 0.05 }}
-                      whileHover={shouldReduce ? {} : { scale: 1.01 }}
-                      whileTap={shouldReduce ? {} : { scale: 0.98 }}
-                      onClick={handleNext}
-                      className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors w-full min-h-[44px] text-sm"
-                    >
-                      {isLastFreeQuestion
-                        ? "Continue →"
-                        : session.currentIndex + 1 >= session.questions.length
-                        ? "See Results"
-                        : "Next Question"}
-                      <ChevronRight className="w-4 h-4" />
-                    </motion.button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          </AnimatePresence>
+      {!showModeSelect && (
+        <div className="h-px bg-border w-full">
+          <motion.div
+            className="h-full bg-accent-green origin-left"
+            animate={{ width: `${progress}%` }}
+            transition={{ type: "spring", stiffness: 80, damping: 18 }}
+          />
         </div>
-      </main>
+      )}
+
+      {/* Mode selection */}
+      {showModeSelect ? (
+        <ModeSelectScreen
+          onPractice={handleStartPractice}
+          onExam={handleStartExam}
+          shouldReduce={!!shouldReduce}
+        />
+      ) : (
+        /* Quiz content */
+        <main className="flex-1 flex flex-col items-center px-4 py-10">
+          <div className="w-full max-w-2xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={session.currentIndex}
+                initial={shouldReduce ? { opacity: 0 } : { opacity: 0, x: 40 }}
+                animate={shouldReduce ? { opacity: 1 } : { opacity: 1, x: 0 }}
+                exit={shouldReduce ? { opacity: 0 } : { opacity: 0, x: -40 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+              >
+                {/* Question meta */}
+                <div className="flex items-center gap-2 mb-5">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-muted border border-border px-2.5 py-1 rounded-md text-muted-foreground">
+                    Exam {currentQuestion?.exam} · Q{currentQuestion?.id}
+                  </span>
+                </div>
+
+                {/* Question text */}
+                <div className="bg-card border border-border rounded-2xl p-6 mb-5 shadow-sm">
+                  <p className="text-base leading-7 font-medium">
+                    {currentQuestion?.question}
+                  </p>
+                </div>
+
+                {/* Options */}
+                <div className="flex flex-col gap-2.5">
+                  {(["A", "B", "C", "D"] as const).map((opt, i) => {
+                    const isCorrect = opt === currentQuestion?.answer
+                    const isChosen = selected === opt
+                    let variant: "default" | "correct" | "wrong" = "default"
+                    if (selected !== null) {
+                      if (isCorrect) variant = "correct"
+                      else if (isChosen) variant = "wrong"
+                    }
+                    return (
+                      <OptionButton
+                        key={opt}
+                        label={opt}
+                        text={currentQuestion?.options[opt] ?? ""}
+                        variant={variant}
+                        onClick={() => handleAnswer(opt)}
+                        disabled={selected !== null}
+                        index={i}
+                        shouldReduce={!!shouldReduce}
+                      />
+                    )
+                  })}
+                </div>
+
+                {/* Feedback + next */}
+                <AnimatePresence>
+                  {selected !== null && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
+                      className="mt-5 flex flex-col gap-3"
+                    >
+                      <div
+                        className={`flex items-center gap-2 text-sm font-medium ${
+                          answeredCorrectly ? "text-accent-green" : "text-red-400"
+                        }`}
+                      >
+                        {answeredCorrectly ? (
+                          <>
+                            <CheckCircle className="w-4 h-4" />
+                            Correct!
+                          </>
+                        ) : (
+                          <>
+                            <XCircle className="w-4 h-4" />
+                            Wrong — correct answer:{" "}
+                            {currentQuestion?.answer}.{" "}
+                            {currentQuestion?.options[currentQuestion.answer]}
+                          </>
+                        )}
+                      </div>
+
+                      {/* Explanation */}
+                      <AnimatePresence>
+                        {session.isUnlocked && (loadingExplanation || explanation) && (
+                          <motion.p
+                            key="explanation"
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="text-sm text-muted-foreground leading-relaxed"
+                          >
+                            {loadingExplanation ? (
+                              <span className="text-muted-foreground/40 italic text-xs">
+                                Loading explanation…
+                              </span>
+                            ) : (
+                              <>
+                                <span className="text-accent-green font-medium">
+                                  Why:{" "}
+                                </span>
+                                {explanation}
+                              </>
+                            )}
+                          </motion.p>
+                        )}
+
+                        {!session.isUnlocked && !answeredCorrectly && (
+                          <motion.a
+                            key="teaser"
+                            href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground border border-border hover:border-accent-green/40 rounded-lg px-3 py-2.5 transition-colors group"
+                          >
+                            <Lock className="w-3.5 h-3.5 text-muted-foreground group-hover:text-accent-green shrink-0 transition-colors" />
+                            <span>
+                              Why is this wrong?{" "}
+                              <span className="text-accent-green font-medium">
+                                Unlock full explanations with PassPlus Pro →
+                              </span>
+                            </span>
+                          </motion.a>
+                        )}
+                      </AnimatePresence>
+
+                      <motion.button
+                        initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
+                        animate={shouldReduce ? {} : { opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: 0.05 }}
+                        whileHover={shouldReduce ? {} : { scale: 1.01 }}
+                        whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                        onClick={handleNext}
+                        className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors w-full min-h-[44px] text-sm"
+                      >
+                        {isLastFreeQuestion
+                          ? "Continue →"
+                          : session.currentIndex + 1 >= session.questions.length
+                          ? "See Results"
+                          : "Next Question"}
+                        <ChevronRight className="w-4 h-4" />
+                      </motion.button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </main>
+      )}
 
       {/* Paywall overlay */}
       <AnimatePresence>
@@ -374,6 +460,84 @@ export default function QuizPage() {
         )}
       </AnimatePresence>
     </div>
+  )
+}
+
+function ModeSelectScreen({
+  onPractice,
+  onExam,
+  shouldReduce,
+}: {
+  onPractice: () => void
+  onExam: () => void
+  shouldReduce: boolean
+}) {
+  return (
+    <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
+      <motion.div
+        className="w-full max-w-lg flex flex-col items-center gap-8"
+        initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" as const }}
+      >
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-2">Choose your mode</h1>
+          <p className="text-sm text-muted-foreground">
+            How would you like to study today?
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-4 w-full">
+          {/* Practice Mode */}
+          <motion.button
+            onClick={onPractice}
+            whileHover={shouldReduce ? {} : { scale: 1.02 }}
+            whileTap={shouldReduce ? {} : { scale: 0.98 }}
+            initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" as const }}
+            className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
+              <Zap className="w-5 h-5 text-accent-green" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-base mb-1">Practice Mode</h2>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                No timer. Answer at your own pace with instant feedback after
+                each question.
+              </p>
+            </div>
+          </motion.button>
+
+          {/* Exam Mode */}
+          <motion.button
+            onClick={onExam}
+            whileHover={shouldReduce ? {} : { scale: 1.02 }}
+            whileTap={shouldReduce ? {} : { scale: 0.98 }}
+            initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.18, ease: "easeOut" as const }}
+            className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
+              <Clock className="w-5 h-5 text-accent-green" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-base mb-1">Exam Mode</h2>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                90 minute countdown. Simulates real Security+ exam conditions.
+                Auto-submits when time runs out.
+              </p>
+            </div>
+          </motion.button>
+        </div>
+
+        <p className="text-xs text-muted-foreground/60 text-center">
+          CompTIA Security+ allows 90 minutes for the real exam
+        </p>
+      </motion.div>
+    </main>
   )
 }
 
@@ -437,9 +601,7 @@ function OptionButton({
   return (
     <motion.button
       ref={buttonRef}
-      initial={
-        shouldReduce ? {} : { opacity: 0, y: 8 }
-      }
+      initial={shouldReduce ? {} : { opacity: 0, y: 8 }}
       animate={
         shouldReduce
           ? {}
@@ -498,7 +660,6 @@ function PaywallOverlay({
 }) {
   return (
     <>
-      {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -507,7 +668,6 @@ function PaywallOverlay({
         className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm"
       />
 
-      {/* Modal */}
       <motion.div
         initial={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.95 }}
         animate={shouldReduce ? { opacity: 1 } : { opacity: 1, scale: 1 }}
@@ -563,7 +723,6 @@ function PaywallOverlay({
               See my results →
             </button>
           </div>
-
         </div>
       </motion.div>
     </>
