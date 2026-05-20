@@ -1,18 +1,88 @@
 "use client"
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { motion } from "motion/react"
-import { CheckCircle } from "lucide-react"
+import { CheckCircle, XCircle } from "lucide-react"
+
+type Status = "verifying" | "success" | "failed"
 
 export default function UnlockedPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [status, setStatus] = useState<Status>("verifying")
 
   useEffect(() => {
-    localStorage.setItem("passplus_unlocked", "true")
-    const timer = setTimeout(() => router.push("/quiz"), 2000)
-    return () => clearTimeout(timer)
-  }, [router])
+    const sessionId = searchParams.get("session_id")
+
+    // No session_id in URL — someone navigated here directly
+    if (!sessionId) {
+      router.replace("/")
+      return
+    }
+
+    fetch(`/api/verify-session?session_id=${encodeURIComponent(sessionId)}`)
+      .then((r) => r.json())
+      .then((data: { valid: boolean }) => {
+        if (data.valid) {
+          localStorage.setItem("passplus_unlocked", "true")
+          setStatus("success")
+          setTimeout(() => router.push("/quiz"), 2000)
+        } else {
+          setStatus("failed")
+          setTimeout(() => router.replace("/"), 3000)
+        }
+      })
+      .catch(() => {
+        setStatus("failed")
+        setTimeout(() => router.replace("/"), 3000)
+      })
+  }, [router, searchParams])
+
+  if (status === "verifying") {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col items-center gap-4 text-center px-6"
+        >
+          <div className="w-16 h-16 rounded-2xl bg-muted border border-border flex items-center justify-center">
+            <motion.div
+              className="w-6 h-6 rounded-full border-2 border-accent-green border-t-transparent"
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+            />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold mb-1">Verifying payment…</h1>
+            <p className="text-sm text-muted-foreground">Just a moment</p>
+          </div>
+        </motion.div>
+      </div>
+    )
+  }
+
+  if (status === "failed") {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          className="flex flex-col items-center gap-4 text-center px-6"
+        >
+          <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+            <XCircle className="w-8 h-8 text-red-400" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold mb-1">Verification failed</h1>
+            <p className="text-sm text-muted-foreground">Redirecting you home…</p>
+          </div>
+        </motion.div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -29,9 +99,7 @@ export default function UnlockedPage() {
           <h1 className="text-xl font-bold mb-1">Access unlocked!</h1>
           <p className="text-sm text-muted-foreground">Redirecting to your quiz…</p>
         </div>
-        <motion.div
-          className="w-48 h-px bg-border overflow-hidden rounded-full"
-        >
+        <motion.div className="w-48 h-px bg-border overflow-hidden rounded-full">
           <motion.div
             className="h-full bg-accent-green"
             initial={{ width: "0%" }}
