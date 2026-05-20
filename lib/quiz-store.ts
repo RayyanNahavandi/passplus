@@ -25,13 +25,23 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
+function getUnlockCookie(): boolean {
+  if (typeof document === "undefined") return false
+  return document.cookie.split(";").some((c) => c.trim() === "passplus_unlocked=true")
+}
+
 export function isUnlocked(): boolean {
   if (typeof window === "undefined") return false
-  return localStorage.getItem("passplus_unlocked") === "true"
+  // Cookie is the primary check — it survives Safari ITP clearing localStorage
+  return localStorage.getItem("passplus_unlocked") === "true" || getUnlockCookie()
 }
 
 export function unlock(): void {
   localStorage.setItem("passplus_unlocked", "true")
+  // First-party cookie backup: persists through Safari ITP localStorage clears.
+  // 1-year expiry, Strict same-site, Secure (HTTPS only in prod).
+  document.cookie =
+    "passplus_unlocked=true; path=/; max-age=31536000; SameSite=Strict; Secure"
 }
 
 // Returns (or lazily creates) a device-specific shuffled question order stored

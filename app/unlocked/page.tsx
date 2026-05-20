@@ -4,6 +4,11 @@ import { Suspense, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { motion } from "motion/react"
 import { CheckCircle, XCircle } from "lucide-react"
+import { unlock } from "@/lib/quiz-store"
+
+// Fallback token for manual unlocks and Safari ITP support.
+// Keep this value private — share only with users who need manual access.
+const UNLOCK_TOKEN = "PASSPLUS2026"
 
 type Status = "verifying" | "success" | "failed"
 
@@ -13,9 +18,22 @@ function UnlockedInner() {
   const [status, setStatus] = useState<Status>("verifying")
 
   useEffect(() => {
+    const token = searchParams.get("token")
     const sessionId = searchParams.get("session_id")
 
-    // No session_id in URL — someone navigated here directly
+    // Token path: manual unlock for support cases / Safari ITP fallback
+    if (token !== null) {
+      if (token === UNLOCK_TOKEN) {
+        unlock() // sets both localStorage and cookie
+        setStatus("success")
+        setTimeout(() => router.push("/quiz"), 2000)
+      } else {
+        router.replace("/")
+      }
+      return
+    }
+
+    // Stripe path: no session_id means someone navigated here directly
     if (!sessionId) {
       router.replace("/")
       return
@@ -25,7 +43,7 @@ function UnlockedInner() {
       .then((r) => r.json())
       .then((data: { valid: boolean }) => {
         if (data.valid) {
-          localStorage.setItem("passplus_unlocked", "true")
+          unlock() // sets both localStorage and cookie
           setStatus("success")
           setTimeout(() => router.push("/quiz"), 2000)
         } else {
