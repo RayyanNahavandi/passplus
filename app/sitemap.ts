@@ -1,37 +1,35 @@
-import { MetadataRoute } from "next"
-
-const BASE_URL = "https://studypassplus.com"
+import type { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: `${BASE_URL}/`,
+      url: 'https://studypassplus.com',
       lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1.0,
+      changeFrequency: 'weekly',
+      priority: 1,
     },
     {
-      url: `${BASE_URL}/quiz`,
+      url: 'https://studypassplus.com/quiz',
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/daily`,
+      url: 'https://studypassplus.com/daily',
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: 'daily',
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/blog`,
+      url: 'https://studypassplus.com/blog',
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
-      url: `${BASE_URL}/blog/free-security-plus-sy0-701-practice-questions`,
-      lastModified: new Date("2026-05-19"),
-      changeFrequency: "monthly",
+      url: 'https://studypassplus.com/blog/free-security-plus-sy0-701-practice-questions',
+      lastModified: new Date('2026-05-19'),
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
   ]
