@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight } from "lucide-react"
+import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { DiscordBanner } from "@/components/DiscordBanner"
@@ -35,18 +35,21 @@ export default function Home() {
           <Logo size={28} />
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </motion.div>
-        <motion.div {...fadeUp(0.05)} className="flex items-center gap-5">
+        <motion.div {...fadeUp(0.05)} className="flex items-center gap-3">
           <Link
             href="/daily"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => sendGAEvent("event", "daily_nav_clicked")}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-green hover:text-accent-hover transition-colors min-h-[44px] px-1"
           >
-            Daily Q
+            <CalendarDays className="w-3.5 h-3.5 shrink-0" />
+            Daily Question
+            <span className="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse shrink-0" />
           </Link>
           {!freeCompleted && (
             <Link
               href="/quiz"
               onClick={() => sendGAEvent("event", "quiz_started")}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] flex items-center"
             >
               Start Quiz →
             </Link>
