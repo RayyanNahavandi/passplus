@@ -228,9 +228,14 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-border px-6 py-5 text-center text-xs text-muted-foreground/50">
-        PassPlus — Not affiliated with CompTIA. Questions adapted from Professor
-        Messer SY0-701 practice materials.
+      <footer className="border-t border-border px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground/50">
+        <span>
+          PassPlus — Not affiliated with CompTIA. Questions adapted from Professor
+          Messer SY0-701 practice materials.
+        </span>
+        <Link href="/blog" className="hover:text-muted-foreground transition-colors">
+          Blog
+        </Link>
       </footer>
     </main>
   )
