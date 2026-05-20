@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next"
 
-const BASE_URL = "https://passplus.io"
+const BASE_URL = "https://studypassplus.com"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

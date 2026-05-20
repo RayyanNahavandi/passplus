@@ -16,7 +16,7 @@ import { Logo } from "@/components/Logo"
 import { type Question } from "@/data/questions"
 import { sendGAEvent } from "@next/third-parties/google"
 
-const SITE_URL = "https://passplus.io"
+const SITE_URL = "https://studypassplus.com"
 const DAILY_URL = `${SITE_URL}/daily`
 
 function TwitterIcon() {
