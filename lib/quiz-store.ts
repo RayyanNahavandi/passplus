@@ -32,8 +32,11 @@ function getUnlockCookie(): boolean {
 
 export function isUnlocked(): boolean {
   if (typeof window === "undefined") return false
-  // Cookie is the primary check — it survives Safari ITP clearing localStorage
-  return localStorage.getItem("passplus_unlocked") === "true" || getUnlockCookie()
+  if (localStorage.getItem("passplus_unlocked") === "true") return true
+  if (getUnlockCookie()) return true
+  // URL param fallback for Safari ITP edge cases (?access=granted)
+  if (new URLSearchParams(window.location.search).get("access") === "granted") return true
+  return false
 }
 
 export function unlock(): void {
