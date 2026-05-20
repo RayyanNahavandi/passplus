@@ -35,8 +35,14 @@ export default function Home() {
           <Logo size={28} />
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </motion.div>
-        {!freeCompleted && (
-          <motion.div {...fadeUp(0.05)}>
+        <motion.div {...fadeUp(0.05)} className="flex items-center gap-5">
+          <Link
+            href="/daily"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Daily Q
+          </Link>
+          {!freeCompleted && (
             <Link
               href="/quiz"
               onClick={() => sendGAEvent("event", "quiz_started")}
@@ -44,8 +50,8 @@ export default function Home() {
             >
               Start Quiz →
             </Link>
-          </motion.div>
-        )}
+          )}
+        </motion.div>
       </nav>
 
       {/* Hero */}
