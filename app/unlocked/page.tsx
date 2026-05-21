@@ -8,7 +8,7 @@ import { unlock } from "@/lib/quiz-store"
 
 // Fallback token for manual unlocks and Safari ITP support.
 // Keep this value private — share only with users who need manual access.
-const UNLOCK_TOKEN = "PASSPLUS2026"
+const UNLOCK_TOKEN = "PP_X9K2M7N4Q8"
 
 type Status = "verifying" | "success" | "failed"
 
