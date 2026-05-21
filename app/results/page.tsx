@@ -42,6 +42,7 @@ export default function ResultsPage() {
   const router = useRouter()
   const [session, setSession] = useState<QuizSession | null>(null)
   const [loading, setLoading] = useState(true)
+  const [confirmRestart, setConfirmRestart] = useState(false)
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
@@ -101,6 +102,14 @@ export default function ResultsPage() {
   const grade = gradeLabel(pct)
 
   const handleNewSession = () => {
+    clearSession()
+    const s = createSession("normal")
+    saveSession(s)
+    router.push("/quiz")
+  }
+
+  const handleRestartQuiz = () => {
+    setConfirmRestart(false)
     clearSession()
     const s = createSession("normal")
     saveSession(s)
@@ -189,37 +198,81 @@ export default function ResultsPage() {
           {/* Actions */}
           <motion.div
             variants={shouldReduce ? {} : itemVariants}
-            className="flex flex-col sm:flex-row gap-3"
+            className="flex flex-col gap-3"
           >
-            <motion.button
-              whileHover={shouldReduce ? {} : { scale: 1.01 }}
-              whileTap={shouldReduce ? {} : { scale: 0.98 }}
-              onClick={handleNewSession}
-              className="flex-1 flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors text-sm min-h-[44px]"
-            >
-              <RefreshCw className="w-4 h-4" />
-              New Session
-            </motion.button>
+            <AnimatePresence mode="wait">
+              {confirmRestart ? (
+                <motion.div
+                  key="confirm"
+                  initial={shouldReduce ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={shouldReduce ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                  transition={{ duration: 0.15 }}
+                  className="flex flex-col sm:flex-row items-center gap-3 bg-muted border border-border rounded-2xl px-5 py-4"
+                >
+                  <span className="text-sm text-foreground font-medium flex-1 text-center sm:text-left">
+                    Restart quiz? Your current results will be cleared.
+                  </span>
+                  <div className="flex gap-2 shrink-0">
+                    <motion.button
+                      whileHover={shouldReduce ? {} : { scale: 1.01 }}
+                      whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                      onClick={handleRestartQuiz}
+                      className="flex items-center justify-center gap-1.5 bg-accent-green hover:bg-accent-hover text-black font-semibold py-2 px-4 rounded-xl transition-colors text-sm min-h-[40px]"
+                    >
+                      Yes, restart
+                    </motion.button>
+                    <motion.button
+                      whileHover={shouldReduce ? {} : { scale: 1.01 }}
+                      whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                      onClick={() => setConfirmRestart(false)}
+                      className="flex items-center justify-center gap-1.5 border border-border hover:bg-background text-foreground font-medium py-2 px-4 rounded-xl transition-colors text-sm min-h-[40px]"
+                    >
+                      Cancel
+                    </motion.button>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="actions"
+                  initial={shouldReduce ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={shouldReduce ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                  transition={{ duration: 0.15 }}
+                  className="flex flex-col sm:flex-row gap-3"
+                >
+                  <motion.button
+                    whileHover={shouldReduce ? {} : { scale: 1.01 }}
+                    whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                    onClick={() => setConfirmRestart(true)}
+                    className="flex-1 flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors text-sm min-h-[44px]"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    Restart Quiz
+                  </motion.button>
 
-            {missedQuestions.length > 0 && (
-              <motion.button
-                whileHover={shouldReduce ? {} : { scale: 1.01 }}
-                whileTap={shouldReduce ? {} : { scale: 0.98 }}
-                onClick={handlePracticeMissed}
-                className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-3 rounded-xl transition-colors text-sm min-h-[44px]"
-              >
-                <Target className="w-4 h-4" />
-                Practice {missedQuestions.length} Missed
-              </motion.button>
-            )}
+                  {missedQuestions.length > 0 && (
+                    <motion.button
+                      whileHover={shouldReduce ? {} : { scale: 1.01 }}
+                      whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                      onClick={handlePracticeMissed}
+                      className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-3 rounded-xl transition-colors text-sm min-h-[44px]"
+                    >
+                      <Target className="w-4 h-4" />
+                      Practice {missedQuestions.length} Missed
+                    </motion.button>
+                  )}
 
-            <Link
-              href="/"
-              className="flex-1 flex items-center justify-center gap-2 border border-border hover:bg-muted text-foreground font-medium py-3 rounded-xl transition-colors text-sm min-h-[44px]"
-            >
-              <BookOpen className="w-4 h-4" />
-              Back Home
-            </Link>
+                  <Link
+                    href="/"
+                    className="flex-1 flex items-center justify-center gap-2 border border-border hover:bg-muted text-foreground font-medium py-3 rounded-xl transition-colors text-sm min-h-[44px]"
+                  >
+                    <BookOpen className="w-4 h-4" />
+                    Back Home
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
 
           <motion.div variants={shouldReduce ? {} : itemVariants}>

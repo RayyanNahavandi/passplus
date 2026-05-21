@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, ChevronRight, CheckCircle, XCircle, Clock, Zap, Mail, ArrowLeft } from "lucide-react"
+import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, Mail, ArrowLeft } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import {
@@ -38,6 +38,8 @@ export default function QuizPage() {
   const [explanation, setExplanation] = useState<string | null>(null)
   const [loadingExplanation, setLoadingExplanation] = useState(false)
   const [timeLeft, setTimeLeft] = useState<number | null>(null)
+  // 1 = forward, -1 = backward — drives slide direction
+  const directionRef = useRef<1 | -1>(1)
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
@@ -50,6 +52,9 @@ export default function QuizPage() {
     const existing = loadSession()
     if (existing && existing.currentIndex < existing.questions.length) {
       setSession(existing)
+      // Restore selected answer if resuming a session on an already-answered question
+      const q = existing.questions[existing.currentIndex]
+      if (q) setSelected(existing.answers[q.id] ?? null)
     } else {
       const s = createSession("normal")
       saveSession(s)
@@ -176,12 +181,30 @@ export default function QuizPage() {
       return
     }
 
+    directionRef.current = 1
     const updated = { ...session, currentIndex: nextIndex }
     saveSession(updated)
     setSession(updated)
-    setSelected(null)
+    // Restore saved answer for next question (null if not yet answered)
+    const nextQ = updated.questions[nextIndex]
+    setSelected(nextQ ? (updated.answers[nextQ.id] ?? null) : null)
     setExplanation(null)
+    setLoadingExplanation(false)
   }, [session, selected, router])
+
+  const handlePrev = useCallback(() => {
+    if (!session || session.currentIndex <= 0) return
+    const prevIndex = session.currentIndex - 1
+    directionRef.current = -1
+    const updated = { ...session, currentIndex: prevIndex }
+    saveSession(updated)
+    setSession(updated)
+    // Restore the saved answer so the review state is visible (read-only)
+    const prevQ = updated.questions[prevIndex]
+    setSelected(prevQ ? (updated.answers[prevQ.id] ?? null) : null)
+    setExplanation(null)
+    setLoadingExplanation(false)
+  }, [session])
 
   const handleUnlock = useCallback(() => {
     sendGAEvent("event", "unlock_clicked")
@@ -218,6 +241,14 @@ export default function QuizPage() {
     )
   }
 
+  // A question that was previously answered (navigated back to for review)
+  const isReviewing =
+    selected !== null &&
+    currentQuestion !== undefined &&
+    session.answers[currentQuestion.id] !== undefined &&
+    // Only "reviewing" if we're not at the frontier (frontier = highest answered index)
+    session.currentIndex < Object.keys(session.answers).length
+
   const answeredCorrectly = selected !== null && selected === currentQuestion?.answer
   const isLastFreeQuestion =
     !session.isUnlocked &&
@@ -229,6 +260,8 @@ export default function QuizPage() {
       : timeLeft !== null && timeLeft <= 1200
       ? "text-yellow-500"
       : "text-muted-foreground"
+
+  const slideX = shouldReduce ? 0 : 40
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -301,9 +334,17 @@ export default function QuizPage() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={session.currentIndex}
-                initial={shouldReduce ? { opacity: 0 } : { opacity: 0, x: 40 }}
+                initial={
+                  shouldReduce
+                    ? { opacity: 0 }
+                    : { opacity: 0, x: directionRef.current * slideX }
+                }
                 animate={shouldReduce ? { opacity: 1 } : { opacity: 1, x: 0 }}
-                exit={shouldReduce ? { opacity: 0 } : { opacity: 0, x: -40 }}
+                exit={
+                  shouldReduce
+                    ? { opacity: 0 }
+                    : { opacity: 0, x: directionRef.current * -slideX }
+                }
                 transition={{ duration: 0.2, ease: "easeInOut" }}
               >
                 {/* Question meta */}
@@ -311,6 +352,11 @@ export default function QuizPage() {
                   <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-muted border border-border px-2.5 py-1 rounded-md text-muted-foreground">
                     Exam {currentQuestion?.exam} · Q{currentQuestion?.id}
                   </span>
+                  {isReviewing && (
+                    <span className="inline-flex items-center gap-1 text-xs font-medium bg-muted border border-border px-2.5 py-1 rounded-md text-muted-foreground">
+                      Review
+                    </span>
+                  )}
                 </div>
 
                 {/* Question text */}
@@ -345,7 +391,7 @@ export default function QuizPage() {
                   })}
                 </div>
 
-                {/* Feedback + next */}
+                {/* Feedback + navigation */}
                 <AnimatePresence>
                   {selected !== null && (
                     <motion.div
@@ -401,7 +447,7 @@ export default function QuizPage() {
                           </motion.p>
                         )}
 
-                        {!session.isUnlocked && !answeredCorrectly && (
+                        {!session.isUnlocked && !answeredCorrectly && !isReviewing && (
                           <motion.a
                             key="teaser"
                             href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
@@ -424,22 +470,43 @@ export default function QuizPage() {
                         )}
                       </AnimatePresence>
 
-                      <motion.button
+                      {/* Navigation buttons row */}
+                      <motion.div
                         initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
                         animate={shouldReduce ? {} : { opacity: 1, y: 0 }}
                         transition={{ duration: 0.2, delay: 0.05 }}
-                        whileHover={shouldReduce ? {} : { scale: 1.01 }}
-                        whileTap={shouldReduce ? {} : { scale: 0.98 }}
-                        onClick={handleNext}
-                        className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors w-full min-h-[44px] text-sm"
+                        className="flex gap-2"
                       >
-                        {isLastFreeQuestion
-                          ? "Continue →"
-                          : session.currentIndex + 1 >= session.questions.length
-                          ? "See Results"
-                          : "Next Question"}
-                        <ChevronRight className="w-4 h-4" />
-                      </motion.button>
+                        {/* Previous button — only when not on first question */}
+                        {session.currentIndex > 0 && (
+                          <motion.button
+                            whileHover={shouldReduce ? {} : { scale: 1.01 }}
+                            whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                            onClick={handlePrev}
+                            className="flex items-center justify-center gap-1.5 border border-border hover:bg-muted text-foreground font-medium py-3 rounded-xl transition-colors min-h-[44px] text-sm px-4 shrink-0"
+                          >
+                            <ChevronLeft className="w-4 h-4" />
+                            Previous
+                          </motion.button>
+                        )}
+
+                        {/* Next / Continue / See Results button */}
+                        <motion.button
+                          whileHover={shouldReduce ? {} : { scale: 1.01 }}
+                          whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                          onClick={handleNext}
+                          className="flex flex-1 items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
+                        >
+                          {isLastFreeQuestion
+                            ? "Continue →"
+                            : session.currentIndex + 1 >= session.questions.length
+                            ? "See Results"
+                            : isReviewing
+                            ? "Next Question"
+                            : "Next Question"}
+                          <ChevronRight className="w-4 h-4" />
+                        </motion.button>
+                      </motion.div>
                     </motion.div>
                   )}
                 </AnimatePresence>
