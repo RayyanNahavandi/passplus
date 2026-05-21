@@ -7,1549 +7,3192 @@ export interface Question {
   tier: "free" | "locked"
 }
 
-const allQuestions: Question[] = [
-  // ─── EXAM A ──────────────────────────────────────────────────────────────────
+export const questions: Question[] = [
   {
-    id: "A6", exam: "A", tier: "free",
-    question: "A company has hired a third-party to gather information about the company's servers and data. This third-party will not have direct access to the company's internal network, but they can gather information from any other source. Which of the following would BEST describe this approach?",
-    options: { A: "Vulnerability scanning", B: "Passive reconnaissance", C: "Supply chain analysis", D: "Regulatory audit" },
+    id: "Q001",
+    exam: "Original",
+    question: "A security analyst notices that an attacker used a legitimate admin tool already present on a compromised system to move laterally. Which technique does this describe?",
+    options: {
+      A: "Zero-day exploitation",
+      B: "Living off the land",
+      C: "Fileless malware injection",
+      D: "Rootkit installation"
+    },
     answer: "B",
+    tier: "free"
   },
   {
-    id: "A7", exam: "A", tier: "free",
-    question: "A company's email server has received an email from a third-party, but the origination server does not match the list of authorized devices. Which of the following would determine the disposition of this message?",
-    options: { A: "SPF", B: "NAC", C: "DMARC", D: "DKIM" },
-    answer: "C",
-  },
-  {
-    id: "A8", exam: "A", tier: "free",
-    question: "Which of these threat actors would be MOST likely to attack systems for direct financial gain?",
-    options: { A: "Organized crime", B: "Hacktivist", C: "Nation state", D: "Shadow IT" },
-    answer: "A",
-  },
-  {
-    id: "A9", exam: "A", tier: "free",
-    question: "A security administrator has examined a server recently compromised by an attacker, and has determined the system was exploited due to a known operating system vulnerability. Which of the following would BEST describe this finding?",
-    options: { A: "Root cause analysis", B: "E-discovery", C: "Risk appetite", D: "Data subject" },
-    answer: "A",
-  },
-  {
-    id: "A10", exam: "A", tier: "free",
-    question: "A city is building an ambulance service network for emergency medical dispatching. Which of the following should have the highest priority?",
-    options: { A: "Integration costs", B: "Patch availability", C: "System availability", D: "Power usage" },
-    answer: "C",
-  },
-  {
-    id: "A11", exam: "A", tier: "free",
-    question: "A system administrator receives a text alert when access rights are changed on a database containing private customer information. Which of the following would describe this alert?",
-    options: { A: "Maintenance window", B: "Attestation and acknowledgment", C: "Automation", D: "External audit" },
-    answer: "C",
-  },
-  {
-    id: "A12", exam: "A", tier: "free",
-    question: "A security administrator is concerned about the potential for data exfiltration using external storage drives. Which of the following would be the BEST way to prevent this method of data exfiltration?",
-    options: { A: "Create an operating system security policy to block the use of removable media", B: "Monitor removable media usage in host-based firewall logs", C: "Only allow applications that do not use removable media", D: "Define a removable media block rule in the UTM" },
-    answer: "A",
-  },
-  {
-    id: "A13", exam: "A", tier: "free",
-    question: "A company creates a standard set of government reports each calendar quarter. Which of the following would describe this type of data?",
-    options: { A: "Data in use", B: "Obfuscated", C: "Trade secrets", D: "Regulated" },
-    answer: "D",
-  },
-  {
-    id: "A14", exam: "A", tier: "free",
-    question: "An insurance company policy requires that any data access outside of normal working hours must be immediately reported to the security team. Which of the following would BEST address this specific requirement?",
-    options: { A: "Restrict login access by IP address and GPS location", B: "Require government-issued identification during the onboarding process", C: "Consolidate all logs on a SIEM", D: "Enable time-of-day restrictions on the authentication server" },
-    answer: "D",
-  },
-  {
-    id: "A15", exam: "A", tier: "free",
-    question: "A security engineer is viewing a firewall log entry showing an AV Gateway alert for XPACK.A_7854 (Trojan) blocked from external IP 136.127.92.171 port 80 to internal IP 10.16.10.14. Which of the following can be observed from this log information?",
-    options: { A: "The victim's IP address is 136.127.92.171", B: "A download was blocked from a web server", C: "A botnet DDoS attack was blocked", D: "The Trojan was blocked, but the file was not" },
+    id: "Q002",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a SOAR platform in a security operations center?",
+    options: {
+      A: "It replaces the need for human analysts entirely",
+      B: "It automates repetitive security tasks and orchestrates incident response workflows",
+      C: "It stores long-term threat intelligence feeds for offline analysis",
+      D: "It provides endpoint detection and response capabilities"
+    },
     answer: "B",
+    tier: "free"
   },
   {
-    id: "A16", exam: "A", tier: "free",
-    question: "A user connects to a third-party website and receives this message: 'Your connection is not private. NET::ERR_CERT_INVALID'. Which of the following attacks would be the MOST likely reason for this message?",
-    options: { A: "Brute force", B: "DoS", C: "On-path", D: "Deauthentication" },
+    id: "Q003",
+    exam: "Original",
+    question: "An organization wants to ensure that data stored in the cloud cannot be read by the cloud provider. Which control BEST addresses this requirement?",
+    options: {
+      A: "Data masking",
+      B: "Tokenization",
+      C: "Client-side encryption with customer-managed keys",
+      D: "Data loss prevention policies"
+    },
     answer: "C",
+    tier: "free"
   },
   {
-    id: "A17", exam: "A", tier: "free",
-    question: "Which of the following would be the BEST way to provide a website login using existing credentials from a third-party site?",
-    options: { A: "Federation", B: "802.1X", C: "EAP", D: "SSO" },
+    id: "Q004",
+    exam: "Original",
+    question: "A penetration tester has obtained credentials from a phishing attack and is now accessing internal systems. Which phase of the penetration test does this represent?",
+    options: {
+      A: "Reconnaissance",
+      B: "Scanning",
+      C: "Exploitation",
+      D: "Post-exploitation"
+    },
+    answer: "C",
+    tier: "free"
+  },
+  {
+    id: "Q005",
+    exam: "Original",
+    question: "Which of the following certificate types is used to validate the identity of an entire organization and displays the company name in the browser address bar?",
+    options: {
+      A: "Domain Validated (DV)",
+      B: "Organization Validated (OV)",
+      C: "Extended Validation (EV)",
+      D: "Wildcard"
+    },
+    answer: "C",
+    tier: "free"
+  },
+  {
+    id: "Q006",
+    exam: "Original",
+    question: "A company requires that no single employee can both approve and execute a financial transaction. Which security principle does this implement?",
+    options: {
+      A: "Least privilege",
+      B: "Separation of duties",
+      C: "Need to know",
+      D: "Defense in depth"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q007",
+    exam: "Original",
+    question: "An attacker sends millions of small packets to a target, exhausting its connection table. Which type of attack is this?",
+    options: {
+      A: "Smurf attack",
+      B: "Ping of death",
+      C: "SYN flood",
+      D: "DNS amplification"
+    },
+    answer: "C",
+    tier: "free"
+  },
+  {
+    id: "Q008",
+    exam: "Original",
+    question: "A forensic investigator needs to ensure that collected evidence has not been tampered with since collection. Which mechanism BEST provides this assurance?",
+    options: {
+      A: "Chain of custody documentation",
+      B: "Write-blocking hardware",
+      C: "Cryptographic hash verification",
+      D: "Evidence bag sealing"
+    },
+    answer: "C",
+    tier: "free"
+  },
+  {
+    id: "Q009",
+    exam: "Original",
+    question: "Which of the following BEST describes the difference between authentication and authorization?",
+    options: {
+      A: "Authentication verifies what a user can do; authorization verifies who the user is",
+      B: "Authentication verifies who the user is; authorization determines what the user is allowed to do",
+      C: "Authentication and authorization are the same process in most systems",
+      D: "Authorization uses passwords; authentication uses permissions"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q010",
+    exam: "Original",
+    question: "A security engineer wants to prevent lateral movement within a data center by limiting traffic between servers that have no business reason to communicate. Which control achieves this?",
+    options: {
+      A: "North-south firewall rules",
+      B: "Microsegmentation",
+      C: "Network address translation",
+      D: "Intrusion prevention system"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q011",
+    exam: "Original",
+    question: "An organization discovers that an insider is slowly copying sensitive data to a personal cloud storage account over several weeks. Which type of threat actor does this describe?",
+    options: {
+      A: "Advanced persistent threat",
+      B: "Script kiddie",
+      C: "Malicious insider",
+      D: "Hacktivist"
+    },
+    answer: "C",
+    tier: "free"
+  },
+  {
+    id: "Q012",
+    exam: "Original",
+    question: "Which cryptographic algorithm is considered a post-quantum candidate and is based on the difficulty of solving lattice problems?",
+    options: {
+      A: "RSA-4096",
+      B: "CRYSTALS-Kyber",
+      C: "Diffie-Hellman",
+      D: "AES-256"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q013",
+    exam: "Original",
+    question: "A developer stores API keys directly in application source code that is published to a public repository. Which type of vulnerability does this create?",
+    options: {
+      A: "Insecure deserialization",
+      B: "Hardcoded credentials",
+      C: "SQL injection",
+      D: "Path traversal"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q014",
+    exam: "Original",
+    question: "Which of the following BEST describes a honeynet?",
+    options: {
+      A: "A network segment used for vulnerability scanning",
+      B: "A collection of honeypots designed to simulate an entire network environment to attract attackers",
+      C: "A firewall configured to log all denied traffic",
+      D: "An intrusion detection system tuned to reduce false positives"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q015",
+    exam: "Original",
+    question: "A user receives an email claiming to be from the company's IT helpdesk asking them to verify their credentials. The email contains a link to a convincing fake login page. Which attack type is this?",
+    options: {
+      A: "Vishing",
+      B: "Smishing",
+      C: "Spear phishing",
+      D: "Whaling"
+    },
+    answer: "C",
+    tier: "free"
+  },
+  {
+    id: "Q016",
+    exam: "Original",
+    question: "An organization needs to classify data that is only available to specific individuals with a verified business need. Which classification label BEST fits?",
+    options: {
+      A: "Public",
+      B: "Internal",
+      C: "Confidential",
+      D: "Restricted"
+    },
+    answer: "D",
+    tier: "free"
+  },
+  {
+    id: "Q017",
+    exam: "Original",
+    question: "Which of the following is a PRIMARY benefit of using infrastructure as code (IaC) from a security perspective?",
+    options: {
+      A: "It eliminates the need for network segmentation",
+      B: "It allows consistent, repeatable, and auditable environment deployments",
+      C: "It removes the requirement for patch management",
+      D: "It replaces the need for access control lists"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q018",
+    exam: "Original",
+    question: "A security analyst wants to identify outdated software on all workstations by comparing installed versions against a known-good baseline. Which process does this describe?",
+    options: {
+      A: "Vulnerability scanning",
+      B: "Configuration management",
+      C: "Asset inventory",
+      D: "Security benchmarking"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q019",
+    exam: "Original",
+    question: "Which of the following attack techniques uses a fake wireless access point to intercept traffic between users and a legitimate network?",
+    options: {
+      A: "Replay attack",
+      B: "Evil twin",
+      C: "Rogue DHCP server",
+      D: "ARP poisoning"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q020",
+    exam: "Original",
+    question: "An employee's laptop is stolen. The hard drive is encrypted with full disk encryption and the attacker does not know the password. Which security objective does this MOST directly protect?",
+    options: {
+      A: "Availability",
+      B: "Integrity",
+      C: "Confidentiality",
+      D: "Non-repudiation"
+    },
+    answer: "C",
+    tier: "free"
+  },
+  {
+    id: "Q021",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a bug bounty program?",
+    options: {
+      A: "To reward employees who fix the most software defects internally",
+      B: "To compensate external researchers who responsibly disclose security vulnerabilities",
+      C: "To fund automated penetration testing tools",
+      D: "To provide legal protection for offensive security teams"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q022",
+    exam: "Original",
+    question: "A cloud architect designs a system where a compromised container cannot access the host operating system or other containers. Which principle does this architecture apply?",
+    options: {
+      A: "Defense in depth",
+      B: "Least functionality",
+      C: "Isolation",
+      D: "Immutability"
+    },
+    answer: "C",
+    tier: "free"
+  },
+  {
+    id: "Q023",
+    exam: "Original",
+    question: "Which of the following is the MOST effective control to prevent credential stuffing attacks on a web application?",
+    options: {
+      A: "Requiring complex passwords",
+      B: "Implementing multi-factor authentication",
+      C: "Enforcing account lockout after five failed attempts",
+      D: "Using CAPTCHA on login pages"
+    },
+    answer: "B",
+    tier: "free"
+  },
+  {
+    id: "Q024",
+    exam: "Original",
+    question: "A security policy states that users must log out of systems after 15 minutes of inactivity. Which type of control is this?",
+    options: {
+      A: "Technical control",
+      B: "Physical control",
+      C: "Administrative control",
+      D: "Compensating control"
+    },
+    answer: "C",
+    tier: "free"
+  },
+  {
+    id: "Q025",
+    exam: "Original",
+    question: "An attacker registers the domain 'micros0ft.com' to trick users into thinking they are visiting the legitimate Microsoft website. Which attack technique is this?",
+    options: {
+      A: "DNS hijacking",
+      B: "Typosquatting",
+      C: "URL redirection",
+      D: "BGP hijacking"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q026",
+    exam: "Original",
+    question: "Which of the following BEST describes the concept of data sovereignty?",
+    options: {
+      A: "The ability to encrypt data before it leaves the organization",
+      B: "The requirement that data is subject to the laws of the country where it is stored",
+      C: "The organization's right to delete customer data on request",
+      D: "The process of classifying data based on sensitivity"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q027",
+    exam: "Original",
+    question: "A security team uses threat intelligence feeds to proactively search for indicators of compromise on their network. What is this activity called?",
+    options: {
+      A: "Penetration testing",
+      B: "Vulnerability assessment",
+      C: "Threat hunting",
+      D: "Red teaming"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q028",
+    exam: "Original",
+    question: "Which of the following is an example of a physical security control?",
+    options: {
+      A: "Role-based access control",
+      B: "Biometric door locks",
+      C: "Firewall rules",
+      D: "Security awareness training"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q029",
+    exam: "Original",
+    question: "An analyst observes that a web application is returning verbose error messages including database table names and query structure. Which vulnerability does this represent?",
+    options: {
+      A: "Cross-site scripting",
+      B: "Improper error handling / information disclosure",
+      C: "XML external entity injection",
+      D: "Server-side request forgery"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q030",
+    exam: "Original",
+    question: "A company wants to use a third party to test the security of its applications without giving the testers any prior knowledge about the system. Which type of testing is this?",
+    options: {
+      A: "White-box testing",
+      B: "Gray-box testing",
+      C: "Black-box testing",
+      D: "Regression testing"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q031",
+    exam: "Original",
+    question: "Which protocol is commonly used to provide secure remote access to network devices using key-based or password authentication over an encrypted channel?",
+    options: {
+      A: "Telnet",
+      B: "FTP",
+      C: "SSH",
+      D: "SNMP v2"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q032",
+    exam: "Original",
+    question: "A risk manager determines that the cost of implementing a control exceeds the value of the asset it would protect. Which risk response is MOST appropriate?",
+    options: {
+      A: "Risk avoidance",
+      B: "Risk transfer",
+      C: "Risk acceptance",
+      D: "Risk mitigation"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q033",
+    exam: "Original",
+    question: "Which of the following BEST describes a supply chain attack?",
+    options: {
+      A: "Compromising a target by attacking a less-secure vendor or partner they rely on",
+      B: "Physically intercepting hardware shipments to install implants",
+      C: "Poisoning a competitor's product with malware",
+      D: "Attacking logistics software to disrupt delivery"
+    },
     answer: "A",
+    tier: "locked"
   },
   {
-    id: "A18", exam: "A", tier: "free",
-    question: "A system administrator is working on a contract that will specify a minimum required uptime for a set of Internet-facing firewalls. The administrator needs to know how often the firewall hardware is expected to fail between repairs. Which of the following would BEST describe this information?",
-    options: { A: "MTBF", B: "RTO", C: "MTTR", D: "RPO" },
+    id: "Q034",
+    exam: "Original",
+    question: "Which of the following encryption modes provides both confidentiality and data integrity in a single operation?",
+    options: {
+      A: "ECB",
+      B: "CBC",
+      C: "GCM",
+      D: "CTR"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q035",
+    exam: "Original",
+    question: "An organization wants to receive notifications when a critical vulnerability is published that affects software in its environment. Which resource BEST fulfills this need?",
+    options: {
+      A: "SIEM dashboard",
+      B: "CVE/NVD alerts or vendor security advisories",
+      C: "Penetration test reports",
+      D: "Security awareness training platform"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q036",
+    exam: "Original",
+    question: "A user reports that their computer is significantly slower than usual and is generating unusual network traffic at night. Which type of malware is MOST likely responsible?",
+    options: {
+      A: "Ransomware",
+      B: "Spyware",
+      C: "Bot/botnet malware",
+      D: "Keylogger"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q037",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a privacy impact assessment (PIA)?",
+    options: {
+      A: "To test whether encryption implementations meet regulatory requirements",
+      B: "To identify and mitigate privacy risks before a project or system is deployed",
+      C: "To audit employee compliance with data handling policies",
+      D: "To calculate the financial impact of a data breach"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q038",
+    exam: "Original",
+    question: "Which of the following is the MOST secure method for storing user passwords in a database?",
+    options: {
+      A: "MD5 hash",
+      B: "SHA-1 hash",
+      C: "AES-256 encryption",
+      D: "Bcrypt with per-user salt"
+    },
+    answer: "D",
+    tier: "locked"
+  },
+  {
+    id: "Q039",
+    exam: "Original",
+    question: "An attacker modifies the ARP cache of a switch to associate their MAC address with a legitimate IP address and intercepts traffic. Which attack is this?",
+    options: {
+      A: "DNS poisoning",
+      B: "ARP spoofing",
+      C: "IP spoofing",
+      D: "MAC flooding"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q040",
+    exam: "Original",
+    question: "A security analyst needs to identify all devices currently connected to the corporate network, including unmanaged IoT devices. Which tool is BEST suited for this task?",
+    options: {
+      A: "Vulnerability scanner",
+      B: "Network discovery/asset discovery tool",
+      C: "Intrusion detection system",
+      D: "Security information and event management"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q041",
+    exam: "Original",
+    question: "Which of the following BEST describes the role of a certificate authority (CA) in a public key infrastructure?",
+    options: {
+      A: "It encrypts communications between parties",
+      B: "It issues and signs digital certificates, binding public keys to identities",
+      C: "It provides key escrow services for law enforcement",
+      D: "It manages private keys on behalf of certificate holders"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q042",
+    exam: "Original",
+    question: "An organization uses a federated identity system to allow employees to log into partner applications using their corporate credentials. Which standard is MOST commonly used for this?",
+    options: {
+      A: "LDAP",
+      B: "SAML or OAuth/OIDC",
+      C: "RADIUS",
+      D: "Kerberos"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q043",
+    exam: "Original",
+    question: "Which of the following BEST describes the concept of defense in depth?",
+    options: {
+      A: "Using the strongest possible single control to protect an asset",
+      B: "Layering multiple independent security controls so that failure of one does not result in compromise",
+      C: "Placing all security controls at the network perimeter",
+      D: "Prioritizing detection over prevention"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q044",
+    exam: "Original",
+    question: "A web application allows users to include file paths in a request parameter to load resources. An attacker uses '../../../etc/passwd' to read sensitive files. Which vulnerability is this?",
+    options: {
+      A: "SQL injection",
+      B: "Command injection",
+      C: "Directory traversal / path traversal",
+      D: "SSRF"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q045",
+    exam: "Original",
+    question: "Which type of malware disguises itself as legitimate software but performs malicious actions once installed?",
+    options: {
+      A: "Worm",
+      B: "Trojan horse",
+      C: "Rootkit",
+      D: "Logic bomb"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q046",
+    exam: "Original",
+    question: "A company's DR plan calls for bringing systems back online within four hours of a disaster. What metric does this represent?",
+    options: {
+      A: "Recovery point objective",
+      B: "Mean time to repair",
+      C: "Recovery time objective",
+      D: "Mean time between failures"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q047",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of input validation in secure application development?",
+    options: {
+      A: "To verify that users have proper authorization before processing requests",
+      B: "To ensure that data entered by users conforms to expected formats and values, preventing injection attacks",
+      C: "To encrypt user-supplied data before storing it in the database",
+      D: "To log all user input for auditing purposes"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q048",
+    exam: "Original",
+    question: "An attacker intercepts an authentication token and replays it to gain unauthorized access. Which attack does this describe?",
+    options: {
+      A: "Pass-the-hash",
+      B: "Token replay attack",
+      C: "Session fixation",
+      D: "Cross-site request forgery"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q049",
+    exam: "Original",
+    question: "Which of the following is a preventive control specifically designed to detect and stop malicious code execution on endpoints?",
+    options: {
+      A: "SIEM",
+      B: "EDR (Endpoint Detection and Response)",
+      C: "DLP",
+      D: "CASB"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q050",
+    exam: "Original",
+    question: "A compliance officer needs to verify that the organization's security controls meet the requirements of NIST SP 800-53. Which activity satisfies this requirement?",
+    options: {
+      A: "Vulnerability scanning",
+      B: "Security control assessment",
+      C: "Penetration testing",
+      D: "Risk quantification"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q051",
+    exam: "Original",
+    question: "Which of the following wireless security protocols provides the STRONGEST protection using simultaneous authentication of equals (SAE)?",
+    options: {
+      A: "WEP",
+      B: "WPA2-Personal",
+      C: "WPA3-Personal",
+      D: "WPA2-Enterprise"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q052",
+    exam: "Original",
+    question: "A security engineer discovers that a service account has local administrator rights on hundreds of workstations even though it only needs to query a single database. Which security principle is being violated?",
+    options: {
+      A: "Separation of duties",
+      B: "Least privilege",
+      C: "Need to know",
+      D: "Accountability"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q053",
+    exam: "Original",
+    question: "Which of the following BEST describes the function of a web application firewall (WAF)?",
+    options: {
+      A: "It blocks all inbound traffic from untrusted networks",
+      B: "It inspects HTTP/HTTPS traffic to detect and block application-layer attacks such as SQLi and XSS",
+      C: "It provides VPN connectivity for remote users",
+      D: "It filters email for spam and phishing content"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q054",
+    exam: "Original",
+    question: "An administrator wants to prevent any unauthorized software from running on corporate endpoints. Which control BEST enforces this?",
+    options: {
+      A: "Antivirus software",
+      B: "Application allowlisting",
+      C: "Host-based intrusion detection",
+      D: "Group policy software restriction"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q055",
+    exam: "Original",
+    question: "A company signs a contract with a cloud provider that specifies 99.99% uptime and outlines penalties for downtime. What type of document is this?",
+    options: {
+      A: "Memorandum of understanding",
+      B: "Non-disclosure agreement",
+      C: "Service level agreement",
+      D: "Business associate agreement"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q056",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of network access control (NAC)?",
+    options: {
+      A: "Encrypting network traffic between endpoints",
+      B: "Enforcing security policy compliance checks before granting devices access to the network",
+      C: "Monitoring bandwidth consumption by user",
+      D: "Blocking known malicious IP addresses"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q057",
+    exam: "Original",
+    question: "An attacker sends a malicious script in a URL parameter. When an unsuspecting admin clicks the link, the script runs in their browser using the admin's session cookies. Which attack type is this?",
+    options: {
+      A: "Stored XSS",
+      B: "Reflected XSS",
+      C: "DOM-based XSS",
+      D: "CSRF"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q058",
+    exam: "Original",
+    question: "Which of the following is the PRIMARY reason organizations implement log aggregation and correlation using a SIEM?",
+    options: {
+      A: "To replace manual security reviews entirely",
+      B: "To detect patterns and anomalies across multiple sources that would not be visible in individual logs",
+      C: "To archive logs to meet a five-year retention requirement",
+      D: "To automate patch deployment across endpoints"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q059",
+    exam: "Original",
+    question: "A mobile device management policy requires that all company-owned phones encrypt local storage, enforce a PIN, and wipe after ten failed attempts. Which security objective does device wipe PRIMARILY protect?",
+    options: {
+      A: "Availability",
+      B: "Integrity",
+      C: "Confidentiality",
+      D: "Non-repudiation"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q060",
+    exam: "Original",
+    question: "A security analyst reviewing firewall logs notices repeated connection attempts from the same external IP to TCP port 3389. Which service is the attacker most likely targeting?",
+    options: {
+      A: "SSH",
+      B: "RDP",
+      C: "HTTPS",
+      D: "SMB"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q061",
+    exam: "Original",
+    question: "An organization uses a process to automatically revoke digital certificates when a private key is compromised. Which mechanism facilitates this?",
+    options: {
+      A: "OCSP stapling",
+      B: "Certificate transparency log",
+      C: "Certificate revocation list (CRL) or OCSP",
+      D: "Key escrow"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q062",
+    exam: "Original",
+    question: "A developer writes code that checks for buffer boundaries before writing to memory. Which vulnerability class does this PRIMARILY prevent?",
+    options: {
+      A: "SQL injection",
+      B: "Buffer overflow",
+      C: "Race condition",
+      D: "Integer overflow"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q063",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a data loss prevention (DLP) solution?",
+    options: {
+      A: "To encrypt all data at rest across the enterprise",
+      B: "To monitor, detect, and block unauthorized transfer of sensitive data",
+      C: "To replace backup solutions for regulated data",
+      D: "To prevent malware from encrypting files"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q064",
+    exam: "Original",
+    question: "An organization wants to ensure that a vendor's security controls meet contractual requirements before sharing sensitive data. Which process addresses this?",
+    options: {
+      A: "Security assessment or audit of the vendor",
+      B: "Signing an NDA",
+      C: "Requesting the vendor's SOC 2 report",
+      D: "Both A and C are appropriate approaches"
+    },
+    answer: "D",
+    tier: "locked"
+  },
+  {
+    id: "Q065",
+    exam: "Original",
+    question: "Which of the following BEST describes the difference between a vulnerability and an exploit?",
+    options: {
+      A: "A vulnerability is a known weakness; an exploit is code or technique that takes advantage of that weakness",
+      B: "An exploit is a theoretical risk; a vulnerability is a confirmed attack",
+      C: "A vulnerability only affects software; an exploit can affect hardware too",
+      D: "They are the same concept described from different perspectives"
+    },
     answer: "A",
+    tier: "locked"
   },
   {
-    id: "A19", exam: "A", tier: "free",
-    question: "An attacker calls into a company's help desk and pretends to be the director of the company's manufacturing department. The attacker states that they have forgotten their password and they need to have the password reset quickly for an important meeting. What kind of attack would BEST describe this phone call?",
-    options: { A: "Social engineering", B: "Supply chain", C: "Watering hole", D: "On-path" },
+    id: "Q066",
+    exam: "Original",
+    question: "A company stores credit card data in a database but replaces the actual number with a randomly generated token for use in business applications. Which technique is this?",
+    options: {
+      A: "Encryption",
+      B: "Hashing",
+      C: "Tokenization",
+      D: "Data masking"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q067",
+    exam: "Original",
+    question: "Which authentication factor category does a fingerprint scan represent?",
+    options: {
+      A: "Something you know",
+      B: "Something you have",
+      C: "Something you are",
+      D: "Somewhere you are"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q068",
+    exam: "Original",
+    question: "An attacker plants false records in a DNS resolver's cache so that users are directed to a malicious website instead of the legitimate one. Which attack is this?",
+    options: {
+      A: "DNS hijacking",
+      B: "DNS cache poisoning",
+      C: "BGP route hijacking",
+      D: "HOSTS file modification"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q069",
+    exam: "Original",
+    question: "Which of the following is an example of a compensating control?",
+    options: {
+      A: "Implementing MFA to replace a weak password policy that cannot currently be changed",
+      B: "Installing antivirus software on all endpoints",
+      C: "Applying the latest security patches",
+      D: "Creating a firewall rule to block malicious traffic"
+    },
     answer: "A",
+    tier: "locked"
   },
   {
-    id: "A20", exam: "A", tier: "free",
-    question: "Two companies have been working together for a number of months, and they would now like to qualify their partnership with a broad formal agreement between both organizations. Which of the following would describe this agreement?",
-    options: { A: "SLA", B: "SOW", C: "MOA", D: "NDA" },
+    id: "Q070",
+    exam: "Original",
+    question: "A security policy requires that all removable media be scanned for malware before use on corporate systems. Which type of control is this policy?",
+    options: {
+      A: "Technical",
+      B: "Physical",
+      C: "Administrative",
+      D: "Detective"
+    },
     answer: "C",
+    tier: "locked"
   },
   {
-    id: "A21", exam: "A", tier: "free",
-    question: "Which of the following would explain why a company would automatically add a digital signature to each outgoing email message?",
-    options: { A: "Confidentiality", B: "Integrity", C: "Authentication", D: "Availability" },
+    id: "Q071",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a security operations center (SOC)?",
+    options: {
+      A: "To develop security policies and procedures",
+      B: "To centrally monitor, detect, analyze, and respond to cybersecurity incidents",
+      C: "To conduct penetration testing against the organization's systems",
+      D: "To manage the organization's risk register"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A22", exam: "A", tier: "free",
-    question: "The embedded OS in a company's time clock appliance is configured to reset the file system and reboot when a file system error occurs. On one of the time clocks, this file system error occurs during the startup process and causes the system to constantly reboot. Which of the following BEST describes this issue?",
-    options: { A: "Memory injection", B: "Resource consumption", C: "Race condition", D: "Malicious update" },
+    id: "Q072",
+    exam: "Original",
+    question: "A threat actor uses a USB drive loaded with malware and leaves it in a company parking lot, hoping an employee will pick it up and plug it in. Which attack technique is this?",
+    options: {
+      A: "Tailgating",
+      B: "Pretexting",
+      C: "Baiting",
+      D: "Quid pro quo"
+    },
     answer: "C",
+    tier: "locked"
   },
   {
-    id: "A23", exam: "A", tier: "free",
-    question: "A recent audit has found that existing password policies do not include any restrictions on the number of password attempts. Which of the following would BEST correct this specific policy gap?",
-    options: { A: "Password complexity", B: "Password expiration", C: "Password reuse", D: "Account lockout" },
+    id: "Q073",
+    exam: "Original",
+    question: "Which of the following is the MAIN goal of a business continuity plan (BCP)?",
+    options: {
+      A: "To restore IT systems as quickly as possible after a disaster",
+      B: "To ensure critical business functions continue during and after a disruption",
+      C: "To provide legal documentation of the organization's response to incidents",
+      D: "To train employees on emergency evacuation procedures"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q074",
+    exam: "Original",
+    question: "A security engineer implements TLS 1.3 across all web services. Which security properties does TLS 1.3 provide by default that TLS 1.2 does not always guarantee?",
+    options: {
+      A: "Non-repudiation and availability",
+      B: "Forward secrecy on all cipher suites",
+      C: "Mutual authentication without certificates",
+      D: "Data integrity without encryption"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q075",
+    exam: "Original",
+    question: "An organization's security policy requires that employees use only company-approved devices. An employee accesses corporate email from a personal tablet. Which risk category BEST describes this scenario?",
+    options: {
+      A: "Shadow IT",
+      B: "Insider threat",
+      C: "BYOD risk",
+      D: "Data exfiltration"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q076",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of the MITRE ATT&CK framework?",
+    options: {
+      A: "A scoring system for vulnerability severity",
+      B: "A knowledge base of adversary tactics, techniques, and procedures based on real-world observations",
+      C: "A compliance framework for financial services organizations",
+      D: "A tool for automating threat intelligence sharing"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q077",
+    exam: "Original",
+    question: "A security audit reveals that several critical servers have not been patched in over a year. Which vulnerability management process step has been neglected?",
+    options: {
+      A: "Vulnerability discovery",
+      B: "Vulnerability assessment",
+      C: "Remediation / patch management",
+      D: "Vulnerability prioritization"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q078",
+    exam: "Original",
+    question: "Which of the following is a PRIMARY use of steganography in a cyberattack?",
+    options: {
+      A: "Encrypting command-and-control traffic",
+      B: "Hiding malicious code or data within innocent-looking files like images",
+      C: "Disguising malware as legitimate software",
+      D: "Bypassing firewalls using tunneled protocols"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q079",
+    exam: "Original",
+    question: "An organization requires that any code committed to the production repository must be reviewed and approved by a second developer. Which security principle does this implement?",
+    options: {
+      A: "Least privilege",
+      B: "Separation of duties",
+      C: "Defense in depth",
+      D: "Accountability"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q080",
+    exam: "Original",
+    question: "A security team receives an alert that a user account logged in from two countries simultaneously. Which type of detection is this?",
+    options: {
+      A: "Signature-based detection",
+      B: "Anomaly / behavioral detection",
+      C: "Heuristic detection",
+      D: "Reputation-based detection"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q081",
+    exam: "Original",
+    question: "Which of the following is the BEST description of a zero-trust architecture?",
+    options: {
+      A: "A network model that blocks all external traffic by default",
+      B: "A security model where no user or device is trusted by default, and all access requests are continuously verified",
+      C: "A model that restricts access based solely on user roles",
+      D: "A perimeter-based security model with strict firewall rules"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q082",
+    exam: "Original",
+    question: "An attacker exploits a vulnerability in a web server to gain a command shell. The attacker then uses that access to compromise an internal database server that is not internet-facing. Which technique is this second step?",
+    options: {
+      A: "Privilege escalation",
+      B: "Pivoting / lateral movement",
+      C: "Persistence",
+      D: "Exfiltration"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q083",
+    exam: "Original",
+    question: "A company processes personal data of EU residents. Under GDPR, which role is responsible for determining the purposes and means of processing personal data?",
+    options: {
+      A: "Data subject",
+      B: "Data processor",
+      C: "Data controller",
+      D: "Data protection officer"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q084",
+    exam: "Original",
+    question: "A security analyst finds that an attacker used PowerShell to download and execute a payload entirely in memory, leaving no files on disk. Which malware category BEST describes this?",
+    options: {
+      A: "Rootkit",
+      B: "Fileless malware",
+      C: "Trojan horse",
+      D: "Logic bomb"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q085",
+    exam: "Original",
+    question: "Which of the following is the PRIMARY purpose of a tabletop exercise?",
+    options: {
+      A: "To test backup restoration procedures under realistic conditions",
+      B: "To walk through an incident response scenario in a discussion-based format to identify gaps",
+      C: "To simulate a full-scale cyberattack on production systems",
+      D: "To evaluate vendor response times during a simulated outage"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q086",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a digital signature?",
+    options: {
+      A: "To encrypt data so only the recipient can read it",
+      B: "To verify the authenticity and integrity of a message and provide non-repudiation",
+      C: "To hash a message so it can be compared for corruption",
+      D: "To establish a shared symmetric key between two parties"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q087",
+    exam: "Original",
+    question: "An attacker calls a help desk employee, impersonates a new manager, and convinces them to reset a user's password. Which attack technique is this?",
+    options: {
+      A: "Phishing",
+      B: "Vishing",
+      C: "Pretexting",
+      D: "Impersonation"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q088",
+    exam: "Original",
+    question: "A company wants to prevent users from accessing known malicious websites by blocking DNS queries to malicious domains. Which solution implements this?",
+    options: {
+      A: "Web proxy",
+      B: "DNS sinkholing",
+      C: "Network-based IDS",
+      D: "URL filtering on the firewall"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q089",
+    exam: "Original",
+    question: "An organization stores backup encryption keys with a trusted third party so they can recover data if the primary keys are lost. Which practice is this?",
+    options: {
+      A: "Key rotation",
+      B: "Key escrow",
+      C: "Key derivation",
+      D: "Key wrapping"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q090",
+    exam: "Original",
+    question: "Which of the following BEST describes the concept of a threat vector?",
+    options: {
+      A: "The likelihood that a threat will exploit a vulnerability",
+      B: "The path or method an attacker uses to gain access to a target",
+      C: "The potential damage that could result from a successful attack",
+      D: "The set of assets that are exposed to external threats"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q091",
+    exam: "Original",
+    question: "A security team wants to test its incident response process without involving actual production systems. Which type of exercise is BEST suited for this?",
+    options: {
+      A: "Red team exercise",
+      B: "Penetration test",
+      C: "Simulation or tabletop exercise",
+      D: "Purple team exercise"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q092",
+    exam: "Original",
+    question: "Which of the following access control models assigns permissions based on user roles within an organization?",
+    options: {
+      A: "Discretionary access control (DAC)",
+      B: "Mandatory access control (MAC)",
+      C: "Role-based access control (RBAC)",
+      D: "Attribute-based access control (ABAC)"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q093",
+    exam: "Original",
+    question: "A penetration tester successfully elevates their privileges from a standard user account to a local administrator on a Windows system. Which phase is this?",
+    options: {
+      A: "Lateral movement",
+      B: "Privilege escalation",
+      C: "Persistence",
+      D: "Credential access"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q094",
+    exam: "Original",
+    question: "An organization wants to reduce the attack surface of its web servers. Which action BEST accomplishes this?",
+    options: {
+      A: "Enable all available server features to support future use cases",
+      B: "Disable unused services, ports, and features",
+      C: "Install a WAF in front of all web servers",
+      D: "Enable verbose logging on all servers"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q095",
+    exam: "Original",
+    question: "Which of the following BEST describes the function of a CASB (Cloud Access Security Broker)?",
+    options: {
+      A: "It provides VPN access to cloud applications",
+      B: "It acts as an intermediary between users and cloud services to enforce security policies",
+      C: "It replaces on-premises firewalls for cloud-first organizations",
+      D: "It manages identity federation between cloud providers"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q096",
+    exam: "Original",
+    question: "A forensic analyst images a hard drive using a write blocker. Why is the write blocker important in this process?",
+    options: {
+      A: "It speeds up the imaging process",
+      B: "It ensures that the imaging software cannot accidentally modify the original evidence",
+      C: "It encrypts the image for secure transfer",
+      D: "It verifies the hash of the image automatically"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q097",
+    exam: "Original",
+    question: "Which of the following protocols provides network time synchronization and, if not secured, can be abused in amplification attacks?",
+    options: {
+      A: "SNMP",
+      B: "NTP",
+      C: "ICMP",
+      D: "DNS"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q098",
+    exam: "Original",
+    question: "A company's risk assessment identifies a risk with high likelihood and high impact. Which risk treatment is typically MOST appropriate as a first response?",
+    options: {
+      A: "Accept the risk",
+      B: "Transfer the risk to insurance",
+      C: "Mitigate the risk by implementing controls",
+      D: "Avoid the risk by stopping the associated business activity"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q099",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of endpoint detection and response (EDR) solutions?",
+    options: {
+      A: "To block all inbound network connections to endpoints",
+      B: "To continuously monitor endpoint activity, detect threats, and enable investigation and response",
+      C: "To encrypt endpoint storage drives automatically",
+      D: "To manage software licenses on endpoints"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q100",
+    exam: "Original",
+    question: "An attacker sends specially crafted input to an application that causes it to execute arbitrary SQL commands against a backend database. Which vulnerability is being exploited?",
+    options: {
+      A: "Cross-site scripting",
+      B: "SQL injection",
+      C: "LDAP injection",
+      D: "Command injection"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q101",
+    exam: "Original",
+    question: "A company publishes its public key in a digital certificate signed by a trusted CA. Which property does the CA's signature provide?",
+    options: {
+      A: "Encryption of the public key",
+      B: "Proof that the public key belongs to the stated entity",
+      C: "Guarantee that the private key is secure",
+      D: "Authorization of the certificate holder's actions"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q102",
+    exam: "Original",
+    question: "Which of the following BEST describes an insider threat program's PRIMARY goal?",
+    options: {
+      A: "To monitor all employee communications for compliance",
+      B: "To detect, deter, and respond to threats posed by current or former employees or contractors",
+      C: "To enforce acceptable use policies",
+      D: "To provide security awareness training"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q103",
+    exam: "Original",
+    question: "A system administrator enables automatic updates on all servers. Which security objective does this PRIMARILY support?",
+    options: {
+      A: "Confidentiality",
+      B: "Integrity",
+      C: "Availability",
+      D: "Vulnerability management"
+    },
     answer: "D",
+    tier: "locked"
   },
   {
-    id: "A24", exam: "A", tier: "free",
-    question: "What kind of security control is associated with a login banner?",
-    options: { A: "Preventive", B: "Deterrent", C: "Corrective", D: "Detective" },
+    id: "Q104",
+    exam: "Original",
+    question: "Which of the following is the MOST significant risk introduced by using open-source software components in an application?",
+    options: {
+      A: "Open-source software always has worse performance than proprietary software",
+      B: "Unpatched vulnerabilities in dependencies can be inherited by the application",
+      C: "Open-source licenses prevent commercial use in most cases",
+      D: "Open-source software cannot be audited by third parties"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A25", exam: "A", tier: "free",
-    question: "An internal audit has discovered four servers that have not been updated in over a year, and it will take two weeks to test and deploy the latest patches. Which of the following would be the best way to quickly respond to this situation in the meantime?",
-    options: { A: "Purchase cybersecurity insurance", B: "Implement an exception for all data center services", C: "Move the servers to a protected segment", D: "Hire a third-party to perform an extensive audit" },
-    answer: "C",
-  },
-  {
-    id: "A26", exam: "A", tier: "free",
-    question: "A business manager is documenting a set of steps for processing orders if the primary Internet connection fails. Which of these would BEST describe these steps?",
-    options: { A: "Platform diversity", B: "Continuity of operations", C: "Cold site recovery", D: "Tabletop exercise" },
+    id: "Q105",
+    exam: "Original",
+    question: "A security analyst identifies a service that is listening on all network interfaces on a server that only provides internal application services. Which remediation step is MOST appropriate?",
+    options: {
+      A: "Install a host-based firewall and block external access",
+      B: "Reconfigure the service to bind only to the internal interface",
+      C: "Move the server to a DMZ",
+      D: "Enable IDS on the external interface"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A27", exam: "A", tier: "free",
-    question: "A company would like to examine the credentials of each individual entering the data center building. Which of the following would BEST facilitate this requirement?",
-    options: { A: "Access control vestibule", B: "Video surveillance", C: "Pressure sensors", D: "Bollards" },
+    id: "Q106",
+    exam: "Original",
+    question: "An organization has a policy that critical production changes must be approved by two separate managers. Which security concept does this enforce?",
+    options: {
+      A: "Dual control / two-person integrity",
+      B: "Separation of duties",
+      C: "Job rotation",
+      D: "Mandatory vacation"
+    },
     answer: "A",
+    tier: "locked"
   },
   {
-    id: "A28", exam: "A", tier: "free",
-    question: "A company stores some employee information in encrypted form, but other public details are stored as plaintext. Which of the following would BEST describe this encryption strategy?",
-    options: { A: "Full-disk", B: "Record", C: "Asymmetric", D: "Key escrow" },
+    id: "Q107",
+    exam: "Original",
+    question: "Which of the following BEST describes the function of DNSSEC?",
+    options: {
+      A: "It encrypts DNS queries to prevent eavesdropping",
+      B: "It digitally signs DNS records to allow resolvers to verify authenticity and integrity",
+      C: "It provides a private DNS resolver for internal networks",
+      D: "It blocks DNS queries to known malicious domains"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A29", exam: "A", tier: "free",
-    question: "A company would like to minimize database corruption if power is lost to a server. Which of the following would be the BEST strategy to follow?",
-    options: { A: "Encryption", B: "Off-site backups", C: "Journaling", D: "Replication" },
+    id: "Q108",
+    exam: "Original",
+    question: "A user reports receiving a text message asking them to click a link to verify their bank account. Which type of attack is this?",
+    options: {
+      A: "Phishing",
+      B: "Vishing",
+      C: "Smishing",
+      D: "Spear phishing"
+    },
     answer: "C",
+    tier: "locked"
   },
   {
-    id: "A30", exam: "A", tier: "free",
-    question: "A company is creating a security policy for corporate mobile devices requiring automatic locking, location tracing, and complete separation of user information from company data. Which of the following would be the BEST way to establish these security policy rules?",
-    options: { A: "Segmentation", B: "Biometrics", C: "COPE", D: "MDM" },
-    answer: "D",
+    id: "Q109",
+    exam: "Original",
+    question: "Which of the following BEST describes the principle of least functionality as applied to operating systems?",
+    options: {
+      A: "Using the operating system with the fewest features available",
+      B: "Removing or disabling all unnecessary services, roles, and features from a system",
+      C: "Running applications with minimal computational resources",
+      D: "Restricting users to only the applications they need"
+    },
+    answer: "B",
+    tier: "locked"
   },
   {
-    id: "A31", exam: "A", tier: "locked",
-    question: "A security engineer runs a monthly vulnerability scan. The scan doesn't list any vulnerabilities for Windows servers, but a significant vulnerability was announced last week and none of the servers are patched yet. Which of the following best describes this result?",
-    options: { A: "Exploit", B: "Compensating controls", C: "Zero-day attack", D: "False negative" },
-    answer: "D",
+    id: "Q110",
+    exam: "Original",
+    question: "An organization uses a third-party security firm to continuously attempt to compromise its environment using real attacker techniques. Which activity is this?",
+    options: {
+      A: "Vulnerability assessment",
+      B: "Penetration test",
+      C: "Red team engagement",
+      D: "Bug bounty program"
+    },
+    answer: "C",
+    tier: "locked"
   },
   {
-    id: "A32", exam: "A", tier: "locked",
-    question: "An IT help desk is using automation to improve the response time for security events. Which of the following use cases would apply to this process?",
-    options: { A: "Escalation", B: "Guard rails", C: "Continuous integration", D: "Resource provisioning" },
+    id: "Q111",
+    exam: "Original",
+    question: "Which of the following hash functions is considered cryptographically broken and should NOT be used for security purposes?",
+    options: {
+      A: "SHA-256",
+      B: "SHA-3",
+      C: "MD5",
+      D: "BLAKE2"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q112",
+    exam: "Original",
+    question: "A company wants to ensure that all changes to a critical configuration file are logged and that any unauthorized changes trigger an alert. Which technology provides this capability?",
+    options: {
+      A: "Data loss prevention",
+      B: "File integrity monitoring",
+      C: "Security information and event management",
+      D: "Network behavior analysis"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q113",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a penetration testing rules of engagement document?",
+    options: {
+      A: "To define the legal terms of the engagement contract",
+      B: "To specify the scope, boundaries, authorized techniques, and communication protocols for a penetration test",
+      C: "To document findings and recommendations after testing",
+      D: "To establish the payment terms for the testing team"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q114",
+    exam: "Original",
+    question: "A company enables multi-factor authentication for all privileged accounts but not for standard user accounts. Which risk does this create?",
+    options: {
+      A: "Standard user accounts could be used for lateral movement or privilege escalation after compromise",
+      B: "Privileged accounts become more susceptible to brute force attacks",
+      C: "MFA increases complexity and reduces availability for administrators",
+      D: "Standard users will bypass MFA requirements using shared accounts"
+    },
     answer: "A",
+    tier: "locked"
   },
   {
-    id: "A33", exam: "A", tier: "locked",
-    question: "A network administrator would like each user to authenticate with their corporate username and password when connecting to the company's wireless network. Which of the following should the network administrator configure on the wireless access points?",
-    options: { A: "WPA3", B: "802.1X", C: "PSK", D: "MFA" },
+    id: "Q115",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a secure software development lifecycle (SSDLC)?",
+    options: {
+      A: "To accelerate software releases by automating testing",
+      B: "To integrate security activities into each phase of development to reduce vulnerabilities in the final product",
+      C: "To document code changes for compliance audits",
+      D: "To train developers on secure coding practices only"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A34", exam: "A", tier: "locked",
-    question: "A company's VPN service performs a posture assessment during the login process. Which of the following mitigation techniques would this describe?",
-    options: { A: "Encryption", B: "Decommissioning", C: "Least privilege", D: "Configuration enforcement" },
-    answer: "D",
+    id: "Q116",
+    exam: "Original",
+    question: "An analyst notices that an internal server is sending large volumes of encrypted data to an external IP at 2 AM every night. Which security concern does this MOST suggest?",
+    options: {
+      A: "The server is performing scheduled backups",
+      B: "The server may be compromised and exfiltrating data",
+      C: "The server's NTP is misconfigured",
+      D: "The server is performing legitimate software updates"
+    },
+    answer: "B",
+    tier: "locked"
   },
   {
-    id: "A35", exam: "A", tier: "locked",
-    question: "A user has assigned individual rights and permissions to a file on their network drive. The user adds three additional individuals to have read-only access to the file. Which of the following would describe this access control model?",
-    options: { A: "Discretionary", B: "Mandatory", C: "Attribute-based", D: "Role-based" },
+    id: "Q117",
+    exam: "Original",
+    question: "Which of the following is a characteristic of asymmetric encryption compared to symmetric encryption?",
+    options: {
+      A: "Asymmetric encryption is faster than symmetric encryption",
+      B: "Asymmetric encryption uses two mathematically related keys, while symmetric uses the same key for both encryption and decryption",
+      C: "Asymmetric encryption cannot be used for digital signatures",
+      D: "Asymmetric encryption provides weaker security than symmetric encryption"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q118",
+    exam: "Original",
+    question: "A web server's SSL/TLS certificate was issued by an internal CA that is not trusted by public browsers. What will users experience when they visit the site?",
+    options: {
+      A: "The connection will be blocked entirely",
+      B: "A certificate warning saying the certificate is not trusted",
+      C: "The connection will fall back to HTTP",
+      D: "The browser will automatically add the CA to its trust store"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q119",
+    exam: "Original",
+    question: "A company conducts regular social engineering assessments by sending simulated phishing emails to employees. What is the PRIMARY goal of this activity?",
+    options: {
+      A: "To identify employees who should be terminated",
+      B: "To measure and improve employee security awareness and resilience to phishing",
+      C: "To test email filtering controls",
+      D: "To fulfill regulatory audit requirements"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q120",
+    exam: "Original",
+    question: "Which of the following BEST describes the function of SIEM in the context of compliance?",
+    options: {
+      A: "It automatically remediates compliance violations",
+      B: "It aggregates and retains logs from across the environment to support audit and compliance reporting",
+      C: "It enforces security policies on endpoints",
+      D: "It scans applications for compliance-related vulnerabilities"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q121",
+    exam: "Original",
+    question: "An attacker compromises a website frequently visited by a target organization's employees and embeds malware that exploits browser vulnerabilities. Which attack technique is this?",
+    options: {
+      A: "Spear phishing",
+      B: "Watering hole attack",
+      C: "Drive-by download",
+      D: "Malvertising"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q122",
+    exam: "Original",
+    question: "Which of the following protocols is used to securely transfer files over a network using SSH as the underlying transport?",
+    options: {
+      A: "FTPS",
+      B: "SFTP",
+      C: "SCP only",
+      D: "HTTPS"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q123",
+    exam: "Original",
+    question: "A company's security team discovers an attacker has been present in the environment for several months, slowly gathering intelligence. Which threat actor type BEST describes this?",
+    options: {
+      A: "Script kiddie",
+      B: "Hacktivist",
+      C: "Advanced persistent threat (APT)",
+      D: "Opportunistic attacker"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q124",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of network segmentation?",
+    options: {
+      A: "Increasing network throughput by separating traffic types",
+      B: "Limiting the blast radius of a compromise by isolating network zones",
+      C: "Reducing the number of IP addresses required",
+      D: "Providing redundant network paths"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q125",
+    exam: "Original",
+    question: "An employee is terminated and their access to all systems should be immediately revoked. Which process ensures this happens?",
+    options: {
+      A: "Privileged access management",
+      B: "Identity lifecycle management / offboarding process",
+      C: "Data loss prevention",
+      D: "Security awareness training"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q126",
+    exam: "Original",
+    question: "A security architect designs a system where containers run with read-only file systems and drop all Linux capabilities except those strictly required. Which security principle does this implement?",
+    options: {
+      A: "Defense in depth",
+      B: "Least privilege and least functionality",
+      C: "Zero trust",
+      D: "Fail secure"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q127",
+    exam: "Original",
+    question: "Which of the following BEST describes what a CVE (Common Vulnerabilities and Exposures) entry provides?",
+    options: {
+      A: "A severity score and remediation steps for a vulnerability",
+      B: "A unique identifier and description for a publicly known vulnerability",
+      C: "A complete exploit code for a vulnerability",
+      D: "A list of systems affected by a vulnerability"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q128",
+    exam: "Original",
+    question: "A company's security policy requires that all sensitive emails be encrypted using S/MIME. Which component is required on the recipient's side to decrypt the messages?",
+    options: {
+      A: "The sender's public key",
+      B: "The recipient's private key",
+      C: "A shared symmetric key",
+      D: "The CA's root certificate only"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q129",
+    exam: "Original",
+    question: "An organization discovers that a contractor installed unauthorized remote access software on a critical server before their contract ended. Which type of attack does this represent?",
+    options: {
+      A: "Supply chain attack",
+      B: "Malicious insider / backdoor installation",
+      C: "Watering hole attack",
+      D: "Persistence via rootkit"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q130",
+    exam: "Original",
+    question: "Which of the following is the PRIMARY benefit of using a password manager?",
+    options: {
+      A: "It eliminates the need for multi-factor authentication",
+      B: "It allows users to use strong, unique passwords for every account without memorizing them",
+      C: "It encrypts all network traffic to websites",
+      D: "It provides single sign-on for all applications"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q131",
+    exam: "Original",
+    question: "A security team member is assigned to continuously monitor attacker forums and dark web markets for stolen credentials belonging to the organization. What is this activity called?",
+    options: {
+      A: "Threat hunting",
+      B: "Dark web monitoring / threat intelligence",
+      C: "Vulnerability research",
+      D: "Digital forensics"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q132",
+    exam: "Original",
+    question: "An attacker uses a known vulnerability in an unpatched VPN appliance to gain initial access to a corporate network. Which category of attack does this represent?",
+    options: {
+      A: "Social engineering",
+      B: "Known/unpatched vulnerability exploitation",
+      C: "Zero-day exploitation",
+      D: "Physical access attack"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q133",
+    exam: "Original",
+    question: "Which of the following BEST describes the concept of 'privacy by design'?",
+    options: {
+      A: "Adding privacy controls after a system is built",
+      B: "Integrating privacy protections into the design and architecture of systems from the beginning",
+      C: "Documenting privacy policies for regulatory compliance",
+      D: "Encrypting all data at rest and in transit"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q134",
+    exam: "Original",
+    question: "A company uses geofencing to restrict access to its corporate applications from outside approved countries. Which type of control is this?",
+    options: {
+      A: "Physical control",
+      B: "Technical / logical control",
+      C: "Administrative control",
+      D: "Compensating control"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q135",
+    exam: "Original",
+    question: "A server generates an alert every time a new user account is created outside of business hours. Which type of detection is this?",
+    options: {
+      A: "Signature-based detection",
+      B: "Anomaly-based detection",
+      C: "Rule-based detection",
+      D: "Heuristic detection"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q136",
+    exam: "Original",
+    question: "An organization purchases cyber liability insurance to cover costs from a data breach. Which risk response strategy does this represent?",
+    options: {
+      A: "Risk avoidance",
+      B: "Risk mitigation",
+      C: "Risk transfer",
+      D: "Risk acceptance"
+    },
+    answer: "C",
+    tier: "locked"
+  },
+  {
+    id: "Q137",
+    exam: "Original",
+    question: "A security analyst is performing threat modeling. They identify the attack surface, enumerate threats, and prioritize them. Which methodology BEST aligns with this approach?",
+    options: {
+      A: "PASTA",
+      B: "STRIDE",
+      C: "DREAD",
+      D: "CVSS"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q138",
+    exam: "Original",
+    question: "An administrator configures a system so that if an intrusion is detected, all services shut down and the system enters a safe state. Which security concept does this describe?",
+    options: {
+      A: "Fail open",
+      B: "Fail secure / fail closed",
+      C: "High availability",
+      D: "Defense in depth"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q139",
+    exam: "Original",
+    question: "An organization wants to determine which of its critical assets are most exposed to external threats. Which process BEST addresses this?",
+    options: {
+      A: "Business impact analysis",
+      B: "Attack surface analysis",
+      C: "Vulnerability scanning",
+      D: "Risk register maintenance"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q140",
+    exam: "Original",
+    question: "Which of the following BEST explains why employees are often considered the weakest link in security?",
+    options: {
+      A: "Employees intentionally try to undermine security policies",
+      B: "Employees are frequently targeted by social engineering and may make mistakes that bypass technical controls",
+      C: "Employees have too many privileges by default",
+      D: "Employees do not understand how to use security tools"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q141",
+    exam: "Original",
+    question: "Which of the following is the BEST example of a detective control?",
+    options: {
+      A: "Encryption of data at rest",
+      B: "Intrusion detection system alerts",
+      C: "Firewall blocking inbound traffic",
+      D: "Security awareness training"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q142",
+    exam: "Original",
+    question: "An application allows users to upload files but does not validate the file type. An attacker uploads a PHP script and executes it on the server. Which vulnerability is this?",
+    options: {
+      A: "Command injection",
+      B: "Unrestricted file upload leading to remote code execution",
+      C: "Directory traversal",
+      D: "Cross-site scripting"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q143",
+    exam: "Original",
+    question: "A company implements a policy requiring employees to take at least one week of consecutive leave per year. Which security benefit does this PRIMARILY provide?",
+    options: {
+      A: "It reduces burnout and improves performance",
+      B: "It allows detection of fraudulent activity that requires the employee's continuous presence to conceal",
+      C: "It ensures employees maintain security certifications",
+      D: "It provides time for mandatory security training"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q144",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of an acceptable use policy (AUP)?",
+    options: {
+      A: "To define technical access control rules",
+      B: "To define what is and is not acceptable behavior when using organizational IT resources",
+      C: "To document the organization's incident response procedures",
+      D: "To specify data classification standards"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q145",
+    exam: "Original",
+    question: "A security engineer hardens a Linux server by disabling unused daemons, removing unnecessary packages, and configuring a host-based firewall. What process does this describe?",
+    options: {
+      A: "Patch management",
+      B: "System hardening",
+      C: "Vulnerability remediation",
+      D: "Security baseline deployment"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q146",
+    exam: "Original",
+    question: "Which of the following BEST describes the role of a data steward?",
+    options: {
+      A: "The individual responsible for protecting the technical infrastructure that stores data",
+      B: "The individual responsible for ensuring data quality, classification, and appropriate handling within a business unit",
+      C: "The executive accountable for the overall data security program",
+      D: "The individual who performs backups and recovery operations"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q147",
+    exam: "Original",
+    question: "An organization deploys a system that requires employees to authenticate with their smart card AND a PIN. Which authentication concept does this implement?",
+    options: {
+      A: "Single-factor authentication using something you have",
+      B: "Multi-factor authentication combining something you have and something you know",
+      C: "Multi-factor authentication combining something you have and something you are",
+      D: "Two-step authentication using the same factor type"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q148",
+    exam: "Original",
+    question: "Which type of malware is specifically designed to encrypt victim files and demand payment for the decryption key?",
+    options: {
+      A: "Spyware",
+      B: "Ransomware",
+      C: "Adware",
+      D: "Worm"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q149",
+    exam: "Original",
+    question: "A company is evaluating two sites for disaster recovery: one that can be operational within hours (with hardware pre-installed) and one that requires days to set up. Which term describes the faster site?",
+    options: {
+      A: "Cold site",
+      B: "Warm site",
+      C: "Hot site",
+      D: "Mobile site"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q150",
+    exam: "Original",
+    question: "An application developer uses parameterized queries in all database interactions. Which vulnerability does this PRIMARILY prevent?",
+    options: {
+      A: "Cross-site scripting",
+      B: "SQL injection",
+      C: "Buffer overflow",
+      D: "XML injection"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q151",
+    exam: "Original",
+    question: "Which of the following BEST describes the concept of non-repudiation?",
+    options: {
+      A: "The ability to verify that a message has not been altered in transit",
+      B: "The assurance that a party cannot deny having sent or received a message or performed an action",
+      C: "The guarantee that information is accessible when needed",
+      D: "The process of confirming a user's identity"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q152",
+    exam: "Original",
+    question: "Which network device examines traffic based on predefined rules and operates at Layers 3 and 4 of the OSI model to permit or deny packets?",
+    options: {
+      A: "Layer 7 WAF",
+      B: "Stateless packet filtering firewall",
+      C: "Next-generation firewall",
+      D: "IDS sensor"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q153",
+    exam: "Original",
+    question: "A security analyst uses the CVSS base score to prioritize vulnerability patching. A vulnerability has a CVSS score of 9.8. How should this be prioritized?",
+    options: {
+      A: "Low priority — CVSS scores above 9 indicate theoretical vulnerabilities",
+      B: "Critical priority — scores above 9.0 indicate critical severity and should be remediated immediately",
+      C: "Medium priority — high CVSS scores are common and do not always require immediate action",
+      D: "It depends on the asset value regardless of CVSS score"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q154",
+    exam: "Original",
+    question: "Which of the following types of backups only copies data that has changed since the last full backup?",
+    options: {
+      A: "Incremental backup",
+      B: "Differential backup",
+      C: "Mirror backup",
+      D: "Full backup"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q155",
+    exam: "Original",
+    question: "An employee plugs a personal wireless access point into a corporate network port. Which security risk does this create?",
+    options: {
+      A: "The AP broadcasts the corporate SSID to nearby attackers",
+      B: "A rogue access point that bypasses network security controls and provides unauthorized wireless access",
+      C: "The employee's devices receive DHCP addresses from the corporate server",
+      D: "The corporate firewall is bypassed by wireless traffic"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q156",
+    exam: "Original",
+    question: "A company conducts annual security awareness training for all employees. Which security goal does this PRIMARILY support?",
+    options: {
+      A: "Regulatory compliance only",
+      B: "Reducing human error and improving the organization's security culture",
+      C: "Detecting insider threats through monitoring",
+      D: "Fulfilling ISO 27001 audit requirements"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q157",
+    exam: "Original",
+    question: "An organization stores the most current customer data in a production database and maintains a read replica in a geographically separate data center. What disaster recovery strategy does this support?",
+    options: {
+      A: "Cold site recovery",
+      B: "Database mirroring / geographic redundancy",
+      C: "Incremental backup strategy",
+      D: "Point-in-time recovery"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q158",
+    exam: "Original",
+    question: "A security analyst reviews a report that shows a large number of outbound connections from internal hosts to a single external IP on port 443 at regular 60-second intervals. What does this MOST likely indicate?",
+    options: {
+      A: "Normal HTTPS web browsing",
+      B: "Command-and-control beaconing from malware",
+      C: "Legitimate software performing automatic updates",
+      D: "Network time synchronization"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q159",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a jump server (bastion host)?",
+    options: {
+      A: "A server that distributes load across multiple backend servers",
+      B: "A hardened, monitored intermediary server used to access systems in a secure network zone",
+      C: "A server that provides DNS resolution for internal networks",
+      D: "A server used to terminate VPN connections"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q160",
+    exam: "Original",
+    question: "A company uses separate development, testing, and production environments with no direct connectivity between them. Which security principle does this implement?",
+    options: {
+      A: "Least privilege",
+      B: "Environment segregation",
+      C: "Defense in depth",
+      D: "Fail secure"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q161",
+    exam: "Original",
+    question: "A developer performs a static analysis of source code before compiling. Which security activity is this?",
+    options: {
+      A: "Dynamic application security testing (DAST)",
+      B: "Static application security testing (SAST)",
+      C: "Interactive application security testing (IAST)",
+      D: "Fuzz testing"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q162",
+    exam: "Original",
+    question: "A company's network engineer implements 802.1X authentication on all switch ports. What does this require for devices to connect to the network?",
+    options: {
+      A: "A valid MAC address registered in the MAC address table",
+      B: "Authentication using credentials or certificates before being granted network access",
+      C: "A valid DHCP lease from the corporate server",
+      D: "A static IP address pre-configured by the administrator"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q163",
+    exam: "Original",
+    question: "Which of the following BEST describes the function of a reverse proxy?",
+    options: {
+      A: "It forwards client requests to multiple backend servers and hides their internal addresses",
+      B: "It routes outbound traffic from internal clients to the internet",
+      C: "It encrypts traffic between remote users and the corporate network",
+      D: "It filters inbound email for spam and malware"
+    },
     answer: "A",
+    tier: "locked"
   },
   {
-    id: "A36", exam: "A", tier: "locked",
-    question: "A remote user has received a text message with a link to login and confirm their upcoming work schedule. Which of the following would BEST describe this attack?",
-    options: { A: "Brute force", B: "Watering hole", C: "Typosquatting", D: "Smishing" },
-    answer: "D",
-  },
-  {
-    id: "A37", exam: "A", tier: "locked",
-    question: "A company is formalizing the design and deployment process used by their application programmers. Which of the following policies would apply?",
-    options: { A: "Business continuity", B: "Acceptable use policy", C: "Incident response", D: "Development lifecycle" },
-    answer: "D",
-  },
-  {
-    id: "A38", exam: "A", tier: "locked",
-    question: "A security administrator has copied a suspected malware executable from a user's computer and is running the program in a sandbox. Which of the following would describe this part of the incident response process?",
-    options: { A: "Eradication", B: "Preparation", C: "Recovery", D: "Containment" },
-    answer: "D",
-  },
-  {
-    id: "A39", exam: "A", tier: "locked",
-    question: "A server administrator at a bank has noticed a decrease in the number of visitors to the bank's website. Additional research shows that users are being directed to a different IP address than the bank's web server. Which of the following would MOST likely describe this attack?",
-    options: { A: "Deauthentication", B: "DDoS", C: "Buffer overflow", D: "DNS poisoning" },
-    answer: "D",
-  },
-  {
-    id: "A40", exam: "A", tier: "locked",
-    question: "Which of the following considerations are MOST commonly associated with a hybrid cloud model?",
-    options: { A: "Microservice outages", B: "IoT support", C: "Network protection mismatches", D: "Containerization backups" },
+    id: "Q164",
+    exam: "Original",
+    question: "An organization needs to securely destroy hard drives containing classified data before disposal. Which method provides the HIGHEST assurance that data cannot be recovered?",
+    options: {
+      A: "Three-pass overwrite with random data",
+      B: "Degaussing",
+      C: "Physical destruction (shredding or disintegrating)",
+      D: "Formatting the drive"
+    },
     answer: "C",
+    tier: "locked"
   },
   {
-    id: "A41", exam: "A", tier: "locked",
-    question: "A company hires a large number of seasonal employees whose system access should be disabled when they leave. The security administrator would like to verify no former employees can access the systems. Which of the following would be the BEST way to provide this verification?",
-    options: { A: "Confirm that no unauthorized accounts have administrator access", B: "Validate the account lockout policy", C: "Validate the offboarding processes and procedures", D: "Create a report that shows all authentications for a 24-hour period" },
+    id: "Q165",
+    exam: "Original",
+    question: "A company's security team implements privileged access workstations (PAWs) for administrative tasks. What is the PRIMARY security benefit?",
+    options: {
+      A: "Administrators can access both regular and privileged systems from a single device",
+      B: "Privileged tasks are performed from dedicated, hardened systems isolated from general-purpose browsing and email",
+      C: "PAWs replace the need for MFA on privileged accounts",
+      D: "PAWs provide faster access to administrative consoles"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q166",
+    exam: "Original",
+    question: "An organization encrypts sensitive data before sending it to a cloud storage provider and retains the encryption keys on-premises. Which security concern does this PRIMARILY address?",
+    options: {
+      A: "Availability of data in the cloud",
+      B: "Unauthorized access to data by the cloud provider or in the event of a cloud-side breach",
+      C: "Data integrity during transmission",
+      D: "Compliance with cloud provider security standards"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q167",
+    exam: "Original",
+    question: "Which of the following BEST describes a logic bomb?",
+    options: {
+      A: "Malware that replicates itself across networks",
+      B: "Malicious code that activates when specific conditions are met, such as a date or user action",
+      C: "A type of ransomware that encrypts only specific file types",
+      D: "A rootkit that hides processes from the operating system"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q168",
+    exam: "Original",
+    question: "A security analyst is investigating an alert and needs to determine if a suspicious file has been seen before in other incidents. Which tool or resource would be MOST useful?",
+    options: {
+      A: "Vulnerability scanner",
+      B: "Threat intelligence platform or malware sandbox with hash lookup",
+      C: "Network traffic analyzer",
+      D: "SIEM query for failed authentication"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q169",
+    exam: "Original",
+    question: "An organization stores customer data in multiple countries. Which regulation PRIMARILY governs the handling of EU residents' personal data regardless of where the company is located?",
+    options: {
+      A: "HIPAA",
+      B: "PCI DSS",
+      C: "GDPR",
+      D: "SOX"
+    },
     answer: "C",
+    tier: "locked"
   },
   {
-    id: "A42", exam: "A", tier: "locked",
-    question: "Which of the following is used to describe how cautious an organization might be to taking a specific risk?",
-    options: { A: "Risk appetite", B: "Risk register", C: "Risk transfer", D: "Risk reporting" },
+    id: "Q170",
+    exam: "Original",
+    question: "A company deploys sensors throughout its network to detect unusual traffic patterns and automatically adjusts firewall rules in response. Which type of system is this?",
+    options: {
+      A: "Intrusion detection system (IDS)",
+      B: "Intrusion prevention system (IPS)",
+      C: "SIEM",
+      D: "SOAR"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q171",
+    exam: "Original",
+    question: "Which of the following BEST describes the concept of a risk appetite?",
+    options: {
+      A: "The maximum amount of risk an organization can absorb before experiencing significant harm",
+      B: "The amount and type of risk an organization is willing to accept in pursuit of its objectives",
+      C: "The residual risk remaining after controls are implemented",
+      D: "The likelihood of a threat actor exploiting a specific vulnerability"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q172",
+    exam: "Original",
+    question: "An attacker uses stolen credentials to log into a corporate VPN from a country where the company has no employees. Which control would MOST likely detect or prevent this?",
+    options: {
+      A: "Password complexity requirements",
+      B: "Impossible travel detection / conditional access policies",
+      C: "Full disk encryption on employee devices",
+      D: "Regular password rotation policy"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q173",
+    exam: "Original",
+    question: "A company's development team uses a container registry that automatically scans images for known vulnerabilities before they are deployed. Which DevSecOps practice does this represent?",
+    options: {
+      A: "Infrastructure as code scanning",
+      B: "Shift-left security — integrating security scanning early in the CI/CD pipeline",
+      C: "Runtime application self-protection",
+      D: "Penetration testing of container environments"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q174",
+    exam: "Original",
+    question: "Which of the following BEST describes a rootkit?",
+    options: {
+      A: "Malware that uses the victim's resources to mine cryptocurrency",
+      B: "Malware designed to hide its presence and the presence of other malware from the operating system and security tools",
+      C: "A tool used by attackers to crack password hashes",
+      D: "Software that redirects browser traffic to malicious sites"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q175",
+    exam: "Original",
+    question: "A security engineer reviews a network diagram and notes that the authentication server can communicate directly with all internal servers. Which security improvement should be recommended?",
+    options: {
+      A: "Enable DNSSEC on the authentication server",
+      B: "Implement network segmentation to restrict the authentication server's communications to only what is necessary",
+      C: "Deploy an IPS on the authentication server",
+      D: "Enable full disk encryption on the authentication server"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q176",
+    exam: "Original",
+    question: "Which of the following cloud deployment models provides cloud services exclusively to a single organization?",
+    options: {
+      A: "Public cloud",
+      B: "Community cloud",
+      C: "Hybrid cloud",
+      D: "Private cloud"
+    },
+    answer: "D",
+    tier: "locked"
+  },
+  {
+    id: "Q177",
+    exam: "Original",
+    question: "An organization's security team conducts a business impact analysis (BIA). What is the PRIMARY output of a BIA?",
+    options: {
+      A: "A list of all known vulnerabilities in the organization's systems",
+      B: "Identification of critical business functions and the potential impact of their disruption",
+      C: "A risk register of all identified threats",
+      D: "A disaster recovery plan with RTOs and RPOs"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q178",
+    exam: "Original",
+    question: "Which of the following BEST describes the primary purpose of a security awareness training program?",
+    options: {
+      A: "To eliminate all human error from security operations",
+      B: "To educate employees on recognizing threats and following secure practices to reduce organizational risk",
+      C: "To test employee compliance with security policies",
+      D: "To replace technical controls with human vigilance"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q179",
+    exam: "Original",
+    question: "An analyst runs a vulnerability scan and discovers many false positives on a critical server. Which action should the analyst take FIRST?",
+    options: {
+      A: "Immediately patch all reported vulnerabilities",
+      B: "Validate the findings by manually verifying whether the reported vulnerabilities actually exist on the system",
+      C: "Disable the vulnerability scanner",
+      D: "Report all findings to management without further investigation"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q180",
+    exam: "Original",
+    question: "A security team implements a solution that intercepts all outbound web traffic, decrypts it, inspects it for threats, and re-encrypts it before forwarding. Which technology is this?",
+    options: {
+      A: "Network-based IDS",
+      B: "TLS/SSL inspection proxy",
+      C: "DNS sinkhole",
+      D: "Web application firewall"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q181",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a security baseline?",
+    options: {
+      A: "A documented minimum set of security configurations and controls that must be applied to all systems",
+      B: "The result of a vulnerability scan used to compare against future scans",
+      C: "A tool that measures the current security posture against industry benchmarks",
+      D: "A list of approved software for installation on corporate systems"
+    },
     answer: "A",
+    tier: "locked"
   },
   {
-    id: "A43", exam: "A", tier: "locked",
-    question: "A technician is applying patches to fifty web servers. After patching and rebooting the first server, the web service fails with a critical error. Which of the following should the technician do NEXT?",
-    options: { A: "Contact the stakeholders regarding the outage", B: "Follow the steps listed in the backout plan", C: "Test the upgrade process in the lab", D: "Evaluate the impact analysis associated with the change" },
+    id: "Q182",
+    exam: "Original",
+    question: "An attacker uses a technique that gradually increases access privileges by chaining together multiple small vulnerabilities instead of exploiting one critical vulnerability. Which concept does this describe?",
+    options: {
+      A: "Privilege escalation",
+      B: "Vulnerability chaining",
+      C: "Lateral movement",
+      D: "Persistence"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A44", exam: "A", tier: "locked",
-    question: "An attacker has discovered a way to disable a server by sending specially crafted packets from many remote devices. When the packet is received, the system crashes and must be rebooted. Which of the following would BEST describe this attack?",
-    options: { A: "Privilege escalation", B: "SQL injection", C: "Replay attack", D: "DDoS" },
-    answer: "D",
+    id: "Q183",
+    exam: "Original",
+    question: "Which of the following is the MOST appropriate use case for a hardware security module (HSM)?",
+    options: {
+      A: "Encrypting backup tapes",
+      B: "Securely generating, storing, and managing cryptographic keys in a tamper-resistant device",
+      C: "Scanning network traffic for malware",
+      D: "Providing redundant power to critical servers"
+    },
+    answer: "B",
+    tier: "locked"
   },
   {
-    id: "A45", exam: "A", tier: "locked",
-    question: "A data breach has occurred in a large insurance company. A security administrator is building new servers and security systems to get all of the financial systems back online. Which part of the incident response process would BEST describe these actions?",
-    options: { A: "Lessons learned", B: "Containment", C: "Recovery", D: "Analysis" },
-    answer: "C",
+    id: "Q184",
+    exam: "Original",
+    question: "A company performs quarterly access reviews to identify and remove accounts that no longer require access. Which security practice does this represent?",
+    options: {
+      A: "Identity proofing",
+      B: "Access recertification / user access review",
+      C: "Privileged access management",
+      D: "Role-based access assignment"
+    },
+    answer: "B",
+    tier: "locked"
   },
   {
-    id: "A46", exam: "A", tier: "locked",
-    question: "A network team has installed new access points to support an application launch. In less than 24 hours, the wireless network was attacked and private company information was accessed. Which of the following would be the MOST likely reason for this breach?",
-    options: { A: "Race condition", B: "Jailbreaking", C: "Impersonation", D: "Misconfiguration" },
-    answer: "D",
+    id: "Q185",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a network TAP (Test Access Point)?",
+    options: {
+      A: "To block malicious traffic on a network segment",
+      B: "To passively copy network traffic to monitoring or analysis tools without affecting traffic flow",
+      C: "To perform load balancing across multiple network paths",
+      D: "To test network connectivity and latency"
+    },
+    answer: "B",
+    tier: "locked"
   },
   {
-    id: "A47", exam: "A", tier: "locked",
-    question: "An organization has identified a significant vulnerability in an Internet-facing firewall. The firewall company has stated the firewall is no longer available for sale and there are no plans to create a patch. Which of the following would BEST describe this issue?",
-    options: { A: "End-of-life", B: "Improper input handling", C: "Improper key management", D: "Incompatible OS" },
+    id: "Q186",
+    exam: "Original",
+    question: "A threat actor sends millions of requests to a DNS server using forged source IP addresses set to the victim's IP, causing the DNS server to flood the victim with responses. Which type of attack is this?",
+    options: {
+      A: "DDoS volumetric attack",
+      B: "DNS amplification / reflection attack",
+      C: "DNS cache poisoning",
+      D: "Smurf attack"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q187",
+    exam: "Original",
+    question: "A security engineer wants to prevent web application users from performing cross-site request forgery (CSRF) attacks. Which control is MOST effective?",
+    options: {
+      A: "Input validation on all form fields",
+      B: "Anti-CSRF tokens that are validated with each state-changing request",
+      C: "Enforcing HTTPS on all pages",
+      D: "Content security policy headers"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q188",
+    exam: "Original",
+    question: "An organization discovers that a software vendor has embedded a backdoor in a widely deployed product. Which type of attack does this represent?",
+    options: {
+      A: "Zero-day attack",
+      B: "Supply chain compromise",
+      C: "Insider threat",
+      D: "Malware injection"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q189",
+    exam: "Original",
+    question: "A security team wants to share threat intelligence with peer organizations in the same industry. Which format is MOST commonly used for machine-readable threat intelligence sharing?",
+    options: {
+      A: "PDF reports",
+      B: "STIX/TAXII",
+      C: "CSV files",
+      D: "OpenIOC"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q190",
+    exam: "Original",
+    question: "A company implements a policy that system logs must be retained for at least 90 days and must be stored on a separate, access-controlled log server. Which security goal does this PRIMARILY serve?",
+    options: {
+      A: "Preventing log tampering and ensuring logs are available for incident investigation and compliance",
+      B: "Reducing storage costs on production systems",
+      C: "Enabling real-time threat detection",
+      D: "Satisfying software licensing requirements"
+    },
     answer: "A",
+    tier: "locked"
   },
   {
-    id: "A48", exam: "A", tier: "locked",
-    question: "A company has decided to perform a disaster recovery exercise where a simulated disaster is presented and participants discuss the logistics and processes required to resolve it. Which of the following would BEST describe this exercise?",
-    options: { A: "Capacity planning", B: "Business impact analysis", C: "Continuity of operations", D: "Tabletop exercise" },
-    answer: "D",
-  },
-  {
-    id: "A49", exam: "A", tier: "locked",
-    question: "A security administrator needs to block users from visiting websites hosting malicious software. Which of the following would be the BEST way to control this access?",
-    options: { A: "Honeynet", B: "Data masking", C: "DNS filtering", D: "Data loss prevention" },
-    answer: "C",
-  },
-  {
-    id: "A50", exam: "A", tier: "locked",
-    question: "A system administrator has been called to a system with a malware infection. As part of the incident response process, the administrator has imaged the operating system to a known-good version. Which of these incident response steps is the administrator following?",
-    options: { A: "Lessons learned", B: "Recovery", C: "Detection", D: "Containment" },
+    id: "Q191",
+    exam: "Original",
+    question: "An analyst reviews network traffic and sees connections from an internal server to multiple external IP addresses over uncommon high-numbered ports. Which threat does this MOST likely represent?",
+    options: {
+      A: "Port scanning originating from the internal server",
+      B: "Command-and-control activity or data exfiltration",
+      C: "Normal web browsing behavior",
+      D: "An NTP misconfiguration"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A51", exam: "A", tier: "locked",
-    question: "A company has placed a SCADA system on a segmented network with limited access from the rest of the corporate network. Which of the following would describe this process?",
-    options: { A: "Load balancing", B: "Least privilege", C: "Data retention", D: "Hardening" },
-    answer: "D",
-  },
-  {
-    id: "A52", exam: "A", tier: "locked",
-    question: "An administrator views a security log showing 447 failed password attempts for root from the same IP address over a few seconds. Which of the following would describe this attack?",
-    options: { A: "Spraying", B: "Downgrade", C: "Brute force", D: "DDoS" },
-    answer: "C",
-  },
-  {
-    id: "A53", exam: "A", tier: "locked",
-    question: "During a morning login process, a user's laptop was moved to a private VLAN and a series of updates were automatically installed. Which of the following would describe this process?",
-    options: { A: "Account lockout", B: "Configuration enforcement", C: "Decommissioning", D: "Sideloading" },
+    id: "Q192",
+    exam: "Original",
+    question: "A developer uses a third-party library without reviewing it. The library contains a vulnerability that is later exploited. Which risk category does this represent?",
+    options: {
+      A: "Insider threat",
+      B: "Software supply chain risk",
+      C: "Zero-day vulnerability",
+      D: "Misconfiguration risk"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A54", exam: "A", tier: "locked",
-    question: "Which of the following describes two-factor authentication?",
-    options: { A: "A printer uses a password and a PIN", B: "The door to a building requires a fingerprint scan", C: "An application requires a pseudo-random code", D: "A Windows Domain requires a password and smart card" },
-    answer: "D",
-  },
-  {
-    id: "A55", exam: "A", tier: "locked",
-    question: "A company is deploying a new application to all employees in the field. Problems include: no way to manage devices, many different device types, and the same device is used for both corporate and private use. Which of the following deployment models would address these concerns?",
-    options: { A: "CYOD", B: "SSO", C: "COPE", D: "BYOD" },
-    answer: "C",
-  },
-  {
-    id: "A56", exam: "A", tier: "locked",
-    question: "An organization is installing a UPS for their new data center. Which of the following would BEST describe this control type?",
-    options: { A: "Compensating", B: "Directive", C: "Deterrent", D: "Detective" },
-    answer: "A",
-  },
-  {
-    id: "A57", exam: "A", tier: "locked",
-    question: "A manufacturing company would like to track the progress of parts used on an assembly line. Which of the following technologies would be the BEST choice for this task?",
-    options: { A: "Secure enclave", B: "Blockchain", C: "Hashing", D: "Asymmetric encryption" },
+    id: "Q193",
+    exam: "Original",
+    question: "Which of the following is the BEST way to protect against brute force attacks on a web application login page?",
+    options: {
+      A: "Requiring passwords of at least 8 characters",
+      B: "Implementing account lockout, CAPTCHA, and rate limiting",
+      C: "Logging all failed login attempts",
+      D: "Using HTTPS to protect credentials in transit"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A58", exam: "A", tier: "locked",
-    question: "A company's website has been compromised and the website content has been replaced with a political message. Which of the following threat actors would be the MOST likely culprit?",
-    options: { A: "Insider", B: "Organized crime", C: "Shadow IT", D: "Hacktivist" },
-    answer: "D",
-  },
-  {
-    id: "A59", exam: "A", tier: "locked",
-    question: "A Linux administrator is downloading an updated version of her Linux distribution. The download site shows a link to the ISO and a SHA256 hash value. Which of these would describe the use of this hash value?",
-    options: { A: "Verifies that the file was not corrupted during the file transfer", B: "Provides a key for decrypting the ISO after download", C: "Authenticates the site as an official ISO distribution site", D: "Confirms that the file does not contain any malware" },
-    answer: "A",
-  },
-  {
-    id: "A60", exam: "A", tier: "locked",
-    question: "A company's security policy requires that login access should only be available if a person is physically within the same building as the server. Which of the following would be the BEST way to provide this requirement?",
-    options: { A: "USB security key", B: "Biometric scanner", C: "PIN", D: "SMS" },
+    id: "Q194",
+    exam: "Original",
+    question: "An organization implements a policy that requires two-person authorization for any access to the encryption key vault. Which control type is this?",
+    options: {
+      A: "Detective control",
+      B: "Preventive control implementing dual control / two-person integrity",
+      C: "Compensating control",
+      D: "Corrective control"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A61", exam: "A", tier: "locked",
-    question: "A development team has installed a new application and database to a cloud service. After running a vulnerability scanner, the database is available for anyone to query without any authentication. Which of these vulnerabilities is MOST associated with this issue?",
-    options: { A: "Legacy software", B: "Open permissions", C: "Race condition", D: "Malicious update" },
+    id: "Q195",
+    exam: "Original",
+    question: "A company uses an AI-based security tool that learns normal user behavior and alerts on deviations. Which detection methodology does this represent?",
+    options: {
+      A: "Signature-based detection",
+      B: "User and entity behavior analytics (UEBA)",
+      C: "Rule-based detection",
+      D: "Reputation-based detection"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A62", exam: "A", tier: "locked",
-    question: "Employees of an organization have received an email with a link offering a cash bonus for completing an internal training course. Which of the following would BEST describe this email?",
-    options: { A: "Watering hole attack", B: "Cross-site scripting", C: "Zero-day", D: "Phishing campaign" },
-    answer: "D",
-  },
-  {
-    id: "A63", exam: "A", tier: "locked",
-    question: "Which of the following risk management strategies would include the purchase and installation of an NGFW?",
-    options: { A: "Transfer", B: "Mitigate", C: "Accept", D: "Avoid" },
+    id: "Q196",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a security champions program?",
+    options: {
+      A: "To train all employees on basic cybersecurity hygiene",
+      B: "To embed security-focused individuals within development teams to advocate for and implement security practices",
+      C: "To provide advanced red team training for the security operations team",
+      D: "To certify developers in secure coding standards"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A64", exam: "A", tier: "locked",
-    question: "An organization is implementing a security model where all application requests must be validated at a policy enforcement point. Which of the following would BEST describe this model?",
-    options: { A: "Public key infrastructure", B: "Zero trust", C: "Discretionary access control", D: "Federation" },
+    id: "Q197",
+    exam: "Original",
+    question: "An attacker calls an employee pretending to be from the company's bank and convinces them to provide wire transfer information. Which attack type is this?",
+    options: {
+      A: "Phishing",
+      B: "Vishing",
+      C: "Business email compromise",
+      D: "Smishing"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A65", exam: "A", tier: "locked",
-    question: "A company is installing a new application in a public cloud. Which of the following determines the assignment of data security in this cloud infrastructure?",
-    options: { A: "Playbook", B: "Audit committee", C: "Responsibility matrix", D: "Right-to-audit clause" },
-    answer: "C",
-  },
-  {
-    id: "A66", exam: "A", tier: "locked",
-    question: "When decommissioning a device, a company documents the type and size of storage drive, the amount of RAM, and any installed adapter cards. Which of the following describes this process?",
-    options: { A: "Destruction", B: "Sanitization", C: "Certification", D: "Enumeration" },
-    answer: "D",
-  },
-  {
-    id: "A67", exam: "A", tier: "locked",
-    question: "An attacker has sent more information than expected in a single API call, and this has allowed the execution of arbitrary code. Which of the following would BEST describe this attack?",
-    options: { A: "Buffer overflow", B: "Replay attack", C: "Cross-site scripting", D: "DDoS" },
-    answer: "A",
-  },
-  {
-    id: "A68", exam: "A", tier: "locked",
-    question: "A company encourages users to encrypt all of their confidential materials on a central server. The organization would like to enable key escrow as a backup option. Which of these keys should the organization place into escrow?",
-    options: { A: "Private", B: "CA", C: "Session", D: "Public" },
-    answer: "A",
-  },
-  {
-    id: "A69", exam: "A", tier: "locked",
-    question: "A company is in the process of configuring and enabling host-based firewalls on all user devices. Which of the following threats is the company addressing?",
-    options: { A: "Default credentials", B: "Vishing", C: "Instant messaging", D: "On-path" },
-    answer: "C",
-  },
-  {
-    id: "A70", exam: "A", tier: "locked",
-    question: "A manufacturing company would like to use an existing router to separate a corporate network from a manufacturing floor. Both networks use the same physical switch, and the company does not want to install any additional hardware. Which of the following would be the BEST choice for this segmentation?",
-    options: { A: "Connect the corporate network and the manufacturing floor with a VPN", B: "Build an air gapped manufacturing floor network", C: "Use host-based firewalls on each device", D: "Create separate VLANs for the corporate network and the manufacturing floor" },
-    answer: "D",
-  },
-  {
-    id: "A71", exam: "A", tier: "locked",
-    question: "An organization needs to provide a remote access solution for a newly deployed cloud-based application used by mobile field service technicians. Which of the following would be the best option for this requirement?",
-    options: { A: "RTOS", B: "CRL", C: "Zero-trust", D: "SASE" },
-    answer: "D",
-  },
-  {
-    id: "A72", exam: "A", tier: "locked",
-    question: "A company is implementing a quarterly security awareness campaign. Which of the following would MOST likely be part of this campaign?",
-    options: { A: "Suspicious message reports from users", B: "An itemized statement of work", C: "An IaC configuration file", D: "An acceptable use policy document" },
-    answer: "A",
-  },
-  {
-    id: "A73", exam: "A", tier: "locked",
-    question: "A recent report shows the return of a vulnerability that was previously patched four months ago. The security team found a recent patch reintroduced this vulnerability. Which of the following should the security administrator implement to prevent this issue from occurring in the future?",
-    options: { A: "Containerization", B: "Data masking", C: "802.1X", D: "Change management" },
-    answer: "D",
-  },
-  {
-    id: "A74", exam: "A", tier: "locked",
-    question: "A security manager would like to ensure that unique hashes are used with an application login process. Which of the following would be the BEST way to add random data when generating a set of stored password hashes?",
-    options: { A: "Salting", B: "Obfuscation", C: "Key stretching", D: "Digital signature" },
-    answer: "A",
-  },
-  {
-    id: "A75", exam: "A", tier: "locked",
-    question: "Which cryptographic method is used to add trust to a digital certificate?",
-    options: { A: "Steganography", B: "Hash", C: "Symmetric encryption", D: "Digital signature" },
-    answer: "D",
-  },
-  {
-    id: "A76", exam: "A", tier: "locked",
-    question: "A company is using SCAP as part of their security monitoring processes. Which of the following would BEST describe this implementation?",
-    options: { A: "Train the user community to better identify phishing attempts", B: "Present the results of an internal audit to the board", C: "Automate the validation and patching of security issues", D: "Identify and document authorized data center visitors" },
-    answer: "C",
-  },
-  {
-    id: "A77", exam: "A", tier: "locked",
-    question: "An organization maintains a large database of customer information for sales tracking and customer support. Which person in the organization would be responsible for managing the access rights to this data?",
-    options: { A: "Data processor", B: "Data owner", C: "Data subject", D: "Data custodian" },
-    answer: "D",
-  },
-  {
-    id: "A78", exam: "A", tier: "locked",
-    question: "An organization's content management system currently labels files as 'Public' and 'Restricted.' A new classification type of 'Private' was added. Which of the following would be the MOST likely reason for this addition?",
-    options: { A: "Minimized attack surface", B: "Simplified categorization", C: "Expanded privacy compliance", D: "Decreased search time" },
-    answer: "C",
-  },
-  {
-    id: "A79", exam: "A", tier: "locked",
-    question: "A corporate security team would like to consolidate and protect the private keys across all of their web servers. Which of these would be the BEST way to securely store these keys?",
-    options: { A: "Integrate an HSM", B: "Implement full disk encryption on the web servers", C: "Use a TPM", D: "Upgrade the web servers to use a UEFI BIOS" },
-    answer: "A",
-  },
-  {
-    id: "A80", exam: "A", tier: "locked",
-    question: "A security technician reviews an IPS log showing: 'Cross-Site Scripting in JSON Data, 222.43.112.74:3332 -> 64.235.145.35:80, Detail: token=\"<script>\" value=\"<script>alert(2)</script>\"'. Which of the following correctly identifies the attacker's IP address?",
-    options: { A: "The alert was generated from a malformed User Agent header", B: "The alert was generated from an embedded script", C: "The attacker's IP address is 222.43.112.74", D: "The attacker's IP address is 64.235.145.35" },
-    answer: "C",
-  },
-  {
-    id: "A81", exam: "A", tier: "locked",
-    question: "Which of the following describes a monetary loss if one event occurs?",
-    options: { A: "ALE", B: "SLE", C: "RTO", D: "ARO" },
+    id: "Q198",
+    exam: "Original",
+    question: "A company discovers that its proprietary source code was found on a public GitHub repository. Which type of data loss event does this represent?",
+    options: {
+      A: "Intentional insider exfiltration",
+      B: "Unintentional data exposure through misconfigured repository permissions",
+      C: "A supply chain attack targeting the code repository",
+      D: "A web application injection attack"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A82", exam: "A", tier: "locked",
-    question: "A user with restricted access typed 'USER77\\' OR \\'1\\'=\\'1' in a search field and all database records were displayed. Which of the following would BEST describe this search?",
-    options: { A: "Cross-site scripting", B: "Buffer overflow", C: "SQL injection", D: "SSL stripping" },
-    answer: "C",
-  },
-  {
-    id: "A83", exam: "A", tier: "locked",
-    question: "A user is experiencing poor system performance, excessive pop-up messages, and the cursor moving on its own after opening a spreadsheet from a vendor. Which of the following is MOST likely the cause?",
-    options: { A: "On-path", B: "Worm", C: "Trojan horse", D: "Logic bomb" },
-    answer: "C",
-  },
-  {
-    id: "A84", exam: "A", tier: "locked",
-    question: "A web-based manufacturing company processes monthly charges to credit card information saved in the customer's profile. All customer information is encrypted and protected with additional authentication factors. Which of the following would be the justification for these security controls?",
-    options: { A: "Chain of custody", B: "Password vaulting", C: "Compliance reporting", D: "Sandboxing" },
-    answer: "C",
-  },
-  {
-    id: "A85", exam: "A", tier: "locked",
-    question: "A security manager has created a report showing intermittent network communication from certain workstations on the internal network to one external IP address at random times. Which of the following would be the MOST likely reason for these traffic patterns?",
-    options: { A: "On-path attack", B: "Keylogger", C: "Replay attack", D: "Brute force" },
+    id: "Q199",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of vulnerability disclosure policies?",
+    options: {
+      A: "To allow organizations to hide vulnerabilities from the public indefinitely",
+      B: "To establish a framework for researchers to report vulnerabilities responsibly and for organizations to remediate them before public disclosure",
+      C: "To require immediate public disclosure of all discovered vulnerabilities",
+      D: "To protect organizations from legal liability when vulnerabilities are discovered"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A86", exam: "A", tier: "locked",
-    question: "The security policies in a manufacturing company prohibit the transmission of customer information. A security administrator has received an alert that credit card numbers were transmitted as an email attachment. Which of the following was the MOST likely source of this alert message?",
-    options: { A: "IPS", B: "DLP", C: "RADIUS", D: "IPsec" },
+    id: "Q200",
+    exam: "Original",
+    question: "A company deploys multi-factor authentication across all user accounts. An attacker compromises one user's password. What additional factor must the attacker bypass to gain access?",
+    options: {
+      A: "Nothing — the password is sufficient for authentication",
+      B: "A second factor such as a hardware token, authenticator app code, or biometric",
+      C: "The user's security questions",
+      D: "The user's email confirmation"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A87", exam: "A", tier: "locked",
-    question: "A security administrator has configured a virtual machine in a screened subnet with a guest login account and no password. Which of the following would be the MOST likely reason for this configuration?",
-    options: { A: "The server is a honeypot for attracting potential attackers", B: "The server is a cloud storage service for remote users", C: "The server will be used as a VPN concentrator", D: "The server is a development sandbox for third-party programming projects" },
-    answer: "A",
-  },
-  {
-    id: "A88", exam: "A", tier: "locked",
-    question: "A security administrator is configuring a DNS server with a SPF record. Which of the following would be the reason for this configuration?",
-    options: { A: "Transmit all outgoing email over an encrypted tunnel", B: "List all servers authorized to send emails", C: "Digitally sign all outgoing email messages", D: "Obtain disposition instructions for emails marked as spam" },
+    id: "Q201",
+    exam: "Original",
+    question: "A security analyst identifies a vulnerability in a critical system that cannot be patched immediately due to operational constraints. Which response is MOST appropriate?",
+    options: {
+      A: "Accept the risk without further action",
+      B: "Implement compensating controls such as network isolation, enhanced monitoring, or a WAF rule to reduce risk while patching is scheduled",
+      C: "Shut down the system until the patch is applied",
+      D: "Escalate to management and wait for approval before doing anything"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "A89", exam: "A", tier: "locked",
-    question: "A company would like to securely deploy applications without the overhead of installing a virtual machine for each system. Which of the following would be the BEST way to deploy these applications?",
-    options: { A: "Containerization", B: "IoT", C: "Proxy", D: "RTOS" },
-    answer: "A",
-  },
-  {
-    id: "A90", exam: "A", tier: "locked",
-    question: "A company has just purchased a new application server and the security director wants to determine if the system is secure. The system is installed in a test environment and will not be available to users until next week. Which of the following would be the BEST way to determine if any part of the system can be exploited?",
-    options: { A: "Tabletop exercise", B: "Vulnerability scanner", C: "DDoS", D: "Penetration test" },
-    answer: "D",
-  },
-
-  // ─── EXAM B ──────────────────────────────────────────────────────────────────
-  {
-    id: "B6", exam: "B", tier: "locked",
-    question: "A security administrator has performed an audit of the organization's production web servers and found default configurations, web services running from a privileged account, and inconsistencies with SSL certificates. Which of the following would be the BEST way to resolve these issues?",
-    options: { A: "Server hardening", B: "Multi-factor authentication", C: "Enable HTTPS", D: "Run operating system updates" },
-    answer: "A",
-  },
-  {
-    id: "B7", exam: "B", tier: "locked",
-    question: "A shipping company stores information in small regional warehouses around the country. The company maintains an IPS at each warehouse to watch for suspicious traffic patterns. Which of the following would BEST describe the security control used at the warehouse?",
-    options: { A: "Deterrent", B: "Compensating", C: "Directive", D: "Detective" },
-    answer: "D",
-  },
-  {
-    id: "B8", exam: "B", tier: "locked",
-    question: "The Vice President of Sales has asked the IT team to create daily backups of the sales data. The Vice President is an example of a:",
-    options: { A: "Data owner", B: "Data controller", C: "Data steward", D: "Data processor" },
-    answer: "A",
-  },
-  {
-    id: "B9", exam: "B", tier: "locked",
-    question: "A security engineer is preparing to conduct a penetration test of a third-party website. Part of the preparation involves reading through social media posts for information about this site. Which of the following describes this practice?",
-    options: { A: "Partially known environment", B: "OSINT", C: "Exfiltration", D: "Active reconnaissance" },
+    id: "Q202",
+    exam: "Original",
+    question: "An organization is evaluating whether to deploy on-premises or cloud-based security solutions. Which factor MOST directly affects the decision from a compliance perspective?",
+    options: {
+      A: "Total cost of ownership",
+      B: "Data residency and regulatory requirements governing where data must be stored",
+      C: "The vendor's market share",
+      D: "The availability of technical support"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "B10", exam: "B", tier: "locked",
-    question: "A company would like to orchestrate the response when a virus is detected on company devices. Which of the following would be the BEST way to implement this function?",
-    options: { A: "Active reconnaissance", B: "Log aggregation", C: "Vulnerability scan", D: "Escalation scripting" },
-    answer: "D",
+    id: "Q203",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of an open authorization (OAuth) framework?",
+    options: {
+      A: "To provide encrypted tunnels between services",
+      B: "To allow third-party applications to access resources on behalf of a user without sharing the user's credentials",
+      C: "To authenticate users with username and password",
+      D: "To federate identities across multiple organizations"
+    },
+    answer: "B",
+    tier: "locked"
   },
   {
-    id: "B11", exam: "B", tier: "locked",
-    question: "A user in the accounting department has received a text message from the CEO requesting payment by cryptocurrency for a recently purchased tablet. Which of the following would BEST describe this attack?",
-    options: { A: "Brand impersonation", B: "Watering hole attack", C: "Smishing", D: "Typosquatting" },
+    id: "Q204",
+    exam: "Original",
+    question: "A company requires that every access to sensitive data be logged, including who accessed it, when, and what actions were taken. Which security principle does this support?",
+    options: {
+      A: "Confidentiality",
+      B: "Accountability / auditability",
+      C: "Availability",
+      D: "Integrity"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q205",
+    exam: "Original",
+    question: "An organization suffers a breach and the CISO needs to notify affected customers within 72 hours. Which regulation MOST likely mandates this requirement?",
+    options: {
+      A: "HIPAA",
+      B: "PCI DSS",
+      C: "GDPR",
+      D: "SOX"
+    },
     answer: "C",
+    tier: "locked"
   },
   {
-    id: "B12", exam: "B", tier: "locked",
-    question: "A company has been informed of a hypervisor vulnerability that could allow users on one virtual machine to access resources on another virtual machine. Which of the following would BEST describe this vulnerability?",
-    options: { A: "Containerization", B: "Jailbreaking", C: "SDN", D: "Escape" },
-    answer: "D",
-  },
-  {
-    id: "B13", exam: "B", tier: "locked",
-    question: "While working from home, users are attending a web conference and the browser is unexpectedly directed to a different website. Users in the office do not have any issues. Which of the following would be the MOST likely reason?",
-    options: { A: "Buffer overflow", B: "Wireless disassociation", C: "Amplified DDoS", D: "DNS poisoning" },
-    answer: "D",
-  },
-  {
-    id: "B14", exam: "B", tier: "locked",
-    question: "A company is launching a new internal application that will not start until a username and password is entered and a smart card is plugged into the computer. Which of the following BEST describes this process?",
-    options: { A: "Federation", B: "Accounting", C: "Authentication", D: "Authorization" },
-    answer: "C",
-  },
-  {
-    id: "B15", exam: "B", tier: "locked",
-    question: "An online retailer is planning a penetration test as part of their PCI DSS validation. A third-party will perform the test and has been provided only the Internet-facing IP addresses for their public web servers. What penetration testing methodology is the online retailer using?",
-    options: { A: "Known environment", B: "Passive reconnaissance", C: "Partially known environment", D: "Benchmarks" },
-    answer: "C",
-  },
-  {
-    id: "B16", exam: "B", tier: "locked",
-    question: "A manufacturing company produces radar used by commercial and military organizations. A recently proposed policy change would allow the use of mobile devices inside the facility. Which of the following would be the MOST significant threat vector issue associated with this change?",
-    options: { A: "Unauthorized software on rooted devices", B: "Remote access clients on the mobile devices", C: "Out of date mobile operating systems", D: "Loss of intellectual property" },
-    answer: "D",
-  },
-  {
-    id: "B17", exam: "B", tier: "locked",
-    question: "Which of the following would be the BEST way for an organization to verify the digital signature provided by an external email server?",
-    options: { A: "Perform a vulnerability scan", B: "View the server's device certificate", C: "Authenticate to a RADIUS server", D: "Check the DKIM record" },
-    answer: "D",
-  },
-  {
-    id: "B18", exam: "B", tier: "locked",
-    question: "A company is using older operating systems for their web servers and is concerned about stability during high use. Which of the following should the company use to maximize uptime and availability?",
-    options: { A: "Cold site", B: "UPS", C: "Redundant routers", D: "Load balancer" },
-    answer: "D",
-  },
-  {
-    id: "B19", exam: "B", tier: "locked",
-    question: "A user in the accounting department would like to email a spreadsheet with sensitive information to a list of third-party vendors. Which of the following would be the BEST way to protect the data in this email?",
-    options: { A: "Full disk encryption", B: "Key exchange algorithm", C: "Salted hash", D: "Asymmetric encryption" },
-    answer: "D",
-  },
-  {
-    id: "B20", exam: "B", tier: "locked",
-    question: "A system administrator would like to segment the network to give the marketing, accounting, and manufacturing departments their own private network with restricted communication between departments. Which of the following should be configured?",
-    options: { A: "VPN", B: "RBAC", C: "VLAN", D: "SDN" },
-    answer: "C",
-  },
-  {
-    id: "B21", exam: "B", tier: "locked",
-    question: "A technician at an MSP has been asked to manage devices on a third-party private network. The technician needs command line access to internal routers, switches, and firewalls. Which of the following would provide the necessary access?",
-    options: { A: "HSM", B: "Jump server", C: "NAC", D: "Air gap" },
+    id: "Q206",
+    exam: "Original",
+    question: "A network engineer wants to prevent a switch port from learning more than one MAC address to stop MAC flooding attacks. Which port security feature achieves this?",
+    options: {
+      A: "802.1X port authentication",
+      B: "Port security with MAC address limiting",
+      C: "BPDU guard",
+      D: "Dynamic ARP inspection"
+    },
     answer: "B",
+    tier: "locked"
   },
   {
-    id: "B22", exam: "B", tier: "locked",
-    question: "A transportation company is installing new wireless access points. The manufacturer estimates the access points will operate an average of 100,000 hours before a hardware-related outage. Which of the following describes this estimate?",
-    options: { A: "MTTR", B: "RPO", C: "RTO", D: "MTBF" },
+    id: "Q207",
+    exam: "Original",
+    question: "Which of the following BEST describes the concept of a software bill of materials (SBOM)?",
+    options: {
+      A: "A list of all software licenses used by an organization",
+      B: "A comprehensive inventory of all components, libraries, and dependencies in a software product",
+      C: "A report of all software vulnerabilities discovered during testing",
+      D: "A document listing all approved software for deployment"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q208",
+    exam: "Original",
+    question: "A security team monitors DNS queries and notices that internal hosts are querying unusual subdomains of a legitimate domain at high frequency. Which type of attack does this MOST likely indicate?",
+    options: {
+      A: "DNS cache poisoning",
+      B: "DNS tunneling for data exfiltration or C2 communication",
+      C: "DDoS amplification attack",
+      D: "BGP route hijacking"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q209",
+    exam: "Original",
+    question: "An organization's policy requires that any employee who suspects a security incident must report it to the security team within one hour. Which type of control is this?",
+    options: {
+      A: "Technical control",
+      B: "Administrative control",
+      C: "Physical control",
+      D: "Corrective control"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q210",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a security information sharing community (ISAC)?",
+    options: {
+      A: "To provide incident response services to member organizations",
+      B: "To facilitate sharing of threat intelligence and security information among organizations in the same sector",
+      C: "To certify security products and solutions",
+      D: "To provide regulatory compliance guidance to member organizations"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q211",
+    exam: "Original",
+    question: "A developer implements output encoding before displaying user-supplied data in a web page. Which vulnerability does this PRIMARILY prevent?",
+    options: {
+      A: "SQL injection",
+      B: "Cross-site scripting (XSS)",
+      C: "Command injection",
+      D: "XML external entity injection"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q212",
+    exam: "Original",
+    question: "An organization uses a privileged access management (PAM) solution to check out time-limited credentials for accessing critical systems. Which security benefit does this PRIMARILY provide?",
+    options: {
+      A: "It eliminates the need for multi-factor authentication",
+      B: "It ensures privileged credentials are not shared, are rotated automatically, and access is fully audited",
+      C: "It provides a single sign-on experience for privileged users",
+      D: "It replaces the need for network segmentation around privileged systems"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q213",
+    exam: "Original",
+    question: "A company implements a policy where security patches must be applied within 30 days of release for non-critical systems and within 72 hours for critical systems. Which security practice does this represent?",
+    options: {
+      A: "Vulnerability assessment",
+      B: "Patch management with risk-based prioritization",
+      C: "Configuration management",
+      D: "Change management"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q214",
+    exam: "Original",
+    question: "An attacker uses a compromised web server to launch attacks against other servers on the same internal network. Which technique is this?",
+    options: {
+      A: "Privilege escalation",
+      B: "Pivoting",
+      C: "Persistence",
+      D: "Defense evasion"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q215",
+    exam: "Original",
+    question: "Which of the following BEST describes the difference between a hot site and a cold site in disaster recovery?",
+    options: {
+      A: "A hot site is operated by a third party; a cold site is owned by the organization",
+      B: "A hot site is fully equipped and can assume operations with minimal delay; a cold site provides only basic infrastructure and requires significant setup time",
+      C: "A hot site is used for data backups; a cold site is used for application recovery",
+      D: "A hot site has no redundancy; a cold site has full hardware redundancy"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q216",
+    exam: "Original",
+    question: "An organization wants to detect compromised accounts being used outside of normal business hours. Which tool or feature provides this capability?",
+    options: {
+      A: "Data loss prevention",
+      B: "UEBA or SIEM with behavioral analytics and time-based alerting",
+      C: "Endpoint detection and response",
+      D: "Network traffic analyzer"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q217",
+    exam: "Original",
+    question: "A security engineer designs a system where each microservice only has credentials for the specific databases and APIs it needs, with no excess permissions. Which security principle is applied?",
+    options: {
+      A: "Defense in depth",
+      B: "Least privilege",
+      C: "Separation of duties",
+      D: "Zero trust"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q218",
+    exam: "Original",
+    question: "Which of the following BEST describes the function of a content delivery network (CDN) from a security perspective?",
+    options: {
+      A: "It encrypts all data in transit between servers",
+      B: "It can absorb DDoS attacks and reduce load on origin servers while caching content closer to users",
+      C: "It provides web application firewall capabilities for all customers",
+      D: "It monitors traffic for indicators of compromise"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q219",
+    exam: "Original",
+    question: "An organization sends automated alerts to all customers whose accounts were accessed from a new device or location. Which security concept does this support?",
+    options: {
+      A: "Non-repudiation",
+      B: "User notification and account activity transparency to help detect unauthorized access",
+      C: "Availability",
+      D: "Data integrity"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q220",
+    exam: "Original",
+    question: "A security policy mandates that system clocks across all servers must be synchronized to a reliable time source. Why is this important for security?",
+    options: {
+      A: "It ensures user sessions expire at the correct time",
+      B: "Accurate and consistent timestamps are critical for log correlation, forensic investigations, and detecting anomalies",
+      C: "It prevents replay attacks on authentication protocols",
+      D: "It ensures certificate validity periods are accurate"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q221",
+    exam: "Original",
+    question: "An incident responder discovers an attacker has created a scheduled task on a compromised Windows host to re-launch malware after reboot. Which attacker goal does this represent?",
+    options: {
+      A: "Lateral movement",
+      B: "Persistence",
+      C: "Exfiltration",
+      D: "Privilege escalation"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q222",
+    exam: "Original",
+    question: "A company uses role-based access control and periodically reviews whether employee roles have changed. Employees whose roles changed still retain permissions from their old role. Which issue does this describe?",
+    options: {
+      A: "Excessive shared accounts",
+      B: "Permission creep / privilege creep",
+      C: "Improper role assignment",
+      D: "Shadow IT access"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q223",
+    exam: "Original",
+    question: "Which of the following is the MOST effective way to prevent SQL injection in a web application?",
+    options: {
+      A: "Encrypting the database connection string",
+      B: "Using parameterized queries or prepared statements for all database interactions",
+      C: "Filtering out all special characters from user input",
+      D: "Running the database under a least-privilege service account"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q224",
+    exam: "Original",
+    question: "A company's incident response plan defines steps to take after containing an incident to prevent it from recurring. Which phase of the incident response lifecycle does this represent?",
+    options: {
+      A: "Containment",
+      B: "Eradication",
+      C: "Recovery",
+      D: "Lessons learned"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q225",
+    exam: "Original",
+    question: "A security architect recommends implementing network monitoring that captures and analyzes all packet payloads on a sensitive network segment. Which tool enables this?",
+    options: {
+      A: "Network flow analysis",
+      B: "Packet capture and deep packet inspection",
+      C: "Port mirroring only",
+      D: "SNMP polling"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q226",
+    exam: "Original",
+    question: "An organization's acceptable use policy prohibits use of personal cloud storage for company data. An employee regularly uploads work files to a personal Dropbox account. Which risk does this create?",
+    options: {
+      A: "Violation of acceptable use policy only",
+      B: "Data stored outside of organization control, potentially exposing it to unauthorized access and regulatory violations",
+      C: "Increased bandwidth consumption on the corporate network",
+      D: "Legal liability if the employee's personal account is hacked"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q227",
+    exam: "Original",
+    question: "A security analyst receives an alert that an employee's account is logging in from both New York and Tokyo within a 30-minute window. Which control MOST directly generated this alert?",
+    options: {
+      A: "Signature-based intrusion detection",
+      B: "Impossible travel / anomaly-based behavioral analytics",
+      C: "Firewall geo-blocking rule",
+      D: "Data loss prevention policy"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q228",
+    exam: "Original",
+    question: "An organization uses a third-party auditor to issue an independent report on the design and operating effectiveness of security controls relevant to service commitments. Which type of report is this?",
+    options: {
+      A: "Penetration test report",
+      B: "SOC 2 Type II report",
+      C: "Internal audit report",
+      D: "Vulnerability assessment report"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q229",
+    exam: "Original",
+    question: "A developer stores session tokens in URL parameters instead of cookies. Why is this a security risk?",
+    options: {
+      A: "URL parameters cannot be transmitted over HTTPS",
+      B: "URLs are often stored in server logs, browser history, and referrer headers, which can expose session tokens",
+      C: "Session tokens in URLs are not encrypted by TLS",
+      D: "URL parameters are limited in size and can cause session expiration"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q230",
+    exam: "Original",
+    question: "Which of the following BEST describes the purpose of a software composition analysis (SCA) tool?",
+    options: {
+      A: "To perform dynamic testing of web applications for injection vulnerabilities",
+      B: "To identify open-source components and their known vulnerabilities within an application's codebase",
+      C: "To measure code quality and cyclomatic complexity",
+      D: "To perform static analysis for coding errors and logic flaws"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q231",
+    exam: "Original",
+    question: "A company's IT team installs a new web server and forgets to change the default administrator credentials. An attacker exploits this. Which root cause best describes this vulnerability?",
+    options: {
+      A: "Unpatched software vulnerability",
+      B: "Misconfiguration — use of default credentials",
+      C: "Insider threat",
+      D: "Zero-day exploitation"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q232",
+    exam: "Original",
+    question: "A security analyst wants to determine if a specific threat actor group is likely to target their organization based on the type of industry and the actor's known motivations. Which intelligence concept does this represent?",
+    options: {
+      A: "Indicator of compromise analysis",
+      B: "Threat actor attribution and targeting analysis",
+      C: "Vulnerability threat mapping",
+      D: "Attack surface analysis"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q233",
+    exam: "Original",
+    question: "An organization deploys a canary token — a fake credential embedded in a document — to detect if an attacker accesses it. Which detection technique is this?",
+    options: {
+      A: "Signature-based detection",
+      B: "Deception technology / honeytokens",
+      C: "Behavioral analytics",
+      D: "File integrity monitoring"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q234",
+    exam: "Original",
+    question: "Which of the following describes the MAIN purpose of a bring-your-own-device (BYOD) policy?",
+    options: {
+      A: "To prohibit personal devices from accessing corporate resources",
+      B: "To define the acceptable use, security requirements, and organizational rights regarding personal devices used for work",
+      C: "To provide guidance on purchasing personally owned devices",
+      D: "To specify the technical controls deployed on corporate-owned devices"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q235",
+    exam: "Original",
+    question: "An application uses JWT (JSON Web Tokens) for session management. An attacker changes the algorithm in the token header to 'none' to bypass signature verification. Which vulnerability is being exploited?",
+    options: {
+      A: "Token replay attack",
+      B: "JWT algorithm confusion / 'alg:none' attack",
+      C: "Cross-site scripting",
+      D: "Session fixation"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q236",
+    exam: "Original",
+    question: "A company implements geo-IP blocking at its firewall to prevent connections from countries it does not operate in. Which limitation should the security team be aware of?",
+    options: {
+      A: "Geo-IP blocking is not supported on modern next-generation firewalls",
+      B: "Attackers can bypass geo-IP blocking using VPNs, proxies, or compromised hosts in allowed countries",
+      C: "Geo-IP blocking violates net neutrality regulations",
+      D: "Geo-IP databases are always 100% accurate, making false positives impossible"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q237",
+    exam: "Original",
+    question: "Which of the following BEST describes the concept of a shared responsibility model in cloud computing?",
+    options: {
+      A: "The cloud provider is responsible for all security aspects of the deployment",
+      B: "Security responsibilities are divided between the cloud provider and the customer, with each responsible for different layers depending on the service model",
+      C: "The customer is responsible for all security in cloud environments",
+      D: "Security responsibilities are negotiated individually in each SLA"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q238",
+    exam: "Original",
+    question: "A security engineer adds HTTP security headers including Content-Security-Policy and X-Frame-Options to a web application. Which attacks do these headers PRIMARILY help mitigate?",
+    options: {
+      A: "SQL injection and CSRF",
+      B: "Cross-site scripting (XSS) and clickjacking",
+      C: "Buffer overflow and path traversal",
+      D: "Brute force and credential stuffing"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q239",
+    exam: "Original",
+    question: "A company implements a policy that all employees must complete security awareness training annually and that results are tracked. Which risk management function does this PRIMARILY serve?",
+    options: {
+      A: "Risk quantification",
+      B: "Risk reduction through employee education and measurable compliance tracking",
+      C: "Risk transfer",
+      D: "Risk avoidance"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q240",
+    exam: "Original",
+    question: "An attacker gains access to a session cookie by injecting a script into a web page that sends the cookie to an external server. Which attack type is this?",
+    options: {
+      A: "CSRF",
+      B: "Stored XSS leading to session hijacking",
+      C: "Clickjacking",
+      D: "SQL injection"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q241",
+    exam: "Original",
+    question: "An organization deploys security cameras, motion sensors, and guards at its data center. These controls are designed to stop physical intrusions before they occur. Which control type are these?",
+    options: {
+      A: "Detective controls",
+      B: "Preventive physical controls",
+      C: "Corrective controls",
+      D: "Compensating controls"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q242",
+    exam: "Original",
+    question: "A security analyst is investigating a compromised Linux server and wants to identify all active network connections and listening ports. Which command should they run?",
+    options: {
+      A: "ifconfig -a",
+      B: "ss -tulnp or netstat -tulnp",
+      C: "ps aux",
+      D: "lsof -i"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q243",
+    exam: "Original",
+    question: "Which of the following BEST explains the purpose of a SOC 2 Type I report compared to a SOC 2 Type II report?",
+    options: {
+      A: "Type I evaluates operational effectiveness over a period of time; Type II evaluates design at a point in time",
+      B: "Type I evaluates whether controls are suitably designed at a point in time; Type II evaluates the operating effectiveness of controls over a period of time",
+      C: "Type I is performed by internal auditors; Type II is performed by external auditors",
+      D: "Type I covers security controls only; Type II covers all trust service criteria"
+    },
+    answer: "B",
+    tier: "locked"
+  },
+  {
+    id: "Q244",
+    exam: "Original",
+    question: "A healthcare organization implements strict access controls so that medical staff can only access records for patients currently under their care. Which principle does this apply?",
+    options: {
+      A: "Separation of duties",
+      B: "Need to know",
+      C: "Least privilege",
+      D: "Both B and C apply"
+    },
     answer: "D",
+    tier: "locked"
   },
   {
-    id: "B23", exam: "B", tier: "locked",
-    question: "A security administrator is creating a policy to prevent the disclosure of credit card numbers in a customer support application. Users would only be able to view the last four digits of a credit card number. Which of the following would provide this functionality?",
-    options: { A: "Hashing", B: "Tokenization", C: "Masking", D: "Salting" },
-    answer: "C",
-  },
-  {
-    id: "B24", exam: "B", tier: "locked",
-    question: "A user is authenticating through the use of a PIN and a fingerprint. Which of the following would describe these authentication factors?",
-    options: { A: "Something you know, something you are", B: "Something you are, somewhere you are", C: "Something you have, something you know", D: "Somewhere you are, something you are" },
-    answer: "A",
-  },
-  {
-    id: "B25", exam: "B", tier: "locked",
-    question: "A security administrator is configuring authentication for technicians logging into wireless access points and switches. Instead of using local accounts, the administrator would like to pass all login requests to a centralized database. Which of the following would be the BEST way to implement this requirement?",
-    options: { A: "COPE", B: "AAA", C: "IPsec", D: "SIEM" },
+    id: "Q245",
+    exam: "Original",
+    question: "An organization's security team discovers that all of the organization's public-facing IP addresses are listed in an attacker's reconnaissance document. Which action should the security team take FIRST?",
+    options: {
+      A: "Immediately change all public IP addresses",
+      B: "Conduct a thorough review of all exposed services on those IPs and prioritize hardening the most critical or vulnerable ones",
+      C: "Block all inbound traffic to those IPs",
+      D: "Shut down all internet-facing systems"
+    },
     answer: "B",
-  },
-  {
-    id: "B26", exam: "B", tier: "locked",
-    question: "A recent audit has determined that many IT department accounts have been granted Administrator access. The audit recommends replacing these permissions with limited access rights. Which of the following would describe this policy?",
-    options: { A: "Password vaulting", B: "Offboarding", C: "Least privilege", D: "Discretionary access control" },
-    answer: "C",
-  },
-  {
-    id: "B27", exam: "B", tier: "locked",
-    question: "A recent security audit has discovered email addresses and passwords located in a packet capture. Which of the following did the audit identify?",
-    options: { A: "Weak encryption", B: "Improper patch management", C: "Insecure protocols", D: "Open ports" },
-    answer: "C",
-  },
-  {
-    id: "B28", exam: "B", tier: "locked",
-    question: "Before deploying a new application, a company is performing an internal audit to ensure all of their servers are configured with the appropriate security features. Which of the following would BEST describe this process?",
-    options: { A: "Due care", B: "Active reconnaissance", C: "Data retention", D: "Statement of work" },
-    answer: "A",
-  },
-  {
-    id: "B29", exam: "B", tier: "locked",
-    question: "An organization has previously purchased insurance to cover a ransomware attack, but the costs have increased above the acceptable budget. The company has now decided to cancel the insurance and address potential ransomware issues internally. Which of the following would best describe this action?",
-    options: { A: "Mitigation", B: "Acceptance", C: "Transference", D: "Risk-avoidance" },
-    answer: "B",
-  },
-  {
-    id: "B30", exam: "B", tier: "locked",
-    question: "Which of these threat actors would be MOST likely to install a company's internal application on a public cloud provider?",
-    options: { A: "Organized crime", B: "Nation state", C: "Shadow IT", D: "Hacktivist" },
-    answer: "C",
-  },
-  {
-    id: "B31", exam: "B", tier: "locked",
-    question: "An IPS report shows a series of exploit attempts against externally facing web servers. The system administrator has identified unusual log entries on each system. Which of the following would be the NEXT step in the incident response process?",
-    options: { A: "Check the IPS logs for any other potential attacks", B: "Create a plan for removing malware from the web servers", C: "Disable any breached user accounts", D: "Disconnect the web servers from the network" },
-    answer: "D",
-  },
-  {
-    id: "B32", exam: "B", tier: "locked",
-    question: "A security administrator views logs showing one file quarantined successfully, one quarantine failure for a DLL in Program Files, and one more file quarantined successfully. Which of the following would BEST describe the circumstances surrounding these events?",
-    options: { A: "The antivirus application identified three viruses and quarantined two viruses", B: "The host-based firewall blocked two traffic flows", C: "A host-based allow list has blocked two applications from executing", D: "A network-based IPS has identified two known vulnerabilities" },
-    answer: "A",
-  },
-  {
-    id: "B33", exam: "B", tier: "locked",
-    question: "An organization has relied on the curated Apple App Store to avoid malware. However, the IT department has discovered an iPhone with applications not available on the Apple App Store. How did the user install these apps on their mobile device?",
-    options: { A: "Side loading", B: "Malicious update", C: "VM escape", D: "Cross-site scripting" },
-    answer: "A",
-  },
-  {
-    id: "B34", exam: "B", tier: "locked",
-    question: "A company has noticed an increase in support calls from attackers using social engineering to gain unauthorized access to customer data. Which of the following would be the BEST way to prevent these attacks?",
-    options: { A: "User training", B: "Next-generation firewall", C: "Internal audit", D: "Penetration testing" },
-    answer: "A",
-  },
-  {
-    id: "B35", exam: "B", tier: "locked",
-    question: "As part of an internal audit, each department of a company has been asked to compile a list of all devices, operating systems, and applications in use. Which of the following would BEST describe this audit?",
-    options: { A: "Attestation", B: "Self-assessment", C: "Regulatory compliance", D: "Vendor monitoring" },
-    answer: "B",
-  },
-  {
-    id: "B36", exam: "B", tier: "locked",
-    question: "A company is concerned about security issues at their remote sites. Which of the following would provide the IT team with more information of potential shortcomings?",
-    options: { A: "Gap analysis", B: "Policy administrator", C: "Change management", D: "Dependency list" },
-    answer: "A",
-  },
-  {
-    id: "B37", exam: "B", tier: "locked",
-    question: "An attacker has identified a number of devices on a corporate network with the username of 'admin' and the password of 'admin.' Which of the following describes this situation?",
-    options: { A: "Open service ports", B: "Default credentials", C: "Unsupported systems", D: "Phishing" },
-    answer: "B",
-  },
-  {
-    id: "B38", exam: "B", tier: "locked",
-    question: "A security administrator attends an annual industry convention with other security professionals from around the world. Which of the following attacks would be MOST likely in this situation?",
-    options: { A: "Smishing", B: "Supply chain", C: "SQL injection", D: "Watering hole" },
-    answer: "D",
-  },
-  {
-    id: "B39", exam: "B", tier: "locked",
-    question: "A transportation company headquarters is located in an area with frequent power surges and outages. The security administrator is concerned about downtime and hardware failures. Which of the following would provide the MOST immediate short-term protection to keep servers running during a brief power outage?",
-    options: { A: "UPS", B: "Parallel processing", C: "Snapshots", D: "Generator" },
-    answer: "A",
-  },
-  {
-    id: "B40", exam: "B", tier: "locked",
-    question: "An organization has developed an in-house mobile device app for order processing. The developers would like the app to identify revoked server certificates without sending any traffic over the corporate Internet connection. Which of the following must be configured to allow this functionality?",
-    options: { A: "CSR generation", B: "OCSP stapling", C: "Key escrow", D: "Wildcard" },
-    answer: "B",
-  },
-  {
-    id: "B41", exam: "B", tier: "locked",
-    question: "A security administrator has been asked to build a network link to secure all communication between two remote locations. Which of the following would be the best choice for this task?",
-    options: { A: "SCAP", B: "Screened subnet", C: "IPsec", D: "Network access control" },
-    answer: "C",
-  },
-  {
-    id: "B42", exam: "B", tier: "locked",
-    question: "A Linux administrator views filesystem usage showing 100% disk usage. Which of the following would BEST describe this information?",
-    options: { A: "Buffer overflow", B: "Resource consumption", C: "SQL injection", D: "Race condition" },
-    answer: "B",
-  },
-  {
-    id: "B43", exam: "B", tier: "locked",
-    question: "Which of the following can be used for credit card transactions from a mobile device without sending the actual credit card number across the network?",
-    options: { A: "Tokenization", B: "Hashing", C: "Steganography", D: "Masking" },
-    answer: "A",
-  },
-  {
-    id: "B44", exam: "B", tier: "locked",
-    question: "A security administrator receives a report each week showing a Linux vulnerability associated with a Windows server. Which of the following would prevent this information from appearing in the report?",
-    options: { A: "Alert tuning", B: "Application benchmarking", C: "SIEM aggregation", D: "Data archiving" },
-    answer: "A",
-  },
-  {
-    id: "B45", exam: "B", tier: "locked",
-    question: "Which of the following would a company use to calculate the loss of a business activity if a vulnerability is exploited?",
-    options: { A: "Risk tolerance", B: "Vulnerability classification", C: "Environmental variables", D: "Exposure factor" },
-    answer: "D",
-  },
-  {
-    id: "B46", exam: "B", tier: "locked",
-    question: "An administrator is designing a network to be compliant with a security standard for storing credit card numbers. Which of the following would be the BEST choice to provide this compliance?",
-    options: { A: "Implement RAID for all storage systems", B: "Connect a UPS to all servers", C: "DNS should be available on redundant servers", D: "Perform regular audits and vulnerability scans" },
-    answer: "D",
-  },
-  {
-    id: "B47", exam: "B", tier: "locked",
-    question: "A company is accepting proposals for an upcoming project, and one of the responses is from a business owned by a board member. Which of the following would describe this situation?",
-    options: { A: "Due diligence", B: "Vendor monitoring", C: "Conflict of interest", D: "Right-to-audit" },
-    answer: "C",
-  },
-  {
-    id: "B48", exam: "B", tier: "locked",
-    question: "A company has rolled out a new application that requires the use of a hardware-based token generator. Which of the following would be the BEST description of this access feature?",
-    options: { A: "Something you know", B: "Somewhere you are", C: "Something you are", D: "Something you have" },
-    answer: "D",
-  },
-  {
-    id: "B49", exam: "B", tier: "locked",
-    question: "A company has signed an SLA with an Internet service provider. Which of the following would BEST describe the requirements of this SLA?",
-    options: { A: "The customer will connect to remote sites over an IPsec tunnel", B: "The service provider will provide 99.99% uptime", C: "The customer applications use HTTPS over tcp/443", D: "Customer application use will be busiest on the 15th of each month" },
-    answer: "B",
-  },
-  {
-    id: "B50", exam: "B", tier: "locked",
-    question: "An attacker has created multiple social media accounts and is posting information in an attempt to get the attention of the media. Which of the following would BEST describe this attack?",
-    options: { A: "On-path", B: "Watering hole", C: "Misinformation campaign", D: "Phishing" },
-    answer: "C",
-  },
-  {
-    id: "B51", exam: "B", tier: "locked",
-    question: "Which of the following would be the BEST way to protect credit card account information when performing real-time purchase authorizations?",
-    options: { A: "Masking", B: "DLP", C: "Tokenization", D: "NGFW" },
-    answer: "C",
-  },
-  {
-    id: "B52", exam: "B", tier: "locked",
-    question: "A company must comply with legal requirements for storing customer data in the same country as the customer's mailing address. Which of the following would describe this requirement?",
-    options: { A: "Geographic dispersion", B: "Least privilege", C: "Data sovereignty", D: "Exfiltration" },
-    answer: "C",
-  },
-  {
-    id: "B53", exam: "B", tier: "locked",
-    question: "A company is installing access points in all of their remote sites. Which of the following would provide confidentiality for all wireless data?",
-    options: { A: "802.1X", B: "WPA3", C: "RADIUS", D: "MDM" },
-    answer: "B",
-  },
-  {
-    id: "B54", exam: "B", tier: "locked",
-    question: "A security administrator has found a keylogger installed in an update of the company's accounting software. Which of the following would prevent the transmission of the collected logs?",
-    options: { A: "Prevent the installation of all software", B: "Block all unknown outbound network traffic at the Internet firewall", C: "Install host-based anti-virus software", D: "Scan all incoming email attachments at the email gateway" },
-    answer: "B",
-  },
-  {
-    id: "B55", exam: "B", tier: "locked",
-    question: "A user in the marketing department cannot connect to the wireless network. After authenticating with a username and password, they receive: 'The Credentials provided by the server could not be validated. Root CA: Example.com Internal CA Root Certificate.' The AP uses WPA3 and 802.1X. Which of the following is the MOST likely reason for this login failure?",
-    options: { A: "The user's computer is in the incorrect VLAN", B: "The RADIUS server is not responding", C: "The user's computer does not support WPA3 encryption", D: "The client computer does not have the proper certificate installed" },
-    answer: "D",
-  },
-  {
-    id: "B56", exam: "B", tier: "locked",
-    question: "A security administrator has created a new policy prohibiting the use of MD5 hashes due to collision problems. Which of the following describes the reason for this new policy?",
-    options: { A: "Two different messages have different hashes", B: "The original message can be derived from the hash", C: "Two identical messages have the same hash", D: "Two different messages share the same hash" },
-    answer: "D",
-  },
-  {
-    id: "B57", exam: "B", tier: "locked",
-    question: "A security administrator has been tasked with hardening all internal web servers to ensure all transferred data remains confidential. Which of the following should the administrator prioritize in the project plan to meet this specific requirement?",
-    options: { A: "Change the administrator password", B: "Use HTTPS for all server communication", C: "Uninstall all unused software", D: "Install the latest operating system update" },
-    answer: "B",
-  },
-  {
-    id: "B58", exam: "B", tier: "locked",
-    question: "A security administrator has identified the installation of ransomware on a database server and has quarantined the system. Which of the following should be followed to ensure that the integrity of the evidence is maintained?",
-    options: { A: "E-discovery", B: "Non-repudiation", C: "Chain of custody", D: "Legal hold" },
-    answer: "C",
-  },
-  {
-    id: "B59", exam: "B", tier: "locked",
-    question: "Which of the following would be the BEST option for application testing in an environment completely separated from the production network?",
-    options: { A: "Virtualization", B: "VLANs", C: "Cloud computing", D: "Air gap" },
-    answer: "D",
-  },
-  {
-    id: "B60", exam: "B", tier: "locked",
-    question: "A security engineer is planning the installation of a new IPS. The network must remain operational if the IPS is turned off or disabled. Which of the following would describe this configuration?",
-    options: { A: "Containerization", B: "Load balancing", C: "Fail open", D: "Tunneling" },
-    answer: "C",
-  },
-  {
-    id: "B61", exam: "B", tier: "locked",
-    question: "Which of the following describes the process of hiding data from others by embedding the data inside of a different media type?",
-    options: { A: "Hashing", B: "Obfuscation", C: "Encryption", D: "Masking" },
-    answer: "B",
-  },
-  {
-    id: "B62", exam: "B", tier: "locked",
-    question: "Which of the following vulnerabilities would be the MOST significant security concern when protecting against a hacktivist?",
-    options: { A: "Data center access with only one authentication factor", B: "Spoofing of internal IP addresses when accessing an intranet server", C: "Employee VPN access uses a weak encryption cipher", D: "Lack of patch updates on an Internet-facing database server" },
-    answer: "D",
-  },
-  {
-    id: "B63", exam: "B", tier: "locked",
-    question: "A company is installing a security appliance to protect the organization's web-based applications from attacks such as SQL injections and unexpected input. Which of the following would BEST describe this appliance?",
-    options: { A: "WAF", B: "VPN concentrator", C: "UTM", D: "SASE" },
-    answer: "A",
-  },
-  {
-    id: "B64", exam: "B", tier: "locked",
-    question: "Which of the following would be the BEST way to determine if files have been modified after the forensics data acquisition process has occurred?",
-    options: { A: "Use a tamper seal on all storage devices", B: "Create a hash of the data", C: "Image each storage device for future comparison", D: "Take screenshots of file directories with file sizes" },
-    answer: "B",
-  },
-  {
-    id: "B65", exam: "B", tier: "locked",
-    question: "A system administrator is implementing a password policy that would require letters, numbers, and special characters to be included in every password. Which of the following controls MUST be in place to enforce this password policy?",
-    options: { A: "Length", B: "Expiration", C: "Reuse", D: "Complexity" },
-    answer: "D",
-  },
-  {
-    id: "B66", exam: "B", tier: "locked",
-    question: "Which of the following would a company follow to deploy a weekly operating system patch?",
-    options: { A: "Tabletop exercise", B: "Penetration testing", C: "Change management", D: "Internal audit" },
-    answer: "C",
-  },
-  {
-    id: "B67", exam: "B", tier: "locked",
-    question: "Which of the following would be the MOST likely result of plaintext application communication?",
-    options: { A: "Buffer overflow", B: "Replay attack", C: "Resource consumption", D: "Directory traversal" },
-    answer: "B",
-  },
-  {
-    id: "B68", exam: "B", tier: "locked",
-    question: "A system administrator believes that certain configuration files on a Linux server have been modified. The administrator has reverted the configurations and would like to be notified if they are changed again. Which of the following would be the BEST way to provide this functionality?",
-    options: { A: "HIPS", B: "File integrity monitoring", C: "Application allow list", D: "WAF" },
-    answer: "B",
-  },
-  {
-    id: "B69", exam: "B", tier: "locked",
-    question: "A security administrator is updating the network infrastructure to support 802.1X. Which of the following would be the BEST choice for this configuration?",
-    options: { A: "LDAP", B: "SIEM", C: "SNMP traps", D: "SPF" },
-    answer: "A",
-  },
-  {
-    id: "B70", exam: "B", tier: "locked",
-    question: "A company owns a time clock appliance that doesn't provide any access to the operating system and doesn't provide a method to upgrade the firmware. Which of the following describes this appliance?",
-    options: { A: "End-of-life", B: "ICS", C: "SDN", D: "Embedded system" },
-    answer: "D",
-  },
-  {
-    id: "B71", exam: "B", tier: "locked",
-    question: "A company has deployed laptops to all employees, and each laptop is enumerated during each login. Which of the following is supported with this configuration?",
-    options: { A: "If the laptop hardware is modified, the security team is alerted", B: "Any malware identified on the system is automatically deleted", C: "Users are required to use at least two factors of authentication", D: "The laptop is added to a private VLAN after the login process" },
-    answer: "A",
-  },
-  {
-    id: "B72", exam: "B", tier: "locked",
-    question: "A security manager believes that an employee is using their laptop to circumvent corporate Internet security controls through a cellular hotspot. Which of the following would BEST provide direct evidence of network connections made from the laptop regardless of which network it is on?",
-    options: { A: "HIPS", B: "UTM logs", C: "Web application firewall events", D: "Host-based firewall logs" },
-    answer: "D",
-  },
-  {
-    id: "B73", exam: "B", tier: "locked",
-    question: "An application developer is creating a mobile device app that will require a true random number generator and real-time memory encryption. Which of the following technologies would be the BEST choice for this app?",
-    options: { A: "HSM", B: "Secure enclave", C: "NGFW", D: "Self-signed certificates" },
-    answer: "B",
-  },
-  {
-    id: "B74", exam: "B", tier: "locked",
-    question: "Which of the following would be a common result of a successful vulnerability scan?",
-    options: { A: "Usernames and password hashes from a server", B: "A list of missing software patches", C: "A copy of image files from a private file share", D: "The BIOS configuration of a server" },
-    answer: "B",
-  },
-  {
-    id: "B75", exam: "B", tier: "locked",
-    question: "When connected to the wireless network, users at a remote site receive an IP address not part of the corporate address scheme. Communication is also slower. Which of the following would be the MOST likely reason for these issues?",
-    options: { A: "Rogue access point", B: "Domain hijack", C: "DDoS", D: "Encryption is enabled" },
-    answer: "A",
-  },
-  {
-    id: "B76", exam: "B", tier: "locked",
-    question: "A company has identified a compromised server, and the security team would like to know if an attacker has used this device to move between systems. Which of the following would be the BEST way to provide this information?",
-    options: { A: "DNS server logs", B: "Penetration test", C: "NetFlow logs", D: "Email metadata" },
-    answer: "C",
-  },
-  {
-    id: "B77", exam: "B", tier: "locked",
-    question: "A system administrator has protected a set of system backups with an encryption key. The system administrator used the same key when restoring files from this backup. Which of the following would BEST describe this encryption type?",
-    options: { A: "Asymmetric", B: "Key escrow", C: "Symmetric", D: "Out-of-band key exchange" },
-    answer: "C",
-  },
-  {
-    id: "B78", exam: "B", tier: "locked",
-    question: "A new malware variant takes advantage of a vulnerability in a popular email client. Once installed, the malware forwards all email attachments containing credit card information to an external email address. Which of the following would limit the scope of this attack?",
-    options: { A: "Enable MFA on the email client", B: "Scan outgoing traffic with DLP", C: "Require users to enable the VPN when using email", D: "Update the list of malicious URLs in the firewall" },
-    answer: "B",
-  },
-  {
-    id: "B79", exam: "B", tier: "locked",
-    question: "An organization has identified a security breach and has removed the affected servers from the network. Which of the following is the NEXT step in the incident response process?",
-    options: { A: "Eradication", B: "Preparation", C: "Recovery", D: "Detection" },
-    answer: "A",
-  },
-  {
-    id: "B80", exam: "B", tier: "locked",
-    question: "A security administrator has been tasked with storing and protecting customer payment and shipping information for a three-year period. Which of the following would describe the source of this data?",
-    options: { A: "Controller", B: "Owner", C: "Data subject", D: "Processor" },
-    answer: "C",
-  },
-  {
-    id: "B81", exam: "B", tier: "locked",
-    question: "Which of the following is the PRIMARY security advantage of using a TPM when configuring full disk encryption on a workstation?",
-    options: { A: "Allows the encryption of multiple volumes simultaneously", B: "Uses burned-in cryptographic keys that cannot be extracted", C: "Stores certificates in a hardware security module", D: "Maintains a local copy of the certificate revocation list" },
-    answer: "B",
-  },
-  {
-    id: "B82", exam: "B", tier: "locked",
-    question: "A security administrator is using an access control where each file or folder is assigned a security clearance level, such as 'confidential' or 'secret.' The security administrator then assigns a maximum security level to each user. What type of access control is used in this network?",
-    options: { A: "Mandatory", B: "Rule-based", C: "Discretionary", D: "Role-based" },
-    answer: "A",
-  },
-  {
-    id: "B83", exam: "B", tier: "locked",
-    question: "A security administrator is reviewing a report that shows a number of devices on internal networks attempting to connect with servers in the data center network. Which of the following security controls should be added to prevent internal systems from accessing data center devices?",
-    options: { A: "VPN", B: "IPS", C: "SIEM", D: "ACL" },
-    answer: "D",
-  },
-  {
-    id: "B84", exam: "B", tier: "locked",
-    question: "A financial services company is headquartered in an area with a high occurrence of tropical storms and hurricanes. Which of the following would be MOST important when restoring services disabled by a storm?",
-    options: { A: "Disaster recovery plan", B: "Stakeholder management", C: "Change management", D: "Retention policies" },
-    answer: "A",
-  },
-  {
-    id: "B85", exam: "B", tier: "locked",
-    question: "A user in the mail room has reported an overall slowdown of his shipping management software. An anti-virus scan did not identify any issues, but a more thorough malware scan identified a kernel driver which is not part of the original operating system installation. Which of the following malware was installed on this system?",
-    options: { A: "Rootkit", B: "Logic bomb", C: "Bloatware", D: "Ransomware" },
-    answer: "A",
-  },
-  {
-    id: "B86", exam: "B", tier: "locked",
-    question: "A virus scanner has identified a macro virus in a word processing file attached to an email. Which of the following information could be obtained from the metadata of this file?",
-    options: { A: "IPS signature name and number", B: "Operating system version", C: "Date and time when the file was created", D: "Alert disposition" },
-    answer: "C",
-  },
-  {
-    id: "B87", exam: "B", tier: "locked",
-    question: "When a person enters a data center facility, they must check-in before they are allowed to move further into the building. People who are leaving must be formally checked-out before they are able to exit. Which of the following would BEST facilitate this process?",
-    options: { A: "Access control vestibule", B: "Air gap", C: "Pressure sensors", D: "Bollards" },
-    answer: "A",
-  },
-  {
-    id: "B88", exam: "B", tier: "locked",
-    question: "A security administrator has discovered an employee exfiltrating confidential company information by embedding data within image files and emailing the images to a third-party. Which of the following would best describe this activity?",
-    options: { A: "Digital signatures", B: "Steganography", C: "Salting", D: "Data masking" },
-    answer: "B",
-  },
-  {
-    id: "B89", exam: "B", tier: "locked",
-    question: "A third-party has been contracted to perform a penetration test on a company's public web servers. The testing company has been provided with the external IP addresses of the servers. Which of the following would describe this scenario?",
-    options: { A: "Defensive", B: "Active reconnaissance", C: "Partially known environment", D: "Regulatory" },
-    answer: "C",
-  },
-  {
-    id: "B90", exam: "B", tier: "locked",
-    question: "Which of the following would be the best way to describe the estimated number of laptops that might be stolen in a fiscal year?",
-    options: { A: "ALE", B: "SLE", C: "ARO", D: "MTTR" },
-    answer: "C",
-  },
-
-  // ─── EXAM C ──────────────────────────────────────────────────────────────────
-  {
-    id: "C6", exam: "C", tier: "locked",
-    question: "A finance company is legally required to maintain seven years of tax records for all of their customers. Which of the following would be the BEST way to implement this requirement?",
-    options: { A: "Automate a script to remove all tax information more than seven years old", B: "Print and store all tax records in a seven-year cycle", C: "Allow users to download tax records from their account login", D: "Create a separate daily backup archive for all applicable tax records" },
-    answer: "D",
-  },
-  {
-    id: "C7", exam: "C", tier: "locked",
-    question: "A system administrator is designing a data center for an insurance company's new public cloud and would like to automatically rotate encryption keys on a regular basis. Which of the following would provide this functionality?",
-    options: { A: "TPM", B: "Key management system", C: "Secure enclave", D: "XDR" },
-    answer: "B",
-  },
-  {
-    id: "C8", exam: "C", tier: "locked",
-    question: "A newly installed IPS is flagging a legitimate corporate application as malicious network traffic. Which of the following would be the BEST way to resolve this issue?",
-    options: { A: "Disable the IPS signature", B: "Block the application", C: "Log all IPS events", D: "Tune the IPS alerts" },
-    answer: "D",
-  },
-  {
-    id: "C9", exam: "C", tier: "locked",
-    question: "A security administrator has identified an internally developed application which allows modification of SQL queries through the web-based front-end. Which of the following changes would resolve this vulnerability?",
-    options: { A: "Store all credentials as salted hashes", B: "Verify the application's digital signature", C: "Validate all application input", D: "Obfuscate the application's source code" },
-    answer: "C",
-  },
-  {
-    id: "C10", exam: "C", tier: "locked",
-    question: "A system administrator is implementing a fingerprint scanner to provide access to the data center. Which of the following authentication technologies would be associated with this access?",
-    options: { A: "Digital signature", B: "Hard authentication token", C: "Security key", D: "Something you are" },
-    answer: "D",
-  },
-  {
-    id: "C11", exam: "C", tier: "locked",
-    question: "The IT department maintains an on-site inventory of chassis-based network switch interface cards. If a failure occurs, the on-site technician can replace the interface card and have the system running again in sixty minutes. Which of the following BEST describes this recovery metric?",
-    options: { A: "MTBF", B: "MTTR", C: "RPO", D: "RTO" },
-    answer: "B",
-  },
-  {
-    id: "C12", exam: "C", tier: "locked",
-    question: "A company maintains a server farm in a large data center. These servers are used internally and are not accessible from outside of the data center. The security team has discovered a group of servers was breached before the latest security patches were applied. Which of these threat actors would be MOST likely involved in this breach?",
-    options: { A: "Organized crime", B: "Insider", C: "Nation state", D: "Unskilled attacker" },
-    answer: "B",
-  },
-  {
-    id: "C13", exam: "C", tier: "locked",
-    question: "An organization has received a vulnerability scan report showing multiple Sun Java Runtime Environment (JRE) vulnerabilities on web servers, but the server administrator has verified that JRE is not installed. Which of the following would be the BEST way to handle this report?",
-    options: { A: "Install the latest version of JRE on the server", B: "Quarantine the server and scan for malware", C: "Harden the operating system of the web server", D: "Ignore the JRE vulnerability alert" },
-    answer: "D",
-  },
-  {
-    id: "C14", exam: "C", tier: "locked",
-    question: "A user downloaded and installed a utility for compressing and decompressing files. Immediately after installing, the user's workstation performance degraded and tasks take twice as long. Which of the following is the BEST description of this malware infection?",
-    options: { A: "Ransomware", B: "Bloatware", C: "Logic bomb", D: "Trojan" },
-    answer: "D",
-  },
-  {
-    id: "C15", exam: "C", tier: "locked",
-    question: "Which of the following is the process for replacing sensitive data with a non-sensitive and functional placeholder?",
-    options: { A: "Steganography", B: "Tokenization", C: "Retention", D: "Masking" },
-    answer: "B",
-  },
-  {
-    id: "C16", exam: "C", tier: "locked",
-    question: "A security administrator has installed a new firewall to protect a web server VLAN. The application owner requires all web server sessions communicate over an encrypted channel. Which of these rules should be included in the firewall rulebase?",
-    options: { A: "Source: ANY, Destination: ANY, Protocol: TCP, Port: 23, Deny", B: "Source: ANY, Destination: ANY, Protocol: TCP, Port: 22, Allow", C: "Source: ANY, Destination: ANY, Protocol: TCP, Port: 80, Allow", D: "Source: ANY, Destination: ANY, Protocol: TCP, Port: 443, Allow" },
-    answer: "D",
-  },
-  {
-    id: "C17", exam: "C", tier: "locked",
-    question: "Which of these would be used to provide multi-factor authentication?",
-    options: { A: "USB-connected storage drive with FDE", B: "Employee policy manual", C: "Just-in-time permissions", D: "Smart card with picture ID" },
-    answer: "D",
-  },
-  {
-    id: "C18", exam: "C", tier: "locked",
-    question: "A company's network team has been asked to build an IPsec tunnel to a new business partner. Which of the following security risks would be the MOST important to consider?",
-    options: { A: "Supply chain attack", B: "Unsupported systems", C: "Business email compromise", D: "Typosquatting" },
-    answer: "A",
-  },
-  {
-    id: "C19", exam: "C", tier: "locked",
-    question: "A company's human resources team maintains a list of all employees participating in the corporate savings plan. A third-party financial company uses this information to manage stock investments for the employees. Which of the following would describe this financial company?",
-    options: { A: "Processor", B: "Owner", C: "Controller", D: "Custodian" },
-    answer: "A",
-  },
-  {
-    id: "C20", exam: "C", tier: "locked",
-    question: "A technology company is manufacturing a military-grade radar tracking system that can instantly identify and react to nearby unmanned aerial vehicles (UAVs) without delay. Which of the following would BEST describe this tracking system?",
-    options: { A: "RTOS", B: "IoT", C: "ICS", D: "SDN" },
-    answer: "A",
-  },
-  {
-    id: "C21", exam: "C", tier: "locked",
-    question: "An administrator is writing a script to convert an email message to a help desk ticket and assign the ticket to the correct department. Which of the following should the administrator use to complete this script?",
-    options: { A: "Role-based access controls", B: "Federation", C: "Due diligence", D: "Orchestration" },
-    answer: "D",
-  },
-  {
-    id: "C22", exam: "C", tier: "locked",
-    question: "A security administrator would like a report showing how many attackers are attempting to use a known vulnerability to gain access to a corporate web server. Which of the following should be used to gather this information?",
-    options: { A: "Application log", B: "Metadata", C: "IPS log", D: "Windows log" },
-    answer: "C",
-  },
-  {
-    id: "C23", exam: "C", tier: "locked",
-    question: "During a ransomware outbreak, an organization was forced to rebuild database servers from known good backup systems. In which of the following incident response phases were these database servers brought back online?",
-    options: { A: "Recovery", B: "Lessons learned", C: "Containment", D: "Detection" },
-    answer: "A",
-  },
-  {
-    id: "C24", exam: "C", tier: "locked",
-    question: "A security administrator is installing a web server with a newly built operating system. Which of the following would be the best way to harden this OS?",
-    options: { A: "Create a backup schedule", B: "Install a device certificate", C: "Remove unnecessary software", D: "Disable power management features" },
-    answer: "C",
-  },
-  {
-    id: "C25", exam: "C", tier: "locked",
-    question: "A network IPS log shows: 'SELECT * FROM users WHERE username=\\'x\\' or \\'x\\'=\\'x\\' AND password=\\'x\\' or \\'x\\'=\\'x\\''. Which of the following would describe this log entry?",
-    options: { A: "Phishing", B: "Brute force", C: "SQL injection", D: "Cross-site scripting" },
-    answer: "C",
-  },
-  {
-    id: "C26", exam: "C", tier: "locked",
-    question: "An incident response team would like to validate their disaster recovery plans without making any changes to the infrastructure. Which of the following would be the best course of action?",
-    options: { A: "Tabletop exercise", B: "Hot site fail-over", C: "Simulation", D: "Penetration test" },
-    answer: "A",
-  },
-  {
-    id: "C27", exam: "C", tier: "locked",
-    question: "A system administrator has installed a new firewall between the corporate user network and the data center network. When the firewall is turned on with default settings, users complain that the application in the data center is no longer working. Which of the following would be the BEST way to correct this application issue?",
-    options: { A: "Create a single firewall rule with an explicit deny", B: "Build a separate VLAN for the application", C: "Create firewall rules that match the application traffic flow", D: "Enable firewall threat blocking" },
-    answer: "C",
-  },
-  {
-    id: "C28", exam: "C", tier: "locked",
-    question: "Which of these would be used to provide HA for a web-based database application?",
-    options: { A: "SIEM", B: "UPS", C: "DLP", D: "VPN concentrator" },
-    answer: "B",
-  },
-  {
-    id: "C29", exam: "C", tier: "locked",
-    question: "Each year, a certain number of laptops are lost or stolen and must be replaced by the company. Which of the following would describe the total cost the company spends each year on laptop replacements?",
-    options: { A: "SLE", B: "SLA", C: "ALE", D: "ARO" },
-    answer: "C",
-  },
-  {
-    id: "C30", exam: "C", tier: "locked",
-    question: "A network administrator is viewing a web server log showing what appears to be a directory traversal attempt through a URL query string. Which of the following would be the BEST way to prevent this attack?",
-    options: { A: "Static code analyzer", B: "Input validation", C: "Allow list", D: "Secure cookies" },
-    answer: "B",
-  },
-  {
-    id: "C31", exam: "C", tier: "locked",
-    question: "Sam would like to send an email to Jack and have Jack verify that Sam was the sender of the email. Which of these should Sam use to provide this verification?",
-    options: { A: "Digitally sign with Sam's private key", B: "Digitally sign with Sam's public key", C: "Digitally sign with Jack's private key", D: "Digitally sign with Jack's public key" },
-    answer: "A",
-  },
-  {
-    id: "C32", exam: "C", tier: "locked",
-    question: "The contract of a long-term temporary employee is ending. Which of these would be the MOST important part of the off-boarding process?",
-    options: { A: "Perform an on-demand audit of the user's privileges", B: "Archive the decryption keys associated with the user account", C: "Document the user's outstanding tasks", D: "Obtain a signed copy of the Acceptable Use Policies" },
-    answer: "B",
-  },
-  {
-    id: "C33", exam: "C", tier: "locked",
-    question: "A cybersecurity analyst has been asked to respond to a denial of service attack against a web server and has collected the log files and data from the server. Which of the following would allow a future analyst to verify the data as original and unaltered?",
-    options: { A: "E-discovery", B: "Root cause analysis", C: "Legal hold", D: "Data hashing" },
-    answer: "D",
-  },
-  {
-    id: "C34", exam: "C", tier: "locked",
-    question: "A security administrator is reviewing authentication logs. The logs show a large number of accounts with at least three failed authentication attempts during the previous week. Which of the following would BEST explain this report data?",
-    options: { A: "Downgrade attack", B: "Phishing", C: "Injection", D: "Spraying" },
-    answer: "D",
-  },
-  {
-    id: "C35", exam: "C", tier: "locked",
-    question: "A security administrator has been asked to block all browsing to casino gaming websites. Which of the following would be the BEST way to implement this requirement?",
-    options: { A: "Tune the IPS signatures", B: "Block port tcp/443 on the firewall", C: "Configure 802.1X for web browsing", D: "Add a content filter rule" },
-    answer: "D",
-  },
-  {
-    id: "C36", exam: "C", tier: "locked",
-    question: "A company is experiencing downtime and outages when application patches and updates are deployed during the week. Which of the following would help to resolve these issues?",
-    options: { A: "Onboarding considerations", B: "Incident response policies", C: "Change management procedures", D: "Decentralized governance" },
-    answer: "C",
-  },
-  {
-    id: "C37", exam: "C", tier: "locked",
-    question: "A company is implementing a series of steps to follow when responding to a security event. Which of the following would provide this set of processes and procedures?",
-    options: { A: "MDM", B: "DLP", C: "Playbook", D: "Zero trust" },
-    answer: "C",
-  },
-  {
-    id: "C38", exam: "C", tier: "locked",
-    question: "A transportation company maintains a scheduling application and a database in a virtualized cloud-based environment. Which of the following would be the BEST way to backup these services?",
-    options: { A: "Journaling", B: "Snapshot", C: "RTOS", D: "Containerization" },
-    answer: "B",
-  },
-  {
-    id: "C39", exam: "C", tier: "locked",
-    question: "In an environment using discretionary access controls, which of these would control the rights and permissions associated with a file or directory?",
-    options: { A: "Administrator", B: "Owner", C: "Group", D: "System" },
-    answer: "B",
-  },
-  {
-    id: "C40", exam: "C", tier: "locked",
-    question: "A security administrator has installed a network-based DLP solution to determine if file transfers contain PII. Which of the following describes the data during the file transfer?",
-    options: { A: "In-use", B: "In-transit", C: "Highly available", D: "At-rest" },
-    answer: "B",
-  },
-  {
-    id: "C41", exam: "C", tier: "locked",
-    question: "A medical imaging company would like to connect all remote locations together with high speed network links. The network connections must maintain high throughput rates and must always be available during working hours. In which of the following should these requirements be enforced with the network provider?",
-    options: { A: "Service level agreement", B: "Memorandum of understanding", C: "Non-disclosure agreement", D: "Acceptable use policy" },
-    answer: "A",
-  },
-  {
-    id: "C42", exam: "C", tier: "locked",
-    question: "A company is implementing a security awareness program for their user community. Which of the following should be included for additional user guidance and training?",
-    options: { A: "Daily firewall exception reporting", B: "Information on proper password management", C: "Periodic vulnerability scanning of external services", D: "Adjustments to annualized loss expectancy" },
-    answer: "B",
-  },
-  {
-    id: "C43", exam: "C", tier: "locked",
-    question: "A security administrator is preparing a phishing email as part of a periodic employee security awareness campaign. The email is spoofed to appear as an unknown third-party and asks employees to immediately click a link or their state licensing will be revoked. Which of the following should be the expected response from the users?",
-    options: { A: "Delete the message", B: "Click the link and make a note of the URL", C: "Forward the message to others in the department", D: "Report the suspicious link to the help desk" },
-    answer: "D",
-  },
-  {
-    id: "C44", exam: "C", tier: "locked",
-    question: "A security administrator would like to minimize the number of certificate status checks made by web site clients to the certificate authority. Which of the following would be the BEST option for this requirement?",
-    options: { A: "OCSP stapling", B: "Self-signed certificates", C: "CRL", D: "Wildcards" },
-    answer: "A",
-  },
-  {
-    id: "C45", exam: "C", tier: "locked",
-    question: "A company is concerned their EDR solution will not be able to stop more advanced ransomware variants. Technicians have created a backup and restore utility to get most systems up and running less than an hour after an attack. What type of security control is associated with this restore process?",
-    options: { A: "Directive", B: "Compensating", C: "Preventive", D: "Detective" },
-    answer: "B",
-  },
-  {
-    id: "C46", exam: "C", tier: "locked",
-    question: "To upgrade an internal application, the development team provides the operations team with instructions for backing up, patching the application, and reverting the patch if needed. The operations team schedules a date for the upgrade, informs the business divisions, and tests the upgrade process after completion. Which of the following describes this process?",
-    options: { A: "Code signing", B: "Continuity planning", C: "Usage auditing", D: "Change management" },
-    answer: "D",
-  },
-  {
-    id: "C47", exam: "C", tier: "locked",
-    question: "A company is implementing a public file-storage and cloud-based sharing service, and would like users to authenticate with an existing account on a trusted third-party web site. Which of the following should the company implement?",
-    options: { A: "SSO", B: "Federation", C: "Least privilege", D: "Discretionary access controls" },
-    answer: "B",
-  },
-  {
-    id: "C48", exam: "C", tier: "locked",
-    question: "A system administrator is viewing output from Microsoft's System File Checker showing repair of corrupted files including kernel32.dll, netapi32.dll, and user32.dll. Which of the following malware types is the MOST likely cause of this output?",
-    options: { A: "Ransomware", B: "Logic bomb", C: "Rootkit", D: "Keylogger" },
-    answer: "C",
-  },
-  {
-    id: "C49", exam: "C", tier: "locked",
-    question: "A log shows a URL with a doubled character encoding pattern including '../' sequences to access system.ini through a web application. What type of vulnerability would be associated with this log information?",
-    options: { A: "Buffer overflow", B: "Directory traversal", C: "DoS", D: "Cross-site scripting" },
-    answer: "B",
-  },
-  {
-    id: "C50", exam: "C", tier: "locked",
-    question: "A developer has created an application to store password information in a database. Which of the following BEST describes a way of protecting these credentials by adding random data to the password?",
-    options: { A: "Hashing", B: "Data masking", C: "Salting", D: "Asymmetric encryption" },
-    answer: "C",
-  },
-  {
-    id: "C51", exam: "C", tier: "locked",
-    question: "Which of the following processes provides ongoing building and testing of newly written code?",
-    options: { A: "Continuous integration", B: "Continuity of operations", C: "Version control", D: "Race condition" },
-    answer: "A",
-  },
-  {
-    id: "C52", exam: "C", tier: "locked",
-    question: "Which of the following BEST describes a responsibility matrix?",
-    options: { A: "A visual summary of cloud provider accountability", B: "Identification of tasks at each step of a project plan", C: "A list of cybersecurity requirements based on the identified risks", D: "Ongoing group discussions regarding cybersecurity" },
-    answer: "A",
-  },
-  {
-    id: "C53", exam: "C", tier: "locked",
-    question: "A security administrator is implementing an authentication system for the company. Which of the following would be the best choice for validating login credentials for all usernames and passwords in the authentication system?",
-    options: { A: "CA", B: "SIEM", C: "LDAP", D: "WAF" },
-    answer: "C",
-  },
-  {
-    id: "C54", exam: "C", tier: "locked",
-    question: "An IPS log shows: 'reject 10.1.111.7, Alert: HTTP Suspicious Webdav OPTIONS Method Request, Category: info-leak, Proto:tcp; dst:192.168.11.1; src:10.1.111.7'. Which of the following correctly identifies the SOURCE of the attack?",
-    options: { A: "The attacker sent a non-authenticated BGP packet to trigger the IPS", B: "The source of the attack is 192.168.11.1", C: "The event was logged but no packets were dropped", D: "The source of the attack is 10.1.111.7" },
-    answer: "D",
-  },
-  {
-    id: "C55", exam: "C", tier: "locked",
-    question: "A company has contracted with a third-party to provide penetration testing services. The service includes a port scan of each externally-facing device. This is an example of:",
-    options: { A: "Initial exploitation", B: "Privilege escalation", C: "Known environment", D: "Active reconnaissance" },
-    answer: "D",
-  },
-  {
-    id: "C56", exam: "C", tier: "locked",
-    question: "An access point has the following configuration: Wireless Mode 802.11n, Security Mode WEP-PSK, Frequency band 2.4 GHz. Which of the following would apply to this configuration?",
-    options: { A: "Invalid frequency band", B: "Weak encryption", C: "Incorrect IP address and subnet mask", D: "Invalid software version" },
-    answer: "B",
-  },
-  {
-    id: "C57", exam: "C", tier: "locked",
-    question: "An attacker has gained access to an application through the use of packet captures. Which of the following would be MOST likely used by the attacker?",
-    options: { A: "Overflow", B: "Forgery", C: "Replay", D: "Injection" },
-    answer: "C",
-  },
-  {
-    id: "C58", exam: "C", tier: "locked",
-    question: "A company is receiving complaints of slowness and disconnections to their Internet-facing web server. A network administrator monitors the Internet link and finds excessive bandwidth utilization from thousands of different IP addresses. Which of the following would be the MOST likely reason for these performance issues?",
-    options: { A: "DDoS", B: "DNS spoofing", C: "RFID cloning", D: "Wireless jamming" },
-    answer: "A",
-  },
-  {
-    id: "C59", exam: "C", tier: "locked",
-    question: "A company has created an itemized list of tasks to be completed by a third-party service provider. After the services are complete, this document will be used to validate the completion of the services. Which of the following would describe this agreement type?",
-    options: { A: "SLA", B: "SOW", C: "NDA", D: "BPA" },
-    answer: "B",
-  },
-  {
-    id: "C60", exam: "C", tier: "locked",
-    question: "A company is deploying a series of internal applications to different cloud providers. Which of the following connection types should be deployed for this configuration?",
-    options: { A: "Air-gapped", B: "802.1X", C: "Site-to-site IPsec VPN", D: "SD-WAN" },
-    answer: "D",
-  },
-  {
-    id: "C61", exam: "C", tier: "locked",
-    question: "A company is updating components within the control plane of their zero-trust implementation. Which of the following would be part of this update?",
-    options: { A: "Policy engine", B: "Subjects", C: "Policy enforcement point", D: "Zone configurations" },
-    answer: "A",
-  },
-  {
-    id: "C62", exam: "C", tier: "locked",
-    question: "Which of the following malware types would cause a workstation to participate in a DDoS?",
-    options: { A: "Bot", B: "Logic bomb", C: "Ransomware", D: "Keylogger" },
-    answer: "A",
-  },
-  {
-    id: "C63", exam: "C", tier: "locked",
-    question: "Which of these are used to force the preservation of data for later use in court?",
-    options: { A: "Chain of custody", B: "Data loss prevention", C: "Legal hold", D: "E-discovery" },
-    answer: "C",
-  },
-  {
-    id: "C64", exam: "C", tier: "locked",
-    question: "A company would like to automatically monitor and report on any movement occurring in an open field at the data center. Which of the following would be the BEST choice for this task?",
-    options: { A: "Bollard", B: "Microwave sensor", C: "Access control vestibule", D: "Fencing" },
-    answer: "B",
-  },
-  {
-    id: "C65", exam: "C", tier: "locked",
-    question: "A company is releasing a new product, and part of the release includes the installation of load balancers to the public web site. Which of the following would best describe this process?",
-    options: { A: "Platform diversity", B: "Capacity planning", C: "Multi-cloud systems", D: "Permission restrictions" },
-    answer: "B",
-  },
-  {
-    id: "C66", exam: "C", tier: "locked",
-    question: "A system administrator would like to prove an email message was sent by a specific person. Which of the following describes the verification of this message source?",
-    options: { A: "Non-repudiation", B: "Key escrow", C: "Asymmetric encryption", D: "Steganography" },
-    answer: "A",
-  },
-  {
-    id: "C67", exam: "C", tier: "locked",
-    question: "A security administrator has created a policy to alert if a user modifies the hosts file on their system. Which of the following behaviors does this policy address?",
-    options: { A: "Unexpected", B: "Self-assessment", C: "Unintentional", D: "Risky" },
-    answer: "D",
-  },
-  {
-    id: "C68", exam: "C", tier: "locked",
-    question: "A company has identified a web server data breach resulting in the theft of financial records from 150 million customers. A security update to the company's web server software was available for two months prior to the breach. Which of the following would have prevented this breach from occurring?",
-    options: { A: "Patch management", B: "Full disk encryption", C: "Disabling unnecessary services", D: "Application allow lists" },
-    answer: "A",
-  },
-  {
-    id: "C69", exam: "C", tier: "locked",
-    question: "During the onboarding process, the IT department requires a list of software applications associated with the new employee's job functions. Which of the following would describe the use of this information?",
-    options: { A: "Access control configuration", B: "Encryption settings", C: "Physical security requirements", D: "Change management" },
-    answer: "A",
-  },
-  {
-    id: "C70", exam: "C", tier: "locked",
-    question: "A system administrator has identified an unexpected username on a database server transferring files to an external server. The administrator physically disconnected the Ethernet cable, disabled the unknown account, and configured a firewall rule to prevent file transfers from the server. Which of the following would BEST describe this part of the incident response process?",
-    options: { A: "Eradication", B: "Containment", C: "Lessons learned", D: "Preparation" },
-    answer: "B",
-  },
-  {
-    id: "C71", exam: "C", tier: "locked",
-    question: "Which of the following would be the MOST effective use of asymmetric encryption?",
-    options: { A: "Real-time video encryption", B: "Securely store passwords", C: "Protect data on mobile devices", D: "Create a shared session key" },
-    answer: "D",
-  },
-  {
-    id: "C72", exam: "C", tier: "locked",
-    question: "Each salesperson in a company receives a laptop with applications and data to support their sales efforts. The IT manager would like to prevent third-parties from gaining access to this information if the laptop is stolen. Which of the following would be the BEST way to protect this data?",
-    options: { A: "Remote wipe", B: "Full disk encryption", C: "Biometrics", D: "VPN" },
-    answer: "B",
-  },
-  {
-    id: "C73", exam: "C", tier: "locked",
-    question: "A security administrator has compiled a list of all information stored and managed by an organization. Which of the following would best describe this list?",
-    options: { A: "Sanitization", B: "Metadata", C: "Known environment", D: "Data inventory" },
-    answer: "D",
-  },
-  {
-    id: "C74", exam: "C", tier: "locked",
-    question: "A security administrator would like to monitor all outbound Internet connections for malicious software. Which of the following would provide this functionality?",
-    options: { A: "Jump server", B: "IPsec tunnel", C: "Forward proxy", D: "Load balancer" },
-    answer: "C",
-  },
-  {
-    id: "C75", exam: "C", tier: "locked",
-    question: "What type of security control would be associated with corporate security policies?",
-    options: { A: "Technical", B: "Operational", C: "Managerial", D: "Physical" },
-    answer: "C",
-  },
-  {
-    id: "C76", exam: "C", tier: "locked",
-    question: "Which of the following would be the MOST significant security concern when protecting against organized crime?",
-    options: { A: "Prevent users from posting passwords near their workstations", B: "Require identification cards for all employees and guests", C: "Maintain reliable backup data", D: "Use access control vestibules at all data center locations" },
-    answer: "C",
-  },
-  {
-    id: "C77", exam: "C", tier: "locked",
-    question: "An application team has been provided with a hardened version of Linux to use with a new application installation, including installing a web service and the application code on the server. Which of the following would BEST protect the application from attacks?",
-    options: { A: "Build a backup server for the application", B: "Run the application in a cloud-based environment", C: "Implement a secure configuration of the web service", D: "Send application logs to the SIEM via syslog" },
-    answer: "C",
-  },
-  {
-    id: "C78", exam: "C", tier: "locked",
-    question: "A system administrator has configured MAC filtering on their corporate access point, but access logs show unauthorized users accessing the network. Which of the following should the administrator configure to prevent future unauthorized use?",
-    options: { A: "Enable WPA3 encryption", B: "Remove unauthorized MAC addresses from the filter", C: "Modify the SSID name", D: "Modify the channel frequencies" },
-    answer: "A",
-  },
-  {
-    id: "C79", exam: "C", tier: "locked",
-    question: "A system administrator has been tasked with performing an application upgrade, but the upgrade has been delayed due to a different scheduled installation of an outdated device driver. Which of the following issues would best describe this change management delay?",
-    options: { A: "Deny list", B: "Legacy application", C: "Dependency", D: "Restricted activity" },
-    answer: "C",
-  },
-  {
-    id: "C80", exam: "C", tier: "locked",
-    question: "During an initial network connection, a supplicant communicates to an authenticator, which then sends an authentication request to an Active Directory database. Which of the following would BEST describe this authentication technology?",
-    options: { A: "Federation", B: "UTM", C: "802.1X", D: "PKI" },
-    answer: "C",
-  },
-  {
-    id: "C81", exam: "C", tier: "locked",
-    question: "A security researcher has been notified of a potential hardware vulnerability. Which of the following should the researcher evaluate as a potential security issue?",
-    options: { A: "Firmware versions", B: "Firewall configuration", C: "SQL requests", D: "XSS attachments" },
-    answer: "A",
-  },
-  {
-    id: "C82", exam: "C", tier: "locked",
-    question: "Visitors to a corporate data center must enter through the main doors of the building. Which of the following physical security controls would BEST guide people toward the designated entrance?",
-    options: { A: "Infrared sensors", B: "Bollards", C: "Biometrics", D: "Fencing" },
-    answer: "D",
-  },
-  {
-    id: "C83", exam: "C", tier: "locked",
-    question: "A company's employees are required to authenticate each time a file share, printer, or SAN imaging system is accessed. Which of the following should be used to minimize the number of employee authentication requests?",
-    options: { A: "SSO", B: "OSINT", C: "MFA", D: "SCAP" },
-    answer: "A",
-  },
-  {
-    id: "C84", exam: "C", tier: "locked",
-    question: "A company has recently moved from one accounting system to another, and the new system includes integration with many other divisions. Which of the following would ensure that the correct access has been provided to the proper employees in each division?",
-    options: { A: "Geolocation", B: "Onboarding process", C: "Account de-provisioning", D: "Internal self-assessment" },
-    answer: "D",
-  },
-  {
-    id: "C85", exam: "C", tier: "locked",
-    question: "An attacker has circumvented a web-based application to send commands directly to a database. Which of the following would describe this attack type?",
-    options: { A: "Downgrade", B: "SQL injection", C: "Cross-site scripting", D: "On-path" },
-    answer: "B",
-  },
-  {
-    id: "C86", exam: "C", tier: "locked",
-    question: "A group of business partners is using blockchain technology to monitor and track raw materials and parts as they are transferred between companies. Where would a partner find these tracking details?",
-    options: { A: "Ledger", B: "HSM", C: "SIEM", D: "HIPS" },
-    answer: "A",
-  },
-  {
-    id: "C87", exam: "C", tier: "locked",
-    question: "A network technician at a bank has noticed a significant decrease in traffic to the bank's public website. Users are being directed to a web site which looks similar to the bank's site but is not under the bank's control. Flushing the local DNS cache and changing the DNS entry does not have any effect. Which of the following has most likely occurred?",
-    options: { A: "DDoS", B: "Disassociation attack", C: "Buffer overflow", D: "Domain hijacking" },
-    answer: "D",
-  },
-  {
-    id: "C88", exam: "C", tier: "locked",
-    question: "A company runs two separate applications in their data center. The security administrator has been tasked with preventing all communication between these applications. Which of the following would be the BEST way to implement this security requirement?",
-    options: { A: "Firewall", B: "SDN", C: "Air gap", D: "VLANs" },
-    answer: "C",
-  },
-  {
-    id: "C89", exam: "C", tier: "locked",
-    question: "A receptionist at a manufacturing company recently received an email from the CEO asking for a copy of the internal corporate employee directory. It was later determined that the email address was not sent from the CEO and the domain was not a corporate domain name. What type of training could help identify this type of attack in the future?",
-    options: { A: "Recognizing social engineering", B: "Proper password management", C: "Securing remote work environments", D: "Understanding insider threats" },
-    answer: "A",
-  },
-  {
-    id: "C90", exam: "C", tier: "locked",
-    question: "Which of the following deployment models would a company follow if they require individuals to use their personal phones for work purposes?",
-    options: { A: "CYOD", B: "MDM", C: "BYOD", D: "COPE" },
-    answer: "C",
-  },
+    tier: "locked"
+  }
 ]
 
-// First 25 are free
-const questions: Question[] = allQuestions.map((q, index) => ({
-  ...q,
-  tier: index < 25 ? "free" : "locked",
-}))
-
 export default questions
-export { questions }
