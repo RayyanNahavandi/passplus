@@ -1,51 +1,22 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { motion, AnimatePresence, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, Mail } from "lucide-react"
+import { motion, useReducedMotion } from "motion/react"
+import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { DiscordBanner } from "@/components/DiscordBanner"
-import { unlock } from "@/lib/quiz-store"
 
 export default function Home() {
-  const router = useRouter()
   const shouldReduce = useReducedMotion()
   const [freeCompleted, setFreeCompleted] = useState(false)
-  const [showEmailForm, setShowEmailForm] = useState(false)
-  const [email, setEmail] = useState("")
-  const [emailStatus, setEmailStatus] = useState<"idle" | "loading" | "notfound" | "error" | "success">("idle")
 
   useEffect(() => {
     const completed = localStorage.getItem("passplus_completed") === "true"
     const unlocked = localStorage.getItem("passplus_unlocked") === "true"
     setFreeCompleted(completed && !unlocked)
   }, [])
-
-  async function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setEmailStatus("loading")
-    try {
-      const r = await fetch("/api/verify-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      })
-      const data: { valid: boolean } = await r.json()
-      if (data.valid) {
-        unlock()
-        setEmailStatus("success")
-        sendGAEvent("event", "unlock_restored")
-        setTimeout(() => router.push("/quiz"), 1200)
-      } else {
-        setEmailStatus("notfound")
-      }
-    } catch {
-      setEmailStatus("error")
-    }
-  }
 
   const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: shouldReduce ? 0 : 20 },
@@ -120,116 +91,25 @@ export default function Home() {
           >
             {freeCompleted ? (
               <div className="flex flex-col items-center gap-3 w-full sm:w-auto">
-                <AnimatePresence mode="wait">
-                  {!showEmailForm ? (
-                    <motion.div
-                      key="upsell"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
-                      className="flex flex-col items-center gap-3 w-full sm:w-auto"
-                    >
-                      <div className="flex flex-col items-center gap-1 text-center">
-                        <p className="text-sm font-semibold text-foreground">
-                          You&apos;ve completed your free quiz
-                        </p>
-                        <p className="text-xs text-muted-foreground max-w-xs">
-                          Unlock full access to retake with all 245 questions and get
-                          AI explanations for every answer
-                        </p>
-                      </div>
-                      <a
-                        href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => sendGAEvent("event", "unlock_clicked")}
-                        className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
-                      >
-                        Unlock All 245 Questions — $9.99
-                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                      </a>
-                      <button
-                        onClick={() => { setShowEmailForm(true); setEmailStatus("idle") }}
-                        className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[36px]"
-                      >
-                        <Mail className="w-3.5 h-3.5" />
-                        Already paid?
-                      </button>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="email"
-                      initial={shouldReduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="flex flex-col items-center gap-4 w-full sm:w-80"
-                    >
-                      <div className="flex flex-col items-center gap-1 text-center">
-                        <p className="text-sm font-semibold text-foreground">Restore your access</p>
-                        <p className="text-xs text-muted-foreground max-w-xs">
-                          Enter the email you used when you paid and we&apos;ll unlock your account.
-                        </p>
-                      </div>
-
-                      {emailStatus === "success" ? (
-                        <motion.p
-                          initial={{ opacity: 0, scale: 0.95 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          className="text-sm text-accent-green font-medium"
-                        >
-                          ✓ Access restored! Redirecting…
-                        </motion.p>
-                      ) : (
-                        <form onSubmit={handleEmailSubmit} className="flex flex-col gap-2 w-full">
-                          <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => { setEmail(e.target.value); setEmailStatus("idle") }}
-                            placeholder="you@example.com"
-                            required
-                            autoFocus
-                            className="w-full bg-muted border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-green/50 transition-colors min-h-[44px]"
-                          />
-                          {emailStatus === "notfound" && (
-                            <p className="text-xs text-red-400 text-left">
-                              Email not found. Check the address or{" "}
-                              <a
-                                href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="underline"
-                              >
-                                purchase access
-                              </a>
-                              .
-                            </p>
-                          )}
-                          {emailStatus === "error" && (
-                            <p className="text-xs text-red-400 text-left">
-                              Something went wrong. Please try again.
-                            </p>
-                          )}
-                          <button
-                            type="submit"
-                            disabled={emailStatus === "loading" || !email}
-                            className="w-full bg-accent-green hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
-                          >
-                            {emailStatus === "loading" ? "Checking…" : "Restore Access"}
-                          </button>
-                        </form>
-                      )}
-
-                      <button
-                        onClick={() => { setShowEmailForm(false); setEmailStatus("idle") }}
-                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        ← Back
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <div className="flex flex-col items-center gap-1 text-center">
+                  <p className="text-sm font-semibold text-foreground">
+                    You&apos;ve completed your free quiz
+                  </p>
+                  <p className="text-xs text-muted-foreground max-w-xs">
+                    Unlock full access to retake with all 245 questions and get
+                    AI explanations for every answer
+                  </p>
+                </div>
+                <a
+                  href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => sendGAEvent("event", "unlock_clicked")}
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
+                >
+                  Unlock All 245 Questions — $9.99
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </a>
               </div>
             ) : (
               <>

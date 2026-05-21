@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, Mail, ArrowLeft } from "lucide-react"
+import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import {
@@ -725,30 +725,6 @@ function PaywallOverlay({
   onGoToResults: () => void
   shouldReduce: boolean
 }) {
-  const [view, setView] = useState<"default" | "email">("default")
-  const [email, setEmail] = useState("")
-  const [emailStatus, setEmailStatus] = useState<"idle" | "loading" | "notfound" | "error">("idle")
-
-  async function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setEmailStatus("loading")
-    try {
-      const r = await fetch("/api/verify-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      })
-      const data: { valid: boolean } = await r.json()
-      if (data.valid) {
-        onUnlock()
-      } else {
-        setEmailStatus("notfound")
-      }
-    } catch {
-      setEmailStatus("error")
-    }
-  }
-
   return (
     <>
       <motion.div
@@ -771,137 +747,49 @@ function PaywallOverlay({
         className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
       >
         <div className="w-full max-w-md bg-card border border-border rounded-2xl p-8 flex flex-col items-center text-center gap-6 shadow-2xl pointer-events-auto">
-          <AnimatePresence mode="wait">
-            {view === "default" ? (
-              <motion.div
-                key="default"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="flex flex-col items-center gap-6 w-full"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
-                  <Lock className="w-7 h-7 text-accent-green" />
-                </div>
+          <div className="w-14 h-14 rounded-2xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
+            <Lock className="w-7 h-7 text-accent-green" />
+          </div>
 
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">
-                    You&apos;ve finished your 25 free questions
-                  </h2>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    Unlock all{" "}
-                    <strong className="text-foreground">245 questions</strong> across
-                    three full practice exams covering every SY0-701 domain.
-                  </p>
-                </div>
+          <div>
+            <h2 className="text-2xl font-bold mb-2">
+              You&apos;ve finished your 25 free questions
+            </h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Unlock all{" "}
+              <strong className="text-foreground">245 questions</strong> across
+              three full practice exams covering every SY0-701 domain.
+            </p>
+          </div>
 
-                <div className="bg-muted border border-border rounded-xl px-6 py-4 text-center w-full">
-                  <div className="text-4xl font-bold">$9.99</div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    one-time · lifetime access
-                  </div>
-                </div>
+          <div className="bg-muted border border-border rounded-xl px-6 py-4 text-center w-full">
+            <div className="text-4xl font-bold">$9.99</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              one-time · lifetime access
+            </div>
+          </div>
 
-                <div className="flex flex-col gap-3 w-full">
-                  <motion.button
-                    whileHover={shouldReduce ? {} : { scale: 1.01 }}
-                    whileTap={shouldReduce ? {} : { scale: 0.98 }}
-                    onClick={() =>
-                      window.open(
-                        "https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00",
-                        "_blank"
-                      )
-                    }
-                    className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
-                  >
-                    Unlock All 245 Questions — $9.99
-                  </motion.button>
-                  <button
-                    onClick={() => { setView("email"); setEmailStatus("idle") }}
-                    className="w-full flex items-center justify-center gap-1.5 text-muted-foreground hover:text-foreground text-sm transition-colors py-2.5 min-h-[44px] border border-border hover:border-accent-green/30 rounded-xl"
-                  >
-                    <Mail className="w-3.5 h-3.5" />
-                    I already paid
-                  </button>
-                  <button
-                    onClick={onGoToResults}
-                    className="w-full text-muted-foreground/60 hover:text-muted-foreground text-xs transition-colors py-1 min-h-[36px]"
-                  >
-                    See my results →
-                  </button>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="email"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="flex flex-col items-center gap-5 w-full"
-              >
-                <button
-                  onClick={() => { setView("default"); setEmailStatus("idle") }}
-                  className="self-start flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors -mb-1"
-                >
-                  <ArrowLeft className="w-3 h-3" /> Back
-                </button>
-
-                <div className="w-14 h-14 rounded-2xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
-                  <Mail className="w-7 h-7 text-accent-green" />
-                </div>
-
-                <div>
-                  <h2 className="text-xl font-bold mb-1">Restore your access</h2>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    Enter the email you used when you paid and we&apos;ll
-                    unlock your account.
-                  </p>
-                </div>
-
-                <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3 w-full">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => { setEmail(e.target.value); setEmailStatus("idle") }}
-                    placeholder="you@example.com"
-                    required
-                    autoFocus
-                    className="w-full bg-muted border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-green/50 transition-colors min-h-[44px]"
-                  />
-
-                  {emailStatus === "notfound" && (
-                    <p className="text-xs text-red-400 text-left">
-                      Email not found. Check the address or{" "}
-                      <a
-                        href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline"
-                      >
-                        purchase access
-                      </a>
-                      .
-                    </p>
-                  )}
-                  {emailStatus === "error" && (
-                    <p className="text-xs text-red-400 text-left">
-                      Something went wrong. Please try again.
-                    </p>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={emailStatus === "loading" || !email}
-                    className="w-full bg-accent-green hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
-                  >
-                    {emailStatus === "loading" ? "Checking…" : "Restore Access"}
-                  </button>
-                </form>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div className="flex flex-col gap-3 w-full">
+            <motion.button
+              whileHover={shouldReduce ? {} : { scale: 1.01 }}
+              whileTap={shouldReduce ? {} : { scale: 0.98 }}
+              onClick={() =>
+                window.open(
+                  "https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00",
+                  "_blank"
+                )
+              }
+              className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
+            >
+              Unlock All 245 Questions — $9.99
+            </motion.button>
+            <button
+              onClick={onGoToResults}
+              className="w-full text-muted-foreground/60 hover:text-muted-foreground text-xs transition-colors py-1 min-h-[36px]"
+            >
+              See my results →
+            </button>
+          </div>
         </div>
       </motion.div>
     </>
