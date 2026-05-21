@@ -1,7 +1,7 @@
 export function DiscordBanner() {
   return (
     <a
-      href="https://discord.gg/pDRSfvr7D"
+      href="https://discord.gg/wYUMRNFWEM"
       target="_blank"
       rel="noopener noreferrer"
       className="group flex flex-col sm:flex-row items-center gap-6 bg-[#5865F2]/8 border border-[#5865F2]/25 hover:border-[#5865F2]/50 hover:bg-[#5865F2]/12 rounded-2xl px-8 py-7 transition-all"

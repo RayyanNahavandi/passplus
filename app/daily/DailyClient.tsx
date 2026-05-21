@@ -290,7 +290,7 @@ export function DailyClient({
 
               {/* Discord (copy link — no intent URL for Discord) */}
               <a
-                href="https://discord.gg/pDRSfvr7D"
+                href="https://discord.gg/wYUMRNFWEM"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => sendGAEvent("event", "daily_shared", { platform: "discord" })}
