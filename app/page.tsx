@@ -11,10 +11,12 @@ import { DiscordBanner } from "@/components/DiscordBanner"
 export default function Home() {
   const shouldReduce = useReducedMotion()
   const [freeCompleted, setFreeCompleted] = useState(false)
+  const [isUnlocked, setIsUnlocked] = useState(false)
 
   useEffect(() => {
     const completed = localStorage.getItem("passplus_completed") === "true"
     const unlocked = localStorage.getItem("passplus_unlocked") === "true"
+    setIsUnlocked(unlocked)
     setFreeCompleted(completed && !unlocked)
   }, [])
 
@@ -52,6 +54,14 @@ export default function Home() {
               className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] flex items-center"
             >
               Start Quiz →
+            </Link>
+          )}
+          {!isUnlocked && (
+            <Link
+              href="/login"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] flex items-center"
+            >
+              Sign in
             </Link>
           )}
         </motion.div>
@@ -115,6 +125,12 @@ export default function Home() {
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[36px] flex items-center"
                 >
                   Already paid? Restore access
+                </Link>
+                <Link
+                  href="/login"
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Or sign in to your account
                 </Link>
               </div>
             ) : (
