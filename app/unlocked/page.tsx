@@ -6,9 +6,9 @@ import { motion } from "motion/react"
 import { CheckCircle, XCircle } from "lucide-react"
 import { unlock } from "@/lib/quiz-store"
 
-// Fallback token for manual unlocks and Safari ITP support.
-// Keep this value private — share only with users who need manual access.
-const UNLOCK_TOKEN = "PP_X9K2M7N4Q8"
+// Fallback tokens for manual unlocks and Safari ITP support.
+// Keep these values private — share only with users who need manual access.
+const UNLOCK_TOKENS = new Set(["PP_X9K2M7N4Q8", "PP_SUPPORT_2026"])
 
 type Status = "verifying" | "success" | "failed"
 
@@ -23,7 +23,7 @@ function UnlockedInner() {
 
     // Token path: manual unlock for support cases / Safari ITP fallback
     if (token !== null) {
-      if (token === UNLOCK_TOKEN) {
+      if (UNLOCK_TOKENS.has(token)) {
         unlock() // sets both localStorage and cookie
         setStatus("success")
         setTimeout(() => router.push("/quiz"), 2000)
