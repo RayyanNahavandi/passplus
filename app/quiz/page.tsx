@@ -168,6 +168,7 @@ export default function QuizPage() {
     const nextIndex = session.currentIndex + 1
 
     if (!session.isUnlocked && nextIndex >= session.questions.length) {
+      localStorage.setItem("passplus_completed", "true")
       sendGAEvent("event", "paywall_shown")
       setShowPaywall(true)
       setSelected(null)

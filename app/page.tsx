@@ -114,7 +114,7 @@ export default function Home() {
                   href="/support?token=SUPPORT2026"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[36px] flex items-center"
                 >
-                  Already paid? Click here to restore access
+                  Already paid? Restore access
                 </Link>
               </div>
             ) : (
