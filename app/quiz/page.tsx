@@ -430,7 +430,7 @@ export default function QuizPage() {
                           transition={{ duration: 0.25 }}
                           className="text-xs text-muted-foreground"
                         >
-                          🔒 Why is this wrong?{" "}
+                          Why is this wrong?{" "}
                           <a
                             href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
                             target="_blank"
