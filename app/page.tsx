@@ -110,6 +110,12 @@ export default function Home() {
                   Unlock All 245 Questions — $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
+                <Link
+                  href="/support?token=SUPPORT2026"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[36px] flex items-center"
+                >
+                  Already paid? Click here to restore access
+                </Link>
               </div>
             ) : (
               <>
