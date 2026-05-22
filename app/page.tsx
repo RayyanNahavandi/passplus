@@ -59,7 +59,7 @@ export default function Home() {
           {!isUnlocked && (
             <Link
               href="/login"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] flex items-center"
+              className="text-sm font-medium text-foreground border border-border hover:border-foreground/40 hover:bg-muted px-3 py-1.5 rounded-lg transition-colors min-h-[36px] flex items-center"
             >
               Sign in
             </Link>
