@@ -424,30 +424,23 @@ export default function QuizPage() {
 
                       {/* Locked teaser — free users, wrong answer only */}
                       {!session.isUnlocked && !answeredCorrectly && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 6 }}
+                        <motion.p
+                          initial={{ opacity: 0, y: 4 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.25 }}
-                          className="flex flex-col gap-3 bg-muted/60 border border-border rounded-xl px-4 py-4"
+                          className="text-xs text-muted-foreground"
                         >
-                          <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-accent-green/10 border border-accent-green/20 flex items-center justify-center shrink-0 mt-0.5">
-                              <Lock className="w-4 h-4 text-accent-green" />
-                            </div>
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                              Unlock AI explanations to understand why.
-                            </p>
-                          </div>
+                          🔒 Why is this wrong?{" "}
                           <a
                             href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => sendGAEvent("event", "unlock_clicked_teaser")}
-                            className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-2.5 rounded-xl transition-colors text-sm min-h-[44px]"
+                            className="text-accent-green hover:text-accent-hover transition-colors"
                           >
-                            Unlock Full Access — $9.99
+                            Unlock full AI explanations
                           </a>
-                        </motion.div>
+                        </motion.p>
                       )}
 
                       {/* AI explanation — paid users only */}
