@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { supabaseAdmin } from "@/lib/supabase-admin"
 
 export async function POST(request: NextRequest) {
   let email: string
@@ -13,11 +14,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ valid: false }, { status: 400 })
   }
 
+  // Check paid_users table first
+  const { data } = await supabaseAdmin
+    .from("paid_users")
+    .select("email")
+    .eq("email", email)
+    .maybeSingle()
+
+  if (data) return NextResponse.json({ valid: true })
+
+  // Fallback: PAID_EMAILS env var (legacy / manual overrides)
   const paidEmails = (process.env.PAID_EMAILS ?? "")
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean)
 
-  const valid = paidEmails.includes(email)
-  return NextResponse.json({ valid })
+  return NextResponse.json({ valid: paidEmails.includes(email) })
 }
