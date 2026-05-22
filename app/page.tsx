@@ -143,8 +143,8 @@ export default function Home() {
                   Start Free Quiz, No Signup Required
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
-                <span className="text-xs text-muted-foreground">
-                  Join 50+ people studying for SY0-701
+                <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
+                  Join 1,000+ people across 20+ countries studying for SY0-701 — students have already passed
                 </span>
               </>
             )}
@@ -182,6 +182,54 @@ export default function Home() {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* Testimonial */}
+      <section className="px-6 py-10">
+        <motion.div
+          initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
+          whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-20px" }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="max-w-2xl mx-auto"
+        >
+          <div className="relative bg-card border border-accent-green/20 rounded-2xl px-7 py-6 shadow-[0_0_24px_-4px_rgba(74,222,128,0.08)]">
+            {/* Stars */}
+            <div className="flex items-center gap-0.5 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+              <span className="ml-2 text-xs font-medium text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full">
+                Verified Pass
+              </span>
+            </div>
+
+            {/* Quote mark */}
+            <span className="text-4xl font-serif leading-none text-accent-green select-none" aria-hidden>
+              &ldquo;
+            </span>
+
+            <p className="text-sm sm:text-base text-foreground leading-relaxed -mt-2 mb-4">
+              I passed! The questions were very similar to the real exam. Highly recommend studying all 200+ questions!
+            </p>
+
+            {/* Attribution */}
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-xs font-bold text-accent-green">
+                A
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm font-medium text-foreground">Alexxx</span>
+                <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium">
+                  <CheckCircle className="w-3 h-3" />
+                  CompTIA Security+ Certified
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* Features */}
