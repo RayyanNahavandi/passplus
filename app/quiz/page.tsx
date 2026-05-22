@@ -421,7 +421,35 @@ export default function QuizPage() {
                         )}
                       </div>
 
-                      {/* Explanation */}
+                      {/* Locked teaser — free users, wrong answer only */}
+                      {!session.isUnlocked && !answeredCorrectly && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="flex flex-col gap-3 bg-muted/60 border border-border rounded-xl px-4 py-4"
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-accent-green/10 border border-accent-green/20 flex items-center justify-center shrink-0 mt-0.5">
+                              <Lock className="w-4 h-4 text-accent-green" />
+                            </div>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              Unlock AI explanations to understand why.
+                            </p>
+                          </div>
+                          <a
+                            href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => sendGAEvent("event", "unlock_clicked_teaser")}
+                            className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-2.5 rounded-xl transition-colors text-sm min-h-[44px]"
+                          >
+                            Unlock Full Access — $9.99
+                          </a>
+                        </motion.div>
+                      )}
+
+                      {/* AI explanation — paid users only */}
                       <AnimatePresence>
                         {session.isUnlocked && (loadingExplanation || explanation) && (
                           <motion.p
@@ -445,38 +473,6 @@ export default function QuizPage() {
                               </>
                             )}
                           </motion.p>
-                        )}
-
-                        {!session.isUnlocked && !answeredCorrectly && !isReviewing && (
-                          <motion.div
-                            key="teaser"
-                            initial={{ opacity: 0, y: 6 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.25 }}
-                            className="flex flex-col gap-3 bg-muted/60 border border-border rounded-xl px-4 py-4"
-                          >
-                            <div className="flex items-start gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-accent-green/10 border border-accent-green/20 flex items-center justify-center shrink-0 mt-0.5">
-                                <Lock className="w-4 h-4 text-accent-green" />
-                              </div>
-                              <p className="text-sm text-muted-foreground leading-relaxed">
-                                Why is this wrong?{" "}
-                                <span className="text-foreground font-medium">
-                                  Unlock full AI explanations with PassPlus.
-                                </span>
-                              </p>
-                            </div>
-                            <a
-                              href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={() => sendGAEvent("event", "unlock_clicked_teaser")}
-                              className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-2.5 rounded-xl transition-colors text-sm min-h-[44px]"
-                            >
-                              Unlock Full Access — $9.99
-                            </a>
-                          </motion.div>
                         )}
                       </AnimatePresence>
 
