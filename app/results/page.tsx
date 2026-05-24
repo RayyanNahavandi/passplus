@@ -111,6 +111,7 @@ export default function ResultsPage() {
     const domainPct = domainTotal > 0 ? Math.round((correct / domainTotal) * 100) : 0
     return { id, name, correct, total: domainTotal, pct: domainPct }
   }).filter((d) => d.total > 0)
+    .sort((a, b) => a.pct - b.pct)
 
   function gradeLabel(p: number) {
     if (p >= 90) return { label: "Excellent!", color: "text-accent-green" }
@@ -214,52 +215,58 @@ export default function ResultsPage() {
           {domainStats.length > 0 && (
             <motion.div
               variants={shouldReduce ? {} : itemVariants}
-              className="bg-card border border-border rounded-2xl p-6 flex flex-col gap-4"
+              className="bg-card border border-border rounded-2xl p-6 flex flex-col gap-5"
             >
-              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-                Domain Breakdown
-              </h2>
-              <div className="flex flex-col gap-4">
-                {domainStats.map((d) => {
-                  const barColor =
-                    d.pct >= 85
-                      ? "bg-accent-green"
-                      : d.pct >= 70
-                      ? "bg-yellow-400"
-                      : "bg-red-400"
-                  const textColor =
-                    d.pct >= 85
-                      ? "text-accent-green"
-                      : d.pct >= 70
-                      ? "text-yellow-400"
-                      : "text-red-400"
+              <h2 className="text-base font-bold">Domains</h2>
+              <div className="flex flex-col gap-5">
+                {domainStats.map((d, i) => {
+                  const incorrectPct = 100 - d.pct
                   return (
                     <div key={d.id} className="flex flex-col gap-1.5">
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-sm text-foreground leading-snug flex-1">
-                          <span className="text-muted-foreground text-xs mr-1.5">
-                            D{d.id}
-                          </span>
-                          {d.name}
+                      <span className="text-sm font-semibold text-foreground">
+                        {d.id}.0 – {d.name}{" "}
+                        <span className="font-normal text-muted-foreground">
+                          ({d.total} question{d.total !== 1 ? "s" : ""})
                         </span>
-                        <span className={`text-sm font-semibold shrink-0 ${textColor}`}>
-                          {d.pct}%{" "}
-                          <span className="text-xs font-normal text-muted-foreground">
-                            ({d.correct}/{d.total})
-                          </span>
-                        </span>
-                      </div>
-                      <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                        <motion.div
-                          className={`h-full rounded-full ${barColor}`}
-                          initial={shouldReduce ? { width: `${d.pct}%` } : { width: "0%" }}
-                          animate={{ width: `${d.pct}%` }}
-                          transition={{ duration: 0.8, ease: "easeOut", delay: d.id * 0.07 }}
-                        />
+                      </span>
+                      <div className="flex h-8 rounded-md overflow-hidden">
+                        {/* Correct segment */}
+                        {d.pct > 0 && (
+                          <motion.div
+                            className="flex items-center justify-center bg-accent-green/20 text-accent-green text-xs font-semibold"
+                            initial={shouldReduce ? { width: `${d.pct}%` } : { width: "0%" }}
+                            animate={{ width: `${d.pct}%` }}
+                            transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.08 }}
+                          >
+                            {d.pct >= 12 ? `${d.pct}%` : ""}
+                          </motion.div>
+                        )}
+                        {/* Incorrect segment */}
+                        {incorrectPct > 0 && (
+                          <motion.div
+                            className="flex items-center justify-center bg-red-500/15 text-red-400 text-xs font-semibold"
+                            initial={shouldReduce ? { width: `${incorrectPct}%` } : { width: "0%" }}
+                            animate={{ width: `${incorrectPct}%` }}
+                            transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.08 }}
+                          >
+                            {incorrectPct >= 12 ? `${incorrectPct}%` : ""}
+                          </motion.div>
+                        )}
                       </div>
                     </div>
                   )
                 })}
+              </div>
+              {/* Legend */}
+              <div className="flex items-center gap-4 pt-1">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-3 rounded-sm bg-accent-green/20 border border-accent-green/40" />
+                  <span className="text-xs text-muted-foreground">Correct</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-3 rounded-sm bg-red-500/15 border border-red-500/30" />
+                  <span className="text-xs text-muted-foreground">Incorrect</span>
+                </div>
               </div>
             </motion.div>
           )}
