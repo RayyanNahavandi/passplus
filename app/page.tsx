@@ -1,17 +1,40 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown } from "lucide-react"
+import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
+import { useAuth } from "@/components/AuthProvider"
 
 export default function Home() {
   const shouldReduce = useReducedMotion()
+  const router = useRouter()
+  const { user, displayName, signOut } = useAuth()
   const [freeCompleted, setFreeCompleted] = useState(false)
-  const [isUnlocked, setIsUnlocked] = useState(false)
+  const [showAccountMenu, setShowAccountMenu] = useState(false)
   const [selectedCert, setSelectedCert] = useState<"secplus" | "netplus" | "aplus">("secplus")
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  // Close dropdown on click-outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowAccountMenu(false)
+      }
+    }
+    if (showAccountMenu) document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [showAccountMenu])
+
+  async function handleSignOut() {
+    setShowAccountMenu(false)
+    await signOut()
+    router.refresh()
+  }
+
 
   const certs = [
     { id: "secplus" as const, label: "Security+", sub: "SY0-701", available: true },
@@ -22,7 +45,6 @@ export default function Home() {
   useEffect(() => {
     const completed = localStorage.getItem("passplus_completed") === "true"
     const unlocked = localStorage.getItem("passplus_unlocked") === "true"
-    setIsUnlocked(unlocked)
     setFreeCompleted(completed && !unlocked)
   }, [])
 
@@ -62,7 +84,41 @@ export default function Home() {
               Start Quiz →
             </Link>
           )}
-          {!isUnlocked && (
+
+          {/* Account menu / sign-in */}
+          {user ? (
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setShowAccountMenu((v) => !v)}
+                className="flex items-center gap-1.5 text-sm font-medium text-foreground border border-border hover:border-foreground/40 hover:bg-muted px-3 py-1.5 rounded-lg transition-colors min-h-[36px]"
+              >
+                <User className="w-3.5 h-3.5 text-muted-foreground" />
+                <span className="max-w-[100px] truncate">{displayName}</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-150 ${showAccountMenu ? "rotate-180" : ""}`} />
+              </button>
+
+              {showAccountMenu && (
+                <div className="absolute right-0 top-full mt-1.5 w-44 bg-card border border-border rounded-xl shadow-lg py-1 z-50">
+                  <Link
+                    href="/login"
+                    onClick={() => setShowAccountMenu(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+                  >
+                    <User className="w-3.5 h-3.5 text-muted-foreground" />
+                    My Account
+                  </Link>
+                  <div className="h-px bg-border my-1" />
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-muted transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
             <Link
               href="/login"
               className="text-sm font-medium text-foreground border border-border hover:border-foreground/40 hover:bg-muted px-3 py-1.5 rounded-lg transition-colors min-h-[36px] flex items-center"

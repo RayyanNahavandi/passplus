@@ -1,31 +1,42 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, AnimatePresence } from "motion/react"
-import { Mail, Lock, ArrowRight, CheckCircle } from "lucide-react"
+import { Mail, Lock, User, ArrowRight, CheckCircle } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { supabase } from "@/lib/supabase"
 import { unlock } from "@/lib/quiz-store"
+import { useAuth } from "@/components/AuthProvider"
 
 type Mode = "signin" | "signup"
 type Status = "idle" | "loading" | "confirm_email" | "error"
 
 export default function LoginPage() {
   const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
+
   const [mode, setMode] = useState<Mode>("signin")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [displayName, setDisplayName] = useState("")
   const [status, setStatus] = useState<Status>("idle")
   const [errorMsg, setErrorMsg] = useState("")
+
+  // Redirect already-authenticated users away from /login
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace("/")
+    }
+  }, [authLoading, user, router])
 
   async function checkPaidAndRedirect(accessToken: string) {
     try {
       const res = await fetch("/api/auth/check-paid", {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
-      const { paid } = await res.json() as { paid: boolean }
+      const { paid } = (await res.json()) as { paid: boolean }
       if (paid) {
         unlock()
         router.push("/quiz")
@@ -43,20 +54,28 @@ export default function LoginPage() {
     setErrorMsg("")
 
     if (mode === "signup") {
-      const { data, error } = await supabase.auth.signUp({ email, password })
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { display_name: displayName.trim() || email.split("@")[0] },
+        },
+      })
       if (error) {
         setErrorMsg(error.message)
         setStatus("error")
         return
       }
-      // If email confirmation is required, data.session is null
       if (!data.session) {
         setStatus("confirm_email")
         return
       }
       await checkPaidAndRedirect(data.session.access_token)
     } else {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
       if (error) {
         setErrorMsg(
           error.message === "Invalid login credentials"
@@ -75,6 +94,18 @@ export default function LoginPage() {
     setStatus("idle")
     setErrorMsg("")
   }
+
+  // Show spinner while checking existing session
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="w-5 h-5 rounded-full border-2 border-border border-t-accent-green animate-spin" />
+      </div>
+    )
+  }
+
+  // Already signed in — render nothing while redirect fires
+  if (user) return null
 
   if (status === "confirm_email") {
     return (
@@ -119,7 +150,10 @@ export default function LoginPage() {
           <Logo size={28} />
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </div>
-        <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <Link
+          href="/"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
           ← Back
         </Link>
       </header>
@@ -161,6 +195,32 @@ export default function LoginPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              {/* Display name — signup only */}
+              <AnimatePresence initial={false}>
+                {mode === "signup" && (
+                  <motion.div
+                    key="displayName"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                      <input
+                        type="text"
+                        value={displayName}
+                        onChange={(e) => setDisplayName(e.target.value)}
+                        placeholder="Display name (e.g. Alex)"
+                        maxLength={32}
+                        className="w-full bg-muted border border-border rounded-xl pl-9 pr-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-green/50 transition-colors min-h-[44px]"
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                 <input
@@ -169,7 +229,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  autoFocus
+                  autoFocus={mode === "signin"}
                   className="w-full bg-muted border border-border rounded-xl pl-9 pr-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-green/50 transition-colors min-h-[44px]"
                 />
               </div>
@@ -220,14 +280,20 @@ export default function LoginPage() {
               {mode === "signin" ? (
                 <>
                   No account?{" "}
-                  <button onClick={() => switchMode("signup")} className="text-accent-green hover:underline">
+                  <button
+                    onClick={() => switchMode("signup")}
+                    className="text-accent-green hover:underline"
+                  >
                     Create one
                   </button>
                 </>
               ) : (
                 <>
                   Already have one?{" "}
-                  <button onClick={() => switchMode("signin")} className="text-accent-green hover:underline">
+                  <button
+                    onClick={() => switchMode("signin")}
+                    className="text-accent-green hover:underline"
+                  >
                     Sign in
                   </button>
                 </>

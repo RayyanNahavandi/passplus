@@ -12,6 +12,7 @@ import {
 import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
+import { useAuth } from "@/components/AuthProvider"
 import {
   createSession,
   saveSession,
@@ -31,6 +32,7 @@ function formatTime(seconds: number): string {
 
 export default function QuizPage() {
   const router = useRouter()
+  const { displayName } = useAuth()
   const [session, setSession] = useState<QuizSession | null>(null)
   const [selected, setSelected] = useState<"A" | "B" | "C" | "D" | null>(null)
   const [showPaywall, setShowPaywall] = useState(false)
@@ -327,6 +329,7 @@ export default function QuizPage() {
           onPractice={handleStartPractice}
           onExam={handleStartExam}
           shouldReduce={!!shouldReduce}
+          displayName={displayName}
         />
       ) : (
         /* Quiz content */
@@ -534,10 +537,12 @@ function ModeSelectScreen({
   onPractice,
   onExam,
   shouldReduce,
+  displayName,
 }: {
   onPractice: () => void
   onExam: () => void
   shouldReduce: boolean
+  displayName?: string | null
 }) {
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
@@ -548,6 +553,11 @@ function ModeSelectScreen({
         transition={{ duration: 0.4, ease: "easeOut" as const }}
       >
         <div className="text-center">
+          {displayName && (
+            <p className="text-sm text-accent-green font-medium mb-1">
+              Good luck, {displayName}! 🎯
+            </p>
+          )}
           <h1 className="text-2xl font-bold mb-2">Choose your mode</h1>
           <p className="text-sm text-muted-foreground">
             How would you like to study today?
