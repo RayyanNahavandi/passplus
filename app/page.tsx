@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User } from "lucide-react"
+import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
@@ -15,10 +15,12 @@ export default function Home() {
   const { user, displayName, signOut } = useAuth()
   const [freeCompleted, setFreeCompleted] = useState(false)
   const [showAccountMenu, setShowAccountMenu] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [selectedCert, setSelectedCert] = useState<"secplus" | "netplus" | "aplus">("secplus")
   const menuRef = useRef<HTMLDivElement>(null)
+  const navRef = useRef<HTMLElement>(null)
 
-  // Close dropdown on click-outside
+  // Close desktop account dropdown on click-outside
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -28,6 +30,17 @@ export default function Home() {
     if (showAccountMenu) document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [showAccountMenu])
+
+  // Close mobile menu on click-outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setShowMobileMenu(false)
+      }
+    }
+    if (showMobileMenu) document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [showMobileMenu])
 
   async function handleSignOut() {
     setShowAccountMenu(false)
@@ -60,12 +73,15 @@ export default function Home() {
 
   return (
     <main className="flex flex-col min-h-screen bg-background">
-      <nav className="border-b border-border px-6 py-4 flex items-center justify-between">
+      <nav ref={navRef} className="relative border-b border-border px-6 py-4 flex items-center justify-between">
+        {/* Logo — always visible */}
         <motion.div className="flex items-center gap-2" {...fadeUp(0)}>
           <Logo size={28} />
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </motion.div>
-        <motion.div {...fadeUp(0.05)} className="flex items-center gap-3">
+
+        {/* Desktop nav — hidden on mobile */}
+        <motion.div {...fadeUp(0.05)} className="hidden md:flex items-center gap-3">
           <Link
             href="/daily"
             onClick={() => sendGAEvent("event", "daily_nav_clicked")}
@@ -85,7 +101,7 @@ export default function Home() {
             </Link>
           )}
 
-          {/* Account menu / sign-in */}
+          {/* Desktop account menu / sign-in */}
           {user ? (
             <div className="relative" ref={menuRef}>
               <button
@@ -127,6 +143,76 @@ export default function Home() {
             </Link>
           )}
         </motion.div>
+
+        {/* Hamburger — mobile only */}
+        <button
+          onClick={() => setShowMobileMenu((v) => !v)}
+          className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg border border-border hover:bg-muted transition-colors text-foreground"
+          aria-label="Menu"
+        >
+          {showMobileMenu ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+        </button>
+
+        {/* Mobile dropdown */}
+        {showMobileMenu && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border shadow-lg z-50 flex flex-col py-2">
+            <Link
+              href="/daily"
+              onClick={() => { setShowMobileMenu(false); sendGAEvent("event", "daily_nav_clicked") }}
+              className="flex items-center gap-2.5 px-5 py-3 text-sm font-medium text-accent-green hover:bg-muted transition-colors"
+            >
+              <CalendarDays className="w-4 h-4 shrink-0" />
+              Daily Question
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse" />
+            </Link>
+
+            {!freeCompleted && (
+              <Link
+                href="/quiz"
+                onClick={() => { setShowMobileMenu(false); sendGAEvent("event", "quiz_started") }}
+                className="flex items-center gap-2.5 px-5 py-3 text-sm text-foreground hover:bg-muted transition-colors"
+              >
+                <Zap className="w-4 h-4 text-muted-foreground shrink-0" />
+                Start Quiz
+              </Link>
+            )}
+
+            <div className="h-px bg-border mx-5 my-1" />
+
+            {user ? (
+              <>
+                <div className="flex items-center gap-2.5 px-5 py-2">
+                  <User className="w-4 h-4 text-muted-foreground shrink-0" />
+                  <span className="text-sm font-medium text-foreground truncate">{displayName}</span>
+                </div>
+                <Link
+                  href="/login"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="flex items-center gap-2.5 px-5 py-3 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                >
+                  <User className="w-4 h-4 shrink-0" />
+                  My Account
+                </Link>
+                <button
+                  onClick={() => { setShowMobileMenu(false); handleSignOut() }}
+                  className="flex items-center gap-2.5 px-5 py-3 text-sm text-red-400 hover:bg-muted transition-colors w-full text-left"
+                >
+                  <LogOut className="w-4 h-4 shrink-0" />
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setShowMobileMenu(false)}
+                className="flex items-center gap-2.5 px-5 py-3 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                <User className="w-4 h-4 text-muted-foreground shrink-0" />
+                Sign in
+              </Link>
+            )}
+          </div>
+        )}
       </nav>
 
       {/* Hero */}
