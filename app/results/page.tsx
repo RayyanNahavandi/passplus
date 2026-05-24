@@ -92,6 +92,26 @@ export default function ResultsPage() {
     session.missedIds.includes(q.id)
   )
 
+  const DOMAINS = [
+    { id: 1 as const, name: "General Security Concepts" },
+    { id: 2 as const, name: "Threats, Vulnerabilities & Mitigations" },
+    { id: 3 as const, name: "Security Architecture" },
+    { id: 4 as const, name: "Security Operations" },
+    { id: 5 as const, name: "Security Program Management & Oversight" },
+  ]
+
+  const domainStats = DOMAINS.map(({ id, name }) => {
+    const domainQs = questions.filter(
+      (q) => q.domain === id && q.id in session.answers
+    )
+    const correct = domainQs.filter(
+      (q) => session.answers[q.id] === q.answer
+    ).length
+    const domainTotal = domainQs.length
+    const domainPct = domainTotal > 0 ? Math.round((correct / domainTotal) * 100) : 0
+    return { id, name, correct, total: domainTotal, pct: domainPct }
+  }).filter((d) => d.total > 0)
+
   function gradeLabel(p: number) {
     if (p >= 90) return { label: "Excellent!", color: "text-accent-green" }
     if (p >= 80) return { label: "Strong Pass", color: "text-accent-green" }
@@ -189,6 +209,60 @@ export default function ResultsPage() {
               CompTIA Security+ typically requires ~75% to pass.
             </div>
           </motion.div>
+
+          {/* Domain breakdown */}
+          {domainStats.length > 0 && (
+            <motion.div
+              variants={shouldReduce ? {} : itemVariants}
+              className="bg-card border border-border rounded-2xl p-6 flex flex-col gap-4"
+            >
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                Domain Breakdown
+              </h2>
+              <div className="flex flex-col gap-4">
+                {domainStats.map((d) => {
+                  const barColor =
+                    d.pct >= 85
+                      ? "bg-accent-green"
+                      : d.pct >= 70
+                      ? "bg-yellow-400"
+                      : "bg-red-400"
+                  const textColor =
+                    d.pct >= 85
+                      ? "text-accent-green"
+                      : d.pct >= 70
+                      ? "text-yellow-400"
+                      : "text-red-400"
+                  return (
+                    <div key={d.id} className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm text-foreground leading-snug flex-1">
+                          <span className="text-muted-foreground text-xs mr-1.5">
+                            D{d.id}
+                          </span>
+                          {d.name}
+                        </span>
+                        <span className={`text-sm font-semibold shrink-0 ${textColor}`}>
+                          {d.pct}%{" "}
+                          <span className="text-xs font-normal text-muted-foreground">
+                            ({d.correct}/{d.total})
+                          </span>
+                        </span>
+                      </div>
+                      <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                        <motion.div
+                          className={`h-full rounded-full ${barColor}`}
+                          initial={shouldReduce ? { width: `${d.pct}%` } : { width: "0%" }}
+                          animate={{ width: `${d.pct}%` }}
+                          transition={{ duration: 0.8, ease: "easeOut", delay: d.id * 0.07 }}
+                        />
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </motion.div>
+          )}
 
           {/* Discord community */}
           <motion.div variants={shouldReduce ? {} : itemVariants}>
