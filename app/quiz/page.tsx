@@ -545,11 +545,11 @@ const COUNT_OPTIONS = [
   { label: "50", value: 50 },
   { label: "75", value: 75 },
   { label: "100", value: 100 },
-  { label: "All (245)", value: 245 },
+  { label: "All (255)", value: 255 },
 ]
 
 const DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[] = [
-  { label: "All Domains", sublabel: "245 questions", value: null },
+  { label: "All Domains", sublabel: "255 questions", value: null },
   { label: "Domain 1", sublabel: "General Security Concepts · 59 Qs", value: 1 },
   { label: "Domain 2", sublabel: "Threats, Vulnerabilities & Mitigations · 54 Qs", value: 2 },
   { label: "Domain 3", sublabel: "Security Architecture · 44 Qs", value: 3 },
@@ -705,7 +705,7 @@ function ModeSelectScreen({
               </div>
               {!isUnlocked && (
                 <p className="text-xs text-muted-foreground/60">
-                  Unlock all 245 questions to choose a larger set
+                  Unlock all 255 questions to choose a larger set
                 </p>
               )}
             </div>
@@ -921,7 +921,7 @@ function PaywallOverlay({
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Unlock all{" "}
-              <strong className="text-foreground">245 questions</strong> across
+              <strong className="text-foreground">255 questions</strong> across
               three full practice exams covering every SY0-701 domain.
             </p>
           </div>
@@ -945,7 +945,7 @@ function PaywallOverlay({
               }
               className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
             >
-              Unlock All 245 Questions — $9.99
+              Unlock All 255 Questions — $9.99
             </motion.button>
             <button
               onClick={onGoToResults}

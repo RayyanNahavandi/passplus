@@ -1,5 +1,5 @@
 // PassPlus - Original Security+ SY0-701 Practice Questions
-// 245 completely original questions based on CompTIA public exam objectives
+// 255 completely original questions based on CompTIA public exam objectives
 // No content derived from any copyrighted source
 
 export interface Question {
@@ -1501,6 +1501,69 @@ export const questions: Question[] = [
     question: "Which of the following BEST describes the purpose of a privacy impact assessment?",
     options: { A: "Evaluating the financial impact of a data breach", B: "Identifying and addressing privacy risks in systems that handle personal data", C: "Assessing employee privacy concerns", D: "Reviewing the organization's privacy policy for accuracy" },
     answer: "B", tier: "locked"
+  },
+  // ============================================
+  // EXAM-STYLE QUESTIONS (Q246-Q255)
+  // ============================================
+  {
+    id: "Q246", domain: 4, exam: "Original",
+    question: "A SOC analyst reviewing SIEM logs notices unusual outbound traffic from an endpoint to an external IP. The CISO requests immediate containment. Which of the following should the analyst do FIRST?",
+    options: { A: "Update the IDS signatures", B: "Isolate the endpoint using NAC", C: "Run a vulnerability scan against the CVE database", D: "Alert the MSSP via the ticketing system" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q247", domain: 1, exam: "Original",
+    question: "An organization is implementing a PKI to support S/MIME for internal communications. Which of the following is required for a user to decrypt an encrypted email?",
+    options: { A: "The sender's public key", B: "The CA's CRL", C: "The recipient's private key", D: "An OCSP stapling certificate" },
+    answer: "C", tier: "locked"
+  },
+  {
+    id: "Q248", domain: 1, exam: "Original",
+    question: "A CISO wants to reduce the attack surface of the organization's IAM system. Which of the following would BEST accomplish this?",
+    options: { A: "Implementing SAML-based SSO with MFA", B: "Deploying a WAF in front of the IdP", C: "Enabling LDAP over TLS for all directory queries", D: "Configuring RBAC with quarterly access recertification" },
+    answer: "A", tier: "locked"
+  },
+  {
+    id: "Q249", domain: 4, exam: "Original",
+    question: "During a purple team exercise, the red team successfully exfiltrates data using DNS tunneling. Which of the following controls would MOST effectively detect this TTP?",
+    options: { A: "Deploying a CASB solution", B: "Implementing DNS sinkholing and monitoring with a SIEM", C: "Enabling DLP on all endpoints", D: "Configuring IPS rules for known CVEs" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q250", domain: 5, exam: "Original",
+    question: "An organization's ISSO discovers that a third-party SaaS application stores PII without encrypting data at rest. The vendor's SLA does not address encryption requirements. Which of the following should be done FIRST?",
+    options: { A: "Terminate the SaaS contract immediately", B: "Conduct a BIA to assess the impact", C: "Escalate to the CISO and initiate a vendor risk assessment", D: "Implement a CASB to enforce DLP policies" },
+    answer: "C", tier: "locked"
+  },
+  {
+    id: "Q251", domain: 2, exam: "Original",
+    question: "A penetration tester uses OSINT to identify an organization's externally exposed RDP and SMB ports. Which of the following BEST describes the risk presented?",
+    options: { A: "Increased likelihood of a DDoS attack", B: "Expanded attack surface vulnerable to lateral movement and exploitation", C: "Risk of DNS hijacking via BGP route manipulation", D: "Exposure to MITM attacks on the organization's PKI" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q252", domain: 4, exam: "Original",
+    question: "An organization deploys a SOAR platform to automate incident response. Which of the following BEST describes the primary benefit of SOAR over a traditional SIEM?",
+    options: { A: "SOAR provides better log aggregation than SIEM", B: "SOAR automates response actions reducing MTTD and MTTR", C: "SOAR replaces the need for EDR on endpoints", D: "SOAR encrypts all IOCs before sharing with threat intelligence feeds" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q253", domain: 3, exam: "Original",
+    question: "A security architect is designing a zero trust architecture. Which of the following components is MOST critical for enforcing identity-based access to microservices?",
+    options: { A: "NGFW with deep packet inspection", B: "An IdP integrated with OAuth 2.0 and OIDC", C: "A VLAN-based microsegmentation strategy", D: "A PAM solution with just-in-time access provisioning" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q254", domain: 4, exam: "Original",
+    question: "An MDM solution detects that a managed device has been jailbroken. Per the organization's BYOD policy, which of the following should occur AUTOMATICALLY?",
+    options: { A: "The device should be added to the MDM blocklist", B: "A remote wipe should be initiated on the device", C: "The device should be quarantined and corporate data removed", D: "An alert should be sent to the SOC for manual review" },
+    answer: "C", tier: "locked"
+  },
+  {
+    id: "Q255", domain: 3, exam: "Original",
+    question: "During a risk assessment, an organization identifies that its RPO is 4 hours and its RTO is 2 hours. Which of the following backup strategies BEST meets these requirements?",
+    options: { A: "Daily full backups stored offsite with a cold site DR plan", B: "Hourly incremental backups with a warm site failover capability", C: "Weekly differential backups replicated to a cloud DR environment", D: "Continuous data replication to a hot site with automated failover" },
+    answer: "D", tier: "locked"
   },
 ];
 

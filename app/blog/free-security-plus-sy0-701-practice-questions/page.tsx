@@ -6,13 +6,13 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 export const metadata: Metadata = {
   title: "Free Security+ SY0-701 Practice Questions | PassPlus",
   description:
-    "245 free Security+ SY0-701 practice questions with instant feedback. No signup required. Built from Professor Messer's practice exams.",
+    "255 Security+ SY0-701 practice questions with instant feedback. No signup required.",
   keywords:
     "security plus practice questions, SY0-701 practice test, free security+ quiz, comptia security+ study guide",
   openGraph: {
     title: "Free Security+ SY0-701 Practice Questions | PassPlus",
     description:
-      "245 free Security+ SY0-701 practice questions with instant feedback. No signup required.",
+      "255 Security+ SY0-701 practice questions with instant feedback. No signup required.",
     type: "article",
   },
 }
@@ -147,7 +147,7 @@ export default function BlogPost() {
                 <strong>
                   <Link href="/quiz">PassPlus</Link>
                 </strong>{" "}
-                — 245 free practice questions built from Professor Messer's SY0-701
+                — 255 practice questions covering every SY0-701
                 materials. Instant feedback on every answer, score tracking, and a
                 "Practice Missed" mode that drills your weak spots. No signup required.
               </li>
@@ -204,7 +204,7 @@ export default function BlogPost() {
             </p>
 
             <p>
-              If you want all 245 questions across three full practice exams, it's a
+              If you want all 255 questions across three full practice exams, it's a
               one-time $9.99 unlock. No subscription. Good luck on the exam.
             </p>
           </div>
