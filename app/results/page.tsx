@@ -22,6 +22,7 @@ import {
   createSession,
   saveSession,
   resetProgress,
+  recordQuizScore,
   type QuizSession,
 } from "@/lib/quiz-store"
 import { questions, type Question } from "@/data/questions"
@@ -50,10 +51,9 @@ export default function ResultsPage() {
     setSession(s)
     setLoading(false)
     if (s && Object.keys(s.answers).length > 0) {
-      sendGAEvent("event", "quiz_completed", {
-        score: s.score,
-        total: Object.keys(s.answers).length,
-      })
+      const answeredTotal = Object.keys(s.answers).length
+      sendGAEvent("event", "quiz_completed", { score: s.score, total: answeredTotal })
+      recordQuizScore(s.score, answeredTotal)
       if (!s.isUnlocked) {
         localStorage.setItem("passplus_completed", "true")
       }

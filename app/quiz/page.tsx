@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap } from "lucide-react"
+import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
@@ -18,6 +18,8 @@ import {
   saveSession,
   loadSession,
   unlock,
+  updateStreak,
+  getStreak,
   type QuizSession,
 } from "@/lib/quiz-store"
 import { type Question } from "@/data/questions"
@@ -40,8 +42,14 @@ export default function QuizPage() {
   const [explanation, setExplanation] = useState<string | null>(null)
   const [loadingExplanation, setLoadingExplanation] = useState(false)
   const [timeLeft, setTimeLeft] = useState<number | null>(null)
+  const [confirmAction, setConfirmAction] = useState<
+    null | "restart" | "to-exam" | "to-practice"
+  >(null)
+  const [streakCount, setStreakCount] = useState(0)
+  const [streakMilestone, setStreakMilestone] = useState<number | null>(null)
   // 1 = forward, -1 = backward — drives slide direction
   const directionRef = useRef<1 | -1>(1)
+  const streakUpdatedRef = useRef(false)
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
@@ -62,6 +70,7 @@ export default function QuizPage() {
       saveSession(s)
       setSession(s)
     }
+    setStreakCount(getStreak().count)
     setLoading(false)
   }, [router])
 
@@ -148,6 +157,17 @@ export default function QuizPage() {
       saveSession(updated)
       setSession(updated)
 
+      // Update streak once per session (idempotent within the same day)
+      if (!streakUpdatedRef.current) {
+        streakUpdatedRef.current = true
+        const { count, milestone } = updateStreak()
+        setStreakCount(count)
+        if (milestone !== null) {
+          setStreakMilestone(milestone)
+          setTimeout(() => setStreakMilestone(null), 4000)
+        }
+      }
+
       if (session.isUnlocked) {
         fetch("/api/explain", {
           method: "POST",
@@ -214,6 +234,30 @@ export default function QuizPage() {
     setExplanation(null)
     setLoadingExplanation(false)
   }, [session])
+
+  const handleConfirmAction = useCallback(() => {
+    if (!session) { setConfirmAction(null); return }
+    if (confirmAction === "restart") {
+      setConfirmAction(null)
+      const s = createSession("normal")
+      saveSession(s)
+      setSession(s)
+      setSelected(null)
+      setExplanation(null)
+      streakUpdatedRef.current = false
+    } else if (confirmAction === "to-exam") {
+      setConfirmAction(null)
+      const updated: QuizSession = { ...session, examMode: true, examStartedAt: Date.now() }
+      saveSession(updated)
+      setSession(updated)
+    } else if (confirmAction === "to-practice") {
+      setConfirmAction(null)
+      const { examStartedAt: _drop, ...rest } = session
+      const updated: QuizSession = { ...rest, examMode: false }
+      saveSession(updated)
+      setSession(updated)
+    }
+  }, [session, confirmAction])
 
   const handleUnlock = useCallback(() => {
     sendGAEvent("event", "unlock_clicked")
@@ -284,11 +328,18 @@ export default function QuizPage() {
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </Link>
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          {/* Streak */}
+          {streakCount > 0 && (
+            <span className="flex items-center gap-1 text-orange-400 font-medium">
+              🔥 {streakCount}
+            </span>
+          )}
+
           {!showModeSelect && (
             <>
+              <span className="w-px h-3 bg-border" />
               <span>
-                Q{session.currentIndex + 1} /{" "}
-                {session.questions.length}
+                Q{session.currentIndex + 1}/{session.questions.length}
               </span>
               <span className="w-px h-3 bg-border" />
               <span>
@@ -297,26 +348,112 @@ export default function QuizPage() {
               </span>
             </>
           )}
+
           {isExamMode && timeLeft !== null && (
             <>
               <span className="w-px h-3 bg-border" />
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3 h-3 shrink-0" />
-                <span className="hidden sm:inline">Time remaining</span>
+                <span className="hidden sm:inline">Time left</span>
                 <span className={`font-mono font-semibold tabular-nums ${timerColor}`}>
                   {formatTime(timeLeft)}
                 </span>
               </span>
             </>
           )}
+
           {!session.isUnlocked && !showModeSelect && (
             <>
               <span className="w-px h-3 bg-border" />
               <span className="text-yellow-500">Free</span>
             </>
           )}
+
+          {/* Restart button */}
+          {!showModeSelect && (
+            <>
+              <span className="w-px h-3 bg-border" />
+              <button
+                onClick={() => setConfirmAction("restart")}
+                title="Restart quiz"
+                className="flex items-center justify-center w-6 h-6 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            </>
+          )}
+
+          {/* Mode toggle — paid users only, not on mode select screen */}
+          {!showModeSelect && session.isUnlocked && (
+            <button
+              onClick={() => setConfirmAction(isExamMode ? "to-practice" : "to-exam")}
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-medium transition-colors ${
+                isExamMode
+                  ? "border-yellow-500/40 text-yellow-400 hover:bg-yellow-500/10"
+                  : "border-accent-green/30 text-accent-green hover:bg-accent-green/10"
+              }`}
+            >
+              {isExamMode ? <><Clock className="w-3 h-3" /> Exam</> : <><Zap className="w-3 h-3" /> Practice</>}
+            </button>
+          )}
         </div>
       </header>
+
+      {/* Confirmation banner */}
+      <AnimatePresence>
+        {confirmAction && (
+          <motion.div
+            key="confirm-banner"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.18, ease: "easeInOut" }}
+            className="sticky top-[57px] z-10 overflow-hidden bg-muted border-b border-border"
+          >
+            <div className="px-5 py-3 flex items-center justify-between gap-4 max-w-2xl mx-auto">
+              <span className="text-sm text-foreground">
+                {confirmAction === "restart" && "Restart quiz? All progress will be cleared."}
+                {confirmAction === "to-exam" && "Start 90-min exam timer? Your progress is saved."}
+                {confirmAction === "to-practice" && "Remove the timer? Your progress is saved."}
+              </span>
+              <div className="flex gap-2 shrink-0">
+                <button
+                  onClick={handleConfirmAction}
+                  className="flex items-center justify-center bg-accent-green hover:bg-accent-hover text-black font-semibold px-3 py-1.5 rounded-lg text-xs min-h-[32px] transition-colors"
+                >
+                  {confirmAction === "restart" ? "Restart" : "Confirm"}
+                </button>
+                <button
+                  onClick={() => setConfirmAction(null)}
+                  className="flex items-center justify-center border border-border hover:bg-background text-foreground font-medium px-3 py-1.5 rounded-lg text-xs min-h-[32px] transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Streak milestone toast */}
+      <AnimatePresence>
+        {streakMilestone !== null && (
+          <motion.div
+            key="streak-toast"
+            initial={{ opacity: 0, y: -12, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 28 }}
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-card border border-orange-500/30 rounded-2xl px-5 py-3 shadow-lg text-sm font-medium pointer-events-none"
+          >
+            <span className="text-xl">🔥</span>
+            <span className="text-foreground">
+              {streakMilestone} day streak!{" "}
+              <span className="text-orange-400">Keep it up!</span>
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Animated progress bar */}
       {!showModeSelect && (

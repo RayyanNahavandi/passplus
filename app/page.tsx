@@ -8,6 +8,7 @@ import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, 
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
+import { getStreak, getReadinessScore } from "@/lib/quiz-store"
 
 export default function Home() {
   const shouldReduce = useReducedMotion()
@@ -17,6 +18,8 @@ export default function Home() {
   const [showAccountMenu, setShowAccountMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [selectedCert, setSelectedCert] = useState<"secplus" | "netplus" | "aplus">("secplus")
+  const [streak, setStreak] = useState(0)
+  const [readiness, setReadiness] = useState<ReturnType<typeof getReadinessScore>>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLElement>(null)
 
@@ -59,6 +62,8 @@ export default function Home() {
     const completed = localStorage.getItem("passplus_completed") === "true"
     const unlocked = localStorage.getItem("passplus_unlocked") === "true"
     setFreeCompleted(completed && !unlocked)
+    setStreak(getStreak().count)
+    setReadiness(getReadinessScore())
   }, [])
 
   const fadeUp = (delay = 0) => ({
@@ -364,6 +369,33 @@ export default function Home() {
             </motion.div>
           ))}
         </div>
+
+        {/* Streak + Readiness — shown only when data exists */}
+        {(streak > 0 || readiness) && (
+          <motion.div
+            {...fadeUp(0.35)}
+            className="flex flex-wrap justify-center gap-3 w-full max-w-2xl"
+          >
+            {streak > 0 && (
+              <div className="flex items-center gap-2 bg-card border border-orange-500/20 rounded-xl px-4 py-3">
+                <span className="text-lg">🔥</span>
+                <div>
+                  <span className="text-sm font-bold text-orange-400">{streak} day streak</span>
+                  <span className="text-xs text-muted-foreground block leading-none mt-0.5">Keep it going!</span>
+                </div>
+              </div>
+            )}
+            {readiness && (
+              <div className={`flex items-center gap-3 border rounded-xl px-4 py-3 ${readiness.bgColor}`}>
+                <div className={`text-2xl font-bold ${readiness.textColor}`}>{readiness.pct}%</div>
+                <div>
+                  <span className={`text-sm font-semibold ${readiness.textColor}`}>{readiness.label}</span>
+                  <span className="text-xs text-muted-foreground block leading-none mt-0.5">Readiness score</span>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        )}
 
         {/* Scroll indicator */}
         <motion.div
