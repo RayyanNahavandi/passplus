@@ -94,13 +94,19 @@ export default function QuizPage() {
     session.mode !== "missed" &&
     session.examMode === undefined
 
-  const handleStartPractice = useCallback(() => {
-    if (!session) return
-    const updated: QuizSession = { ...session, examMode: false }
-    saveSession(updated)
-    setSession(updated)
-    sendGAEvent("event", "quiz_mode_selected", { mode: "practice" })
-  }, [session])
+  const handleStartPractice = useCallback(
+    (opts: { count: number; domain: number | null }) => {
+      const s = createSession("normal", undefined, {
+        count: opts.count,
+        domain: opts.domain ?? undefined,
+      })
+      const updated: QuizSession = { ...s, examMode: false }
+      saveSession(updated)
+      setSession(updated)
+      sendGAEvent("event", "quiz_mode_selected", { mode: "practice" })
+    },
+    []
+  )
 
   const handleStartExam = useCallback(() => {
     if (!session) return
@@ -330,6 +336,7 @@ export default function QuizPage() {
           onExam={handleStartExam}
           shouldReduce={!!shouldReduce}
           displayName={displayName}
+          isUnlocked={session.isUnlocked}
         />
       ) : (
         /* Quiz content */
@@ -533,87 +540,234 @@ export default function QuizPage() {
   )
 }
 
+const COUNT_OPTIONS = [
+  { label: "25", value: 25 },
+  { label: "50", value: 50 },
+  { label: "75", value: 75 },
+  { label: "100", value: 100 },
+  { label: "All (245)", value: 245 },
+]
+
+const DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[] = [
+  { label: "All Domains", sublabel: "245 questions", value: null },
+  { label: "Domain 1", sublabel: "General Security Concepts · 59 Qs", value: 1 },
+  { label: "Domain 2", sublabel: "Threats, Vulnerabilities & Mitigations · 54 Qs", value: 2 },
+  { label: "Domain 3", sublabel: "Security Architecture · 44 Qs", value: 3 },
+  { label: "Domain 4", sublabel: "Security Operations · 69 Qs", value: 4 },
+  { label: "Domain 5", sublabel: "Security Program Management · 19 Qs", value: 5 },
+]
+
 function ModeSelectScreen({
   onPractice,
   onExam,
   shouldReduce,
   displayName,
+  isUnlocked,
 }: {
-  onPractice: () => void
+  onPractice: (opts: { count: number; domain: number | null }) => void
   onExam: () => void
   shouldReduce: boolean
   displayName?: string | null
+  isUnlocked: boolean
 }) {
+  const [step, setStep] = useState<"mode" | "practice-config">("mode")
+  const [questionCount, setQuestionCount] = useState(25)
+  const [domainFilter, setDomainFilter] = useState<number | null>(null)
+
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
-      <motion.div
-        className="w-full max-w-lg flex flex-col items-center gap-8"
-        initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" as const }}
-      >
-        <div className="text-center">
-          {displayName && (
-            <p className="text-sm text-accent-green font-medium mb-1">
-              Good luck, {displayName}! 🎯
+      <AnimatePresence mode="wait">
+        {step === "mode" ? (
+          <motion.div
+            key="mode"
+            className="w-full max-w-lg flex flex-col items-center gap-8"
+            initial={shouldReduce ? { opacity: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={shouldReduce ? { opacity: 0 } : { opacity: 0, y: -16 }}
+            transition={{ duration: 0.3, ease: "easeOut" as const }}
+          >
+            <div className="text-center">
+              {displayName && (
+                <p className="text-sm text-accent-green font-medium mb-1">
+                  Good luck, {displayName}! 🎯
+                </p>
+              )}
+              <h1 className="text-2xl font-bold mb-2">Choose your mode</h1>
+              <p className="text-sm text-muted-foreground">
+                How would you like to study today?
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4 w-full">
+              {/* Practice Mode */}
+              <motion.button
+                onClick={() => setStep("practice-config")}
+                whileHover={shouldReduce ? {} : { scale: 1.02 }}
+                whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" as const }}
+                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
+                  <Zap className="w-5 h-5 text-accent-green" />
+                </div>
+                <div>
+                  <h2 className="font-semibold text-base mb-1">Practice Mode</h2>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    No timer. Answer at your own pace with instant feedback after
+                    each question.
+                  </p>
+                </div>
+              </motion.button>
+
+              {/* Exam Mode */}
+              <motion.button
+                onClick={onExam}
+                whileHover={shouldReduce ? {} : { scale: 1.02 }}
+                whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.18, ease: "easeOut" as const }}
+                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
+                  <Clock className="w-5 h-5 text-accent-green" />
+                </div>
+                <div>
+                  <h2 className="font-semibold text-base mb-1">Exam Mode</h2>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    90 minute countdown. Simulates real Security+ exam conditions.
+                    Auto-submits when time runs out.
+                  </p>
+                </div>
+              </motion.button>
+            </div>
+
+            <p className="text-xs text-muted-foreground/60 text-center">
+              CompTIA Security+ allows 90 minutes for the real exam
             </p>
-          )}
-          <h1 className="text-2xl font-bold mb-2">Choose your mode</h1>
-          <p className="text-sm text-muted-foreground">
-            How would you like to study today?
-          </p>
-        </div>
-
-        <div className="grid sm:grid-cols-2 gap-4 w-full">
-          {/* Practice Mode */}
-          <motion.button
-            onClick={onPractice}
-            whileHover={shouldReduce ? {} : { scale: 1.02 }}
-            whileTap={shouldReduce ? {} : { scale: 0.98 }}
-            initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="practice-config"
+            className="w-full max-w-lg flex flex-col gap-7"
+            initial={shouldReduce ? { opacity: 0 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" as const }}
-            className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group"
+            exit={shouldReduce ? { opacity: 0 } : { opacity: 0, y: -16 }}
+            transition={{ duration: 0.3, ease: "easeOut" as const }}
           >
-            <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
-              <Zap className="w-5 h-5 text-accent-green" />
-            </div>
+            {/* Header */}
             <div>
-              <h2 className="font-semibold text-base mb-1">Practice Mode</h2>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                No timer. Answer at your own pace with instant feedback after
-                each question.
+              <button
+                onClick={() => setStep("mode")}
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Back
+              </button>
+              <div className="flex items-center gap-3 mb-1">
+                <div className="w-9 h-9 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-accent-green" />
+                </div>
+                <h1 className="text-xl font-bold">Practice Mode</h1>
+              </div>
+              <p className="text-sm text-muted-foreground ml-12">
+                Configure your session
               </p>
             </div>
-          </motion.button>
 
-          {/* Exam Mode */}
-          <motion.button
-            onClick={onExam}
-            whileHover={shouldReduce ? {} : { scale: 1.02 }}
-            whileTap={shouldReduce ? {} : { scale: 0.98 }}
-            initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.18, ease: "easeOut" as const }}
-            className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group"
-          >
-            <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
-              <Clock className="w-5 h-5 text-accent-green" />
+            {/* Question count */}
+            <div className="flex flex-col gap-3">
+              <label className="text-sm font-semibold">Questions</label>
+              <div className="flex flex-wrap gap-2">
+                {COUNT_OPTIONS.map((opt) => {
+                  const locked = !isUnlocked && opt.value !== 25
+                  const selected = questionCount === opt.value
+                  return (
+                    <button
+                      key={opt.value}
+                      disabled={locked}
+                      onClick={() => !locked && setQuestionCount(opt.value)}
+                      className={`flex items-center gap-1.5 px-4 py-2 rounded-xl border text-sm font-medium transition-colors min-h-[40px] ${
+                        selected
+                          ? "bg-accent-green/15 border-accent-green/50 text-accent-green"
+                          : locked
+                          ? "border-border text-muted-foreground/40 cursor-not-allowed"
+                          : "border-border text-muted-foreground hover:border-accent-green/30 hover:text-foreground"
+                      }`}
+                    >
+                      {opt.label}
+                      {locked && <Lock className="w-3 h-3" />}
+                    </button>
+                  )
+                })}
+              </div>
+              {!isUnlocked && (
+                <p className="text-xs text-muted-foreground/60">
+                  Unlock all 245 questions to choose a larger set
+                </p>
+              )}
             </div>
-            <div>
-              <h2 className="font-semibold text-base mb-1">Exam Mode</h2>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                90 minute countdown. Simulates real Security+ exam conditions.
-                Auto-submits when time runs out.
-              </p>
-            </div>
-          </motion.button>
-        </div>
 
-        <p className="text-xs text-muted-foreground/60 text-center">
-          CompTIA Security+ allows 90 minutes for the real exam
-        </p>
-      </motion.div>
+            {/* Domain filter */}
+            <div className="flex flex-col gap-3">
+              <label className="text-sm font-semibold">
+                Domain
+                {!isUnlocked && (
+                  <span className="ml-2 text-xs font-normal text-muted-foreground/60 inline-flex items-center gap-1">
+                    <Lock className="w-3 h-3" /> Paid only
+                  </span>
+                )}
+              </label>
+              <div className="flex flex-col gap-2">
+                {DOMAIN_OPTIONS.map((opt) => {
+                  const locked = !isUnlocked && opt.value !== null
+                  const selected = domainFilter === opt.value
+                  return (
+                    <button
+                      key={opt.value ?? "all"}
+                      disabled={locked}
+                      onClick={() => !locked && setDomainFilter(opt.value)}
+                      className={`flex items-center justify-between px-4 py-3 rounded-xl border text-sm transition-colors min-h-[48px] text-left ${
+                        selected
+                          ? "bg-accent-green/10 border-accent-green/40 text-foreground"
+                          : locked
+                          ? "border-border opacity-40 cursor-not-allowed"
+                          : "border-border hover:border-accent-green/30 hover:bg-muted/50"
+                      }`}
+                    >
+                      <span>
+                        <span className="font-medium">{opt.label}</span>
+                        <span className="block text-xs text-muted-foreground mt-0.5">
+                          {opt.sublabel}
+                        </span>
+                      </span>
+                      <span className="flex items-center gap-2 shrink-0 ml-3">
+                        {locked && <Lock className="w-3.5 h-3.5 text-muted-foreground/50" />}
+                        {selected && !locked && (
+                          <span className="w-2 h-2 rounded-full bg-accent-green" />
+                        )}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Start button */}
+            <motion.button
+              whileHover={shouldReduce ? {} : { scale: 1.01 }}
+              whileTap={shouldReduce ? {} : { scale: 0.98 }}
+              onClick={() => onPractice({ count: questionCount, domain: domainFilter })}
+              className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3.5 rounded-xl transition-colors min-h-[52px] text-sm"
+            >
+              Start Practice
+              <ChevronRight className="w-4 h-4" />
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   )
 }

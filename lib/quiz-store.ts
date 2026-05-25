@@ -51,7 +51,8 @@ export function unlock(): void {
 
 export function createSession(
   mode: "normal" | "missed" = "normal",
-  missedIds?: string[]
+  missedIds?: string[],
+  options?: { count?: number; domain?: number }
 ): QuizSession {
   const unlocked = isUnlocked()
 
@@ -59,8 +60,12 @@ export function createSession(
   if (mode === "missed" && missedIds?.length) {
     pool = shuffle(questions.filter((q) => missedIds.includes(q.id)))
   } else if (unlocked) {
-    // Paid users get a fresh shuffle every session for study variety.
-    pool = shuffle(questions)
+    // Paid users: optionally filter by domain, then shuffle, then cap at count.
+    let base = options?.domain
+      ? questions.filter((q) => q.domain === options.domain)
+      : questions
+    base = shuffle(base)
+    pool = options?.count ? base.slice(0, options.count) : base
   } else {
     // Free users always see the exact same 25 questions in the same order —
     // no shuffle, no localStorage needed, consistent across every device.
