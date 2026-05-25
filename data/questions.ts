@@ -164,7 +164,7 @@ export const questions: Question[] = [
     id: "Q025", domain: 1, exam: "Original",
     question: "Which of the following BEST describes a gap analysis in security?",
     options: { A: "Identifying vulnerabilities in network infrastructure", B: "Comparing current security posture to a desired state", C: "Testing systems for known exploits", D: "Reviewing user access permissions" },
-    answer: "B", tier: "locked"
+    answer: "B", tier: "free"
   },
   {
     id: "Q026", domain: 1, exam: "Original",
