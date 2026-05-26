@@ -436,8 +436,8 @@ export const questions: Question[] = [
   },
   {
     id: "Q070", domain: 2, exam: "Original",
-    question: "An attacker calls an employee pretending to be IT support and asks for their password. Which attack technique is being used?",
-    options: { A: "Phishing", B: "Pretexting", C: "Tailgating", D: "Smishing" },
+    question: "An attacker calls a company's help desk pretending to be an external auditor from a compliance firm. The attacker claims they need immediate access to the payroll database to verify financial controls before a regulatory deadline. Which of the following social engineering tactics is PRIMARILY being used?",
+    options: { A: "Vishing", B: "Pretexting", C: "Shoulder surfing", D: "Whaling" },
     answer: "B", tier: "locked"
   },
   {
