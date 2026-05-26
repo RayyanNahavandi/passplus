@@ -679,6 +679,7 @@ export default function QuizPage() {
             onUnlock={handleUnlock}
             onGoToResults={() => router.push("/results")}
             shouldReduce={!!shouldReduce}
+            isExamMode={isExamMode}
           />
         )}
       </AnimatePresence>
@@ -1031,10 +1032,12 @@ function PaywallOverlay({
   onUnlock,
   onGoToResults,
   shouldReduce,
+  isExamMode,
 }: {
   onUnlock: () => void
   onGoToResults: () => void
   shouldReduce: boolean
+  isExamMode: boolean
 }) {
   return (
     <>
@@ -1064,12 +1067,12 @@ function PaywallOverlay({
 
           <div>
             <h2 className="text-2xl font-bold mb-2">
-              You&apos;ve finished your 25 free questions
+              You&apos;ve finished your {isExamMode ? "10" : "25"} free questions
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Unlock all{" "}
-              <strong className="text-foreground">255 questions</strong> across
-              three full practice exams covering every SY0-701 domain.
+              <strong className="text-foreground">490 questions</strong> across
+              Practice Mode and Exam Mode covering every SY0-701 domain.
             </p>
           </div>
 
@@ -1092,7 +1095,7 @@ function PaywallOverlay({
               }
               className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
             >
-              Unlock All 255 Questions — $9.99
+              Unlock All 490 Questions — $9.99
             </motion.button>
             <button
               onClick={onGoToResults}

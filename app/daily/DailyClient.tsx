@@ -325,7 +325,7 @@ export function DailyClient({
             <div>
               <p className="font-semibold text-sm mb-0.5">Want more questions?</p>
               <p className="text-xs text-muted-foreground">
-                255 practice questions. No signup. Instant feedback.
+                490 questions across Practice + Exam Mode. No signup.
               </p>
             </div>
             <Link

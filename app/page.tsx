@@ -243,7 +243,7 @@ export default function Home() {
             {...fadeUp(0.2)}
             className="text-base sm:text-lg text-muted-foreground max-w-lg leading-relaxed"
           >
-            255 real-style questions across three full practice exams covering
+            490 questions across Practice Mode and Exam Mode covering
             every SY0-701 domain. Instant feedback, score tracking, and
             missed-question drills.
           </motion.p>
@@ -284,7 +284,7 @@ export default function Home() {
                     You&apos;ve completed your free quiz
                   </p>
                   <p className="text-xs text-muted-foreground max-w-xs">
-                    Unlock full access to retake with all 255 questions and get
+                    Unlock full access to all 490 questions across both modes and get
                     AI explanations for every answer
                   </p>
                 </div>
@@ -295,7 +295,7 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "unlock_clicked")}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
                 >
-                  Unlock All 255 Questions — $9.99
+                  Unlock All 490 Questions — $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
                 <Link
@@ -342,15 +342,15 @@ export default function Home() {
             className="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-xs text-muted-foreground"
           >
             <Zap className="w-3 h-3 text-accent-green" />
-            CompTIA SY0-701 · 255 questions · 3 practice exams
+            CompTIA SY0-701 · 490 questions · Practice + Exam Mode
           </motion.div>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-2xl">
           {[
-            { value: "255", label: "Practice Questions" },
-            { value: "3", label: "Full Exams" },
+            { value: "490", label: "Total Questions" },
+            { value: "2", label: "Study Modes" },
             { value: "5", label: "SY0-701 Domains" },
             { value: "Free", label: "First 25 Questions" },
           ].map((stat, i) => (
@@ -473,7 +473,7 @@ export default function Home() {
             {
               icon: <Lock className="w-4 h-4 text-accent-green" />,
               title: "Full Question Bank",
-              desc: "Unlock all 255 questions across three exams for $9.99.",
+              desc: "Unlock all 490 questions across Practice Mode and Exam Mode for $9.99.",
             },
           ].map((f, i) => (
             <motion.div
