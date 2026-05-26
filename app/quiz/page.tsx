@@ -15,6 +15,7 @@ import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
 import {
   createSession,
+  createExamSession,
   saveSession,
   loadSession,
   unlock,
@@ -118,13 +119,14 @@ export default function QuizPage() {
   )
 
   const handleStartExam = useCallback(() => {
-    if (!session) return
-    const now = Date.now()
-    const updated: QuizSession = { ...session, examMode: true, examStartedAt: now }
+    const s = createExamSession()
+    const updated: QuizSession = { ...s, examMode: true, examStartedAt: Date.now() }
     saveSession(updated)
     setSession(updated)
+    setSelected(null)
+    setExplanation(null)
     sendGAEvent("event", "quiz_mode_selected", { mode: "exam" })
-  }, [session])
+  }, [])
 
   const currentQuestion: Question | undefined =
     session?.questions[session.currentIndex]
@@ -247,15 +249,22 @@ export default function QuizPage() {
       streakUpdatedRef.current = false
     } else if (confirmAction === "to-exam") {
       setConfirmAction(null)
-      const updated: QuizSession = { ...session, examMode: true, examStartedAt: Date.now() }
+      const s = createExamSession()
+      const updated: QuizSession = { ...s, examMode: true, examStartedAt: Date.now() }
       saveSession(updated)
       setSession(updated)
+      setSelected(null)
+      setExplanation(null)
+      streakUpdatedRef.current = false
     } else if (confirmAction === "to-practice") {
       setConfirmAction(null)
-      const { examStartedAt: _drop, ...rest } = session
-      const updated: QuizSession = { ...rest, examMode: false }
+      const s = createSession("normal")
+      const updated: QuizSession = { ...s, examMode: false }
       saveSession(updated)
       setSession(updated)
+      setSelected(null)
+      setExplanation(null)
+      streakUpdatedRef.current = false
     }
   }, [session, confirmAction])
 

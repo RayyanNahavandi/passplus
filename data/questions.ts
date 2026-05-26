@@ -8,7 +8,7 @@ export interface Question {
   question: string;
   options: { A: string; B: string; C: string; D: string };
   answer: "A" | "B" | "C" | "D";
-  domain: 1 | 2 | 3 | 4 | 5;
+  domain: number;
   tier: "free" | "locked";
 }
 

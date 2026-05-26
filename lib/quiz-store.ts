@@ -1,6 +1,7 @@
 "use client"
 
 import { questions, type Question } from "@/data/questions"
+import { examQuestions } from "@/data/examQuestions"
 
 export interface QuizSession {
   questions: Question[]
@@ -14,9 +15,11 @@ export interface QuizSession {
   examStartedAt?: number // epoch ms
 }
 
-// Fixed set of free questions — same 25 questions, same order, on every device.
-// Derived once at module load from questions marked tier: "free".
+// Fixed set of free practice questions — same 25 questions, same order, on every device.
 const FREE_QUESTIONS = questions.filter((q) => q.tier === "free")
+
+// Fixed set of free exam questions (EQ001–EQ010), same order on every device.
+const FREE_EXAM_QUESTIONS = examQuestions.filter((q) => q.tier === "free") as unknown as Question[]
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -79,6 +82,27 @@ export function createSession(
     missedIds: [],
     score: 0,
     mode,
+    isUnlocked: unlocked,
+  }
+}
+
+/**
+ * Creates a session using the exam question bank (examQuestions.ts).
+ * Paid users get all 245 exam questions shuffled.
+ * Free users get the fixed EQ001–EQ010 set in order.
+ */
+export function createExamSession(): QuizSession {
+  const unlocked = isUnlocked()
+  const pool: Question[] = unlocked
+    ? shuffle(examQuestions as unknown as Question[])
+    : FREE_EXAM_QUESTIONS
+  return {
+    questions: pool,
+    currentIndex: 0,
+    answers: {},
+    missedIds: [],
+    score: 0,
+    mode: "normal",
     isUnlocked: unlocked,
   }
 }
