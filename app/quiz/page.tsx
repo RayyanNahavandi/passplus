@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw } from "lucide-react"
+import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
@@ -331,7 +331,7 @@ export default function QuizPage() {
           {/* Streak */}
           {streakCount > 0 && (
             <span className="flex items-center gap-1 text-orange-400 font-medium">
-              🔥 {streakCount}
+              <Flame className="w-3.5 h-3.5" />{streakCount}
             </span>
           )}
 
@@ -446,7 +446,7 @@ export default function QuizPage() {
             transition={{ type: "spring", stiffness: 400, damping: 28 }}
             className="fixed top-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-card border border-orange-500/30 rounded-2xl px-5 py-3 shadow-lg text-sm font-medium pointer-events-none"
           >
-            <span className="text-xl">🔥</span>
+            <Flame className="w-5 h-5 text-orange-400 shrink-0" />
             <span className="text-foreground">
               {streakMilestone} day streak!{" "}
               <span className="text-orange-400">Keep it up!</span>
@@ -725,8 +725,9 @@ function ModeSelectScreen({
           >
             <div className="text-center">
               {displayName && (
-                <p className="text-sm text-accent-green font-medium mb-1">
-                  Good luck, {displayName}! 🎯
+                <p className="text-sm text-accent-green font-medium mb-1 flex items-center justify-center gap-1.5">
+                  <Target className="w-3.5 h-3.5" />
+                  Good luck, {displayName}!
                 </p>
               )}
               <h1 className="text-2xl font-bold mb-2">Choose your mode</h1>

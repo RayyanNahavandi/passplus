@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X } from "lucide-react"
+import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
@@ -378,7 +378,7 @@ export default function Home() {
           >
             {streak > 0 && (
               <div className="flex items-center gap-2 bg-card border border-orange-500/20 rounded-xl px-4 py-3">
-                <span className="text-lg">🔥</span>
+                <Flame className="w-5 h-5 text-orange-400 shrink-0" />
                 <div>
                   <span className="text-sm font-bold text-orange-400">{streak} day streak</span>
                   <span className="text-xs text-muted-foreground block leading-none mt-0.5">Keep it going!</span>

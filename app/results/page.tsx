@@ -12,6 +12,8 @@ import {
   Trophy,
   Target,
   RotateCcw,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { DiscordBanner } from "@/components/DiscordBanner"
@@ -494,9 +496,10 @@ function MissedCard({
           <span className="text-muted-foreground text-xs">Q{question.id} </span>
           <span className="text-sm line-clamp-2">{question.question}</span>
         </div>
-        <span className="text-xs text-muted-foreground shrink-0 mt-0.5">
-          {expanded ? "▲" : "▼"}
-        </span>
+        {expanded
+          ? <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+          : <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+        }
       </button>
 
       <AnimatePresence initial={false}>
