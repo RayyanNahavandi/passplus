@@ -2,6 +2,8 @@
 
 import { questions, type Question } from "@/data/questions"
 import { examQuestions } from "@/data/examQuestions"
+import { networkPracticeQuestions } from "@/data/networkPlusQuestions"
+import { networkExamQuestions } from "@/data/networkPlusExamQuestions"
 
 export interface QuizSession {
   questions: Question[]
@@ -13,6 +15,7 @@ export interface QuizSession {
   isUnlocked: boolean
   examMode?: boolean
   examStartedAt?: number // epoch ms
+  cert?: "secplus" | "netplus"
 }
 
 // Fixed set of free practice questions — same 25 questions, same order, on every device.
@@ -20,6 +23,9 @@ const FREE_QUESTIONS = questions.filter((q) => q.tier === "free")
 
 // Fixed set of free exam questions (EQ001–EQ010), same order on every device.
 const FREE_EXAM_QUESTIONS = examQuestions.filter((q) => q.tier === "free") as unknown as Question[]
+
+const FREE_NETWORK_QUESTIONS = (networkPracticeQuestions as unknown as Question[]).filter((q) => q.tier === "free")
+const FREE_NETWORK_EXAM_QUESTIONS = (networkExamQuestions as unknown as Question[]).filter((q) => q.tier === "free")
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -55,24 +61,27 @@ export function unlock(): void {
 export function createSession(
   mode: "normal" | "missed" = "normal",
   missedIds?: string[],
-  options?: { count?: number; domain?: number }
+  options?: { count?: number; domain?: number; cert?: "secplus" | "netplus" }
 ): QuizSession {
   const unlocked = isUnlocked()
+  const cert = options?.cert ?? "secplus"
+  const allQuestions: Question[] = cert === "netplus" ? (networkPracticeQuestions as unknown as Question[]) : questions
+  const freeQs: Question[] = cert === "netplus" ? FREE_NETWORK_QUESTIONS : FREE_QUESTIONS
 
   let pool: Question[]
   if (mode === "missed" && missedIds?.length) {
-    pool = shuffle(questions.filter((q) => missedIds.includes(q.id)))
+    pool = shuffle(allQuestions.filter((q) => missedIds.includes(q.id)))
   } else if (unlocked) {
     // Paid users: optionally filter by domain, then shuffle, then cap at count.
     let base = options?.domain
-      ? questions.filter((q) => q.domain === options.domain)
-      : questions
+      ? allQuestions.filter((q) => q.domain === options.domain)
+      : allQuestions
     base = shuffle(base)
     pool = options?.count ? base.slice(0, options.count) : base
   } else {
     // Free users always see the exact same 25 questions in the same order —
     // no shuffle, no localStorage needed, consistent across every device.
-    pool = FREE_QUESTIONS
+    pool = freeQs
   }
 
   return {
@@ -83,6 +92,7 @@ export function createSession(
     score: 0,
     mode,
     isUnlocked: unlocked,
+    cert,
   }
 }
 
@@ -91,11 +101,15 @@ export function createSession(
  * Paid users get all 245 exam questions shuffled.
  * Free users get the fixed EQ001–EQ010 set in order.
  */
-export function createExamSession(): QuizSession {
+export function createExamSession(cert: "secplus" | "netplus" = "secplus"): QuizSession {
   const unlocked = isUnlocked()
-  const pool: Question[] = unlocked
-    ? shuffle(examQuestions as unknown as Question[])
+  const allExamQs: Question[] = cert === "netplus"
+    ? (networkExamQuestions as unknown as Question[])
+    : (examQuestions as unknown as Question[])
+  const freeExamQs: Question[] = cert === "netplus"
+    ? FREE_NETWORK_EXAM_QUESTIONS
     : FREE_EXAM_QUESTIONS
+  const pool: Question[] = unlocked ? shuffle(allExamQs) : freeExamQs
   return {
     questions: pool,
     currentIndex: 0,
@@ -104,6 +118,7 @@ export function createExamSession(): QuizSession {
     score: 0,
     mode: "normal",
     isUnlocked: unlocked,
+    cert,
   }
 }
 

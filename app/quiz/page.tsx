@@ -36,6 +36,7 @@ function formatTime(seconds: number): string {
 export default function QuizPage() {
   const router = useRouter()
   const { displayName } = useAuth()
+  const [cert, setCert] = useState<"secplus" | "netplus">("secplus")
   const [session, setSession] = useState<QuizSession | null>(null)
   const [selected, setSelected] = useState<"A" | "B" | "C" | "D" | null>(null)
   const [showPaywall, setShowPaywall] = useState(false)
@@ -54,6 +55,10 @@ export default function QuizPage() {
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const certParam = (params.get("cert") ?? "secplus") as "secplus" | "netplus"
+    setCert(certParam)
+
     const completed = localStorage.getItem("passplus_completed") === "true"
     const unlocked = localStorage.getItem("passplus_unlocked") === "true"
     if (completed && !unlocked) {
@@ -67,7 +72,7 @@ export default function QuizPage() {
       const q = existing.questions[existing.currentIndex]
       if (q) setSelected(existing.answers[q.id] ?? null)
     } else {
-      const s = createSession("normal")
+      const s = createSession("normal", undefined, { cert: certParam })
       saveSession(s)
       setSession(s)
     }
@@ -109,24 +114,25 @@ export default function QuizPage() {
       const s = createSession("normal", undefined, {
         count: opts.count,
         domain: opts.domain ?? undefined,
+        cert: session?.cert ?? "secplus",
       })
       const updated: QuizSession = { ...s, examMode: false }
       saveSession(updated)
       setSession(updated)
       sendGAEvent("event", "quiz_mode_selected", { mode: "practice" })
     },
-    []
+    [session?.cert]
   )
 
   const handleStartExam = useCallback(() => {
-    const s = createExamSession()
+    const s = createExamSession(session?.cert ?? "secplus")
     const updated: QuizSession = { ...s, examMode: true, examStartedAt: Date.now() }
     saveSession(updated)
     setSession(updated)
     setSelected(null)
     setExplanation(null)
     sendGAEvent("event", "quiz_mode_selected", { mode: "exam" })
-  }, [])
+  }, [session?.cert])
 
   const currentQuestion: Question | undefined =
     session?.questions[session.currentIndex]
@@ -241,7 +247,7 @@ export default function QuizPage() {
     if (!session) { setConfirmAction(null); return }
     if (confirmAction === "restart") {
       setConfirmAction(null)
-      const s = createSession("normal")
+      const s = createSession("normal", undefined, { cert: session.cert ?? "secplus" })
       saveSession(s)
       setSession(s)
       setSelected(null)
@@ -249,7 +255,7 @@ export default function QuizPage() {
       streakUpdatedRef.current = false
     } else if (confirmAction === "to-exam") {
       setConfirmAction(null)
-      const s = createExamSession()
+      const s = createExamSession(session.cert ?? "secplus")
       const updated: QuizSession = { ...s, examMode: true, examStartedAt: Date.now() }
       saveSession(updated)
       setSession(updated)
@@ -258,7 +264,7 @@ export default function QuizPage() {
       streakUpdatedRef.current = false
     } else if (confirmAction === "to-practice") {
       setConfirmAction(null)
-      const s = createSession("normal")
+      const s = createSession("normal", undefined, { cert: session.cert ?? "secplus" })
       const updated: QuizSession = { ...s, examMode: false }
       saveSession(updated)
       setSession(updated)
@@ -483,6 +489,7 @@ export default function QuizPage() {
           shouldReduce={!!shouldReduce}
           displayName={displayName}
           isUnlocked={session.isUnlocked}
+          cert={session?.cert ?? cert}
         />
       ) : (
         /* Quiz content */
@@ -704,22 +711,34 @@ const DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[
   { label: "Domain 5", sublabel: "Security Program Management · 19 Qs", value: 5 },
 ]
 
+const NETWORK_DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[] = [
+  { label: "All Domains", sublabel: "245 questions", value: null },
+  { label: "Domain 1", sublabel: "Networking Concepts · 56 Qs", value: 1 },
+  { label: "Domain 2", sublabel: "Network Implementation · 49 Qs", value: 2 },
+  { label: "Domain 3", sublabel: "Network Operations · 48 Qs", value: 3 },
+  { label: "Domain 4", sublabel: "Network Security · 45 Qs", value: 4 },
+  { label: "Domain 5", sublabel: "Network Troubleshooting · 47 Qs", value: 5 },
+]
+
 function ModeSelectScreen({
   onPractice,
   onExam,
   shouldReduce,
   displayName,
   isUnlocked,
+  cert,
 }: {
   onPractice: (opts: { count: number; domain: number | null }) => void
   onExam: () => void
   shouldReduce: boolean
   displayName?: string | null
   isUnlocked: boolean
+  cert: "secplus" | "netplus"
 }) {
   const [step, setStep] = useState<"mode" | "practice-config">("mode")
   const [questionCount, setQuestionCount] = useState(25)
   const [domainFilter, setDomainFilter] = useState<number | null>(null)
+  const activeDomainOptions = cert === "netplus" ? NETWORK_DOMAIN_OPTIONS : DOMAIN_OPTIONS
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
@@ -785,15 +804,18 @@ function ModeSelectScreen({
                 <div>
                   <h2 className="font-semibold text-base mb-1">Exam Mode</h2>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    90 minute countdown. Simulates real Security+ exam conditions.
-                    Auto-submits when time runs out.
+                    {cert === "netplus"
+                      ? "90 minute countdown. Simulates real Network+ exam conditions. Auto-submits when time runs out."
+                      : "90 minute countdown. Simulates real Security+ exam conditions. Auto-submits when time runs out."}
                   </p>
                 </div>
               </motion.button>
             </div>
 
             <p className="text-xs text-muted-foreground/60 text-center">
-              CompTIA Security+ allows 90 minutes for the real exam
+              {cert === "netplus"
+                ? "CompTIA Network+ allows 90 minutes for the real exam"
+                : "CompTIA Security+ allows 90 minutes for the real exam"}
             </p>
           </motion.div>
         ) : (
@@ -853,7 +875,7 @@ function ModeSelectScreen({
               </div>
               {!isUnlocked && (
                 <p className="text-xs text-muted-foreground/60">
-                  Unlock all 255 questions to choose a larger set
+                  Unlock to choose a larger set
                 </p>
               )}
             </div>
@@ -869,7 +891,7 @@ function ModeSelectScreen({
                 )}
               </label>
               <div className="flex flex-col gap-2">
-                {DOMAIN_OPTIONS.map((opt) => {
+                {activeDomainOptions.map((opt) => {
                   const locked = !isUnlocked && opt.value !== null
                   const selected = domainFilter === opt.value
                   return (
@@ -1071,8 +1093,8 @@ function PaywallOverlay({
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Unlock all{" "}
-              <strong className="text-foreground">490 questions</strong> across
-              Practice Mode and Exam Mode covering every SY0-701 domain.
+              <strong className="text-foreground">980 questions</strong> across
+              Practice Mode and Exam Mode for both Security+ and Network+.
             </p>
           </div>
 
@@ -1095,7 +1117,7 @@ function PaywallOverlay({
               }
               className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
             >
-              Unlock All 490 Questions — $9.99
+              Unlock All 980 Questions — $9.99
             </motion.button>
             <button
               onClick={onGoToResults}

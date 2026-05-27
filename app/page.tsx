@@ -54,7 +54,7 @@ export default function Home() {
 
   const certs = [
     { id: "secplus" as const, label: "Security+", sub: "SY0-701", available: true },
-    { id: "netplus" as const, label: "Network+", sub: "N10-009", available: false },
+    { id: "netplus" as const, label: "Network+", sub: "N10-009", available: true },
     { id: "aplus"  as const, label: "A+",        sub: "Core 1 & 2", available: false },
   ]
 
@@ -243,8 +243,8 @@ export default function Home() {
             {...fadeUp(0.2)}
             className="text-base sm:text-lg text-muted-foreground max-w-lg leading-relaxed"
           >
-            490 questions across Practice Mode and Exam Mode covering
-            every SY0-701 domain. Instant feedback, score tracking, and
+            980 questions across Practice Mode and Exam Mode covering
+            Security+ and Network+. Instant feedback, score tracking, and
             missed-question drills.
           </motion.p>
 
@@ -284,7 +284,7 @@ export default function Home() {
                     You&apos;ve completed your free quiz
                   </p>
                   <p className="text-xs text-muted-foreground max-w-xs">
-                    Unlock full access to all 490 questions across both modes and get
+                    Unlock full access to all 980 questions across both modes and get
                     AI explanations for every answer
                   </p>
                 </div>
@@ -295,7 +295,7 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "unlock_clicked")}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
                 >
-                  Unlock All 490 Questions — $9.99
+                  Unlock All 980 Questions — $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
                 <Link
@@ -311,15 +311,28 @@ export default function Home() {
                   Or sign in to your account
                 </Link>
               </div>
-            ) : selectedCert !== "secplus" ? (
+            ) : selectedCert === "aplus" ? (
               <div className="flex flex-col items-center gap-2">
                 <div className="flex items-center justify-center gap-2 bg-muted border border-border text-muted-foreground font-semibold px-10 py-4 rounded-xl text-base w-full sm:w-auto min-h-[52px] cursor-default">
                   Coming Soon
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  {certs.find(c => c.id === selectedCert)?.label} questions are in development
+                  A+ questions are in development
                 </span>
               </div>
+            ) : selectedCert === "netplus" ? (
+              <>
+                <Link
+                  href="/quiz?cert=netplus"
+                  onClick={() => sendGAEvent("event", "quiz_started", { cert: "netplus" })}
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
+                >
+                  Start Free Quiz →
+                </Link>
+                <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
+                  25 free questions · Network+ N10-009 · No signup required
+                </span>
+              </>
             ) : (
               <>
                 <Link
@@ -342,14 +355,14 @@ export default function Home() {
             className="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-xs text-muted-foreground"
           >
             <Zap className="w-3 h-3 text-accent-green" />
-            CompTIA SY0-701 · 490 questions · Practice + Exam Mode
+            Security+ · Network+ · 980 questions · Practice + Exam Mode
           </motion.div>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-2xl">
           {[
-            { value: "490", label: "Total Questions" },
+            { value: "980", label: "Total Questions" },
             { value: "2", label: "Study Modes" },
             { value: "5", label: "SY0-701 Domains" },
             { value: "Free", label: "First 25 Questions" },
@@ -473,7 +486,7 @@ export default function Home() {
             {
               icon: <Lock className="w-4 h-4 text-accent-green" />,
               title: "Full Question Bank",
-              desc: "Unlock all 490 questions across Practice Mode and Exam Mode for $9.99.",
+              desc: "Unlock all 980 questions across Security+ and Network+ for $9.99.",
             },
           ].map((f, i) => (
             <motion.div
