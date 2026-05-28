@@ -18,7 +18,7 @@ export interface QuizSession {
   cert?: "secplus" | "netplus"
 }
 
-// Fixed set of free practice questions — same 25 questions, same order, on every device.
+// Fixed set of free practice questions - same 25 questions, same order, on every device.
 const FREE_QUESTIONS = questions.filter((q) => q.tier === "free")
 
 // Fixed set of free exam questions (EQ001–EQ010), same order on every device.
@@ -79,7 +79,7 @@ export function createSession(
     base = shuffle(base)
     pool = options?.count ? base.slice(0, options.count) : base
   } else {
-    // Free users always see the exact same 25 questions in the same order —
+    // Free users always see the exact same 25 questions in the same order -
     // no shuffle, no localStorage needed, consistent across every device.
     pool = freeQs
   }
@@ -144,7 +144,7 @@ export function clearSession(): void {
 }
 
 // Clears all quiz progress (session, completion flag) while
-// preserving the unlock flag — paid users keep their access after a reset.
+// preserving the unlock flag - paid users keep their access after a reset.
 export function resetProgress(): void {
   if (typeof window === "undefined") return
   localStorage.removeItem("passplus_session")

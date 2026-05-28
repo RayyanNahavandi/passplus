@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
             { onConflict: "email" }
           )
         if (error) {
-          // Non-fatal — localStorage unlock still proceeds on the client
+          // Non-fatal - localStorage unlock still proceeds on the client
           console.error("Failed to upsert paid_users:", error.message)
         }
       }

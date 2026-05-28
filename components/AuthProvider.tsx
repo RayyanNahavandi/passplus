@@ -36,7 +36,7 @@ async function syncPaidStatus(accessToken: string) {
     const { paid } = (await res.json()) as { paid: boolean }
     if (paid) unlock()
   } catch {
-    // Network error — silently skip
+    // Network error - silently skip
   }
 }
 

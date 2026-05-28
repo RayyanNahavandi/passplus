@@ -1,4 +1,4 @@
-// Stripe webhook — receives checkout.session.completed events and
+// Stripe webhook - receives checkout.session.completed events and
 // records the customer's email in paid_users.
 //
 // Set up in Stripe Dashboard → Developers → Webhooks:
@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import { supabaseAdmin } from "@/lib/supabase-admin"
 
-// Next.js App Router reads the raw body automatically — no bodyParser config needed.
+// Next.js App Router reads the raw body automatically - no bodyParser config needed.
 export async function POST(request: NextRequest) {
   const rawBody = await request.text()
   const sig = request.headers.get("stripe-signature")
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 400 })
     }
   } else {
-    // No webhook secret configured — accept without verification (dev only)
+    // No webhook secret configured - accept without verification (dev only)
     try {
       event = JSON.parse(rawBody) as Stripe.Event
     } catch {

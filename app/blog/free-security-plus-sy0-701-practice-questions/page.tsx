@@ -45,7 +45,7 @@ export default function BlogPost() {
 
           {/* Title */}
           <h1 className="text-3xl font-bold leading-tight mb-8">
-            Free Security+ SY0-701 Practice Questions — No Signup Required
+            Free Security+ SY0-701 Practice Questions - No Signup Required
           </h1>
 
           {/* Body */}
@@ -55,9 +55,9 @@ export default function BlogPost() {
 
             <p>
               The CompTIA Security+ exam tests your ability to <em>apply</em> security
-              concepts, not just recall definitions. That's why passive studying —
+              concepts, not just recall definitions. That's why passive studying -
               re-reading notes, watching videos on 1.5x speed, highlighting textbook
-              chapters — only gets you so far. Practice questions force active retrieval:
+              chapters - only gets you so far. Practice questions force active retrieval:
               your brain has to locate the right answer under time pressure, which is
               exactly what the real exam demands.
             </p>
@@ -71,7 +71,7 @@ export default function BlogPost() {
             </p>
 
             <p>
-              For Security+, this means sitting down with practice questions early — not
+              For Security+, this means sitting down with practice questions early. Not
               as a final review step, but as the primary study method. Use your wrong
               answers to guide where you spend your reading time, not the other way
               around.
@@ -83,30 +83,30 @@ export default function BlogPost() {
 
             <ul>
               <li>
-                <strong>General Security Concepts</strong> (12%) — Cryptography,
+                <strong>General Security Concepts</strong> (12%): Cryptography,
                 authentication types, security controls and frameworks
               </li>
               <li>
-                <strong>Threats, Vulnerabilities, and Mitigations</strong> (22%) —
+                <strong>Threats, Vulnerabilities, and Mitigations</strong> (22%):
                 Attack types, threat actors, vulnerability scanning, mitigation techniques
               </li>
               <li>
-                <strong>Security Architecture</strong> (18%) — Network segmentation,
+                <strong>Security Architecture</strong> (18%): Network segmentation,
                 cloud security, infrastructure design
               </li>
               <li>
-                <strong>Security Operations</strong> (28%) — The largest domain.
+                <strong>Security Operations</strong> (28%): The largest domain.
                 Incident response, identity and access management, endpoint hardening,
                 monitoring and detection
               </li>
               <li>
-                <strong>Security Program Management and Oversight</strong> (20%) —
+                <strong>Security Program Management and Oversight</strong> (20%):
                 Risk management, compliance frameworks, data privacy, third-party risk
               </li>
             </ul>
 
             <p>
-              Security Operations is the biggest slice — nearly a third of the exam.
+              Security Operations is the biggest slice, nearly a third of the exam.
               If you're short on time, prioritize it. But every domain will appear, and
               General Security Concepts is a trap: it looks foundational and boring, but
               cryptography and authentication questions are consistently among the
@@ -122,7 +122,7 @@ export default function BlogPost() {
 
             <p>
               The site aggregates user-submitted answers with no vetting process. For
-              SY0-701 — a relatively recent exam — a large share of the "community
+              SY0-701, a relatively recent exam, a large share of the "community
               answers" are disputed in the comments, and a meaningful portion are flat-out
               wrong. The danger isn't just getting a question wrong in practice. It's that
               studying with bad answers trains your intuition in the wrong direction.
@@ -135,19 +135,19 @@ export default function BlogPost() {
 
             <ul>
               <li>
-                <strong>Professor Messer's SY0-701 practice exams</strong> — Written
+                <strong>Professor Messer's SY0-701 practice exams</strong>: Written
                 specifically for this exam version by someone who deeply understands how
                 CompTIA structures questions
               </li>
               <li>
-                <strong>Jason Dion's Udemy practice tests</strong> — Consistently
+                <strong>Jason Dion's Udemy practice tests</strong>: Consistently
                 accurate, well-explained answer rationale
               </li>
               <li>
                 <strong>
                   <Link href="/quiz">PassPlus</Link>
                 </strong>{" "}
-                — 490 questions across Practice Mode and Exam Mode covering every SY0-701
+                490 questions across Practice Mode and Exam Mode covering every SY0-701
                 domain. Instant feedback on every answer, score tracking, and a
                 "Practice Missed" mode that drills your weak spots. No signup required.
               </li>
@@ -164,7 +164,7 @@ export default function BlogPost() {
 
             <p>
               <strong>Focus on the scenario, not the keyword.</strong> Questions describe
-              a situation and ask what you would do. Don't scan for familiar terms —
+              a situation and ask what you would do. Don't scan for familiar terms.
               read carefully to understand what's actually being asked. Two questions with
               the same keywords can require completely different answers depending on the
               context.
@@ -172,7 +172,7 @@ export default function BlogPost() {
 
             <p>
               <strong>Know your acronyms cold.</strong> SIEM, SOAR, EDR, XDR, IDS, IPS,
-              DLP, CASB — these appear constantly. Make sure you know not just what they
+              DLP, CASB. These appear constantly. Make sure you know not just what they
               stand for, but what they do and when you'd choose each one over the
               alternatives.
             </p>
@@ -180,7 +180,7 @@ export default function BlogPost() {
             <p>
               <strong>Don't cram.</strong> Security+ rewards genuine understanding over
               memorization. If you understand <em>why</em> MFA is more secure than
-              passwords alone, you'll handle any authentication question correctly —
+              passwords alone, you'll handle any authentication question correctly,
               including ones phrased in ways you've never seen. Cramming the night before
               doesn't work for application-based questions.
             </p>
@@ -190,7 +190,7 @@ export default function BlogPost() {
               a question wrong once and moving on is one of the most common study
               mistakes. Revisit your wrong answers the next day, then a few days after
               that. PassPlus tracks every question you miss and lets you run a dedicated
-              practice session on your weak spots — use it.
+              practice session on your weak spots. Use it.
             </p>
 
             <h2>Start Practicing Free</h2>
@@ -198,7 +198,7 @@ export default function BlogPost() {
             <p>
               The fastest way to find your knowledge gaps is to start answering questions.{" "}
               <Link href="/quiz">PassPlus</Link> gives you 25 free SY0-701 practice
-              questions — no account, no email, no payment. You get instant feedback on
+              questions with no account, no email, no payment. You get instant feedback on
               every answer and a full breakdown at the end showing exactly where you lost
               points.
             </p>
@@ -229,7 +229,7 @@ export default function BlogPost() {
       </main>
 
       <footer className="border-t border-border px-6 py-5 text-center text-xs text-muted-foreground/50">
-        PassPlus — Not affiliated with CompTIA. Questions adapted from Professor Messer SY0-701 practice materials.
+        PassPlus - Not affiliated with CompTIA. Questions adapted from Professor Messer SY0-701 practice materials.
       </footer>
     </div>
   )

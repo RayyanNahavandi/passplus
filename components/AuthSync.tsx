@@ -22,7 +22,7 @@ export function AuthSync() {
         const { paid } = await res.json() as { paid: boolean }
         if (paid) unlock()
       } catch {
-        // Network error — silently skip; localStorage state is unchanged
+        // Network error - silently skip; localStorage state is unchanged
       }
     }
 

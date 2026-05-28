@@ -1,4 +1,4 @@
-// SERVER-ONLY — never import this in client components or lib/quiz-store.ts
+// SERVER-ONLY - never import this in client components or lib/quiz-store.ts
 // Uses the service-role key which bypasses RLS.
 import { createClient, SupabaseClient } from "@supabase/supabase-js"
 

@@ -1059,7 +1059,7 @@ export const networkPracticeQuestions: NetworkQuestion[] = ([] as NetworkQuestio
   },
   {
     id: "NQ175", exam: "Original",
-    question: "A network administrator discovers that a remote user's VPN traffic is split — some traffic goes through the VPN tunnel and some goes directly to the internet. Which VPN configuration is this?",
+    question: "A network administrator discovers that a remote user's VPN traffic is split - some traffic goes through the VPN tunnel and some goes directly to the internet. Which VPN configuration is this?",
     options: { A: "Full tunnel VPN", B: "Split tunnel VPN", C: "Site-to-site VPN", D: "SSL VPN" },
     answer: "B", tier: "locked", domain: 4
   },

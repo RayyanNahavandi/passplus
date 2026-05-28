@@ -4,7 +4,7 @@ import { Logo } from "@/components/Logo"
 import { ArrowRight, BookOpen } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Blog | PassPlus — Security+ Study Resources",
+  title: "Blog | PassPlus: Security+ Study Resources",
   description:
     "Security+ study guides, exam tips, and practice resources for CompTIA SY0-701 candidates.",
 }
@@ -20,7 +20,7 @@ const posts = [
   },
   {
     slug: "free-security-plus-sy0-701-practice-questions",
-    title: "Free Security+ SY0-701 Practice Questions — No Signup Required",
+    title: "Free Security+ SY0-701 Practice Questions - No Signup Required",
     description:
       "Why practice questions beat every other study method, which exam domains to prioritize, and why Examtopics answers will get you failed.",
     date: "May 19, 2026",
@@ -71,7 +71,7 @@ export default function BlogIndexPage() {
       </main>
 
       <footer className="border-t border-border px-6 py-5 text-center text-xs text-muted-foreground/50">
-        PassPlus — Not affiliated with CompTIA. Questions adapted from Professor Messer SY0-701 practice materials.
+        PassPlus - Not affiliated with CompTIA. Questions adapted from Professor Messer SY0-701 practice materials.
       </footer>
     </div>
   )

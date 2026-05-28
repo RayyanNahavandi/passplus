@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PassPlus — CompTIA Security+ SY0-701 Practice",
+  title: "PassPlus: CompTIA Security+ SY0-701 Practice",
   description: "Ace the CompTIA Security+ SY0-701 exam with 200+ practice questions.",
 };
 

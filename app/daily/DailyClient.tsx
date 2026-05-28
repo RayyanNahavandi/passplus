@@ -236,7 +236,7 @@ export function DailyClient({
                   ) : (
                     <>
                       <XCircle className="w-4 h-4" />
-                      Wrong — correct answer: {question.answer}.{" "}
+                      Wrong. Correct answer: {question.answer}.{" "}
                       {question.options[question.answer]}
                     </>
                   )}
@@ -252,7 +252,7 @@ export function DailyClient({
             )}
           </AnimatePresence>
 
-          {/* Share section — always visible */}
+          {/* Share section - always visible */}
           <motion.div
             initial={shouldReduce ? {} : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -278,7 +278,7 @@ export function DailyClient({
 
               {/* Reddit */}
               <a
-                href={`https://reddit.com/submit?url=${shareUrl}&title=${encodeURIComponent("Security+ Question of the Day — can you get it right?")}`}
+                href={`https://reddit.com/submit?url=${shareUrl}&title=${encodeURIComponent("Security+ Question of the Day - can you get it right?")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => sendGAEvent("event", "daily_shared", { platform: "reddit" })}
@@ -288,7 +288,7 @@ export function DailyClient({
                 Share on Reddit
               </a>
 
-              {/* Discord (copy link — no intent URL for Discord) */}
+              {/* Discord (copy link - no intent URL for Discord) */}
               <a
                 href="https://discord.gg/wYUMRNFWEM"
                 target="_blank"

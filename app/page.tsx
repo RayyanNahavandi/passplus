@@ -79,13 +79,13 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen bg-background">
       <nav ref={navRef} className="relative border-b border-border px-6 py-4 flex items-center justify-between">
-        {/* Logo — always visible */}
+        {/* Logo - always visible */}
         <motion.div className="flex items-center gap-2" {...fadeUp(0)}>
           <Logo size={28} />
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </motion.div>
 
-        {/* Desktop nav — hidden on mobile */}
+        {/* Desktop nav - hidden on mobile */}
         <motion.div {...fadeUp(0.05)} className="hidden md:flex items-center gap-3">
           <Link
             href="/daily"
@@ -149,7 +149,7 @@ export default function Home() {
           )}
         </motion.div>
 
-        {/* Hamburger — mobile only */}
+        {/* Hamburger - mobile only */}
         <button
           onClick={() => setShowMobileMenu((v) => !v)}
           className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg border border-border hover:bg-muted transition-colors text-foreground"
@@ -295,7 +295,7 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "unlock_clicked")}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
                 >
-                  Unlock All 980 Questions — $9.99
+                  Unlock All 980 Questions - $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
                 <Link
@@ -344,7 +344,7 @@ export default function Home() {
 
                 </Link>
                 <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
-                  Join 1,000+ people across 20+ countries studying for SY0-701 — students have already passed
+                  Join 1,000+ people across 20+ countries studying for SY0-701. Students have already passed
                 </span>
               </>
             )}
@@ -383,7 +383,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Streak + Readiness — shown only when data exists */}
+        {/* Streak + Readiness - shown only when data exists */}
         {(streak > 0 || readiness) && (
           <motion.div
             {...fadeUp(0.35)}
@@ -579,7 +579,7 @@ export default function Home() {
 
       <footer className="border-t border-border px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground/50">
         <span>
-          PassPlus — Not affiliated with CompTIA. Original practice questions based on CompTIA SY0-701 exam objectives.
+          PassPlus - Not affiliated with CompTIA. Original practice questions based on CompTIA SY0-701 exam objectives.
         </span>
         <Link href="/blog" className="hover:text-muted-foreground transition-colors">
           Blog

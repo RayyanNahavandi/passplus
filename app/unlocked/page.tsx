@@ -7,7 +7,7 @@ import { CheckCircle, XCircle } from "lucide-react"
 import { unlock } from "@/lib/quiz-store"
 
 // Fallback tokens for manual unlocks and Safari ITP support.
-// Keep these values private — share only with users who need manual access.
+// Keep these values private - share only with users who need manual access.
 const UNLOCK_TOKENS = new Set(["PP_T7R3V8W2X5K", "PP_J4N6Q1L9M3Z"])
 
 type Status = "verifying" | "success" | "failed"

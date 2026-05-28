@@ -104,7 +104,7 @@ export default function LoginPage() {
     )
   }
 
-  // Already signed in — render nothing while redirect fires
+  // Already signed in - render nothing while redirect fires
   if (user) return null
 
   if (status === "confirm_email") {
@@ -195,7 +195,7 @@ export default function LoginPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-              {/* Display name — signup only */}
+              {/* Display name - signup only */}
               <AnimatePresence initial={false}>
                 {mode === "signup" && (
                   <motion.div

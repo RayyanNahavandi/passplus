@@ -49,7 +49,7 @@ export default function QuizPage() {
   >(null)
   const [streakCount, setStreakCount] = useState(0)
   const [streakMilestone, setStreakMilestone] = useState<number | null>(null)
-  // 1 = forward, -1 = backward — drives slide direction
+  // 1 = forward, -1 = backward - drives slide direction
   const directionRef = useRef<1 | -1>(1)
   const streakUpdatedRef = useRef(false)
   const shouldReduce = useReducedMotion()
@@ -80,7 +80,7 @@ export default function QuizPage() {
     setLoading(false)
   }, [router])
 
-  // Exam timer — recalculates from examStartedAt each tick for accuracy across tab sleeps
+  // Exam timer - recalculates from examStartedAt each tick for accuracy across tab sleeps
   const examStartedAt = session?.examStartedAt
   const isExamMode = session?.examMode === true
 
@@ -398,7 +398,7 @@ export default function QuizPage() {
             </>
           )}
 
-          {/* Mode toggle — paid users only, not on mode select screen */}
+          {/* Mode toggle - paid users only, not on mode select screen */}
           {!showModeSelect && session.isUnlocked && (
             <button
               onClick={() => setConfirmAction(isExamMode ? "to-practice" : "to-exam")}
@@ -578,14 +578,14 @@ export default function QuizPage() {
                         ) : (
                           <>
                             <XCircle className="w-4 h-4" />
-                            Wrong — correct answer:{" "}
+                            Wrong. Correct answer:{" "}
                             {currentQuestion?.answer}.{" "}
                             {currentQuestion?.options[currentQuestion.answer]}
                           </>
                         )}
                       </div>
 
-                      {/* Locked teaser — free users, wrong answer only */}
+                      {/* Locked teaser - free users, wrong answer only */}
                       {!session.isUnlocked && !answeredCorrectly && (
                         <motion.p
                           initial={{ opacity: 0, y: 4 }}
@@ -606,7 +606,7 @@ export default function QuizPage() {
                         </motion.p>
                       )}
 
-                      {/* AI explanation — paid users only */}
+                      {/* AI explanation - paid users only */}
                       <AnimatePresence>
                         {session.isUnlocked && (loadingExplanation || explanation) && (
                           <motion.p
@@ -640,7 +640,7 @@ export default function QuizPage() {
                         transition={{ duration: 0.2, delay: 0.05 }}
                         className="flex gap-2"
                       >
-                        {/* Previous button — only when not on first question */}
+                        {/* Previous button - only when not on first question */}
                         {session.currentIndex > 0 && (
                           <motion.button
                             whileHover={shouldReduce ? {} : { scale: 1.01 }}
@@ -1117,7 +1117,7 @@ function PaywallOverlay({
               }
               className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
             >
-              Unlock All 980 Questions — $9.99
+              Unlock All 980 Questions - $9.99
             </motion.button>
             <button
               onClick={onGoToResults}

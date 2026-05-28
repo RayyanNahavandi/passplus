@@ -1,6 +1,6 @@
 import { createClient as _createClient, SupabaseClient } from "@supabase/supabase-js"
 
-// Lazy singleton — not created until first use, so build-time env-var
+// Lazy singleton - not created until first use, so build-time env-var
 // absence doesn't throw during static analysis.
 let _client: SupabaseClient | null = null
 
