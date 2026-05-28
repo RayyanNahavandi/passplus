@@ -388,10 +388,10 @@ export default function Home() {
         {(streak > 0 || readiness) && (
           <motion.div
             {...fadeUp(0.35)}
-            className="flex flex-wrap justify-center gap-3 w-full max-w-2xl"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-2xl"
           >
             {streak > 0 && (
-              <div className="flex items-center justify-center gap-2 bg-card border border-orange-500/20 rounded-xl px-4 h-24 overflow-hidden">
+              <div className="flex items-center justify-center gap-2 bg-card border border-orange-500/20 rounded-xl px-3 h-24 overflow-hidden">
                 <Flame className="w-5 h-5 text-orange-400 shrink-0" />
                 <div>
                   <span className="text-sm font-bold text-orange-400">{streak} day streak</span>
@@ -400,7 +400,7 @@ export default function Home() {
               </div>
             )}
             {readiness && (
-              <div className="flex flex-col items-center justify-center border border-border rounded-xl px-4 h-24 overflow-hidden bg-card">
+              <div className="flex flex-col items-center justify-center border border-border rounded-xl px-3 h-24 overflow-hidden bg-card">
                 <ReadinessRing pct={readiness.pct} size={72} />
               </div>
             )}
