@@ -38,5 +38,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: 'https://studypassplus.com/blog/how-long-to-study-for-security-plus-sy0-701',
+      lastModified: new Date('2026-05-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: 'https://studypassplus.com/blog/security-plus-vs-network-plus-which-first',
+      lastModified: new Date('2026-05-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: 'https://studypassplus.com/blog/hardest-domains-on-security-plus-sy0-701',
+      lastModified: new Date('2026-05-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: 'https://studypassplus.com/blog/how-long-to-study-for-network-plus-n10-009',
+      lastModified: new Date('2026-05-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: 'https://studypassplus.com/blog/comptia-security-plus-passing-score',
+      lastModified: new Date('2026-05-28'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
   ]
 }

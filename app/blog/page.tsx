@@ -11,6 +11,46 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "comptia-security-plus-passing-score",
+    title: "What Is the Passing Score for CompTIA Security+ SY0-701",
+    description:
+      "The passing score is 750 out of 900. Here is what scaled scoring means, how PBQs are graded, and what to expect when you finish the exam.",
+    date: "May 28, 2026",
+    readTime: "5 min read",
+  },
+  {
+    slug: "hardest-domains-on-security-plus-sy0-701",
+    title: "The Hardest Domains on Security+ SY0-701 and How to Study Them",
+    description:
+      "Security Operations is 28% of the exam and the most commonly failed domain. Here is a targeted strategy for every domain.",
+    date: "May 28, 2026",
+    readTime: "7 min read",
+  },
+  {
+    slug: "security-plus-vs-network-plus-which-first",
+    title: "Security+ vs Network+ - Which Should You Take First",
+    description:
+      "You do not need Network+ before Security+. But there are real cases where taking it first makes sense. Here is how to decide.",
+    date: "May 28, 2026",
+    readTime: "5 min read",
+  },
+  {
+    slug: "how-long-to-study-for-security-plus-sy0-701",
+    title: "How Long Does It Take to Study for Security+ SY0-701",
+    description:
+      "A realistic breakdown by experience level: from no IT background (10 to 12 weeks) to security practitioner (2 to 4 weeks).",
+    date: "May 28, 2026",
+    readTime: "6 min read",
+  },
+  {
+    slug: "how-long-to-study-for-network-plus-n10-009",
+    title: "How Long Does It Take to Study for Network+ N10-009",
+    description:
+      "The honest timeline for N10-009 study, why subnetting breaks most schedules, and a week-by-week plan that actually works.",
+    date: "May 28, 2026",
+    readTime: "6 min read",
+  },
+  {
     slug: "free-network-plus-n10-009-practice-questions",
     title: "Free Network+ N10-009 Practice Questions. No Signup Required.",
     description:
