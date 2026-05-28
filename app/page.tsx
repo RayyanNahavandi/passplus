@@ -227,7 +227,7 @@ export default function Home() {
             {...fadeUp(0)}
             className="text-sm text-accent-green font-medium tracking-wide"
           >
-            The free Security+ quiz that doesn&apos;t suck
+            The free CompTIA quiz that doesn&apos;t suck
           </motion.p>
 
           <motion.h1
@@ -235,7 +235,7 @@ export default function Home() {
             className="text-4xl sm:text-6xl font-bold tracking-tight leading-[1.08]"
           >
             Pass your{" "}
-            <span className="text-accent-green">Security+</span>
+            <span className="text-accent-green">CompTIA cert</span>
             {" "}with confidence
           </motion.h1>
 
@@ -364,7 +364,7 @@ export default function Home() {
           {[
             { value: "980", label: "Total Questions" },
             { value: "2", label: "Study Modes" },
-            { value: "5", label: "SY0-701 Domains" },
+            { value: "2", label: "Certs Covered" },
             { value: "Free", label: "First 25 Questions" },
           ].map((stat, i) => (
             <motion.div
@@ -557,7 +557,7 @@ export default function Home() {
               Study with others, not alone
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Join 1,000+ people preparing for Security+ SY0-701. Daily questions, study tips, and a community that celebrates your pass.
+              Join 1,000+ people preparing for their CompTIA certification. Daily questions, study tips, and a community that celebrates your pass.
             </p>
           </div>
 
@@ -579,7 +579,7 @@ export default function Home() {
 
       <footer className="border-t border-border px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground/50">
         <span>
-          PassPlus - Not affiliated with CompTIA. Original practice questions based on CompTIA SY0-701 exam objectives.
+          PassPlus - Not affiliated with CompTIA. Original practice questions based on publicly available CompTIA exam objectives.
         </span>
         <Link href="/blog" className="hover:text-muted-foreground transition-colors">
           Blog
