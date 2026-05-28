@@ -331,8 +331,67 @@ export default function QuizPage() {
 
   const slideX = shouldReduce ? 0 : 40
 
+  const courseSchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      name: "CompTIA Security+ SY0-701 Practice Quiz",
+      description:
+        "Free practice questions for CompTIA Security+ SY0-701. 490 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
+      url: "https://studypassplus.com/quiz",
+      provider: {
+        "@type": "Organization",
+        name: "PassPlus",
+        url: "https://studypassplus.com",
+      },
+      teaches: "CompTIA Security+ SY0-701 exam preparation",
+      educationalCredentialAwarded: "CompTIA Security+ SY0-701",
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          description:
+            "25 free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
+        },
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      name: "CompTIA Network+ N10-009 Practice Quiz",
+      description:
+        "Free practice questions for CompTIA Network+ N10-009. 490 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
+      url: "https://studypassplus.com/quiz?cert=netplus",
+      provider: {
+        "@type": "Organization",
+        name: "PassPlus",
+        url: "https://studypassplus.com",
+      },
+      teaches: "CompTIA Network+ N10-009 exam preparation",
+      educationalCredentialAwarded: "CompTIA Network+ N10-009",
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          description:
+            "10 free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
+        },
+      },
+    },
+  ]
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
       {/* Header */}
       <header className="sticky top-0 z-10 border-b border-border bg-background/90 backdrop-blur-sm px-5 py-3 flex items-center justify-between">
         <Link

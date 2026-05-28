@@ -17,9 +17,60 @@ export const metadata: Metadata = {
   },
 }
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What domains are covered on the CompTIA Security+ SY0-701 exam?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The SY0-701 exam covers five domains: General Security Concepts (12%), Threats, Vulnerabilities, and Mitigations (22%), Security Architecture (18%), Security Operations (28%), and Security Program Management and Oversight (20%). Security Operations is the largest domain at nearly a third of the exam.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How many Security+ SY0-701 practice questions does PassPlus offer?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "PassPlus offers 490 Security+ SY0-701 practice questions across Practice Mode and Exam Mode, covering all five exam domains. The first 25 questions are free with no account or signup required.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is PassPlus free to use for Security+ practice?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. PassPlus gives you 25 free SY0-701 practice questions with instant feedback and no account required. Full access to all 490 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Why is Examtopics unreliable for Security+ SY0-701 practice?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Examtopics aggregates user-submitted answers with no vetting process. For SY0-701, a large share of community answers are disputed or outright wrong. Studying incorrect answers trains your intuition in the wrong direction, which is especially harmful for CompTIA's nuanced best-answer question format where two options are often plausible.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the most effective way to study for the Security+ SY0-701 exam?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The most effective method is active retrieval practice using practice questions from the start, not just as a final review. Prioritize Security Operations (28% of the exam), know your acronyms cold (SIEM, SOAR, EDR, XDR, IDS, IPS, DLP, CASB), and drill missed questions across multiple sessions using a tool that tracks your weak spots by domain.",
+      },
+    },
+  ],
+}
+
 export default function BlogPost() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <header className="border-b border-border px-6 py-4 flex items-center gap-2">
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <Logo size={28} />

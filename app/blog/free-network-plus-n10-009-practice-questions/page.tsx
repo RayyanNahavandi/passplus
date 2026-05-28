@@ -17,9 +17,60 @@ export const metadata: Metadata = {
   },
 }
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What domains are covered on the CompTIA Network+ N10-009 exam?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The N10-009 exam covers five domains: Networking Concepts (23%), Network Implementation (20%), Network Operations (19%), Network Security (19%), and Network Troubleshooting (19%). Networking Concepts carries the most weight at 23%, making subnetting and routing the highest-priority topics.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How many Network+ N10-009 practice questions does PassPlus offer?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "PassPlus offers 490 Network+ N10-009 practice questions across Practice Mode and Exam Mode, covering all five exam domains. The first 10 questions are free with no account or signup required.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is PassPlus free to use for Network+ practice?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. PassPlus gives you 10 free N10-009 practice questions with instant feedback and no account required. Full access to all 490 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the hardest part of the Network+ N10-009 exam?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Subnetting is the most common difficulty. Most candidates who fail Network+ on the first attempt report running out of time on subnetting questions. The solution is speed through daily repetition until subnet calculations become automatic. Cable types and distances (Cat5e vs Cat6 vs Cat6a, multimode vs single-mode fiber) and troubleshooting methodology are also heavily tested.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the most effective way to study for the Network+ N10-009 exam?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Start with practice questions early and use wrong answers to direct your study time. Master subnetting until calculations are automatic. Know your key acronyms and protocols (OSPF, EIGRP, BGP, LACP, HSRP, VRRP) and understand what each does, not just what it stands for. Network Troubleshooting carries 19% of the exam and is consistently underestimated.",
+      },
+    },
+  ],
+}
+
 export default function BlogPost() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <header className="border-b border-border px-6 py-4 flex items-center gap-2">
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <Logo size={28} />
