@@ -32,5 +32,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: 'https://studypassplus.com/blog/free-network-plus-n10-009-practice-questions',
+      lastModified: new Date('2026-05-27'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
   ]
 }
