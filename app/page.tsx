@@ -9,6 +9,7 @@ import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
 import { getStreak, getReadinessScore } from "@/lib/quiz-store"
+import { ReadinessRing } from "@/components/ReadinessRing"
 
 export default function Home() {
   const shouldReduce = useReducedMotion()
@@ -399,12 +400,8 @@ export default function Home() {
               </div>
             )}
             {readiness && (
-              <div className={`flex items-center gap-3 border rounded-xl px-4 py-3 ${readiness.bgColor}`}>
-                <div className={`text-2xl font-bold ${readiness.textColor}`}>{readiness.pct}%</div>
-                <div>
-                  <span className={`text-sm font-semibold ${readiness.textColor}`}>{readiness.label}</span>
-                  <span className="text-xs text-muted-foreground block leading-none mt-0.5">Readiness score</span>
-                </div>
+              <div className="flex flex-col items-center gap-1 border border-border rounded-xl px-4 py-3 bg-card">
+                <ReadinessRing pct={readiness.pct} size={96} />
               </div>
             )}
           </motion.div>

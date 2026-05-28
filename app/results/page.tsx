@@ -25,8 +25,10 @@ import {
   saveSession,
   resetProgress,
   recordQuizScore,
+  getReadinessScore,
   type QuizSession,
 } from "@/lib/quiz-store"
+import { ReadinessRing } from "@/components/ReadinessRing"
 import { questions, type Question } from "@/data/questions"
 
 const containerVariants = {
@@ -46,6 +48,7 @@ export default function ResultsPage() {
   const [session, setSession] = useState<QuizSession | null>(null)
   const [loading, setLoading] = useState(true)
   const [confirmRestart, setConfirmRestart] = useState(false)
+  const [readiness, setReadiness] = useState<ReturnType<typeof getReadinessScore>>(null)
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
@@ -56,6 +59,7 @@ export default function ResultsPage() {
       const answeredTotal = Object.keys(s.answers).length
       sendGAEvent("event", "quiz_completed", { score: s.score, total: answeredTotal })
       recordQuizScore(s.score, answeredTotal)
+      setReadiness(getReadinessScore())
       if (!s.isUnlocked) {
         localStorage.setItem("passplus_completed", "true")
       }
@@ -212,6 +216,20 @@ export default function ResultsPage() {
               CompTIA Security+ typically requires ~75% to pass.
             </div>
           </motion.div>
+
+          {/* Readiness ring */}
+          {readiness && (
+            <motion.div
+              variants={shouldReduce ? {} : itemVariants}
+              className="bg-card border border-border rounded-2xl p-6 flex flex-col items-center gap-3 shadow-sm"
+            >
+              <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wide w-full text-center">Exam Readiness</h2>
+              <ReadinessRing pct={readiness.pct} size={140} />
+              <p className="text-xs text-muted-foreground text-center max-w-xs">
+                Based on your last 3 quiz scores
+              </p>
+            </motion.div>
+          )}
 
           {/* Domain breakdown */}
           {domainStats.length > 0 && (
