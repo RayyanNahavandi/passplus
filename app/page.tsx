@@ -374,7 +374,7 @@ export default function Home() {
               whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-20px" }}
               transition={{ delay: i * 0.07, duration: 0.4, ease: "easeOut" }}
-              className="flex flex-col items-center gap-1 bg-card border border-border rounded-xl py-5 px-3"
+              className="flex flex-col items-center justify-center gap-1 bg-card border border-border rounded-xl h-24 px-3"
             >
               <span className="text-2xl font-bold">{stat.value}</span>
               <span className="text-xs text-muted-foreground text-center">
@@ -391,7 +391,7 @@ export default function Home() {
             className="flex flex-wrap justify-center gap-3 w-full max-w-2xl"
           >
             {streak > 0 && (
-              <div className="flex items-center gap-2 bg-card border border-orange-500/20 rounded-xl px-4 py-3">
+              <div className="flex items-center justify-center gap-2 bg-card border border-orange-500/20 rounded-xl px-4 h-24 overflow-hidden">
                 <Flame className="w-5 h-5 text-orange-400 shrink-0" />
                 <div>
                   <span className="text-sm font-bold text-orange-400">{streak} day streak</span>
@@ -400,8 +400,8 @@ export default function Home() {
               </div>
             )}
             {readiness && (
-              <div className="flex flex-col items-center gap-1 border border-border rounded-xl px-4 py-3 bg-card">
-                <ReadinessRing pct={readiness.pct} size={96} />
+              <div className="flex flex-col items-center justify-center border border-border rounded-xl px-4 h-24 overflow-hidden bg-card">
+                <ReadinessRing pct={readiness.pct} size={72} />
               </div>
             )}
           </motion.div>
