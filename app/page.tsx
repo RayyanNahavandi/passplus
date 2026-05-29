@@ -434,18 +434,9 @@ export default function Home() {
                   Unlock All 1470 Questions - $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
-                <Link
-                  href="/support?token=SUPPORT2026"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[36px] flex items-center"
-                >
-                  Already paid? Restore access
-                </Link>
-                <Link
-                  href="/login"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Or sign in to your account
-                </Link>
+                <p className="text-xs text-muted-foreground">
+                  Having issues? Email studypassplus@gmail.com
+                </p>
               </div>
             ) : selectedCert === "aplus" ? (
               <>

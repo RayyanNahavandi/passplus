@@ -18,6 +18,7 @@ import {
   createExamSession,
   saveSession,
   loadSession,
+  isUnlocked,
   unlock,
   updateStreak,
   getStreak,
@@ -69,9 +70,13 @@ export default function QuizPage() {
     // Only resume a session if it is in-progress AND for the same cert as the URL.
     // Mismatched cert (user switched certs on the landing page) or a completed session
     // both get a fresh start so the mode selector is always shown.
+    // Also discard stale free sessions when the user has since paid — they should get
+    // a fresh paid session rather than resuming the 25-question free one.
     const existingCert = existing?.cert ?? "secplus"
+    const sessionNeedsUpgrade = existing && !existing.isUnlocked && isUnlocked()
     if (
       existing &&
+      !sessionNeedsUpgrade &&
       existing.currentIndex < existing.questions.length &&
       existingCert === certParam
     ) {
@@ -212,6 +217,18 @@ export default function QuizPage() {
     const nextIndex = session.currentIndex + 1
 
     if (!session.isUnlocked && nextIndex >= session.questions.length) {
+      // Safety net: re-check live paid status. The session may have been created
+      // before payment completed (race condition). If the user has since paid,
+      // silently upgrade to a fresh paid session instead of showing the paywall.
+      if (isUnlocked()) {
+        const fresh = createSession("normal", undefined, { cert: session.cert ?? "secplus" })
+        const withMode: QuizSession = { ...fresh, examMode: false }
+        saveSession(withMode)
+        setSession(withMode)
+        setSelected(null)
+        setExplanation(null)
+        return
+      }
       localStorage.setItem("passplus_completed", "true")
       sendGAEvent("event", "paywall_shown")
       setShowPaywall(true)
