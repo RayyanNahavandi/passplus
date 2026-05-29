@@ -21,6 +21,7 @@ export default function Home() {
   const [selectedCert, setSelectedCert] = useState<"secplus" | "netplus" | "aplus">("secplus")
   const [streak, setStreak] = useState(0)
   const [readiness, setReadiness] = useState<ReturnType<typeof getReadinessScore>>(null)
+  const [greeting, setGreeting] = useState<{ line1: string; line2: string | null } | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLElement>(null)
 
@@ -66,6 +67,31 @@ export default function Home() {
     setStreak(getStreak().count)
     setReadiness(getReadinessScore())
   }, [])
+
+  // Personalized, time-aware greeting (client-only to use the user's local clock)
+  useEffect(() => {
+    if (!user || !displayName) {
+      setGreeting(null)
+      return
+    }
+    const hasStudied =
+      !!localStorage.getItem("passplus_quiz_history") ||
+      localStorage.getItem("passplus_completed") === "true" ||
+      getStreak().count > 0
+
+    const hour = new Date().getHours()
+    let timeMsg: string
+    if (hour < 12) timeMsg = "Good morning"
+    else if (hour < 17) timeMsg = "Good afternoon"
+    else if (hour < 20) timeMsg = "Good evening"
+    else timeMsg = Math.random() < 0.5 ? "Late night grind" : "Burning the midnight oil"
+
+    if (hasStudied) {
+      setGreeting({ line1: `Welcome back, ${displayName}`, line2: timeMsg })
+    } else {
+      setGreeting({ line1: `Hey ${displayName}, let's get started.`, line2: null })
+    }
+  }, [user, displayName])
 
   const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: shouldReduce ? 0 : 20 },
@@ -224,6 +250,20 @@ export default function Home() {
       {/* Hero */}
       <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-16 sm:py-24 gap-12">
         <div className="flex flex-col items-center gap-6 max-w-3xl w-full">
+          {greeting && (
+            <motion.div
+              {...fadeUp(0)}
+              className="flex flex-col items-center gap-0.5"
+            >
+              <p className="text-lg sm:text-xl font-semibold text-foreground">
+                {greeting.line1}
+              </p>
+              {greeting.line2 && (
+                <p className="text-sm text-muted-foreground">{greeting.line2}</p>
+              )}
+            </motion.div>
+          )}
+
           <motion.p
             {...fadeUp(0)}
             className="text-sm text-accent-green font-medium tracking-wide"
