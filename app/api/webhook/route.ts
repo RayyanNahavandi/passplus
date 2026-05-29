@@ -9,61 +9,79 @@ import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import { supabaseAdmin } from "@/lib/supabase-admin"
 
-// Next.js App Router reads the raw body automatically - no bodyParser config needed.
+// Must run on Node.js runtime - Stripe signature verification uses Node crypto.
+export const runtime = "nodejs"
+
 export async function POST(request: NextRequest) {
-  const rawBody = await request.text()
-  const sig = request.headers.get("stripe-signature")
+  try {
+    const rawBody = await request.text()
+    const sig = request.headers.get("stripe-signature")
 
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
-  const stripeKey = process.env.STRIPE_SECRET_KEY
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
+    const stripeKey = process.env.STRIPE_SECRET_KEY
 
-  if (!stripeKey) {
-    console.error("STRIPE_SECRET_KEY not set")
-    return NextResponse.json({ error: "Server misconfigured" }, { status: 500 })
-  }
+    // Log env var presence (never log values) to make Vercel log diagnosis easy.
+    if (!stripeKey) {
+      console.error("[webhook] FATAL: STRIPE_SECRET_KEY is not set in environment")
+      return NextResponse.json({ error: "Server misconfigured" }, { status: 500 })
+    }
+    if (!webhookSecret) {
+      console.error("[webhook] FATAL: STRIPE_WEBHOOK_SECRET is not set in environment")
+      return NextResponse.json({ error: "Server misconfigured" }, { status: 500 })
+    }
+    if (!sig) {
+      console.error("[webhook] FATAL: stripe-signature header missing from request")
+      return NextResponse.json({ error: "Missing signature" }, { status: 400 })
+    }
 
-  const stripe = new Stripe(stripeKey)
-  let event: Stripe.Event
+    const stripe = new Stripe(stripeKey)
+    let event: Stripe.Event
 
-  if (webhookSecret && sig) {
     try {
       event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret)
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Unknown error"
-      console.error("Webhook signature verification failed:", msg)
+      const msg = err instanceof Error ? err.message : String(err)
+      console.error("[webhook] Signature verification failed:", msg)
+      console.error("[webhook] Hint: STRIPE_WEBHOOK_SECRET in Vercel must match the signing secret shown in Stripe Dashboard → Webhooks → your endpoint → Signing secret")
       return NextResponse.json({ error: "Invalid signature" }, { status: 400 })
     }
-  } else {
-    // No webhook secret configured - accept without verification (dev only)
-    try {
-      event = JSON.parse(rawBody) as Stripe.Event
-    } catch {
-      return NextResponse.json({ error: "Invalid JSON" }, { status: 400 })
-    }
-  }
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session
-    const email =
-      session.customer_details?.email ??
-      (typeof session.customer_email === "string" ? session.customer_email : null)
+    console.log("[webhook] Verified event:", event.type, event.id)
 
-    if (email && session.payment_status === "paid") {
-      const { error } = await supabaseAdmin
-        .from("paid_users")
-        .upsert(
-          { email: email.toLowerCase(), stripe_session_id: session.id },
-          { onConflict: "email" }
-        )
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object as Stripe.Checkout.Session
+      const email =
+        session.customer_details?.email ??
+        (typeof session.customer_email === "string" ? session.customer_email : null)
 
-      if (error) {
-        console.error("Failed to upsert paid_users:", error.message)
-        return NextResponse.json({ error: "DB error" }, { status: 500 })
+      console.log("[webhook] checkout.session.completed — payment_status:", session.payment_status, "email:", email ?? "none")
+
+      if (email && session.payment_status === "paid") {
+        const { error: dbError } = await supabaseAdmin
+          .from("paid_users")
+          .upsert(
+            { email: email.toLowerCase(), stripe_session_id: session.id },
+            { onConflict: "email" }
+          )
+
+        if (dbError) {
+          console.error("[webhook] Supabase upsert failed:", dbError.message, dbError.code)
+          console.error("[webhook] Hint: check NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set in Vercel")
+          return NextResponse.json({ error: "DB error" }, { status: 500 })
+        }
+
+        console.log("[webhook] Successfully recorded paid user:", email)
+      } else {
+        console.log("[webhook] Skipped — email missing or payment not completed")
       }
-
-      console.log("Recorded paid user:", email)
     }
-  }
 
-  return NextResponse.json({ received: true })
+    return NextResponse.json({ received: true })
+
+  } catch (err) {
+    // Catch-all for unexpected throws (e.g. Supabase client init failure due to missing env vars).
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error("[webhook] Unhandled exception:", msg)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
 }
