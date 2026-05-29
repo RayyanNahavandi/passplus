@@ -128,19 +128,20 @@ export default function ResultsPage() {
 
   const grade = gradeLabel(pct)
 
+  const certPath = (cert: string | undefined) =>
+    cert && cert !== "secplus" ? `/quiz?cert=${cert}` : "/quiz"
+
   const handleNewSession = () => {
     clearSession()
-    const s = createSession("normal")
-    saveSession(s)
-    router.push("/quiz")
+    // Navigate to the same cert - quiz page will create a fresh session with
+    // examMode undefined, so the mode selector is always shown on arrival.
+    router.push(certPath(session?.cert))
   }
 
   const handleRestartQuiz = () => {
     setConfirmRestart(false)
     clearSession()
-    const s = createSession("normal")
-    saveSession(s)
-    router.push("/quiz")
+    router.push(certPath(session?.cert))
   }
 
   const handleResetProgress = () => {
@@ -151,9 +152,10 @@ export default function ResultsPage() {
   const handlePracticeMissed = () => {
     if (session.missedIds.length === 0) return
     clearSession()
-    const s = createSession("missed", session.missedIds)
+    const cert = (session?.cert ?? "secplus") as "secplus" | "netplus" | "aplus"
+    const s = createSession("missed", session.missedIds, { cert })
     saveSession(s)
-    router.push("/quiz")
+    router.push(certPath(cert))
   }
 
   return (

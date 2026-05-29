@@ -17,6 +17,7 @@ export default function Home() {
   const router = useRouter()
   const { user, displayName, signOut } = useAuth()
   const [freeCompleted, setFreeCompleted] = useState(false)
+  const [isUnlocked, setIsUnlocked] = useState(false)
   const [showAccountMenu, setShowAccountMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [selectedCert, setSelectedCert] = useState<"secplus" | "netplus" | "aplus">("secplus")
@@ -100,6 +101,7 @@ export default function Home() {
     const completed = localStorage.getItem("passplus_completed") === "true"
     const unlocked = localStorage.getItem("passplus_unlocked") === "true"
     setFreeCompleted(completed && !unlocked)
+    setIsUnlocked(unlocked)
     setStreak(getStreak().count)
     setReadiness(getReadinessScore())
   }, [])
@@ -452,11 +454,13 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "aplus" })}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
                 >
-                  Start Free Quiz →
+                  {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
                 </Link>
-                <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
-                  Free questions · A+ Core 1 &amp; Core 2 · No signup required
-                </span>
+                {!isUnlocked && (
+                  <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
+                    Free questions · A+ Core 1 &amp; Core 2 · No signup required
+                  </span>
+                )}
               </>
             ) : selectedCert === "netplus" ? (
               <>
@@ -465,11 +469,13 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "netplus" })}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
                 >
-                  Start Free Quiz →
+                  {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
                 </Link>
-                <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
-                  25 free questions · Network+ N10-009 · No signup required
-                </span>
+                {!isUnlocked && (
+                  <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
+                    25 free questions · Network+ N10-009 · No signup required
+                  </span>
+                )}
               </>
             ) : (
               <>
@@ -478,12 +484,13 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "quiz_started")}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
                 >
-                  Start Free Quiz →
-
+                  {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
                 </Link>
-                <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
-                  Join 1,000+ people across 20+ countries studying for SY0-701. Students have already passed
-                </span>
+                {!isUnlocked && (
+                  <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
+                    Join 1,000+ people across 20+ countries studying for SY0-701. Students have already passed
+                  </span>
+                )}
               </>
             )}
           </motion.div>
@@ -656,15 +663,17 @@ export default function Home() {
             className="max-w-md mx-auto flex flex-col gap-5 items-center"
           >
             <h2 className="text-xl font-bold">Ready to start?</h2>
-            <p className="text-sm text-muted-foreground">
-              25 free questions, no account needed.
-            </p>
+            {!isUnlocked && (
+              <p className="text-sm text-muted-foreground">
+                25 free questions, no account needed.
+              </p>
+            )}
             <Link
               href="/quiz"
               onClick={() => sendGAEvent("event", "quiz_started")}
               className="flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm min-h-[48px] w-full sm:w-auto justify-center"
             >
-              Start Free Quiz →
+              {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
             </Link>
           </motion.div>
         </section>

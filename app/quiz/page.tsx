@@ -66,7 +66,15 @@ export default function QuizPage() {
       return
     }
     const existing = loadSession()
-    if (existing && existing.currentIndex < existing.questions.length) {
+    // Only resume a session if it is in-progress AND for the same cert as the URL.
+    // Mismatched cert (user switched certs on the landing page) or a completed session
+    // both get a fresh start so the mode selector is always shown.
+    const existingCert = existing?.cert ?? "secplus"
+    if (
+      existing &&
+      existing.currentIndex < existing.questions.length &&
+      existingCert === certParam
+    ) {
       setSession(existing)
       // Restore selected answer if resuming a session on an already-answered question
       const q = existing.questions[existing.currentIndex]
