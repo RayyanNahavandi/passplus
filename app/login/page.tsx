@@ -43,7 +43,8 @@ export default function LoginPage() {
       } else {
         router.push("/")
       }
-    } catch {
+    } catch (err) {
+      console.error("[auth] check-paid request failed after login:", err)
       router.push("/")
     }
   }
@@ -53,39 +54,80 @@ export default function LoginPage() {
     setStatus("loading")
     setErrorMsg("")
 
-    if (mode === "signup") {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { display_name: displayName.trim() || email.split("@")[0] },
-        },
-      })
-      if (error) {
-        setErrorMsg(error.message)
-        setStatus("error")
-        return
+    try {
+      if (mode === "signup") {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { display_name: displayName.trim() || email.split("@")[0] },
+          },
+        })
+        if (error) {
+          // Log the exact Supabase error so failures are diagnosable in the console.
+          console.error("[auth] signUp error:", error.message, error)
+          const msg = error.message.toLowerCase()
+          if (msg.includes("already registered") || msg.includes("already been registered")) {
+            setErrorMsg("An account with this email already exists. Please sign in instead.")
+          } else {
+            setErrorMsg(error.message)
+          }
+          setStatus("error")
+          return
+        }
+        // Supabase obfuscates duplicate signups for security: when the email is
+        // already registered it returns a user with an EMPTY identities array
+        // and no session (instead of an error). Treat that as "already exists".
+        if (
+          data.user &&
+          Array.isArray(data.user.identities) &&
+          data.user.identities.length === 0
+        ) {
+          console.warn(
+            "[auth] signUp returned empty identities — email already registered:",
+            email
+          )
+          setErrorMsg("An account with this email already exists. Please sign in instead.")
+          setStatus("error")
+          return
+        }
+        if (!data.session) {
+          setStatus("confirm_email")
+          return
+        }
+        await checkPaidAndRedirect(data.session.access_token)
+      } else {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+        if (error) {
+          // Log the exact Supabase error so failures are diagnosable in the console.
+          console.error("[auth] signInWithPassword error:", error.message, error)
+          const msg = error.message.toLowerCase()
+          if (msg.includes("email not confirmed")) {
+            setErrorMsg(
+              "Your email hasn't been confirmed yet. Check your inbox for the confirmation link, or contact support."
+            )
+          } else if (msg.includes("invalid login credentials")) {
+            setErrorMsg("Incorrect email or password.")
+          } else {
+            setErrorMsg(error.message)
+          }
+          setStatus("error")
+          return
+        }
+        await checkPaidAndRedirect(data.session.access_token)
       }
-      if (!data.session) {
-        setStatus("confirm_email")
-        return
-      }
-      await checkPaidAndRedirect(data.session.access_token)
-    } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-      if (error) {
-        setErrorMsg(
-          error.message === "Invalid login credentials"
-            ? "Incorrect email or password."
-            : error.message
-        )
-        setStatus("error")
-        return
-      }
-      await checkPaidAndRedirect(data.session.access_token)
+    } catch (err) {
+      // Catch thrown/network errors so the form never hangs on "loading".
+      console.error("[auth] Unexpected error during auth:", err)
+      setErrorMsg(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again."
+      )
+      setStatus("error")
     }
   }
 

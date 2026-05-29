@@ -32,11 +32,14 @@ async function syncPaidStatus(accessToken: string) {
     const res = await fetch("/api/auth/check-paid", {
       headers: { Authorization: `Bearer ${accessToken}` },
     })
-    if (!res.ok) return
+    if (!res.ok) {
+      console.error("[auth] check-paid request returned non-OK status:", res.status)
+      return
+    }
     const { paid } = (await res.json()) as { paid: boolean }
     if (paid) unlock()
-  } catch {
-    // Network error - silently skip
+  } catch (err) {
+    console.error("[auth] check-paid request failed:", err)
   }
 }
 
@@ -46,7 +49,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Load session persisted in localStorage by the Supabase client
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      if (error) console.error("[auth] getSession error:", error.message, error)
       setUser(session?.user ?? null)
       if (session?.access_token) syncPaidStatus(session.access_token)
       setLoading(false)
@@ -64,7 +68,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut()
+    const { error } = await supabase.auth.signOut()
+    if (error) console.error("[auth] signOut error:", error.message, error)
     if (typeof window !== "undefined") {
       localStorage.removeItem("passplus_unlocked")
       document.cookie =
