@@ -4,6 +4,10 @@ import { questions, type Question } from "@/data/questions"
 import { examQuestions } from "@/data/examQuestions"
 import { networkPracticeQuestions } from "@/data/networkPlusQuestions"
 import { networkExamQuestions } from "@/data/networkPlusExamQuestions"
+import { aplusPracticeQuestions } from "@/data/aplusPracticeQuestions"
+import { aplusExamQuestions } from "@/data/aplusExamQuestions"
+
+type Cert = "secplus" | "netplus" | "aplus"
 
 export interface QuizSession {
   questions: Question[]
@@ -15,7 +19,7 @@ export interface QuizSession {
   isUnlocked: boolean
   examMode?: boolean
   examStartedAt?: number // epoch ms
-  cert?: "secplus" | "netplus"
+  cert?: Cert
 }
 
 // Fixed set of free practice questions - same 25 questions, same order, on every device.
@@ -26,6 +30,9 @@ const FREE_EXAM_QUESTIONS = examQuestions.filter((q) => q.tier === "free") as un
 
 const FREE_NETWORK_QUESTIONS = (networkPracticeQuestions as unknown as Question[]).filter((q) => q.tier === "free")
 const FREE_NETWORK_EXAM_QUESTIONS = (networkExamQuestions as unknown as Question[]).filter((q) => q.tier === "free")
+
+const FREE_APLUS_QUESTIONS = (aplusPracticeQuestions as unknown as Question[]).filter((q) => q.tier === "free")
+const FREE_APLUS_EXAM_QUESTIONS = (aplusExamQuestions as unknown as Question[]).filter((q) => q.tier === "free")
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -61,12 +68,18 @@ export function unlock(): void {
 export function createSession(
   mode: "normal" | "missed" = "normal",
   missedIds?: string[],
-  options?: { count?: number; domain?: number; cert?: "secplus" | "netplus" }
+  options?: { count?: number; domain?: number; cert?: Cert }
 ): QuizSession {
   const unlocked = isUnlocked()
   const cert = options?.cert ?? "secplus"
-  const allQuestions: Question[] = cert === "netplus" ? (networkPracticeQuestions as unknown as Question[]) : questions
-  const freeQs: Question[] = cert === "netplus" ? FREE_NETWORK_QUESTIONS : FREE_QUESTIONS
+  const allQuestions: Question[] =
+    cert === "netplus" ? (networkPracticeQuestions as unknown as Question[])
+    : cert === "aplus" ? (aplusPracticeQuestions as unknown as Question[])
+    : questions
+  const freeQs: Question[] =
+    cert === "netplus" ? FREE_NETWORK_QUESTIONS
+    : cert === "aplus" ? FREE_APLUS_QUESTIONS
+    : FREE_QUESTIONS
 
   let pool: Question[]
   if (mode === "missed" && missedIds?.length) {
@@ -101,13 +114,15 @@ export function createSession(
  * Paid users get all 245 exam questions shuffled.
  * Free users get the fixed EQ001–EQ010 set in order.
  */
-export function createExamSession(cert: "secplus" | "netplus" = "secplus"): QuizSession {
+export function createExamSession(cert: Cert = "secplus"): QuizSession {
   const unlocked = isUnlocked()
-  const allExamQs: Question[] = cert === "netplus"
-    ? (networkExamQuestions as unknown as Question[])
+  const allExamQs: Question[] =
+    cert === "netplus" ? (networkExamQuestions as unknown as Question[])
+    : cert === "aplus" ? (aplusExamQuestions as unknown as Question[])
     : (examQuestions as unknown as Question[])
-  const freeExamQs: Question[] = cert === "netplus"
-    ? FREE_NETWORK_EXAM_QUESTIONS
+  const freeExamQs: Question[] =
+    cert === "netplus" ? FREE_NETWORK_EXAM_QUESTIONS
+    : cert === "aplus" ? FREE_APLUS_EXAM_QUESTIONS
     : FREE_EXAM_QUESTIONS
   const pool: Question[] = unlocked ? shuffle(allExamQs) : freeExamQs
   return {

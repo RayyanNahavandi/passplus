@@ -249,8 +249,8 @@ export default function BlogPost() {
             </p>
 
             <p>
-              Full access to all 980 questions across both certifications is a
-              one-time $9.99 unlock. No subscription.
+              Full access to all 1470 questions across Security+, Network+, and
+              A+ is a one-time $9.99 unlock. No subscription.
             </p>
           </div>
 

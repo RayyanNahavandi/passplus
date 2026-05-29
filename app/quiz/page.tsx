@@ -36,7 +36,7 @@ function formatTime(seconds: number): string {
 export default function QuizPage() {
   const router = useRouter()
   const { displayName } = useAuth()
-  const [cert, setCert] = useState<"secplus" | "netplus">("secplus")
+  const [cert, setCert] = useState<"secplus" | "netplus" | "aplus">("secplus")
   const [session, setSession] = useState<QuizSession | null>(null)
   const [selected, setSelected] = useState<"A" | "B" | "C" | "D" | null>(null)
   const [showPaywall, setShowPaywall] = useState(false)
@@ -56,7 +56,7 @@ export default function QuizPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    const certParam = (params.get("cert") ?? "secplus") as "secplus" | "netplus"
+    const certParam = (params.get("cert") ?? "secplus") as "secplus" | "netplus" | "aplus"
     setCert(certParam)
 
     const completed = localStorage.getItem("passplus_completed") === "true"
@@ -381,6 +381,32 @@ export default function QuizPage() {
           priceCurrency: "USD",
           description:
             "10 free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
+        },
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      name: "CompTIA A+ Core 1 & Core 2 Practice Quiz",
+      description:
+        "Free practice questions for CompTIA A+ (220-1101 Core 1 & 220-1102 Core 2). 490 questions across Practice Mode and Exam Mode covering both Core exams with instant feedback and domain-level score breakdown.",
+      url: "https://studypassplus.com/quiz?cert=aplus",
+      provider: {
+        "@type": "Organization",
+        name: "PassPlus",
+        url: "https://studypassplus.com",
+      },
+      teaches: "CompTIA A+ Core 1 (220-1101) and Core 2 (220-1102) exam preparation",
+      educationalCredentialAwarded: "CompTIA A+",
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          description:
+            "Free practice questions, no signup required. Full access to 1470 questions for $9.99 one-time.",
         },
       },
     },
@@ -779,6 +805,12 @@ const NETWORK_DOMAIN_OPTIONS: { label: string; sublabel: string; value: number |
   { label: "Domain 5", sublabel: "Network Troubleshooting · 47 Qs", value: 5 },
 ]
 
+// A+ spans two exams (Core 1 & Core 2) whose domain numbers overlap, so the
+// domain-number filter cannot cleanly separate them. Offer the full bank only.
+const APLUS_DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[] = [
+  { label: "All Domains", sublabel: "245 questions · Core 1 & Core 2", value: null },
+]
+
 function ModeSelectScreen({
   onPractice,
   onExam,
@@ -792,12 +824,15 @@ function ModeSelectScreen({
   shouldReduce: boolean
   displayName?: string | null
   isUnlocked: boolean
-  cert: "secplus" | "netplus"
+  cert: "secplus" | "netplus" | "aplus"
 }) {
   const [step, setStep] = useState<"mode" | "practice-config">("mode")
   const [questionCount, setQuestionCount] = useState(25)
   const [domainFilter, setDomainFilter] = useState<number | null>(null)
-  const activeDomainOptions = cert === "netplus" ? NETWORK_DOMAIN_OPTIONS : DOMAIN_OPTIONS
+  const activeDomainOptions =
+    cert === "netplus" ? NETWORK_DOMAIN_OPTIONS
+    : cert === "aplus" ? APLUS_DOMAIN_OPTIONS
+    : DOMAIN_OPTIONS
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
@@ -865,6 +900,8 @@ function ModeSelectScreen({
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {cert === "netplus"
                       ? "90 minute countdown. Simulates real Network+ exam conditions. Auto-submits when time runs out."
+                      : cert === "aplus"
+                      ? "90 minute countdown. Simulates real A+ exam conditions. Auto-submits when time runs out."
                       : "90 minute countdown. Simulates real Security+ exam conditions. Auto-submits when time runs out."}
                   </p>
                 </div>
@@ -874,6 +911,8 @@ function ModeSelectScreen({
             <p className="text-xs text-muted-foreground/60 text-center">
               {cert === "netplus"
                 ? "CompTIA Network+ allows 90 minutes for the real exam"
+                : cert === "aplus"
+                ? "CompTIA A+ allows 90 minutes per Core exam"
                 : "CompTIA Security+ allows 90 minutes for the real exam"}
             </p>
           </motion.div>
@@ -1152,8 +1191,8 @@ function PaywallOverlay({
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Unlock all{" "}
-              <strong className="text-foreground">980 questions</strong> across
-              Practice Mode and Exam Mode for both Security+ and Network+.
+              <strong className="text-foreground">1470 questions</strong> across
+              Practice Mode and Exam Mode for Security+, Network+, and A+.
             </p>
           </div>
 
@@ -1176,7 +1215,7 @@ function PaywallOverlay({
               }
               className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
             >
-              Unlock All 980 Questions - $9.99
+              Unlock All 1470 Questions - $9.99
             </motion.button>
             <button
               onClick={onGoToResults}
