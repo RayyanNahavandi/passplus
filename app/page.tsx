@@ -8,7 +8,7 @@ import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, 
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
-import { getStreak, getReadinessScore } from "@/lib/quiz-store"
+import { getStreak, getReadinessScore, unlock } from "@/lib/quiz-store"
 import { ReadinessRing } from "@/components/ReadinessRing"
 import { supabase } from "@/lib/supabase"
 
@@ -28,8 +28,34 @@ export default function Home() {
   const [nameInput, setNameInput] = useState("")
   const [nameStatus, setNameStatus] = useState<"idle" | "saving" | "success" | "error">("idle")
   const [nameError, setNameError] = useState("")
+  const [showRestoreInput, setShowRestoreInput] = useState(false)
+  const [restoreEmail, setRestoreEmail] = useState("")
+  const [restoreStatus, setRestoreStatus] = useState<"idle" | "checking" | "notfound">("idle")
   const menuRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLElement>(null)
+
+  const handleRestoreAccess = async () => {
+    const email = restoreEmail.trim().toLowerCase()
+    if (!email || !email.includes("@")) return
+    setRestoreStatus("checking")
+    try {
+      const res = await fetch("/api/verify-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+      const data = await res.json()
+      if (data.valid) {
+        unlock()
+        sendGAEvent("event", "restore_access_success")
+        router.push("/quiz")
+      } else {
+        setRestoreStatus("notfound")
+      }
+    } catch {
+      setRestoreStatus("notfound")
+    }
+  }
 
   // Close desktop account dropdown on click-outside
   useEffect(() => {
@@ -434,6 +460,42 @@ export default function Home() {
                   Unlock All 1470 Questions - $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
+                {!showRestoreInput ? (
+                  <button
+                    type="button"
+                    onClick={() => { setShowRestoreInput(true); setRestoreStatus("idle") }}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[36px]"
+                  >
+                    Already paid? Restore access
+                  </button>
+                ) : (
+                  <div className="flex flex-col items-center gap-2 w-full sm:w-auto">
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <input
+                        type="email"
+                        value={restoreEmail}
+                        onChange={(e) => { setRestoreEmail(e.target.value); setRestoreStatus("idle") }}
+                        onKeyDown={(e) => { if (e.key === "Enter") handleRestoreAccess() }}
+                        placeholder="Email used at checkout"
+                        className="flex-1 sm:w-56 px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent-green"
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        onClick={handleRestoreAccess}
+                        disabled={restoreStatus === "checking"}
+                        className="px-4 py-2 text-sm font-medium rounded-lg bg-card border border-border hover:border-accent-green/50 transition-colors disabled:opacity-50"
+                      >
+                        {restoreStatus === "checking" ? "Checking…" : "Restore"}
+                      </button>
+                    </div>
+                    {restoreStatus === "notfound" && (
+                      <p className="text-xs text-red-400 text-center">
+                        Email not found. Contact studypassplus@gmail.com
+                      </p>
+                    )}
+                  </div>
+                )}
                 <p className="text-xs text-muted-foreground">
                   Having issues? Email studypassplus@gmail.com
                 </p>
