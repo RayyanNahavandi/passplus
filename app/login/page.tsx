@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, AnimatePresence } from "motion/react"
-import { Mail, Lock, User, ArrowRight, CheckCircle } from "lucide-react"
+import { Mail, Lock, User, ArrowRight, CheckCircle, Eye, EyeOff } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { supabase } from "@/lib/supabase"
 import { unlock } from "@/lib/quiz-store"
@@ -23,6 +23,7 @@ export default function LoginPage() {
   const [displayName, setDisplayName] = useState("")
   const [status, setStatus] = useState<Status>("idle")
   const [errorMsg, setErrorMsg] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
 
   // Redirect already-authenticated users away from /login
   useEffect(() => {
@@ -395,14 +396,22 @@ export default function LoginPage() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
                   required
                   minLength={6}
-                  className="w-full bg-muted border border-border rounded-xl pl-9 pr-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-green/50 transition-colors min-h-[44px]"
+                  className="w-full bg-muted border border-border rounded-xl pl-9 pr-11 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-green/50 transition-colors min-h-[44px]"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
 
               {mode === "signin" && (

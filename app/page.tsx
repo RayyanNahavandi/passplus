@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame } from "lucide-react"
+import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame, Pencil, Check } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
 import { getStreak, getReadinessScore } from "@/lib/quiz-store"
 import { ReadinessRing } from "@/components/ReadinessRing"
+import { supabase } from "@/lib/supabase"
 
 export default function Home() {
   const shouldReduce = useReducedMotion()
@@ -22,6 +23,10 @@ export default function Home() {
   const [streak, setStreak] = useState(0)
   const [readiness, setReadiness] = useState<ReturnType<typeof getReadinessScore>>(null)
   const [greeting, setGreeting] = useState<{ line1: string; line2: string | null } | null>(null)
+  const [editingName, setEditingName] = useState(false)
+  const [nameInput, setNameInput] = useState("")
+  const [nameStatus, setNameStatus] = useState<"idle" | "saving" | "success" | "error">("idle")
+  const [nameError, setNameError] = useState("")
   const menuRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLElement>(null)
 
@@ -51,6 +56,37 @@ export default function Home() {
     setShowAccountMenu(false)
     await signOut()
     router.refresh()
+  }
+
+  function openNameEditor() {
+    setNameInput(displayName ?? "")
+    setNameError("")
+    setNameStatus("idle")
+    setEditingName(true)
+  }
+
+  async function handleSaveName() {
+    const newName = nameInput.trim()
+    if (!newName) {
+      setNameError("Name can't be empty.")
+      setNameStatus("error")
+      return
+    }
+    setNameStatus("saving")
+    setNameError("")
+    const { error } = await supabase.auth.updateUser({
+      data: { display_name: newName },
+    })
+    if (error) {
+      console.error("[auth] updateUser (display_name) error:", error.message, error)
+      setNameError(error.message)
+      setNameStatus("error")
+      return
+    }
+    // AuthProvider listens to onAuthStateChange (USER_UPDATED) and refreshes
+    // the user object, so the navbar name updates without a page reload.
+    setNameStatus("success")
+    setEditingName(false)
   }
 
 
@@ -112,6 +148,20 @@ export default function Home() {
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </motion.div>
 
+        {/* Centered welcome greeting - logged-in users only */}
+        {user && greeting && (
+          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center leading-tight pointer-events-none max-w-[45%]">
+            <span className="text-xs sm:text-sm font-medium text-foreground truncate max-w-full">
+              {greeting.line1}
+            </span>
+            {greeting.line2 && (
+              <span className="hidden sm:block text-[11px] text-muted-foreground truncate max-w-full">
+                {greeting.line2}
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Desktop nav - hidden on mobile */}
         <motion.div {...fadeUp(0.05)} className="hidden md:flex items-center gap-3">
           <Link
@@ -146,23 +196,80 @@ export default function Home() {
               </button>
 
               {showAccountMenu && (
-                <div className="absolute right-0 top-full mt-1.5 w-44 bg-card border border-border rounded-xl shadow-lg py-1 z-50">
-                  <Link
-                    href="/login"
-                    onClick={() => setShowAccountMenu(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors"
-                  >
-                    <User className="w-3.5 h-3.5 text-muted-foreground" />
-                    My Account
-                  </Link>
-                  <div className="h-px bg-border my-1" />
-                  <button
-                    onClick={handleSignOut}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-muted transition-colors"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                    Sign out
-                  </button>
+                <div className="absolute right-0 top-full mt-1.5 w-56 bg-card border border-border rounded-xl shadow-lg py-1 z-50">
+                  {editingName ? (
+                    <div className="px-3 py-2 flex flex-col gap-2">
+                      <label className="text-xs font-medium text-muted-foreground">
+                        Display name
+                      </label>
+                      <input
+                        type="text"
+                        value={nameInput}
+                        onChange={(e) => setNameInput(e.target.value)}
+                        maxLength={32}
+                        autoFocus
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") handleSaveName()
+                          if (e.key === "Escape") setEditingName(false)
+                        }}
+                        className="w-full bg-muted border border-border rounded-lg px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:border-accent-green/50 transition-colors"
+                      />
+                      {nameStatus === "error" && (
+                        <p className="text-[11px] text-red-400">{nameError}</p>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={handleSaveName}
+                          disabled={nameStatus === "saving"}
+                          className="flex-1 flex items-center justify-center gap-1.5 bg-accent-green hover:bg-accent-hover disabled:opacity-50 text-black font-semibold py-1.5 rounded-lg transition-colors text-xs"
+                        >
+                          {nameStatus === "saving" ? (
+                            <span className="w-3.5 h-3.5 rounded-full border-2 border-black/30 border-t-black animate-spin" />
+                          ) : (
+                            "Save"
+                          )}
+                        </button>
+                        <button
+                          onClick={() => setEditingName(false)}
+                          className="flex-1 text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg py-1.5 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login"
+                        onClick={() => setShowAccountMenu(false)}
+                        className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+                      >
+                        <User className="w-3.5 h-3.5 text-muted-foreground" />
+                        My Account
+                      </Link>
+                      <button
+                        onClick={openNameEditor}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+                      >
+                        <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
+                        Change display name
+                      </button>
+                      {nameStatus === "success" && (
+                        <p className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] text-accent-green">
+                          <Check className="w-3 h-3" />
+                          Display name updated.
+                        </p>
+                      )}
+                      <div className="h-px bg-border my-1" />
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-muted transition-colors"
+                      >
+                        <LogOut className="w-3.5 h-3.5" />
+                        Sign out
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -250,20 +357,6 @@ export default function Home() {
       {/* Hero */}
       <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-16 sm:py-24 gap-12">
         <div className="flex flex-col items-center gap-6 max-w-3xl w-full">
-          {greeting && (
-            <motion.div
-              {...fadeUp(0)}
-              className="flex flex-col items-center gap-0.5"
-            >
-              <p className="text-lg sm:text-xl font-semibold text-foreground">
-                {greeting.line1}
-              </p>
-              {greeting.line2 && (
-                <p className="text-sm text-muted-foreground">{greeting.line2}</p>
-              )}
-            </motion.div>
-          )}
-
           <motion.p
             {...fadeUp(0)}
             className="text-sm text-accent-green font-medium tracking-wide"
