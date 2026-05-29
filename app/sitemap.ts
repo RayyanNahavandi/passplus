@@ -80,5 +80,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    {
+      url: 'https://studypassplus.com/blog/free-a-plus-core-1-practice-questions',
+      lastModified: new Date('2026-05-29'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://studypassplus.com/blog/free-a-plus-core-2-practice-questions',
+      lastModified: new Date('2026-05-29'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://studypassplus.com/blog/how-long-to-study-for-a-plus',
+      lastModified: new Date('2026-05-29'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: 'https://studypassplus.com/blog/a-plus-vs-network-plus-which-first',
+      lastModified: new Date('2026-05-29'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: 'https://studypassplus.com/blog/hardest-domains-on-a-plus-core-1',
+      lastModified: new Date('2026-05-29'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
   ]
 }

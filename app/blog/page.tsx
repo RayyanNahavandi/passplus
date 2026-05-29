@@ -11,6 +11,46 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "free-a-plus-core-1-practice-questions",
+    title: "Free A+ Core 1 220-1101 Practice Questions. No Signup Required.",
+    description:
+      "245 free A+ Core 1 220-1101 practice questions covering mobile devices, networking, hardware, virtualization, and troubleshooting.",
+    date: "May 29, 2026",
+    readTime: "6 min read",
+  },
+  {
+    slug: "free-a-plus-core-2-practice-questions",
+    title: "Free A+ Core 2 220-1102 Practice Questions. No Signup Required.",
+    description:
+      "245 free A+ Core 2 220-1102 practice questions covering operating systems, security, software troubleshooting, and operational procedures.",
+    date: "May 29, 2026",
+    readTime: "6 min read",
+  },
+  {
+    slug: "how-long-to-study-for-a-plus",
+    title: "How Long Does It Take to Study for CompTIA A+",
+    description:
+      "A realistic study timeline for CompTIA A+ Core 1 and Core 2 based on your experience level and available study time.",
+    date: "May 29, 2026",
+    readTime: "6 min read",
+  },
+  {
+    slug: "a-plus-vs-network-plus-which-first",
+    title: "CompTIA A+ vs Network+ - Which Should You Take First",
+    description:
+      "A practical comparison to help you decide whether to take CompTIA A+ or Network+ first based on your goals and background.",
+    date: "May 29, 2026",
+    readTime: "5 min read",
+  },
+  {
+    slug: "hardest-domains-on-a-plus-core-1",
+    title: "The Hardest Domains on CompTIA A+ Core 1 and How to Study Them",
+    description:
+      "A breakdown of the most difficult A+ Core 1 220-1101 domains and targeted study strategies for each one.",
+    date: "May 29, 2026",
+    readTime: "7 min read",
+  },
+  {
     slug: "comptia-security-plus-passing-score",
     title: "What Is the Passing Score for CompTIA Security+ SY0-701",
     description:
