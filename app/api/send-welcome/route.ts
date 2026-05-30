@@ -1,8 +1,8 @@
-// Sends a post-payment welcome email via Resend (https://resend.com).
+// Sends a post-payment welcome email via SendGrid (https://sendgrid.com).
 //
 // Required Vercel env vars:
-//   RESEND_API_KEY   - from resend.com → API Keys
-//   RESEND_FROM      - verified sender address, e.g. "PassPlus <noreply@studypassplus.com>"
+//   SENDGRID_API_KEY  - from sendgrid.com → Settings → API Keys
+//   SENDGRID_FROM     - verified sender address, e.g. "PassPlus <noreply@studypassplus.com>"
 //
 // If either env var is missing the route returns { sent: false } without
 // throwing, so the webhook still succeeds even if email is unconfigured.
@@ -14,11 +14,11 @@ import { NextRequest, NextResponse } from "next/server"
 export const runtime = "nodejs"
 
 export async function POST(request: NextRequest) {
-  const apiKey = process.env.RESEND_API_KEY
-  const from = process.env.RESEND_FROM ?? "PassPlus <noreply@studypassplus.com>"
+  const apiKey = process.env.SENDGRID_API_KEY
+  const from = process.env.SENDGRID_FROM ?? "PassPlus <noreply@studypassplus.com>"
 
   if (!apiKey) {
-    console.log("[send-welcome] RESEND_API_KEY not configured — skipping welcome email")
+    console.log("[send-welcome] SENDGRID_API_KEY not configured — skipping welcome email")
     return NextResponse.json({ sent: false })
   }
 
@@ -49,23 +49,24 @@ export async function POST(request: NextRequest) {
   ].join("\n")
 
   try {
-    const res = await fetch("https://api.resend.com/emails", {
+    const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from,
-        to: email,
+        personalizations: [{ to: [{ email }] }],
+        from: parseSender(from),
         subject: "You're in. Welcome to PassPlus.",
-        text: textBody,
+        content: [{ type: "text/plain", value: textBody }],
       }),
     })
 
-    if (!res.ok) {
+    // SendGrid returns 202 Accepted on success (no body)
+    if (res.status !== 202) {
       const err = await res.text()
-      console.error("[send-welcome] Resend API error:", res.status, err)
+      console.error("[send-welcome] SendGrid API error:", res.status, err)
       return NextResponse.json({ sent: false })
     }
 
@@ -76,4 +77,16 @@ export async function POST(request: NextRequest) {
     console.error("[send-welcome] Unexpected error:", msg)
     return NextResponse.json({ sent: false })
   }
+}
+
+/**
+ * Parses a sender string into the { name, email } shape SendGrid expects.
+ * Accepts "Name <email@example.com>" or plain "email@example.com".
+ */
+function parseSender(from: string): { name?: string; email: string } {
+  const match = from.match(/^(.+?)\s*<(.+?)>$/)
+  if (match) {
+    return { name: match[1].trim(), email: match[2].trim() }
+  }
+  return { email: from.trim() }
 }
