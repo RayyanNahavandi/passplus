@@ -13,6 +13,7 @@ import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, Rota
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
+import { supabase } from "@/lib/supabase"
 import {
   createSession,
   createExamSession,
@@ -204,18 +205,26 @@ export default function QuizPage() {
       }
 
       if (session.isUnlocked) {
-        fetch("/api/explain", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            question: currentQuestion.question,
-            options: currentQuestion.options,
-            answer: currentQuestion.answer,
-          }),
+        // Get the current Supabase session token to authenticate the explain request.
+        // The server verifies this to prevent unauthenticated access to the AI endpoint.
+        supabase.auth.getSession().then(({ data: { session: authSession } }) => {
+          const headers: Record<string, string> = { "Content-Type": "application/json" }
+          if (authSession?.access_token) {
+            headers["Authorization"] = `Bearer ${authSession.access_token}`
+          }
+          return fetch("/api/explain", {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+              question: currentQuestion.question,
+              options: currentQuestion.options,
+              answer: currentQuestion.answer,
+            }),
+          })
         })
-          .then((r) => r.json())
+          .then((r) => (r instanceof Response ? r : null)?.json())
           .then((data) => {
-            setExplanation(data.explanation ?? null)
+            setExplanation(data?.explanation ?? null)
             setLoadingExplanation(false)
           })
           .catch(() => setLoadingExplanation(false))

@@ -6,8 +6,15 @@
 // upserted into paid_users so subsequent checks are DB-only.
 import { NextRequest, NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase-admin"
+import { rateLimit, getIp } from "@/lib/rate-limit"
 
 export async function GET(request: NextRequest) {
+  // 30 req/min per IP — generous for normal page loads, blocks bulk scraping
+  const { allowed } = rateLimit(getIp(request), { limit: 30, windowMs: 60_000 })
+  if (!allowed) {
+    return NextResponse.json({ paid: false, error: "Too many requests" }, { status: 429 })
+  }
+
   const auth = request.headers.get("Authorization")
   const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null
 

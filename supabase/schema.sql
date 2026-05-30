@@ -10,8 +10,12 @@ create table if not exists public.paid_users (
   id                uuid        default gen_random_uuid() primary key,
   email             text        unique not null,
   stripe_session_id text,
+  confirmed         boolean     default true not null,
   created_at        timestamptz default now() not null
 );
+
+-- If upgrading an existing table, run this to add the confirmed column:
+-- alter table public.paid_users add column if not exists confirmed boolean default true not null;
 
 alter table public.paid_users enable row level security;
 
