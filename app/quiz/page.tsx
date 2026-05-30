@@ -36,7 +36,7 @@ function formatTime(seconds: number): string {
 
 export default function QuizPage() {
   const router = useRouter()
-  const { displayName } = useAuth()
+  const { displayName, isPaid } = useAuth()
   const [cert, setCert] = useState<"secplus" | "netplus" | "aplus">("secplus")
   const [session, setSession] = useState<QuizSession | null>(null)
   const [selected, setSelected] = useState<"A" | "B" | "C" | "D" | null>(null)
@@ -92,6 +92,20 @@ export default function QuizPage() {
     setStreakCount(getStreak().count)
     setLoading(false)
   }, [router])
+
+  // When AuthProvider async-confirms paid status, upgrade any stale free session.
+  // This fixes the race condition where the session was created before syncPaidStatus
+  // resolved, and also handles new devices where localStorage was empty on load.
+  useEffect(() => {
+    if (!isPaid) return
+    setSession((prev) => {
+      if (!prev || prev.isUnlocked) return prev // already a paid session
+      console.log("[quiz] isPaid confirmed — upgrading stale free session to paid")
+      const fresh = createSession("normal", undefined, { cert: prev.cert ?? "secplus" })
+      saveSession(fresh)
+      return fresh
+    })
+  }, [isPaid])
 
   // Exam timer - recalculates from examStartedAt each tick for accuracy across tab sleeps
   const examStartedAt = session?.examStartedAt

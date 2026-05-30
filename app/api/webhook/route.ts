@@ -57,10 +57,17 @@ export async function POST(request: NextRequest) {
       console.log("[webhook] checkout.session.completed — payment_status:", session.payment_status, "email:", email ?? "none")
 
       if (email && session.payment_status === "paid") {
+        const normalizedEmail = email.toLowerCase()
+
+        // 1. Record in paid_users — this is the primary access grant
         const { error: dbError } = await supabaseAdmin
           .from("paid_users")
           .upsert(
-            { email: email.toLowerCase(), stripe_session_id: session.id },
+            {
+              email: normalizedEmail,
+              stripe_session_id: session.id,
+              confirmed: true,
+            },
             { onConflict: "email" }
           )
 
@@ -70,7 +77,26 @@ export async function POST(request: NextRequest) {
           return NextResponse.json({ error: "DB error" }, { status: 500 })
         }
 
-        console.log("[webhook] Successfully recorded paid user:", email)
+        console.log("[webhook] Successfully recorded paid user:", normalizedEmail)
+
+        // 2. Send welcome email (non-blocking — failure does not fail the webhook)
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://studypassplus.com"
+        fetch(`${baseUrl}/api/send-welcome`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: normalizedEmail }),
+        })
+          .then(async (r) => {
+            const data = await r.json().catch(() => ({}))
+            if (data.sent) {
+              console.log("[webhook] Welcome email dispatched to:", normalizedEmail)
+            } else {
+              console.log("[webhook] Welcome email skipped (not configured or failed):", normalizedEmail)
+            }
+          })
+          .catch((err) => {
+            console.error("[webhook] Welcome email fetch error:", err)
+          })
       } else {
         console.log("[webhook] Skipped — email missing or payment not completed")
       }

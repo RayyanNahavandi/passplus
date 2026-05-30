@@ -57,12 +57,13 @@ export function isUnlocked(): boolean {
   return false
 }
 
-export function unlock(): void {
+export function unlock(days = 365): void {
   localStorage.setItem("passplus_unlocked", "true")
   // First-party cookie backup: persists through Safari ITP localStorage clears.
-  // 1-year expiry, Strict same-site, Secure (HTTPS only in prod).
+  // Default 1-year expiry; pass 30 for the email-only restore flow.
+  const maxAge = days * 86400
   document.cookie =
-    "passplus_unlocked=true; path=/; max-age=31536000; SameSite=Strict; Secure"
+    `passplus_unlocked=true; path=/; max-age=${maxAge}; SameSite=Strict; Secure`
 }
 
 export function createSession(

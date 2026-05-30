@@ -15,7 +15,7 @@ import { supabase } from "@/lib/supabase"
 export default function Home() {
   const shouldReduce = useReducedMotion()
   const router = useRouter()
-  const { user, displayName, signOut } = useAuth()
+  const { user, displayName, signOut, isPaid } = useAuth()
   const [freeCompleted, setFreeCompleted] = useState(false)
   const [isUnlocked, setIsUnlocked] = useState(false)
   const [showAccountMenu, setShowAccountMenu] = useState(false)
@@ -46,7 +46,7 @@ export default function Home() {
       })
       const data = await res.json()
       if (data.valid) {
-        unlock()
+        unlock(30) // 30-day cookie for email-only restore (no account)
         sendGAEvent("event", "restore_access_success")
         router.push("/quiz")
       } else {
@@ -131,6 +131,17 @@ export default function Home() {
     setStreak(getStreak().count)
     setReadiness(getReadinessScore())
   }, [])
+
+  // Reactively update when AuthProvider async-confirms paid status.
+  // Handles new devices / cleared localStorage: even if the sync localStorage
+  // read above returns false, once Supabase confirms the user is paid the UI
+  // immediately shows the paid experience without a page reload.
+  useEffect(() => {
+    if (isPaid) {
+      setIsUnlocked(true)
+      setFreeCompleted(false)
+    }
+  }, [isPaid])
 
   // Personalized, time-aware greeting (client-only to use the user's local clock)
   useEffect(() => {

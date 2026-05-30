@@ -15,6 +15,12 @@ interface AuthContextType {
   user: User | null
   /** true while the initial session is being loaded from localStorage */
   loading: boolean
+  /**
+   * true once the server has confirmed this user is a paid customer.
+   * Set asynchronously after login/page-load via /api/auth/check-paid.
+   * Use this (not just localStorage) as the reactive source of truth for paid status.
+   */
+  isPaid: boolean
   /** user_metadata.display_name, or email prefix as fallback */
   displayName: string | null
   signOut: () => Promise<void>
@@ -23,29 +29,38 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
+  isPaid: false,
   displayName: null,
   signOut: async () => {},
 })
 
-async function syncPaidStatus(accessToken: string) {
-  try {
-    const res = await fetch("/api/auth/check-paid", {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-    if (!res.ok) {
-      console.error("[auth] check-paid request returned non-OK status:", res.status)
-      return
-    }
-    const { paid } = (await res.json()) as { paid: boolean }
-    if (paid) unlock()
-  } catch (err) {
-    console.error("[auth] check-paid request failed:", err)
-  }
-}
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isPaid, setIsPaid] = useState(false)
+
+  // Moved inside the component so it can call setIsPaid.
+  // Called on every page load and auth state change for logged-in users.
+  // This makes Supabase the source of truth rather than localStorage alone.
+  const syncPaidStatus = useCallback(async (accessToken: string) => {
+    try {
+      const res = await fetch("/api/auth/check-paid", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      if (!res.ok) {
+        console.error("[auth] check-paid returned non-OK status:", res.status)
+        return
+      }
+      const { paid } = (await res.json()) as { paid: boolean }
+      if (paid) {
+        unlock()          // persist to localStorage + cookie for sync reads
+        setIsPaid(true)   // reactive signal for components
+        console.log("[auth] paid status confirmed from Supabase")
+      }
+    } catch (err) {
+      console.error("[auth] check-paid request failed:", err)
+    }
+  }, [])
 
   useEffect(() => {
     // Load session persisted in localStorage by the Supabase client
@@ -61,15 +76,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
-      if (session?.access_token) syncPaidStatus(session.access_token)
+      if (session?.access_token) {
+        syncPaidStatus(session.access_token)
+      } else {
+        // Signed out - clear paid state
+        setIsPaid(false)
+      }
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [syncPaidStatus])
 
   const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut()
     if (error) console.error("[auth] signOut error:", error.message, error)
+    setIsPaid(false)
     if (typeof window !== "undefined") {
       localStorage.removeItem("passplus_unlocked")
       document.cookie =
@@ -82,7 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     (user?.email ? user.email.split("@")[0] : null)
 
   return (
-    <AuthContext.Provider value={{ user, loading, displayName, signOut }}>
+    <AuthContext.Provider value={{ user, loading, isPaid, displayName, signOut }}>
       {children}
     </AuthContext.Provider>
   )
