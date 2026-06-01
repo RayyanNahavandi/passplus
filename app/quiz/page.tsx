@@ -386,11 +386,11 @@ export default function QuizPage() {
       name: "CompTIA Security+ SY0-701 Practice Quiz",
       description:
         "Free practice questions for CompTIA Security+ SY0-701. 490 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
-      url: "https://studypassplus.com/quiz",
+      url: "https://www.studypassplus.com/quiz",
       provider: {
         "@type": "Organization",
         name: "PassPlus",
-        url: "https://studypassplus.com",
+        url: "https://www.studypassplus.com",
       },
       teaches: "CompTIA Security+ SY0-701 exam preparation",
       educationalCredentialAwarded: "CompTIA Security+ SY0-701",
@@ -412,11 +412,11 @@ export default function QuizPage() {
       name: "CompTIA Network+ N10-009 Practice Quiz",
       description:
         "Free practice questions for CompTIA Network+ N10-009. 490 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
-      url: "https://studypassplus.com/quiz?cert=netplus",
+      url: "https://www.studypassplus.com/quiz?cert=netplus",
       provider: {
         "@type": "Organization",
         name: "PassPlus",
-        url: "https://studypassplus.com",
+        url: "https://www.studypassplus.com",
       },
       teaches: "CompTIA Network+ N10-009 exam preparation",
       educationalCredentialAwarded: "CompTIA Network+ N10-009",
@@ -438,11 +438,11 @@ export default function QuizPage() {
       name: "CompTIA A+ Core 1 & Core 2 Practice Quiz",
       description:
         "Free practice questions for CompTIA A+ (220-1101 Core 1 & 220-1102 Core 2). 490 questions across Practice Mode and Exam Mode covering both Core exams with instant feedback and domain-level score breakdown.",
-      url: "https://studypassplus.com/quiz?cert=aplus",
+      url: "https://www.studypassplus.com/quiz?cert=aplus",
       provider: {
         "@type": "Organization",
         name: "PassPlus",
-        url: "https://studypassplus.com",
+        url: "https://www.studypassplus.com",
       },
       teaches: "CompTIA A+ Core 1 (220-1101) and Core 2 (220-1102) exam preparation",
       educationalCredentialAwarded: "CompTIA A+",

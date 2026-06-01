@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     "Your payment was successful.",
     "",
     "To access your questions:",
-    '1. Go to studypassplus.com',
+    '1. Go to www.studypassplus.com',
     '2. Click "Sign in" in the top right',
     "3. Create an account or log in with the email you used at checkout",
     "4. Your full access will be waiting for you",

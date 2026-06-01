@@ -5,7 +5,7 @@
 // exists in Vercel for the auth fallback logic.
 //
 // Usage (run once after deploying):
-//   curl "https://studypassplus.com/api/admin/seed-paid-users?secret=YOUR_ADMIN_SECRET"
+//   curl "https://www.studypassplus.com/api/admin/seed-paid-users?secret=YOUR_ADMIN_SECRET"
 //
 // Required Vercel env vars:
 //   ADMIN_SECRET  - any strong random string (e.g. openssl rand -hex 32)

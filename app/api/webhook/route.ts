@@ -48,7 +48,7 @@ export async function POST(request: Request) {
           console.log("[webhook] Recorded paid user:", normalizedEmail)
 
           // Send welcome email — fire-and-forget, never blocks the 200
-          const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://studypassplus.com"
+          const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.studypassplus.com"
           fetch(`${baseUrl}/api/send-welcome`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

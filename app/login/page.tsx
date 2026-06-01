@@ -58,7 +58,7 @@ export default function LoginPage() {
     try {
       if (mode === "reset") {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: "https://studypassplus.com/reset-password",
+          redirectTo: "https://www.studypassplus.com/reset-password",
         })
         if (error) {
           console.error("[auth] resetPasswordForEmail error:", error.message, error)
