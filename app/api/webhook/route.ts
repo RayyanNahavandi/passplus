@@ -1,6 +1,8 @@
 // Stripe webhook handler.
 // Must run on Node.js — Stripe signature verification uses Node crypto.
+// force-dynamic prevents Next.js from ever statically optimising this route.
 export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 import Stripe from "stripe"
 import { supabaseAdmin } from "@/lib/supabase-admin"
