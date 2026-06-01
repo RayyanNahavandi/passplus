@@ -706,13 +706,13 @@ export default function Home() {
               {/* Attribution */}
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-xs font-bold text-accent-green">
-                  C
+                  D
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-medium text-foreground">Community Member</span>
+                  <span className="text-sm font-medium text-foreground">Dame</span>
                   <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium">
                     <CheckCircle className="w-3 h-3" />
-                    CompTIA Certified
+                    CompTIA Security+ Certified
                   </span>
                 </div>
               </div>
