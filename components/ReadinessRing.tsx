@@ -56,7 +56,7 @@ export function ReadinessRing({ pct, size = 120 }: ReadinessRingProps) {
           width={size}
           height={size}
           viewBox={`0 0 ${size} ${size}`}
-          aria-label={`Readiness score: ${pct}% — ${label}`}
+          aria-label={`Readiness score: ${pct}% - ${label}`}
           role="img"
         >
           {/* Track */}
@@ -69,7 +69,7 @@ export function ReadinessRing({ pct, size = 120 }: ReadinessRingProps) {
             strokeWidth={strokeWidth}
             className="text-border"
           />
-          {/* Progress — fills clockwise from top */}
+          {/* Progress - fills clockwise from top */}
           <circle
             cx={center}
             cy={center}

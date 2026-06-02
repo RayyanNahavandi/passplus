@@ -9,7 +9,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin"
 import { rateLimit, getIp } from "@/lib/rate-limit"
 
 export async function GET(request: NextRequest) {
-  // 30 req/min per IP — generous for normal page loads, blocks bulk scraping
+  // 30 req/min per IP - generous for normal page loads, blocks bulk scraping
   const { allowed } = rateLimit(getIp(request), { limit: 30, windowMs: 60_000 })
   if (!allowed) {
     return NextResponse.json({ paid: false, error: "Too many requests" }, { status: 429 })

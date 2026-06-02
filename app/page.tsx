@@ -394,18 +394,25 @@ export default function Home() {
       </nav>
 
       {/* Hero */}
-      <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-16 sm:py-24 gap-12">
-        <div className="flex flex-col items-center gap-6 max-w-3xl w-full">
-          <motion.p
+      <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-20 sm:py-28 gap-14 relative overflow-hidden">
+        {/* Subtle radial depth gradient */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(16,185,129,0.06)_0%,transparent_70%)]" aria-hidden />
+
+        <div className="flex flex-col items-center gap-7 max-w-3xl w-full relative z-10">
+          <motion.div
             {...fadeUp(0)}
-            className="text-sm text-accent-green font-medium tracking-wide"
+            className="inline-flex items-center gap-2 bg-accent-green/10 border border-accent-green/25 text-accent-green text-xs font-semibold tracking-wide px-3.5 py-1.5 rounded-full"
           >
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-green opacity-60" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent-green" />
+            </span>
             The free CompTIA quiz that doesn&apos;t suck
-          </motion.p>
+          </motion.div>
 
           <motion.h1
             {...fadeUp(0.1)}
-            className="text-4xl sm:text-6xl font-bold tracking-tight leading-[1.08]"
+            className="text-5xl sm:text-7xl font-bold tracking-tighter leading-[1.03]"
           >
             Pass your{" "}
             <span className="text-accent-green">CompTIA cert</span>
@@ -414,7 +421,7 @@ export default function Home() {
 
           <motion.p
             {...fadeUp(0.2)}
-            className="text-base sm:text-lg text-muted-foreground max-w-lg leading-relaxed"
+            className="text-base sm:text-lg text-muted-foreground max-w-[480px] leading-relaxed"
           >
             1470 questions across Practice Mode and Exam Mode covering
             Security+, Network+, and A+. Instant feedback, score tracking, and
@@ -427,10 +434,10 @@ export default function Home() {
               <button
                 key={cert.id}
                 onClick={() => setSelectedCert(cert.id)}
-                className={`relative flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-colors ${
+                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all cursor-pointer ${
                   selectedCert === cert.id
-                    ? "bg-accent-green/10 border-accent-green/40 text-foreground"
-                    : "bg-card border-border text-muted-foreground hover:border-border/80 hover:text-foreground"
+                    ? "bg-accent-green/10 border-accent-green/40 text-foreground shadow-[0_0_16px_-4px_rgba(16,185,129,0.25)]"
+                    : "bg-card border-border text-muted-foreground hover:border-accent-green/30 hover:text-foreground"
                 }`}
               >
                 <span>{cert.label}</span>
@@ -466,7 +473,7 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => sendGAEvent("event", "unlock_clicked")}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)] hover:shadow-[0_0_32px_-4px_rgba(16,185,129,0.55)]"
                 >
                   Unlock All 1470 Questions - $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -516,7 +523,7 @@ export default function Home() {
                 <Link
                   href="/quiz?cert=aplus"
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "aplus" })}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)] hover:shadow-[0_0_32px_-4px_rgba(16,185,129,0.55)]"
                 >
                   {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
                 </Link>
@@ -531,7 +538,7 @@ export default function Home() {
                 <Link
                   href="/quiz?cert=netplus"
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "netplus" })}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)] hover:shadow-[0_0_32px_-4px_rgba(16,185,129,0.55)]"
                 >
                   {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
                 </Link>
@@ -546,7 +553,7 @@ export default function Home() {
                 <Link
                   href="/quiz"
                   onClick={() => sendGAEvent("event", "quiz_started")}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-colors text-base w-full sm:w-auto min-h-[52px]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)] hover:shadow-[0_0_32px_-4px_rgba(16,185,129,0.55)]"
                 >
                   {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
                 </Link>
@@ -561,7 +568,7 @@ export default function Home() {
 
           <motion.div
             {...fadeUp(0.3)}
-            className="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-xs text-muted-foreground"
+            className="inline-flex items-center gap-2 border border-border rounded-full px-3.5 py-1.5 text-xs text-muted-foreground bg-card/50"
           >
             <Zap className="w-3 h-3 text-accent-green" />
             Security+ · Network+ · A+ · 1470 questions · Practice + Exam Mode
@@ -582,9 +589,9 @@ export default function Home() {
               whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-20px" }}
               transition={{ delay: i * 0.07, duration: 0.4, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center gap-1 bg-card border border-border rounded-xl h-24 px-3"
+              className="flex flex-col items-center justify-center gap-1 bg-card border border-border hover:border-accent-green/30 rounded-xl h-24 px-3 transition-all hover:shadow-[0_0_20px_-8px_rgba(16,185,129,0.18)]"
             >
-              <span className="text-2xl font-bold">{stat.value}</span>
+              <span className="text-2xl font-bold tabular-nums">{stat.value}</span>
               <span className="text-xs text-muted-foreground text-center">
                 {stat.label}
               </span>
@@ -627,8 +634,8 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="px-6 py-10">
-        <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-4">
+      <section className="px-6 py-16">
+        <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-5">
           {/* Testimonial 1 */}
           <motion.div
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
@@ -636,7 +643,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
-            <div className="relative bg-card border border-accent-green/20 rounded-2xl px-7 py-6 shadow-[0_0_24px_-4px_rgba(74,222,128,0.08)] h-full">
+            <div className="relative bg-card border border-accent-green/20 rounded-2xl px-7 py-7 shadow-[0_0_32px_-6px_rgba(16,185,129,0.12)] hover:shadow-[0_0_40px_-6px_rgba(16,185,129,0.18)] hover:border-accent-green/30 transition-all h-full">
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -660,7 +667,7 @@ export default function Home() {
 
               {/* Attribution */}
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-xs font-bold text-accent-green">
+                <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
                   A
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -681,7 +688,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
           >
-            <div className="relative bg-card border border-accent-green/20 rounded-2xl px-7 py-6 shadow-[0_0_24px_-4px_rgba(74,222,128,0.08)] h-full">
+            <div className="relative bg-card border border-accent-green/20 rounded-2xl px-7 py-7 shadow-[0_0_32px_-6px_rgba(16,185,129,0.12)] hover:shadow-[0_0_40px_-6px_rgba(16,185,129,0.18)] hover:border-accent-green/30 transition-all h-full">
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -705,7 +712,7 @@ export default function Home() {
 
               {/* Attribution */}
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-xs font-bold text-accent-green">
+                <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
                   D
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -722,8 +729,8 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="border-t border-border px-6 py-20">
-        <div className="max-w-4xl mx-auto grid sm:grid-cols-3 gap-4">
+      <section className="border-t border-border px-6 py-24">
+        <div className="max-w-4xl mx-auto grid sm:grid-cols-3 gap-5">
           {[
             {
               icon: <Zap className="w-4 h-4 text-accent-green" />,
@@ -747,13 +754,13 @@ export default function Home() {
               whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-20px" }}
               transition={{ delay: i * 0.1, duration: 0.4, ease: "easeOut" }}
-              className="flex flex-col gap-4 p-5 bg-card border border-border rounded-xl"
+              className="flex flex-col gap-4 p-6 bg-card border border-border hover:border-accent-green/30 rounded-2xl transition-all hover:shadow-[0_0_20px_-6px_rgba(16,185,129,0.14)]"
             >
-              <div className="w-9 h-9 rounded-lg bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
                 {f.icon}
               </div>
               <div>
-                <h3 className="font-medium text-sm mb-1">{f.title}</h3>
+                <h3 className="font-semibold text-sm mb-1.5">{f.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   {f.desc}
                 </p>
@@ -765,39 +772,44 @@ export default function Home() {
 
       {/* CTA */}
       {!freeCompleted && (
-        <section className="border-t border-border px-6 py-16 text-center">
+        <section className="border-t border-border px-6 py-20 text-center">
           <motion.div
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="max-w-md mx-auto flex flex-col gap-5 items-center"
+            className="max-w-md mx-auto flex flex-col gap-6 items-center"
           >
-            <h2 className="text-xl font-bold">Ready to start?</h2>
+            <h2 className="text-2xl font-bold tracking-tight">Ready to start?</h2>
             {!isUnlocked && (
               <p className="text-sm text-muted-foreground">
                 25 free questions, no account needed.
               </p>
             )}
-            <Link
-              href="/quiz"
-              onClick={() => sendGAEvent("event", "quiz_started")}
-              className="flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm min-h-[48px] w-full sm:w-auto justify-center"
-            >
-              {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
-            </Link>
+            <div className="relative">
+              <div className="absolute inset-0 rounded-xl blur-md bg-accent-green/30 pointer-events-none" aria-hidden />
+              <Link
+                href="/quiz"
+                onClick={() => sendGAEvent("event", "quiz_started")}
+                className="relative flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-bold px-10 py-4 rounded-xl transition-all text-base min-h-[52px] w-full sm:w-auto justify-center"
+              >
+                {isUnlocked ? "Start Quiz" : "Start Free Quiz"}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </motion.div>
         </section>
       )}
 
       {/* Community CTA */}
-      <section className="border-t border-border px-6 py-16">
+      <section className="border-t border-border px-6 py-20 relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(88,101,242,0.05)_0%,transparent_70%)]" aria-hidden />
         <motion.div
           initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
           whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="max-w-lg mx-auto flex flex-col items-center text-center gap-6"
+          className="max-w-lg mx-auto flex flex-col items-center text-center gap-7 relative z-10"
         >
           {/* Discord icon */}
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: "rgba(88,101,242,0.12)", border: "1px solid rgba(88,101,242,0.25)" }}>
@@ -806,11 +818,11 @@ export default function Home() {
             </svg>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-              Study with others, not alone
+          <div className="flex flex-col gap-3">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter">
+              Study with others,<br />not alone
             </h2>
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-sm mx-auto">
               Join 1,000+ people preparing for their CompTIA certification. Daily questions, study tips, and a community that celebrates your pass.
             </p>
           </div>
@@ -820,7 +832,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => sendGAEvent("event", "discord_community_clicked")}
-            className="group inline-flex items-center gap-2.5 font-semibold px-7 py-3.5 rounded-xl transition-all text-sm min-h-[48px] text-white"
+            className="group inline-flex items-center gap-2.5 font-bold px-8 py-4 rounded-xl transition-all text-sm min-h-[52px] text-white shadow-[0_0_24px_-4px_rgba(88,101,242,0.45)] hover:shadow-[0_0_32px_-4px_rgba(88,101,242,0.55)]"
             style={{ background: "#5865F2" }}
           >
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>

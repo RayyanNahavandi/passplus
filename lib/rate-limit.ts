@@ -1,6 +1,6 @@
 // Simple in-memory rate limiter for Vercel serverless functions.
 //
-// ⚠ State is per function instance — not shared across Vercel instances.
+// ⚠ State is per function instance - not shared across Vercel instances.
 // For production distributed rate limiting replace with Upstash Redis.
 // This is sufficient protection against casual abuse and script-kiddie attacks.
 

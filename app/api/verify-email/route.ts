@@ -8,7 +8,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin"
 import { rateLimit, getIp } from "@/lib/rate-limit"
 
 export async function POST(request: NextRequest) {
-  // 5 attempts per minute per IP — tight because this is a paid-access gate
+  // 5 attempts per minute per IP - tight because this is a paid-access gate
   const { allowed } = rateLimit(getIp(request), { limit: 5, windowMs: 60_000 })
   if (!allowed) {
     return NextResponse.json({ valid: false, error: "Too many requests" }, { status: 429 })

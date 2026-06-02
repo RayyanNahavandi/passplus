@@ -98,7 +98,7 @@ export default function LoginPage() {
           data.user.identities.length === 0
         ) {
           console.warn(
-            "[auth] signUp returned empty identities — email already registered:",
+            "[auth] signUp returned empty identities - email already registered:",
             email
           )
           setErrorMsg("An account with this email already exists. Please sign in instead.")
@@ -317,12 +317,15 @@ export default function LoginPage() {
         </Link>
       </header>
 
-      <main className="flex-1 flex items-center justify-center px-4 py-12">
+      <main className="flex-1 flex items-center justify-center px-4 py-12 relative overflow-hidden">
+        {/* Subtle depth gradient */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_30%,rgba(16,185,129,0.04)_0%,transparent_70%)]" aria-hidden />
+
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="w-full max-w-sm"
+          className="w-full max-w-sm relative z-10"
         >
           {/* Mode toggle */}
           <div className="flex bg-muted border border-border rounded-xl p-1 mb-6">
@@ -330,7 +333,7 @@ export default function LoginPage() {
               <button
                 key={m}
                 onClick={() => switchMode(m)}
-                className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${
+                className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${
                   mode === m
                     ? "bg-card text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -341,9 +344,12 @@ export default function LoginPage() {
             ))}
           </div>
 
-          <div className="bg-card border border-border rounded-2xl p-7 flex flex-col gap-6">
-            <div className="flex flex-col items-center text-center gap-1">
-              <h1 className="text-xl font-bold">
+          <div className="bg-card border border-border rounded-2xl p-7 flex flex-col gap-6 shadow-[0_0_40px_-12px_rgba(0,0,0,0.3)]">
+            <div className="flex flex-col items-center text-center gap-2">
+              <div className="w-11 h-11 rounded-2xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center mb-1">
+                <Logo size={22} />
+              </div>
+              <h1 className="text-xl font-bold tracking-tight">
                 {mode === "signin" ? "Welcome back" : "Create your account"}
               </h1>
               <p className="text-sm text-muted-foreground">

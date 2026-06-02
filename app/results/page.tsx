@@ -193,46 +193,56 @@ export default function ResultsPage() {
           {/* Score card */}
           <motion.div
             variants={shouldReduce ? {} : itemVariants}
-            className="bg-card border border-border rounded-2xl p-8 flex flex-col items-center text-center gap-5 shadow-sm"
+            className="bg-card border border-border rounded-2xl p-8 flex flex-col items-center text-center gap-6 shadow-[0_0_40px_-12px_rgba(0,0,0,0.4)]"
           >
-            <Trophy className="w-9 h-9 text-yellow-400" />
+            {/* Trophy with glow for good scores */}
+            <div className={`relative flex items-center justify-center ${pct >= 70 ? "" : ""}`}>
+              <div className={`absolute inset-0 rounded-full blur-xl pointer-events-none ${pct >= 80 ? "bg-yellow-400/20" : pct >= 70 ? "bg-yellow-400/10" : "bg-muted/20"}`} aria-hidden />
+              <Trophy className={`relative w-12 h-12 ${pct >= 80 ? "text-yellow-400" : pct >= 70 ? "text-yellow-500" : "text-muted-foreground"}`} />
+            </div>
 
             <div>
               <ScoreCounter
                 target={pct}
                 shouldReduce={!!shouldReduce}
-                className={`text-6xl font-bold block mb-1 ${grade.color}`}
+                className={`text-7xl font-bold block mb-2 tabular-nums ${grade.color}`}
                 suffix="%"
               />
-              <div className={`text-lg font-semibold ${grade.color}`}>
+              <div className={`text-base font-semibold tracking-wide ${grade.color}`}>
                 {grade.label}
               </div>
             </div>
 
-            <div className="flex gap-8 text-sm">
-              <div className="flex flex-col items-center gap-1">
-                <ScoreCounter
-                  target={score}
-                  shouldReduce={!!shouldReduce}
-                  className="text-2xl font-bold text-accent-green block"
-                />
+            <div className="flex gap-6 sm:gap-10 text-sm">
+              <div className="flex flex-col items-center gap-1.5">
+                <div className="flex items-center gap-1.5 bg-accent-green/10 rounded-xl px-4 py-2">
+                  <ScoreCounter
+                    target={score}
+                    shouldReduce={!!shouldReduce}
+                    className="text-2xl font-bold text-accent-green tabular-nums"
+                  />
+                </div>
                 <span className="text-muted-foreground text-xs">Correct</span>
               </div>
-              <div className="flex flex-col items-center gap-1">
-                <ScoreCounter
-                  target={total - score}
-                  shouldReduce={!!shouldReduce}
-                  className="text-2xl font-bold text-red-400 block"
-                />
+              <div className="flex flex-col items-center gap-1.5">
+                <div className="flex items-center gap-1.5 bg-red-500/10 rounded-xl px-4 py-2">
+                  <ScoreCounter
+                    target={total - score}
+                    shouldReduce={!!shouldReduce}
+                    className="text-2xl font-bold text-red-400 tabular-nums"
+                  />
+                </div>
                 <span className="text-muted-foreground text-xs">Wrong</span>
               </div>
-              <div className="flex flex-col items-center gap-1">
-                <span className="text-2xl font-bold">{total}</span>
+              <div className="flex flex-col items-center gap-1.5">
+                <div className="flex items-center gap-1.5 bg-muted rounded-xl px-4 py-2">
+                  <span className="text-2xl font-bold tabular-nums">{total}</span>
+                </div>
                 <span className="text-muted-foreground text-xs">Total</span>
               </div>
             </div>
 
-            <div className="bg-muted border border-border rounded-xl px-4 py-3 text-xs text-muted-foreground max-w-sm">
+            <div className="bg-muted border border-border rounded-xl px-5 py-3 text-xs text-muted-foreground max-w-sm leading-relaxed">
               {session.cert === "netplus"
                 ? "CompTIA Network+ typically requires ~75% to pass."
                 : session.cert === "aplus"
@@ -261,40 +271,40 @@ export default function ResultsPage() {
               variants={shouldReduce ? {} : itemVariants}
               className="bg-card border border-border rounded-2xl p-6 flex flex-col gap-5"
             >
-              <h2 className="text-base font-bold">Domains</h2>
+              <h2 className="text-base font-bold tracking-tight">Domain Breakdown</h2>
               <div className="flex flex-col gap-5">
                 {domainStats.map((d, i) => {
                   const incorrectPct = 100 - d.pct
                   return (
-                    <div key={d.id} className="flex flex-col gap-1.5">
-                      <span className="text-sm font-semibold text-foreground">
-                        {d.id}.0 – {d.name}{" "}
-                        <span className="font-normal text-muted-foreground">
-                          ({d.total} question{d.total !== 1 ? "s" : ""})
+                    <div key={d.id} className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-foreground">
+                          {d.id}.0 {d.name}
                         </span>
-                      </span>
-                      <div className="flex h-8 rounded-md overflow-hidden">
+                        <span className={`text-xs font-semibold tabular-nums ${d.pct >= 75 ? "text-accent-green" : d.pct >= 60 ? "text-yellow-400" : "text-red-400"}`}>
+                          {d.pct}% ({d.total}q)
+                        </span>
+                      </div>
+                      <div className="flex h-2.5 rounded-full overflow-hidden bg-muted">
                         {/* Correct segment */}
                         {d.pct > 0 && (
                           <motion.div
-                            className="flex items-center justify-center bg-accent-green/20 text-accent-green text-xs font-semibold"
+                            className="rounded-l-full"
+                            style={{ background: "linear-gradient(90deg, rgba(16,185,129,0.6) 0%, rgba(16,185,129,0.85) 100%)" }}
                             initial={shouldReduce ? { width: `${d.pct}%` } : { width: "0%" }}
                             animate={{ width: `${d.pct}%` }}
-                            transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.08 }}
-                          >
-                            {d.pct >= 12 ? `${d.pct}%` : ""}
-                          </motion.div>
+                            transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.08 }}
+                          />
                         )}
                         {/* Incorrect segment */}
                         {incorrectPct > 0 && (
                           <motion.div
-                            className="flex items-center justify-center bg-red-500/15 text-red-400 text-xs font-semibold"
+                            className={`${d.pct === 0 ? "rounded-l-full" : ""} rounded-r-full`}
+                            style={{ background: "linear-gradient(90deg, rgba(239,68,68,0.5) 0%, rgba(239,68,68,0.7) 100%)" }}
                             initial={shouldReduce ? { width: `${incorrectPct}%` } : { width: "0%" }}
                             animate={{ width: `${incorrectPct}%` }}
-                            transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.08 }}
-                          >
-                            {incorrectPct >= 12 ? `${incorrectPct}%` : ""}
-                          </motion.div>
+                            transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.08 }}
+                          />
                         )}
                       </div>
                     </div>
@@ -302,13 +312,13 @@ export default function ResultsPage() {
                 })}
               </div>
               {/* Legend */}
-              <div className="flex items-center gap-4 pt-1">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded-sm bg-accent-green/20 border border-accent-green/40" />
+              <div className="flex items-center gap-5 pt-1 border-t border-border">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-2.5 rounded-full" style={{ background: "rgba(16,185,129,0.7)" }} />
                   <span className="text-xs text-muted-foreground">Correct</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded-sm bg-red-500/15 border border-red-500/30" />
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-2.5 rounded-full" style={{ background: "rgba(239,68,68,0.6)" }} />
                   <span className="text-xs text-muted-foreground">Incorrect</span>
                 </div>
               </div>

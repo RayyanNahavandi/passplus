@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 // Domains that the browser is allowed to connect to from client-side JS.
-// Keep this list tight — add only what the app actually calls from the browser.
+// Keep this list tight - add only what the app actually calls from the browser.
 const CONNECT_SRC = [
   "'self'",
   "https://*.supabase.co",               // Supabase auth + DB
@@ -12,7 +12,7 @@ const CONNECT_SRC = [
 
 // Scripts allowed to execute. 'unsafe-inline' is required by Next.js for
 // its own bootstrapping scripts. Removing it would require per-request nonces
-// via middleware — a larger refactor.
+// via middleware - a larger refactor.
 const SCRIPT_SRC = [
   "'self'",
   "'unsafe-inline'",
@@ -38,7 +38,7 @@ const securityHeaders = [
   // Prevent browsers from guessing content types (MIME-sniffing attacks)
   { key: "X-Content-Type-Options", value: "nosniff" },
 
-  // Block clickjacking (legacy header — frame-ancestors CSP is the modern equivalent)
+  // Block clickjacking (legacy header - frame-ancestors CSP is the modern equivalent)
   { key: "X-Frame-Options", value: "DENY" },
 
   // Limit referrer information sent to third parties

@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   const from = process.env.SENDGRID_FROM ?? "PassPlus <noreply@studypassplus.com>"
 
   if (!apiKey) {
-    console.log("[send-welcome] SENDGRID_API_KEY not configured — skipping welcome email")
+    console.log("[send-welcome] SENDGRID_API_KEY not configured - skipping welcome email")
     return NextResponse.json({ sent: false })
   }
 

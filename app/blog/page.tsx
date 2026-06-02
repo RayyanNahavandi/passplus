@@ -119,17 +119,19 @@ export default function BlogIndexPage() {
       </header>
 
       <main className="flex-1 px-6 py-16 max-w-2xl mx-auto w-full">
-        <div className="flex items-center gap-2 mb-10">
-          <BookOpen className="w-5 h-5 text-accent-green" />
-          <h1 className="text-2xl font-bold">Blog</h1>
+        <div className="flex items-center gap-3 mb-12">
+          <div className="w-9 h-9 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
+            <BookOpen className="w-4 h-4 text-accent-green" />
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight">Blog</h1>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
           {posts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group flex flex-col gap-2 bg-card border border-border hover:border-accent-green/40 rounded-2xl px-6 py-5 transition-colors"
+              className="group flex flex-col gap-3 bg-card border border-border hover:border-accent-green/40 rounded-2xl px-6 py-5 transition-all hover:shadow-[0_0_20px_-6px_rgba(16,185,129,0.12)] cursor-pointer"
             >
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span>{post.date}</span>
@@ -139,11 +141,11 @@ export default function BlogIndexPage() {
               <h2 className="font-semibold text-base leading-snug group-hover:text-accent-green transition-colors">
                 {post.title}
               </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
                 {post.description}
               </p>
-              <span className="text-xs text-accent-green flex items-center gap-1 mt-1">
-                Read more <ArrowRight className="w-3 h-3" />
+              <span className="text-xs text-accent-green flex items-center gap-1.5 font-medium">
+                Read more <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
               </span>
             </Link>
           ))}

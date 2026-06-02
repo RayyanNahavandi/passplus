@@ -71,7 +71,7 @@ export default function QuizPage() {
     // Only resume a session if it is in-progress AND for the same cert as the URL.
     // Mismatched cert (user switched certs on the landing page) or a completed session
     // both get a fresh start so the mode selector is always shown.
-    // Also discard stale free sessions when the user has since paid — they should get
+    // Also discard stale free sessions when the user has since paid - they should get
     // a fresh paid session rather than resuming the 25-question free one.
     const existingCert = existing?.cert ?? "secplus"
     const sessionNeedsUpgrade = existing && !existing.isUnlocked && isUnlocked()
@@ -101,7 +101,7 @@ export default function QuizPage() {
     if (!isPaid) return
     setSession((prev) => {
       if (!prev || prev.isUnlocked) return prev // already a paid session
-      console.log("[quiz] isPaid confirmed — upgrading stale free session to paid")
+      console.log("[quiz] isPaid confirmed - upgrading stale free session to paid")
       const fresh = createSession("normal", undefined, { cert: prev.cert ?? "secplus" })
       saveSession(fresh)
       return fresh
@@ -372,9 +372,11 @@ export default function QuizPage() {
 
   const timerColor =
     timeLeft !== null && timeLeft <= 300
-      ? "text-red-400"
-      : timeLeft !== null && timeLeft <= 1200
-      ? "text-yellow-500"
+      ? "text-red-400 animate-pulse"
+      : timeLeft !== null && timeLeft <= 900
+      ? "text-orange-400"
+      : timeLeft !== null && timeLeft <= 1800
+      ? "text-yellow-400"
       : "text-muted-foreground"
 
   const slideX = shouldReduce ? 0 : 40
@@ -605,12 +607,16 @@ export default function QuizPage() {
 
       {/* Animated progress bar */}
       {!showModeSelect && (
-        <div className="h-1 bg-border w-full">
+        <div className="h-1.5 bg-border w-full">
           <motion.div
-            className="h-full bg-accent-green origin-left rounded-r-full"
+            className="h-full origin-left rounded-r-full relative"
+            style={{ background: "linear-gradient(90deg, rgba(16,185,129,0.8) 0%, #10b981 100%)" }}
             animate={{ width: `${progress}%` }}
             transition={{ type: "spring", stiffness: 80, damping: 18 }}
-          />
+          >
+            {/* Glow dot at the leading edge */}
+            <span className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent-green shadow-[0_0_6px_2px_rgba(16,185,129,0.6)]" aria-hidden />
+          </motion.div>
         </div>
       )}
 
@@ -657,8 +663,8 @@ export default function QuizPage() {
                 </div>
 
                 {/* Question text */}
-                <div className="bg-card border border-border rounded-2xl p-6 mb-5 shadow-sm">
-                  <p className="text-base leading-7 font-medium">
+                <div className="bg-card border border-border rounded-2xl p-6 mb-5 shadow-sm ring-0">
+                  <p className="text-base leading-[1.75] font-medium">
                     {currentQuestion?.question}
                   </p>
                 </div>
@@ -916,7 +922,7 @@ function ModeSelectScreen({
                 initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" as const }}
-                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
+                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-all hover:shadow-[0_0_20px_-6px_rgba(16,185,129,0.2)] group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
               >
                 <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
                   <Zap className="w-5 h-5 text-accent-green" />
@@ -938,7 +944,7 @@ function ModeSelectScreen({
                 initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.18, ease: "easeOut" as const }}
-                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
+                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-all hover:shadow-[0_0_20px_-6px_rgba(16,185,129,0.2)] group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
               >
                 <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
                   <Clock className="w-5 h-5 text-accent-green" />
@@ -1119,17 +1125,24 @@ function OptionButton({
 
   const bgColor =
     variant === "correct"
-      ? "rgba(34, 197, 94, 0.1)"
+      ? "rgba(16, 185, 129, 0.1)"
       : variant === "wrong"
       ? "rgba(239, 68, 68, 0.1)"
       : "var(--card)"
 
   const borderColor =
     variant === "correct"
-      ? "#22C55E"
+      ? "rgba(16,185,129,0.7)"
       : variant === "wrong"
-      ? "#EF4444"
+      ? "rgba(239,68,68,0.7)"
       : "var(--border)"
+
+  const boxShadow =
+    variant === "correct"
+      ? "0 0 14px -4px rgba(16,185,129,0.3)"
+      : variant === "wrong"
+      ? "0 0 14px -4px rgba(239,68,68,0.25)"
+      : "none"
 
   const textClass =
     variant === "correct"
@@ -1143,7 +1156,7 @@ function OptionButton({
       ? "bg-accent-green/20 text-accent-green"
       : variant === "wrong"
       ? "bg-red-500/20 text-red-400"
-      : "bg-muted text-muted-foreground"
+      : "bg-muted text-muted-foreground group-hover:bg-accent-green/10 group-hover:text-accent-green"
 
   return (
     <motion.button
@@ -1165,19 +1178,20 @@ function OptionButton({
         backgroundColor: { type: "spring", stiffness: 300, damping: 25 },
         borderColor: { type: "spring", stiffness: 300, damping: 25 },
       }}
-      whileHover={!disabled && !shouldReduce ? { scale: 1.01 } : {}}
-      whileTap={!disabled && !shouldReduce ? { scale: 0.98 } : {}}
+      whileHover={!disabled && !shouldReduce ? { scale: 1.005 } : {}}
+      whileTap={!disabled && !shouldReduce ? { scale: 0.99 } : {}}
       onClick={onClick}
       disabled={disabled}
-      className="flex items-start gap-3 w-full text-left px-4 py-3.5 rounded-xl border text-sm leading-relaxed cursor-pointer disabled:cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 focus-visible:ring-offset-1"
+      className="group flex items-start gap-3 w-full text-left px-4 py-4 rounded-xl border text-sm leading-relaxed cursor-pointer disabled:cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 focus-visible:ring-offset-1 hover:border-accent-green/30 disabled:hover:border-inherit transition-shadow"
       style={
         shouldReduce
           ? {
               backgroundColor: bgColor,
               borderColor: borderColor,
-              minHeight: 44,
+              boxShadow,
+              minHeight: 48,
             }
-          : { minHeight: 44 }
+          : { minHeight: 48, boxShadow }
       }
     >
       <span
@@ -1230,7 +1244,7 @@ function PaywallOverlay({
         }
         className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
       >
-        {/* Card — premium dark with green glow border */}
+        {/* Card - premium dark with green glow border */}
         <div
           className="w-full max-w-md pointer-events-auto rounded-2xl p-7 flex flex-col items-center text-center gap-5 shadow-2xl"
           style={{
@@ -1247,7 +1261,7 @@ function PaywallOverlay({
               )}
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-400" />
             </span>
-            Limited launch pricing — grab it before it goes up
+            Limited launch pricing - grab it before it goes up
           </div>
 
           {/* Trophy icon */}
@@ -1273,7 +1287,7 @@ function PaywallOverlay({
               "1,470 questions across Security+, Network+ & A+",
               "Practice Mode + timed Exam Mode simulation",
               "AI explanations for every question",
-              "Lifetime access — pay once, use forever",
+              "Lifetime access - pay once, use forever",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2.5">
                 <CheckCircle className="w-4 h-4 text-accent-green shrink-0 mt-0.5" />
@@ -1323,13 +1337,13 @@ function PaywallOverlay({
                 }
                 className="relative w-full bg-accent-green hover:bg-accent-hover text-black font-bold py-3.5 rounded-xl transition-colors min-h-[48px] text-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-accent-green focus-visible:ring-offset-2"
               >
-                Unlock All 1,470 Questions — $9.99
+                Unlock All 1,470 Questions - $9.99
               </motion.button>
             </div>
 
             {/* Reassurance line */}
             <p className="text-xs text-muted-foreground/70 leading-relaxed">
-              Secure checkout via Stripe. Questions available instantly after payment. No subscription — ever.
+              Secure checkout via Stripe. Questions available instantly after payment. No subscription, ever.
             </p>
 
             {/* Secondary action */}

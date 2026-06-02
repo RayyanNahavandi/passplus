@@ -11,7 +11,7 @@
 //   ADMIN_SECRET  - any strong random string (e.g. openssl rand -hex 32)
 //   PAID_EMAILS   - comma-separated list of paying customer emails
 //
-// This route is idempotent — safe to call multiple times.
+// This route is idempotent - safe to call multiple times.
 import { NextRequest, NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase-admin"
 
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  // Read emails from env var — keeps customer data out of git
+  // Read emails from env var - keeps customer data out of git
   const emails = (process.env.PAID_EMAILS ?? "")
     .split(",")
     .map((e) => e.trim().toLowerCase())

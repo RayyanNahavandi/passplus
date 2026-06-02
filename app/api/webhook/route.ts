@@ -1,5 +1,5 @@
 // Stripe webhook handler.
-// Must run on Node.js — Stripe signature verification uses Node crypto.
+// Must run on Node.js - Stripe signature verification uses Node crypto.
 // force-dynamic prevents Next.js from ever statically optimising this route.
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -8,13 +8,13 @@ import Stripe from "stripe"
 import { supabaseAdmin } from "@/lib/supabase-admin"
 
 export async function POST(request: Request) {
-  // Read raw body FIRST — outside the try/catch so the body stream is
+  // Read raw body FIRST - outside the try/catch so the body stream is
   // consumed before anything else can touch it.
   const body = await request.text()
 
   try {
     const sig = request.headers.get("stripe-signature")
-    console.log("[webhook] Received — body length:", body.length, "| sig present:", !!sig)
+    console.log("[webhook] Received - body length:", body.length, "| sig present:", !!sig)
 
     const event = new Stripe(process.env.STRIPE_SECRET_KEY!).webhooks.constructEvent(
       body,
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
         } else {
           console.log("[webhook] Recorded paid user:", normalizedEmail)
 
-          // Send welcome email — fire-and-forget, never blocks the 200
+          // Send welcome email - fire-and-forget, never blocks the 200
           const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.studypassplus.com"
           fetch(`${baseUrl}/api/send-welcome`, {
             method: "POST",

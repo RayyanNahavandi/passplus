@@ -1,4 +1,4 @@
-// AI explanation endpoint — requires a valid Supabase JWT from a paid user.
+// AI explanation endpoint - requires a valid Supabase JWT from a paid user.
 // Rate limited to 60 requests per minute per IP as a secondary guard.
 import Anthropic from "@anthropic-ai/sdk"
 import { NextRequest, NextResponse } from "next/server"
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // ── 2. Auth — require a valid Supabase JWT for a paid user ─────────────────
+  // ── 2. Auth - require a valid Supabase JWT for a paid user ─────────────────
   const authHeader = request.headers.get("Authorization")
   const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null
 
