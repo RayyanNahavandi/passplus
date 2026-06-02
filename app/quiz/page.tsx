@@ -524,7 +524,7 @@ export default function QuizPage() {
               <button
                 onClick={() => setConfirmAction("restart")}
                 title="Restart quiz"
-                className="flex items-center justify-center w-6 h-6 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
@@ -605,9 +605,9 @@ export default function QuizPage() {
 
       {/* Animated progress bar */}
       {!showModeSelect && (
-        <div className="h-px bg-border w-full">
+        <div className="h-1 bg-border w-full">
           <motion.div
-            className="h-full bg-accent-green origin-left"
+            className="h-full bg-accent-green origin-left rounded-r-full"
             animate={{ width: `${progress}%` }}
             transition={{ type: "spring", stiffness: 80, damping: 18 }}
           />
@@ -916,7 +916,7 @@ function ModeSelectScreen({
                 initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" as const }}
-                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group"
+                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
               >
                 <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
                   <Zap className="w-5 h-5 text-accent-green" />
@@ -938,7 +938,7 @@ function ModeSelectScreen({
                 initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.18, ease: "easeOut" as const }}
-                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group"
+                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-colors group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
               >
                 <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
                   <Clock className="w-5 h-5 text-accent-green" />
@@ -977,7 +977,7 @@ function ModeSelectScreen({
             <div>
               <button
                 onClick={() => setStep("mode")}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4 min-h-[40px] cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Back
@@ -1122,14 +1122,14 @@ function OptionButton({
       ? "rgba(34, 197, 94, 0.1)"
       : variant === "wrong"
       ? "rgba(239, 68, 68, 0.1)"
-      : "#111111"
+      : "var(--card)"
 
   const borderColor =
     variant === "correct"
       ? "#22C55E"
       : variant === "wrong"
       ? "#EF4444"
-      : "#222222"
+      : "var(--border)"
 
   const textClass =
     variant === "correct"
@@ -1169,7 +1169,7 @@ function OptionButton({
       whileTap={!disabled && !shouldReduce ? { scale: 0.98 } : {}}
       onClick={onClick}
       disabled={disabled}
-      className="flex items-start gap-3 w-full text-left px-4 py-3.5 rounded-xl border text-sm leading-relaxed disabled:cursor-default"
+      className="flex items-start gap-3 w-full text-left px-4 py-3.5 rounded-xl border text-sm leading-relaxed cursor-pointer disabled:cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 focus-visible:ring-offset-1"
       style={
         shouldReduce
           ? {

@@ -315,7 +315,7 @@ export default function Home() {
           ) : (
             <Link
               href="/login"
-              className="text-sm font-medium text-foreground border border-border hover:border-foreground/40 hover:bg-muted px-3 py-1.5 rounded-lg transition-colors min-h-[36px] flex items-center"
+              className="text-sm font-medium text-foreground border border-border hover:border-foreground/40 hover:bg-muted px-3 py-1.5 rounded-lg transition-colors min-h-[44px] flex items-center"
             >
               Sign in
             </Link>
@@ -619,7 +619,7 @@ export default function Home() {
         <motion.div
           animate={shouldReduce ? {} : { y: [0, 6, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-1 text-muted-foreground/30 pb-2"
+          className="flex flex-col items-center gap-1 text-muted-foreground/50 pb-2"
           aria-hidden
         >
           <ChevronDown className="w-5 h-5" />

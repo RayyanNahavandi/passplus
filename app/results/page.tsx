@@ -98,13 +98,31 @@ export default function ResultsPage() {
     session.missedIds.includes(q.id)
   )
 
-  const DOMAINS = [
+  const SECPLUS_DOMAINS = [
     { id: 1 as const, name: "General Security Concepts" },
     { id: 2 as const, name: "Threats, Vulnerabilities & Mitigations" },
     { id: 3 as const, name: "Security Architecture" },
     { id: 4 as const, name: "Security Operations" },
     { id: 5 as const, name: "Security Program Management & Oversight" },
   ]
+  const NETPLUS_DOMAINS = [
+    { id: 1 as const, name: "Networking Concepts" },
+    { id: 2 as const, name: "Network Implementation" },
+    { id: 3 as const, name: "Network Operations" },
+    { id: 4 as const, name: "Network Security" },
+    { id: 5 as const, name: "Network Troubleshooting" },
+  ]
+  const APLUS_DOMAINS = [
+    { id: 1 as const, name: "Mobile Devices" },
+    { id: 2 as const, name: "Networking" },
+    { id: 3 as const, name: "Hardware" },
+    { id: 4 as const, name: "Virtualization & Cloud Computing" },
+    { id: 5 as const, name: "Hardware & Network Troubleshooting" },
+  ]
+  const DOMAINS =
+    session.cert === "netplus" ? NETPLUS_DOMAINS :
+    session.cert === "aplus"   ? APLUS_DOMAINS  :
+    SECPLUS_DOMAINS
 
   const domainStats = DOMAINS.map(({ id, name }) => {
     const domainQs = questions.filter(
@@ -215,7 +233,11 @@ export default function ResultsPage() {
             </div>
 
             <div className="bg-muted border border-border rounded-xl px-4 py-3 text-xs text-muted-foreground max-w-sm">
-              CompTIA Security+ typically requires ~75% to pass.
+              {session.cert === "netplus"
+                ? "CompTIA Network+ typically requires ~75% to pass."
+                : session.cert === "aplus"
+                ? "CompTIA A+ typically requires ~675/900 (~75%) to pass."
+                : "CompTIA Security+ typically requires ~75% to pass."}
             </div>
           </motion.div>
 
