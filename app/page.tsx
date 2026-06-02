@@ -399,16 +399,12 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(16,185,129,0.06)_0%,transparent_70%)]" aria-hidden />
 
         <div className="flex flex-col items-center gap-7 max-w-3xl w-full relative z-10">
-          <motion.div
+          <motion.p
             {...fadeUp(0)}
-            className="inline-flex items-center gap-2 bg-accent-green/10 border border-accent-green/25 text-accent-green text-xs font-semibold tracking-wide px-3.5 py-1.5 rounded-full"
+            className="text-sm text-accent-green font-medium tracking-wide"
           >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-green opacity-60" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent-green" />
-            </span>
             The free CompTIA quiz that doesn&apos;t suck
-          </motion.div>
+          </motion.p>
 
           <motion.h1
             {...fadeUp(0.1)}
