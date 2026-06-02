@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame, Pencil, Check } from "lucide-react"
+import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame, Pencil, Check, Mail, Info, KeyRound, ExternalLink } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
@@ -31,6 +31,7 @@ export default function Home() {
   const [showRestoreInput, setShowRestoreInput] = useState(false)
   const [restoreEmail, setRestoreEmail] = useState("")
   const [restoreStatus, setRestoreStatus] = useState<"idle" | "checking" | "notfound">("idle")
+  const [showAboutModal, setShowAboutModal] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLElement>(null)
 
@@ -180,7 +181,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col min-h-screen bg-background">
-      <nav ref={navRef} className="relative border-b border-border px-6 py-4 flex items-center justify-between">
+      <nav ref={navRef} className="relative px-6 py-4 flex items-center justify-between">
         {/* Logo - always visible */}
         <motion.div className="flex items-center gap-2" {...fadeUp(0)}>
           <Logo size={28} />
@@ -189,12 +190,12 @@ export default function Home() {
 
         {/* Centered welcome greeting - logged-in users only */}
         {user && greeting && (
-          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center leading-tight pointer-events-none max-w-[45%]">
-            <span className="text-xs sm:text-sm font-medium text-foreground truncate max-w-full">
+          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center leading-snug pointer-events-none max-w-[45%]">
+            <span className="text-sm sm:text-base font-semibold text-foreground truncate max-w-full">
               {greeting.line1}
             </span>
             {greeting.line2 && (
-              <span className="hidden sm:block text-[11px] text-muted-foreground truncate max-w-full">
+              <span className="hidden sm:block text-xs text-muted-foreground truncate max-w-full mt-0.5">
                 {greeting.line2}
               </span>
             )}
@@ -235,8 +236,9 @@ export default function Home() {
               </button>
 
               {showAccountMenu && (
-                <div className="absolute right-0 top-full mt-1.5 w-56 bg-card border border-border rounded-xl shadow-lg py-1 z-50">
+                <div className="absolute right-0 top-full mt-1.5 w-64 bg-card border border-border rounded-xl shadow-lg py-1 z-50">
                   {editingName ? (
+                    /* ── Name editor ── */
                     <div className="px-3 py-2 flex flex-col gap-2">
                       <label className="text-xs font-medium text-muted-foreground">
                         Display name
@@ -260,7 +262,7 @@ export default function Home() {
                         <button
                           onClick={handleSaveName}
                           disabled={nameStatus === "saving"}
-                          className="flex-1 flex items-center justify-center gap-1.5 bg-accent-green hover:bg-accent-hover disabled:opacity-50 text-black font-semibold py-1.5 rounded-lg transition-colors text-xs"
+                          className="flex-1 flex items-center justify-center gap-1.5 bg-accent-green hover:bg-accent-hover disabled:opacity-50 text-black font-semibold py-1.5 rounded-lg transition-colors text-xs cursor-pointer"
                         >
                           {nameStatus === "saving" ? (
                             <span className="w-3.5 h-3.5 rounded-full border-2 border-black/30 border-t-black animate-spin" />
@@ -270,14 +272,56 @@ export default function Home() {
                         </button>
                         <button
                           onClick={() => setEditingName(false)}
-                          className="flex-1 text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg py-1.5 transition-colors"
+                          className="flex-1 text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg py-1.5 transition-colors cursor-pointer"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : showRestoreInput ? (
+                    /* ── Restore access inline ── */
+                    <div className="px-3 py-2 flex flex-col gap-2">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <KeyRound className="w-3.5 h-3.5 text-muted-foreground" />
+                        <span className="text-xs font-medium text-foreground">Restore access</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">
+                        Enter the email you used at checkout.
+                      </p>
+                      <input
+                        type="email"
+                        value={restoreEmail}
+                        onChange={(e) => { setRestoreEmail(e.target.value); setRestoreStatus("idle") }}
+                        onKeyDown={(e) => { if (e.key === "Enter") handleRestoreAccess() }}
+                        placeholder="you@example.com"
+                        autoFocus
+                        className="w-full bg-muted border border-border rounded-lg px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-green/50 transition-colors"
+                      />
+                      {restoreStatus === "notfound" && (
+                        <p className="text-[11px] text-red-400">Email not found. Contact studypassplus@gmail.com</p>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={handleRestoreAccess}
+                          disabled={restoreStatus === "checking"}
+                          className="flex-1 flex items-center justify-center gap-1.5 bg-accent-green hover:bg-accent-hover disabled:opacity-50 text-black font-semibold py-1.5 rounded-lg transition-colors text-xs cursor-pointer"
+                        >
+                          {restoreStatus === "checking" ? (
+                            <span className="w-3.5 h-3.5 rounded-full border-2 border-black/30 border-t-black animate-spin" />
+                          ) : "Restore"}
+                        </button>
+                        <button
+                          onClick={() => { setShowRestoreInput(false); setRestoreEmail(""); setRestoreStatus("idle") }}
+                          className="flex-1 text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg py-1.5 transition-colors cursor-pointer"
                         >
                           Cancel
                         </button>
                       </div>
                     </div>
                   ) : (
+                    /* ── Main menu ── */
                     <>
+                      {/* Account */}
                       <Link
                         href="/login"
                         onClick={() => setShowAccountMenu(false)}
@@ -288,7 +332,7 @@ export default function Home() {
                       </Link>
                       <button
                         onClick={openNameEditor}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors cursor-pointer"
                       >
                         <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
                         Change display name
@@ -299,10 +343,43 @@ export default function Home() {
                           Display name updated.
                         </p>
                       )}
+
+                      {/* Help section */}
+                      <div className="h-px bg-border my-1" />
+                      <p className="px-3 pt-1.5 pb-0.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+                        Help
+                      </p>
+                      <button
+                        onClick={() => { setShowRestoreInput(true); setRestoreEmail(""); setRestoreStatus("idle") }}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors cursor-pointer"
+                      >
+                        <KeyRound className="w-3.5 h-3.5 text-muted-foreground" />
+                        Already paid? Restore access
+                      </button>
+                      <a
+                        href="mailto:studypassplus@gmail.com"
+                        onClick={() => setShowAccountMenu(false)}
+                        className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+                      >
+                        <Mail className="w-3.5 h-3.5 text-muted-foreground" />
+                        Contact Support
+                      </a>
+
+                      {/* About */}
+                      <div className="h-px bg-border my-1" />
+                      <button
+                        onClick={() => { setShowAboutModal(true); setShowAccountMenu(false) }}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors cursor-pointer"
+                      >
+                        <Info className="w-3.5 h-3.5 text-muted-foreground" />
+                        About PassPlus
+                      </button>
+
+                      {/* Sign out */}
                       <div className="h-px bg-border my-1" />
                       <button
                         onClick={handleSignOut}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-muted transition-colors"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-muted transition-colors cursor-pointer"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         Sign out
@@ -394,11 +471,8 @@ export default function Home() {
       </nav>
 
       {/* Hero */}
-      <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-20 sm:py-28 gap-14 relative overflow-hidden">
-        {/* Subtle radial depth gradient */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(16,185,129,0.06)_0%,transparent_70%)]" aria-hidden />
-
-        <div className="flex flex-col items-center gap-7 max-w-3xl w-full relative z-10">
+      <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-20 sm:py-28 gap-14">
+        <div className="flex flex-col items-center gap-7 max-w-3xl w-full">
           <motion.p
             {...fadeUp(0)}
             className="text-sm text-accent-green font-medium tracking-wide"
@@ -419,9 +493,7 @@ export default function Home() {
             {...fadeUp(0.2)}
             className="text-base sm:text-lg text-muted-foreground max-w-[480px] leading-relaxed"
           >
-            1470 questions across Practice Mode and Exam Mode covering
-            Security+, Network+, and A+. Instant feedback, score tracking, and
-            missed-question drills.
+            1470 questions across Security+, Network+, and A+. Practice Mode, Exam Mode, instant feedback, and domain breakdown.
           </motion.p>
 
           {/* Cert selector */}
@@ -474,45 +546,6 @@ export default function Home() {
                   Unlock All 1470 Questions - $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
-                {!showRestoreInput ? (
-                  <button
-                    type="button"
-                    onClick={() => { setShowRestoreInput(true); setRestoreStatus("idle") }}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[36px]"
-                  >
-                    Already paid? Restore access
-                  </button>
-                ) : (
-                  <div className="flex flex-col items-center gap-2 w-full sm:w-auto">
-                    <div className="flex gap-2 w-full sm:w-auto">
-                      <input
-                        type="email"
-                        value={restoreEmail}
-                        onChange={(e) => { setRestoreEmail(e.target.value); setRestoreStatus("idle") }}
-                        onKeyDown={(e) => { if (e.key === "Enter") handleRestoreAccess() }}
-                        placeholder="Email used at checkout"
-                        className="flex-1 sm:w-56 px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent-green"
-                        autoFocus
-                      />
-                      <button
-                        type="button"
-                        onClick={handleRestoreAccess}
-                        disabled={restoreStatus === "checking"}
-                        className="px-4 py-2 text-sm font-medium rounded-lg bg-card border border-border hover:border-accent-green/50 transition-colors disabled:opacity-50"
-                      >
-                        {restoreStatus === "checking" ? "Checking…" : "Restore"}
-                      </button>
-                    </div>
-                    {restoreStatus === "notfound" && (
-                      <p className="text-xs text-red-400 text-center">
-                        Email not found. Contact studypassplus@gmail.com
-                      </p>
-                    )}
-                  </div>
-                )}
-                <p className="text-xs text-muted-foreground">
-                  Having issues? Email studypassplus@gmail.com
-                </p>
               </div>
             ) : selectedCert === "aplus" ? (
               <>
@@ -847,6 +880,70 @@ export default function Home() {
           Blog
         </Link>
       </footer>
+
+      {/* About PassPlus modal */}
+      {showAboutModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+          onClick={() => setShowAboutModal(false)}
+        >
+          <motion.div
+            initial={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 12 }}
+            animate={shouldReduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+            transition={shouldReduce ? { duration: 0.15 } : { type: "spring", stiffness: 400, damping: 30 }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm bg-card border border-border rounded-2xl p-7 flex flex-col gap-5 shadow-2xl"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Logo size={28} />
+                <span className="font-bold text-base tracking-tight">PassPlus</span>
+              </div>
+              <button
+                onClick={() => setShowAboutModal(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground cursor-pointer"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="flex flex-col gap-3 text-sm text-muted-foreground leading-relaxed">
+              <p>
+                PassPlus is a free CompTIA practice quiz built to help people actually pass their certification exams - not just memorize dumps.
+              </p>
+              <p>
+                It covers <strong className="text-foreground">Security+ SY0-701</strong>, <strong className="text-foreground">Network+ N10-009</strong>, and <strong className="text-foreground">A+ Core 1 & 2</strong> with 1,470 questions across Practice Mode and Exam Mode. Paid users get AI explanations for every answer.
+              </p>
+              <p>
+                Built and maintained independently. Questions are original, written from CompTIA exam objectives - not recycled braindumps.
+              </p>
+            </div>
+
+            {/* Links */}
+            <div className="flex flex-col gap-2 pt-1 border-t border-border">
+              <a
+                href="https://www.studypassplus.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-accent-green hover:text-accent-hover transition-colors"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                studypassplus.com
+              </a>
+              <a
+                href="mailto:studypassplus@gmail.com"
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Mail className="w-3.5 h-3.5" />
+                studypassplus@gmail.com
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </main>
   )
 }
