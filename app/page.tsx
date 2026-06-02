@@ -758,7 +758,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="border-t border-border px-6 py-24">
+      <section className="px-6 py-24">
         <div className="max-w-4xl mx-auto grid sm:grid-cols-3 gap-5">
           {[
             {
@@ -801,7 +801,7 @@ export default function Home() {
 
       {/* CTA */}
       {!freeCompleted && (
-        <section className="border-t border-border px-6 py-20 text-center">
+        <section className="px-6 py-20 text-center">
           <motion.div
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
@@ -871,11 +871,11 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <footer className="border-t border-border px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground/50">
+      <footer className="px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground/50">
         <span>
           PassPlus - Not affiliated with CompTIA. Original practice questions based on publicly available CompTIA exam objectives.
         </span>
-        <Link href="/blog" className="hover:text-muted-foreground transition-colors">
+        <Link href="/blog" className="text-accent-green hover:text-accent-hover transition-colors">
           Blog
         </Link>
       </footer>
