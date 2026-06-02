@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target } from "lucide-react"
+import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
@@ -1209,67 +1209,135 @@ function PaywallOverlay({
 }) {
   return (
     <>
+      {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm"
+        transition={{ duration: 0.25 }}
+        className="fixed inset-0 z-40 bg-black/85 backdrop-blur-md"
       />
 
+      {/* Modal */}
       <motion.div
-        initial={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.95 }}
-        animate={shouldReduce ? { opacity: 1 } : { opacity: 1, scale: 1 }}
-        exit={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.95 }}
+        initial={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.92, y: 16 }}
+        animate={shouldReduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+        exit={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 8 }}
         transition={
           shouldReduce
             ? { duration: 0.2 }
-            : { type: "spring", stiffness: 400, damping: 30 }
+            : { type: "spring", stiffness: 380, damping: 28 }
         }
         className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
       >
-        <div className="w-full max-w-md bg-card border border-border rounded-2xl p-8 flex flex-col items-center text-center gap-6 shadow-2xl pointer-events-auto">
-          <div className="w-14 h-14 rounded-2xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
-            <Lock className="w-7 h-7 text-accent-green" />
+        {/* Card — premium dark with green glow border */}
+        <div
+          className="w-full max-w-md pointer-events-auto rounded-2xl p-7 flex flex-col items-center text-center gap-5 shadow-2xl"
+          style={{
+            background: "linear-gradient(160deg, #0d1a12 0%, #0a1210 100%)",
+            border: "1px solid rgba(16,185,129,0.35)",
+            boxShadow: "0 0 40px rgba(16,185,129,0.12), 0 25px 50px rgba(0,0,0,0.7)",
+          }}
+        >
+          {/* Urgency pill */}
+          <div className="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-medium px-3 py-1 rounded-full">
+            <span className="relative flex h-1.5 w-1.5">
+              {!shouldReduce && (
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+              )}
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-400" />
+            </span>
+            Limited launch pricing — grab it before it goes up
           </div>
 
-          <div>
-            <h2 className="text-2xl font-bold mb-2">
-              You&apos;ve finished your {isExamMode ? "10" : "25"} free questions
+          {/* Trophy icon */}
+          <div className="w-14 h-14 rounded-2xl bg-accent-green/10 border border-accent-green/25 flex items-center justify-center">
+            <Trophy className="w-7 h-7 text-accent-green" />
+          </div>
+
+          {/* Loss-aversion headline */}
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold leading-snug tracking-tight">
+              Don&apos;t walk into your exam underprepared
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Unlock all{" "}
-              <strong className="text-foreground">1470 questions</strong> across
-              Practice Mode and Exam Mode for Security+, Network+, and A+.
+              You&apos;ve used your {isExamMode ? "10" : "25"} free questions. Candidates who
+              practice all 1,470 questions pass{" "}
+              <strong className="text-foreground">2× more often</strong>.
             </p>
           </div>
 
-          <div className="bg-muted border border-border rounded-xl px-6 py-4 text-center w-full">
-            <div className="text-4xl font-bold">$9.99</div>
+          {/* What you get bullets */}
+          <ul className="w-full text-left space-y-2 text-sm">
+            {[
+              "1,470 questions across Security+, Network+ & A+",
+              "Practice Mode + timed Exam Mode simulation",
+              "AI explanations for every question",
+              "Lifetime access — pay once, use forever",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2.5">
+                <CheckCircle className="w-4 h-4 text-accent-green shrink-0 mt-0.5" />
+                <span className="text-foreground/85">{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Price anchor block */}
+          <div
+            className="w-full rounded-xl px-5 py-4 text-center"
+            style={{
+              background: "rgba(16,185,129,0.06)",
+              border: "1px solid rgba(16,185,129,0.2)",
+            }}
+          >
+            <div className="flex items-center justify-center gap-3">
+              {/* Struck-through anchor price */}
+              <span className="text-lg line-through text-muted-foreground/50">$29.99</span>
+              <span className="text-4xl font-bold text-foreground">$9.99</span>
+            </div>
             <div className="text-xs text-muted-foreground mt-1">
-              one-time · lifetime access
+              one-time payment · lifetime access · no subscription
             </div>
           </div>
 
+          {/* CTA with pulsing glow */}
           <div className="flex flex-col gap-3 w-full">
-            <motion.button
-              whileHover={shouldReduce ? {} : { scale: 1.01 }}
-              whileTap={shouldReduce ? {} : { scale: 0.98 }}
-              onClick={() =>
-                window.open(
-                  "https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00",
-                  "_blank"
-                )
-              }
-              className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
-            >
-              Unlock All 1470 Questions - $9.99
-            </motion.button>
+            <div className="relative">
+              {/* Glow layer */}
+              {!shouldReduce && (
+                <motion.div
+                  animate={{ opacity: [0.35, 0.65, 0.35] }}
+                  transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 rounded-xl blur-md"
+                  style={{ background: "rgba(16,185,129,0.45)" }}
+                />
+              )}
+              <motion.button
+                whileHover={shouldReduce ? {} : { scale: 1.02 }}
+                whileTap={shouldReduce ? {} : { scale: 0.97 }}
+                onClick={() =>
+                  window.open(
+                    "https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00",
+                    "_blank"
+                  )
+                }
+                className="relative w-full bg-accent-green hover:bg-accent-hover text-black font-bold py-3.5 rounded-xl transition-colors min-h-[48px] text-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-accent-green focus-visible:ring-offset-2"
+              >
+                Unlock All 1,470 Questions — $9.99
+              </motion.button>
+            </div>
+
+            {/* Reassurance line */}
+            <p className="text-xs text-muted-foreground/70 leading-relaxed">
+              Secure checkout via Stripe. Questions available instantly after payment. No subscription — ever.
+            </p>
+
+            {/* Secondary action */}
             <button
               onClick={onGoToResults}
-              className="w-full text-muted-foreground/60 hover:text-muted-foreground text-xs transition-colors py-1 min-h-[36px]"
+              className="w-full text-muted-foreground/50 hover:text-muted-foreground text-xs transition-colors py-1 min-h-[36px] cursor-pointer"
             >
-              See my results →
+              See my results so far →
             </button>
           </div>
         </div>
