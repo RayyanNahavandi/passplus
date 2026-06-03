@@ -2,7 +2,15 @@
  * Step 2 - Generate voiceover audio via ElevenLabs TTS
  *
  * Reads out/daily-question-data.json, builds the narration script,
- * calls the ElevenLabs API, and saves out/daily-question-audio.mp3.
+ * calls the ElevenLabs API, and saves the audio file.
+ *
+ * Usage:
+ *   npx tsx scripts/tiktok-pipeline/generate-audio.ts          # standard style
+ *   npx tsx scripts/tiktok-pipeline/generate-audio.ts --meme   # meme style
+ *
+ * Output files:
+ *   Standard: out/daily-question-audio.mp3
+ *   Meme:     out/meme-question-audio.mp3
  *
  * Required env vars:
  *   ELEVENLABS_API_KEY  - from elevenlabs.io
@@ -23,6 +31,10 @@ interface QuestionData {
 // Default voice: Rachel - calm, clear, authoritative
 const DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM"
 
+const IS_MEME = process.argv.includes("--meme")
+
+// ── Script builders ────────────────────────────────────────────────────────
+
 function buildScript(data: QuestionData): string {
   return [
     "Stop scrolling for a second and lock in.",
@@ -40,6 +52,27 @@ function buildScript(data: QuestionData): string {
     "More practice questions at studypassplus dot com.",
   ].join("\n")
 }
+
+function buildMemeScript(data: QuestionData): string {
+  return [
+    "Bro stop. Are you actually ready for your Security plus exam?",
+    "Because this question right here. This one right here.",
+    "",
+    data.question,
+    "",
+    `A. ${data.answers.A}`,
+    `B. ${data.answers.B}`,
+    `C. ${data.answers.C}`,
+    `D. ${data.answers.D}`,
+    "",
+    `The answer is ${data.correct}.`,
+    "",
+    "Do not go into that exam cooked.",
+    "Free practice at studypassplus dot com.",
+  ].join("\n")
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────
 
 async function generateAudio(): Promise<void> {
   const apiKey = process.env.ELEVENLABS_API_KEY
@@ -62,10 +95,16 @@ async function generateAudio(): Promise<void> {
     fs.readFileSync(dataPath, "utf-8")
   )
 
-  const script = buildScript(questionData)
+  const style = IS_MEME ? "meme" : "standard"
+  const script = IS_MEME
+    ? buildMemeScript(questionData)
+    : buildScript(questionData)
+  const outputFile = IS_MEME
+    ? "meme-question-audio.mp3"
+    : "daily-question-audio.mp3"
 
-  console.log("[elevenlabs] Generating audio...")
-  console.log(`[elevenlabs] Voice ID : ${voiceId}`)
+  console.log(`[elevenlabs] Style     : ${style}`)
+  console.log(`[elevenlabs] Voice ID  : ${voiceId}`)
   console.log(`[elevenlabs] Characters: ${script.length}`)
 
   const response = await fetch(
@@ -102,7 +141,7 @@ async function generateAudio(): Promise<void> {
     fs.mkdirSync(outDir, { recursive: true })
   }
 
-  const outputPath = path.join(outDir, "daily-question-audio.mp3")
+  const outputPath = path.join(outDir, outputFile)
   fs.writeFileSync(outputPath, Buffer.from(audioBuffer))
 
   const kb = (audioBuffer.byteLength / 1024).toFixed(1)
