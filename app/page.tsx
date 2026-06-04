@@ -213,16 +213,6 @@ export default function Home() {
             Daily Question
             <span className="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse shrink-0" />
           </Link>
-          {!freeCompleted && (
-            <Link
-              href="/quiz"
-              onClick={() => sendGAEvent("event", "quiz_started")}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] flex items-center"
-            >
-              Start Quiz →
-            </Link>
-          )}
-
           {/* Desktop account menu / sign-in */}
           {user ? (
             <div className="relative" ref={menuRef}>
@@ -420,17 +410,6 @@ export default function Home() {
               Daily Question
               <span className="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse" />
             </Link>
-
-            {!freeCompleted && (
-              <Link
-                href="/quiz"
-                onClick={() => { setShowMobileMenu(false); sendGAEvent("event", "quiz_started") }}
-                className="flex items-center gap-2.5 px-5 py-3 text-sm text-foreground hover:bg-muted transition-colors"
-              >
-                <Zap className="w-4 h-4 text-muted-foreground shrink-0" />
-                Start Quiz
-              </Link>
-            )}
 
             <div className="h-px bg-border mx-5 my-1" />
 
