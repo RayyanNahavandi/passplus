@@ -430,7 +430,7 @@ export default function QuizPage() {
           price: "0",
           priceCurrency: "USD",
           description:
-            "10 free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
+            "25 free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
         },
       },
     },

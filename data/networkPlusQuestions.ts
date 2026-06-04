@@ -77,91 +77,91 @@ export const networkPracticeQuestions: NetworkQuestion[] = ([] as NetworkQuestio
     id: "NQ011", exam: "Original",
     question: "Which IPv6 address type is equivalent to the IPv4 private address space and is used for local network communication only?",
     options: { A: "Global unicast", B: "Link-local", C: "Unique local", D: "Multicast" },
-    answer: "C", tier: "locked", domain: 1
+    answer: "C", tier: "free", domain: 1
   },
   {
     id: "NQ012", exam: "Original",
     question: "A technician needs to verify network connectivity to a remote host and measure round-trip time. Which command line tool should be used?",
     options: { A: "tracert", B: "netstat", C: "nslookup", D: "ping" },
-    answer: "D", tier: "locked", domain: 1
+    answer: "D", tier: "free", domain: 1
   },
   {
     id: "NQ013", exam: "Original",
     question: "Which of the following describes the function of DHCP?",
     options: { A: "Translates domain names to IP addresses", B: "Automatically assigns IP addresses and network configuration to devices", C: "Routes packets between different networks", D: "Encrypts data transmitted over the network" },
-    answer: "B", tier: "locked", domain: 1
+    answer: "B", tier: "free", domain: 1
   },
   {
     id: "NQ014", exam: "Original",
     question: "What is the broadcast address for the network 10.0.0.0/24?",
     options: { A: "10.0.0.0", B: "10.0.0.1", C: "10.0.0.255", D: "10.0.0.254" },
-    answer: "C", tier: "locked", domain: 1
+    answer: "C", tier: "free", domain: 1
   },
   {
     id: "NQ015", exam: "Original",
     question: "Which protocol is used to send email from a client to a mail server?",
     options: { A: "IMAP", B: "POP3", C: "SMTP", D: "SNMP" },
-    answer: "C", tier: "locked", domain: 1
+    answer: "C", tier: "free", domain: 1
   },
   {
     id: "NQ016", exam: "Original",
     question: "A user can ping a server by IP address but not by hostname. Which service is most likely misconfigured?",
     options: { A: "DHCP", B: "DNS", C: "NAT", D: "WINS" },
-    answer: "B", tier: "locked", domain: 1
+    answer: "B", tier: "free", domain: 1
   },
   {
     id: "NQ017", exam: "Original",
     question: "Which of the following is a connectionless protocol that provides fast but unreliable data transmission?",
     options: { A: "TCP", B: "FTP", C: "UDP", D: "SSH" },
-    answer: "C", tier: "locked", domain: 1
+    answer: "C", tier: "free", domain: 1
   },
   {
     id: "NQ018", exam: "Original",
     question: "What is the loopback address used to test the TCP/IP stack on a local device?",
     options: { A: "192.168.0.1", B: "0.0.0.0", C: "127.0.0.1", D: "255.255.255.255" },
-    answer: "C", tier: "locked", domain: 1
+    answer: "C", tier: "free", domain: 1
   },
   {
     id: "NQ019", exam: "Original",
     question: "Which routing protocol uses bandwidth and delay as its composite metric to determine the best path?",
     options: { A: "RIP", B: "OSPF", C: "EIGRP", D: "BGP" },
-    answer: "C", tier: "locked", domain: 1
+    answer: "C", tier: "free", domain: 1
   },
   {
     id: "NQ020", exam: "Original",
     question: "A network administrator needs to implement a protocol that allows multiple routers to share a virtual IP address for gateway redundancy. Which protocol should be used?",
     options: { A: "OSPF", B: "HSRP", C: "VRRP", D: "Both B and C are correct" },
-    answer: "D", tier: "locked", domain: 1
+    answer: "D", tier: "free", domain: 1
   },
   {
     id: "NQ021", exam: "Original",
     question: "Which of the following DNS record types is used for mail server identification?",
     options: { A: "A", B: "PTR", C: "MX", D: "TXT" },
-    answer: "C", tier: "locked", domain: 1
+    answer: "C", tier: "free", domain: 1
   },
   {
     id: "NQ022", exam: "Original",
     question: "What is the maximum transmission unit (MTU) for standard Ethernet frames?",
     options: { A: "512 bytes", B: "1024 bytes", C: "1500 bytes", D: "9000 bytes" },
-    answer: "C", tier: "locked", domain: 1
+    answer: "C", tier: "free", domain: 1
   },
   {
     id: "NQ023", exam: "Original",
     question: "Which protocol provides time synchronization across network devices?",
     options: { A: "SNMP", B: "NTP", C: "Syslog", D: "TFTP" },
-    answer: "B", tier: "locked", domain: 1
+    answer: "B", tier: "free", domain: 1
   },
   {
     id: "NQ024", exam: "Original",
     question: "A network uses the address 172.16.0.0/12. What is the subnet mask in dotted decimal notation?",
     options: { A: "255.0.0.0", B: "255.240.0.0", C: "255.255.0.0", D: "255.255.240.0" },
-    answer: "B", tier: "locked", domain: 1
+    answer: "B", tier: "free", domain: 1
   },
   {
     id: "NQ025", exam: "Original",
     question: "Which of the following describes the function of a proxy server?",
     options: { A: "Assigns IP addresses to network clients", B: "Acts as an intermediary between clients and servers to filter and cache requests", C: "Routes packets between different network segments", D: "Provides wireless connectivity to network devices" },
-    answer: "B", tier: "locked", domain: 1
+    answer: "B", tier: "free", domain: 1
   },
   {
     id: "NQ026", exam: "Original",

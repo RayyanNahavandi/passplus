@@ -224,7 +224,7 @@ export default function BlogPost() {
             <p>
               The fastest way to learn your own timeline is to take a few questions and
               see where you stand.{" "}
-              <Link href="/quiz">PassPlus</Link> gives you 10 free A+ practice questions
+              <Link href="/quiz">PassPlus</Link> gives you 25 free A+ practice questions
               with no account and no payment required, plus a breakdown showing exactly
               which domains need work. Ten minutes of practice will tell you more about
               your readiness than any generic timeline.
@@ -240,7 +240,7 @@ export default function BlogPost() {
             <div>
               <p className="font-semibold text-sm mb-0.5">Find your weak spots now.</p>
               <p className="text-xs text-muted-foreground">
-                10 free questions, no signup, instant feedback.
+                25 free questions, no signup, instant feedback.
               </p>
             </div>
             <Link

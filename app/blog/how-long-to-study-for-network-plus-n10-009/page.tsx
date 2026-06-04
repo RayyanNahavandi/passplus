@@ -255,7 +255,7 @@ export default function BlogPost() {
             <p>
               The fastest way to calibrate your current level is to take a set of
               practice questions today.{" "}
-              <Link href="/quiz?cert=netplus">PassPlus</Link> gives you 10 free N10-009
+              <Link href="/quiz?cert=netplus">PassPlus</Link> gives you 25 free N10-009
               practice questions with instant feedback and a domain breakdown showing
               exactly where you lost points. No account required. Ten minutes will tell
               you more about your readiness than an hour of reading.
@@ -271,7 +271,7 @@ export default function BlogPost() {
             <div>
               <p className="font-semibold text-sm mb-0.5">Find your gaps before exam day.</p>
               <p className="text-xs text-muted-foreground">
-                10 free N10-009 questions, no signup, instant domain breakdown.
+                25 free N10-009 questions, no signup, instant domain breakdown.
               </p>
             </div>
             <Link

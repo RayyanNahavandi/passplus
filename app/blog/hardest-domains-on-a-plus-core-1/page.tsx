@@ -243,7 +243,7 @@ export default function BlogPost() {
             <div>
               <p className="font-semibold text-sm mb-0.5">See your domain breakdown.</p>
               <p className="text-xs text-muted-foreground">
-                10 free questions, no signup, instant feedback.
+                25 free questions, no signup, instant feedback.
               </p>
             </div>
             <Link

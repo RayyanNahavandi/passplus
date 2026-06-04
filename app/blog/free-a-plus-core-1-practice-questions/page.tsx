@@ -249,7 +249,7 @@ export default function BlogPost() {
 
             <p>
               The fastest way to find your knowledge gaps is to start answering questions.{" "}
-              <Link href="/quiz">PassPlus</Link> gives you 10 free A+ Core 1 practice
+              <Link href="/quiz">PassPlus</Link> gives you 25 free A+ Core 1 practice
               questions with no account, no email, and no payment required. You get
               instant feedback on every answer and a full breakdown at the end showing
               exactly where you lost points.
@@ -266,7 +266,7 @@ export default function BlogPost() {
             <div>
               <p className="font-semibold text-sm mb-0.5">Ready to practice?</p>
               <p className="text-xs text-muted-foreground">
-                10 free questions, no signup, instant feedback.
+                25 free questions, no signup, instant feedback.
               </p>
             </div>
             <Link
