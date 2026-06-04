@@ -14,6 +14,7 @@ import {
   RotateCcw,
   ChevronUp,
   ChevronDown,
+  Lock,
 } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { DiscordBanner } from "@/components/DiscordBanner"
@@ -272,55 +273,102 @@ export default function ResultsPage() {
               className="bg-card border border-border rounded-2xl p-6 flex flex-col gap-5"
             >
               <h2 className="text-base font-bold tracking-tight">Domain Breakdown</h2>
-              <div className="flex flex-col gap-5">
-                {domainStats.map((d, i) => {
-                  const incorrectPct = 100 - d.pct
-                  return (
-                    <div key={d.id} className="flex flex-col gap-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-foreground">
-                          {d.id}.0 {d.name}
-                        </span>
-                        <span className={`text-xs font-semibold tabular-nums ${d.pct >= 75 ? "text-accent-green" : d.pct >= 60 ? "text-yellow-400" : "text-red-400"}`}>
-                          {d.pct}% ({d.total}q)
-                        </span>
+
+              {/* relative wrapper so the overlay can sit flush over bars + legend */}
+              <div className="relative flex flex-col gap-5">
+                {/* Real domain bars - always rendered with actual user data */}
+                <div className="flex flex-col gap-5">
+                  {domainStats.map((d, i) => {
+                    const incorrectPct = 100 - d.pct
+                    return (
+                      <div key={d.id} className="flex flex-col gap-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-foreground">
+                            {d.id}.0 {d.name}
+                          </span>
+                          <span className={`text-xs font-semibold tabular-nums ${d.pct >= 75 ? "text-accent-green" : d.pct >= 60 ? "text-yellow-400" : "text-red-400"}`}>
+                            {d.pct}% ({d.total}q)
+                          </span>
+                        </div>
+                        <div className="flex h-2.5 rounded-full overflow-hidden bg-muted">
+                          {/* Correct segment */}
+                          {d.pct > 0 && (
+                            <motion.div
+                              className="rounded-l-full"
+                              style={{ background: "linear-gradient(90deg, rgba(16,185,129,0.6) 0%, rgba(16,185,129,0.85) 100%)" }}
+                              initial={shouldReduce ? { width: `${d.pct}%` } : { width: "0%" }}
+                              animate={{ width: `${d.pct}%` }}
+                              transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.08 }}
+                            />
+                          )}
+                          {/* Incorrect segment */}
+                          {incorrectPct > 0 && (
+                            <motion.div
+                              className={`${d.pct === 0 ? "rounded-l-full" : ""} rounded-r-full`}
+                              style={{ background: "linear-gradient(90deg, rgba(239,68,68,0.5) 0%, rgba(239,68,68,0.7) 100%)" }}
+                              initial={shouldReduce ? { width: `${incorrectPct}%` } : { width: "0%" }}
+                              animate={{ width: `${incorrectPct}%` }}
+                              transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.08 }}
+                            />
+                          )}
+                        </div>
                       </div>
-                      <div className="flex h-2.5 rounded-full overflow-hidden bg-muted">
-                        {/* Correct segment */}
-                        {d.pct > 0 && (
-                          <motion.div
-                            className="rounded-l-full"
-                            style={{ background: "linear-gradient(90deg, rgba(16,185,129,0.6) 0%, rgba(16,185,129,0.85) 100%)" }}
-                            initial={shouldReduce ? { width: `${d.pct}%` } : { width: "0%" }}
-                            animate={{ width: `${d.pct}%` }}
-                            transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.08 }}
-                          />
-                        )}
-                        {/* Incorrect segment */}
-                        {incorrectPct > 0 && (
-                          <motion.div
-                            className={`${d.pct === 0 ? "rounded-l-full" : ""} rounded-r-full`}
-                            style={{ background: "linear-gradient(90deg, rgba(239,68,68,0.5) 0%, rgba(239,68,68,0.7) 100%)" }}
-                            initial={shouldReduce ? { width: `${incorrectPct}%` } : { width: "0%" }}
-                            animate={{ width: `${incorrectPct}%` }}
-                            transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.08 }}
-                          />
-                        )}
-                      </div>
+                    )
+                  })}
+                </div>
+
+                {/* Legend */}
+                <div className="flex items-center gap-5 pt-1 border-t border-border">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-2.5 rounded-full" style={{ background: "rgba(16,185,129,0.7)" }} />
+                    <span className="text-xs text-muted-foreground">Correct</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-2.5 rounded-full" style={{ background: "rgba(239,68,68,0.6)" }} />
+                    <span className="text-xs text-muted-foreground">Incorrect</span>
+                  </div>
+                </div>
+
+                {/* Free user frosted glass overlay - only shown when not unlocked */}
+                {!session?.isUnlocked && (
+                  <div
+                    className="absolute inset-0 rounded-xl flex flex-col items-center justify-center gap-4"
+                    style={{
+                      backdropFilter: "blur(6px)",
+                      WebkitBackdropFilter: "blur(6px)",
+                      background: "rgba(0,0,0,0.6)",
+                    }}
+                  >
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center"
+                      style={{
+                        background: "rgba(16,185,129,0.12)",
+                        border: "1px solid rgba(16,185,129,0.35)",
+                      }}
+                    >
+                      <Lock className="w-5 h-5 text-accent-green" />
                     </div>
-                  )
-                })}
-              </div>
-              {/* Legend */}
-              <div className="flex items-center gap-5 pt-1 border-t border-border">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-2.5 rounded-full" style={{ background: "rgba(16,185,129,0.7)" }} />
-                  <span className="text-xs text-muted-foreground">Correct</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-2.5 rounded-full" style={{ background: "rgba(239,68,68,0.6)" }} />
-                  <span className="text-xs text-muted-foreground">Incorrect</span>
-                </div>
+                    <div className="text-center px-4 space-y-1.5">
+                      <p className="text-sm font-semibold text-foreground">
+                        Unlock your full domain breakdown
+                      </p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        See exactly which domains to focus on before your exam
+                      </p>
+                    </div>
+                    <button
+                      onClick={() =>
+                        window.open(
+                          "https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00",
+                          "_blank"
+                        )
+                      }
+                      className="bg-accent-green hover:bg-accent-hover text-black font-bold py-2.5 px-6 rounded-xl transition-colors text-sm min-h-[44px] cursor-pointer"
+                    >
+                      Get Full Access - $9.99
+                    </button>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

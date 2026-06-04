@@ -1242,9 +1242,8 @@ function PaywallOverlay({
             ? { duration: 0.2 }
             : { type: "spring", stiffness: 380, damping: 28 }
         }
-        className="fixed inset-0 z-50 overflow-y-auto pointer-events-none"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
       >
-        <div className="flex flex-col items-center justify-center min-h-full py-6 px-4 gap-4 pointer-events-none">
         {/* Card - premium dark with green glow border */}
         <div
           className="w-full max-w-md pointer-events-auto rounded-2xl p-7 flex flex-col items-center text-center gap-5 shadow-2xl"
@@ -1355,72 +1354,6 @@ function PaywallOverlay({
               See my results so far →
             </button>
           </div>
-        </div>
-
-        {/* Domain breakdown teaser - peek behind the curtain */}
-        <div
-          className="w-full max-w-md pointer-events-auto relative overflow-hidden rounded-2xl"
-          style={{
-            background: "linear-gradient(160deg, #0d1a12 0%, #0a1210 100%)",
-            border: "1px solid rgba(16,185,129,0.2)",
-          }}
-        >
-          {/* Placeholder domain bars visible under the blur */}
-          <div className="p-5 pb-6">
-            <p className="text-[11px] font-semibold text-muted-foreground/50 uppercase tracking-wider mb-4">
-              Domain Breakdown
-            </p>
-            {[
-              { label: "General Security Concepts", pct: 58 },
-              { label: "Threats, Vulnerabilities and Mitigations", pct: 72 },
-              { label: "Security Architecture", pct: 85 },
-              { label: "Security Operations", pct: 44 },
-              { label: "Security Program Management", pct: 67 },
-            ].map(({ label, pct }) => (
-              <div key={label} className="mb-3 last:mb-0">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs text-foreground/35 truncate max-w-[75%]">{label}</span>
-                  <span className="text-xs font-semibold text-foreground/35">{pct}%</span>
-                </div>
-                <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.05)" }}>
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${pct}%`,
-                      background: "linear-gradient(90deg, rgba(16,185,129,0.45), rgba(34,197,94,0.45))",
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Frosted glass overlay */}
-          <div
-            className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center gap-3"
-            style={{
-              backdropFilter: "blur(5px)",
-              WebkitBackdropFilter: "blur(5px)",
-              background: "rgba(0,0,0,0.5)",
-            }}
-          >
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center"
-              style={{
-                background: "rgba(16,185,129,0.12)",
-                border: "1px solid rgba(16,185,129,0.35)",
-              }}
-            >
-              <Lock className="w-4 h-4 text-accent-green" />
-            </div>
-            <p className="text-sm font-semibold text-foreground">
-              Unlock your full domain breakdown
-            </p>
-            <p className="text-xs text-muted-foreground">
-              See exactly which domains need work
-            </p>
-          </div>
-        </div>
         </div>
       </motion.div>
     </>
