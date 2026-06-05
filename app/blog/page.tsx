@@ -4,7 +4,7 @@ import { Logo } from "@/components/Logo"
 import { ArrowRight, BookOpen } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Blog | PassPlus: Security+ Study Resources",
+  title: "Blog | PassPlus",
   description:
     "Security+ study guides, exam tips, and practice resources for CompTIA SY0-701 candidates.",
 }
