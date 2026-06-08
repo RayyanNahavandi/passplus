@@ -678,10 +678,10 @@ export default function Home() {
                 <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
                   A
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-medium text-foreground">Alexxx</span>
-                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium">
-                    <CheckCircle className="w-3 h-3" />
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm font-medium text-foreground leading-none">Alexxx</span>
+                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
+                    <CheckCircle className="w-3 h-3 shrink-0" />
                     CompTIA Security+ Certified
                   </span>
                 </div>
@@ -723,10 +723,10 @@ export default function Home() {
                 <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
                   D
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-medium text-foreground">Dame</span>
-                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium">
-                    <CheckCircle className="w-3 h-3" />
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm font-medium text-foreground leading-none">Dame</span>
+                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
+                    <CheckCircle className="w-3 h-3 shrink-0" />
                     CompTIA Security+ Certified
                   </span>
                 </div>
@@ -768,10 +768,13 @@ export default function Home() {
                 <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
                   M
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-medium text-foreground">Community Member</span>
-                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium">
-                    <CheckCircle className="w-3 h-3" />
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-1.5 leading-none">
+                    <span className="text-sm font-medium text-foreground">Community Member</span>
+                    <span className="text-xs text-muted-foreground/50 font-normal">· 802</span>
+                  </div>
+                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
+                    <CheckCircle className="w-3 h-3 shrink-0" />
                     CompTIA Security+ Certified
                   </span>
                 </div>
