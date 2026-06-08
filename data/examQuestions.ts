@@ -17,19 +17,19 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
 {
     id: "EQ001", exam: "Exam",
     question: "A security engineer is reviewing an organization's IAM implementation. Users in the finance department have been granted access to HR systems due to a misconfigured RBAC policy. Which of the following should the engineer implement FIRST to remediate this issue?",
-    options: { A: "Deploy a PAM solution to monitor privileged access", B: "Conduct an access recertification campaign and remove non-compliant permissions", C: "Implement JIT access provisioning for all finance users", D: "Enable MFA for all HR system logins" },
+    options: { A: "Deploy a PAM solution to vault and monitor all privileged access to sensitive HR systems", B: "Conduct an access recertification campaign and remove non-compliant permissions", C: "Implement JIT provisioning with time-limited elevated access for all cross-department requests", D: "Enable MFA for all HR system logins to reduce unauthorized access risk" },
     answer: "B", tier: "free", domain: 1
   },
   {
     id: "EQ002", exam: "Exam",
     question: "An organization is deploying a PKI to issue certificates for internal services. The CA signs a certificate for a web server, but clients report the certificate is untrusted. Which of the following is the MOST likely cause?",
-    options: { A: "The certificate has expired", B: "The CRL is unavailable", C: "The root CA certificate is not in the client trust store", D: "OCSP stapling is not configured on the server" },
+    options: { A: "The leaf certificate's validity period has expired and must be renewed by the CA", B: "The CRL distribution point is unreachable causing the client to reject the certificate", C: "The root CA certificate is not in the client trust store", D: "OCSP stapling is not configured causing certificate status checks to fail at the client" },
     answer: "C", tier: "free", domain: 1
   },
   {
     id: "EQ003", exam: "Exam",
     question: "A CISO requires that all data at rest be protected using AES-256. A database administrator reports that the current DBMS uses 3DES for column-level encryption. Which of the following BEST describes the risk?",
-    options: { A: "3DES is susceptible to rainbow table attacks", B: "3DES has a shorter effective key length and is considered deprecated", C: "3DES does not support authenticated encryption", D: "3DES cannot encrypt data larger than 64 bits" },
+    options: { A: "3DES is susceptible to rainbow table attacks against its 56-bit underlying DES key schedule", B: "3DES has a shorter effective key length and is considered deprecated for new implementations", C: "3DES lacks native support for authenticated encryption modes such as GCM or CCM", D: "3DES operates on a 64-bit block size making it vulnerable to birthday attacks in high-volume scenarios" },
     answer: "B", tier: "free", domain: 1
   },
   {
@@ -83,7 +83,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ012", exam: "Exam",
     question: "An organization implements MAC for its classified document system. A user with SECRET clearance attempts to read a TOP SECRET document. Which of the following will occur?",
-    options: { A: "Access is granted based on need-to-know", B: "Access is denied because the user's clearance does not meet the document classification", C: "Access is granted because SECRET is above the minimum threshold", D: "Access is escalated to the data owner for approval" },
+    options: { A: "Access is granted based solely on verified need-to-know regardless of the clearance level mismatch", B: "Access is denied because the user's clearance does not meet the data classification label", C: "Access is granted because SECRET clearance exceeds the minimum baseline threshold for the system", D: "Access is escalated to the data owner who can grant temporary override approval" },
     answer: "B", tier: "locked", domain: 1
   },
   {
@@ -113,13 +113,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ017", exam: "Exam",
     question: "A penetration tester discovers that a web application uses JWT for session management but does not validate the signature algorithm. The tester changes the algorithm to none and forges a token. Which vulnerability is being exploited?",
-    options: { A: "CSRF", B: "Algorithm confusion attack on JWT", C: "Session fixation", D: "OIDC token replay" },
+    options: { A: "CSRF attack forging authenticated requests using the victim's active browser session", B: "Algorithm confusion attack on JWT", C: "Session fixation attack forcing a known session identifier before user authentication", D: "OIDC token replay attack reusing a stolen ID token to impersonate the original user" },
     answer: "B", tier: "locked", domain: 1
   },
   {
     id: "EQ018", exam: "Exam",
     question: "An organization is deploying FIDO2 authentication for all remote access. Which of the following BEST describes the cryptographic mechanism used?",
-    options: { A: "Symmetric key exchange using ECDH", B: "Asymmetric key pair where the private key never leaves the authenticator", C: "TOTP generated using HMAC-SHA1", D: "PKI certificates issued by an internal CA" },
+    options: { A: "Symmetric key exchange using ECDH to derive a shared session secret between client and server", B: "Asymmetric key pair where the private key never leaves the appliance", C: "TOTP generated using HMAC-SHA1 with a shared secret synchronized to the authentication server", D: "PKI certificates issued by an internal CA and stored in the device's secure element" },
     answer: "B", tier: "locked", domain: 1
   },
   {
@@ -131,7 +131,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ020", exam: "Exam",
     question: "A user reports that after clicking a link in an email, they were redirected to a site identical to their company's SSO portal and entered credentials before noticing the URL was different. Which attack BEST describes this?",
-    options: { A: "MITM using SSL stripping", B: "Adversary-in-the-middle phishing with credential harvesting", C: "DNS cache poisoning redirecting to a rogue IdP", D: "CSRF exploiting the SSO session cookie" },
+    options: { A: "MITM attack using SSL stripping to downgrade the connection and intercept plaintext credentials", B: "Adversary-in-the-middle phishing with credential harvesting", C: "DNS cache poisoning redirecting the SSO portal hostname to an attacker-controlled IP address", D: "CSRF attack exploiting the SSO session cookie to perform unauthorized cross-origin requests" },
     answer: "B", tier: "locked", domain: 1
   },
   {
@@ -161,7 +161,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ025", exam: "Exam",
     question: "An organization uses ABAC for its cloud resource access policy. A contractor is denied access to a storage bucket despite having the correct role. Which of the following should be reviewed FIRST?",
-    options: { A: "The contractor's RBAC group membership", B: "The environmental and resource tag conditions in the ABAC policy", C: "The contractor's MFA registration status", D: "The storage bucket's ACL configuration" },
+    options: { A: "The contractor's RBAC group membership to verify they are assigned the correct role for this resource", B: "The environmental and resource tag conditions in the ABAC policy do not match the request context", C: "The contractor's MFA registration status which may be blocking policy evaluation for their session", D: "The storage bucket's ACL configuration which could be overriding the ABAC policy decision" },
     answer: "B", tier: "locked", domain: 1
   },
   {
@@ -191,13 +191,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ030", exam: "Exam",
     question: "A user's account is locked after five failed login attempts. An attacker exploits this by systematically locking out all user accounts. Which attack does this BEST describe?",
-    options: { A: "Credential stuffing", B: "Account enumeration", C: "Denial of service via account lockout", D: "Password spraying" },
+    options: { A: "Credential stuffing using a list of previously breached username and password pairs", B: "Account enumeration using timing differences to identify valid usernames in the directory", C: "Denial of service via account lockout", D: "Password spraying attempting a single common password against many accounts to avoid lockout" },
     answer: "C", tier: "locked", domain: 1
   },
   {
     id: "EQ031", exam: "Exam",
     question: "A security architect designs a system where the private key is split into three parts and any two parts are required to reconstruct it. Which cryptographic concept does this implement?",
-    options: { A: "Key escrow", B: "Shamir's Secret Sharing", C: "Dual control", D: "M-of-N key recovery" },
+    options: { A: "Key escrow storing a copy of the private key with a trusted third-party custodian for recovery", B: "Shamir's Secret Sharing", C: "Dual control requiring two administrators to simultaneously present their key shares for access", D: "M-of-N key recovery distributing shares across N custodians and requiring any M to reconstruct" },
     answer: "B", tier: "locked", domain: 1
   },
   {
@@ -209,13 +209,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ033", exam: "Exam",
     question: "A security team implements PIM for all privileged accounts. Administrators must request elevated access and provide justification before any privileged operations. Which security principle does this MOST directly support?",
-    options: { A: "Defense in depth", B: "Least privilege with just-in-time access", C: "Separation of duties", D: "Zero trust network access" },
+    options: { A: "Defense in depth layering multiple independent security controls to reduce overall risk exposure", B: "Least privilege with just-in-time access", C: "Separation of duties ensuring no single administrator can complete a sensitive task independently", D: "Zero trust network access verifying identity and device health before granting any resource access" },
     answer: "B", tier: "locked", domain: 1
   },
   {
     id: "EQ034", exam: "Exam",
     question: "An organization implements certificate transparency logs. A security analyst receives an alert about an unauthorized certificate issued for the company's domain. Which of the following should the analyst do FIRST?",
-    options: { A: "Revoke all internal CA certificates", B: "Contact the issuing CA to revoke the unauthorized certificate and investigate the misissuance", C: "Implement CAA DNS records to restrict authorized CAs", D: "Enable HSTS preloading for all company domains" },
+    options: { A: "Revoke all internal CA-issued certificates and reissue them to ensure no other unauthorized certs exist", B: "Contact the issuing CA to revoke the unauthorized certificate and submit a CAA record update", C: "Implement CAA DNS records to restrict which CAs are authorized to issue certificates for the domain", D: "Enable HSTS preloading for all company domains to enforce encrypted connections and prevent stripping" },
     answer: "B", tier: "locked", domain: 1
   },
   {
@@ -263,7 +263,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ042", exam: "Exam",
     question: "A security engineer discovers that a legacy application stores session tokens in URL parameters. Which of the following attacks is this MOST susceptible to?",
-    options: { A: "CSRF using forged cross-origin requests", B: "Session token exposure via browser history, referrer headers, and server logs", C: "XSS injecting malicious scripts to steal cookies", D: "Clickjacking embedding the application in a malicious iframe" },
+    options: { A: "CSRF using forged cross-origin requests that reuse the victim's authenticated session state", B: "Session token exposure via browser history, referrer headers, and server logs", C: "XSS injecting malicious scripts to extract tokens from the DOM or local storage", D: "Clickjacking embedding the application in an invisible iframe to capture user interactions" },
     answer: "B", tier: "locked", domain: 1
   },
   {
@@ -275,7 +275,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ044", exam: "Exam",
     question: "A security team implements SCIM to automate user provisioning across multiple SaaS applications. When an employee is terminated in the HR system, their accounts are automatically disabled. Which security principle does this MOST directly support?",
-    options: { A: "Least privilege", B: "Timely account deprovisioning reducing orphaned account risk", C: "Separation of duties", D: "Defense in depth" },
+    options: { A: "Least privilege ensuring users receive only the minimum permissions required for their job function", B: "Timely account deprovisioning reducing orphaned account risk and attack surface", C: "Separation of duties preventing a single individual from controlling an entire sensitive process", D: "Defense in depth layering multiple controls so that no single failure leads to a complete compromise" },
     answer: "B", tier: "locked", domain: 1
   },
   {
@@ -305,7 +305,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ049", exam: "Exam",
     question: "A security engineer is implementing data tokenization for a payment processing system. Which of the following BEST describes how tokenization differs from encryption?",
-    options: { A: "Tokenization is reversible while encryption is not", B: "Tokenization replaces sensitive data with a non-sensitive surrogate that has no mathematical relationship to the original", C: "Tokenization uses symmetric keys while encryption uses asymmetric keys", D: "Tokenization provides integrity protection while encryption only provides confidentiality" },
+    options: { A: "Tokenization is reversible through a vault lookup while encryption requires the original key for decryption", B: "Tokenization replaces sensitive data with a non-sensitive substitute that has no exploitable value", C: "Tokenization uses symmetric vault-based substitution while encryption relies on a mathematical key operation", D: "Tokenization protects data integrity by replacing values with format-preserving surrogates in the database" },
     answer: "B", tier: "locked", domain: 1
   },
   {
@@ -341,7 +341,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ055", exam: "Exam",
     question: "A security team implements a BYOK solution for cloud storage encryption. The organization generates keys using an on-premises HSM and imports them to the cloud KMS. Which of the following is the PRIMARY limitation?",
-    options: { A: "The cloud provider can access the plaintext keys during import", B: "BYOK keys cannot be rotated without re-encrypting all data", C: "Once imported, the key material may be accessible to the cloud provider's infrastructure", D: "BYOK requires FIPS 140-2 Level 4 certified HSMs" },
+    options: { A: "The cloud provider can inspect plaintext key material during the secure transfer and wrapping process", B: "BYOK keys cannot be automatically rotated without re-encrypting all data protected by the original key", C: "Once imported, the key material may be accessible to the cloud provider undermining confidentiality", D: "BYOK mandates FIPS 140-2 Level 4 certified HSMs for key generation which few organizations can provide" },
     answer: "C", tier: "locked", domain: 1
   },
   {
@@ -371,13 +371,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
 {
     id: "EQ060", exam: "Exam",
     question: "A threat intelligence analyst receives an IOC report indicating that a nation-state APT group is using a C2 framework with beaconing intervals of 300 seconds. Which detection strategy would MOST effectively identify this TTP?",
-    options: { A: "Signature-based IDS rules matching known C2 domains", B: "Network traffic analysis detecting periodic outbound connections at regular intervals", C: "EDR behavioral rules flagging process injection techniques", D: "DNS sinkholing of known C2 infrastructure" },
+    options: { A: "Signature-based IDS rules matching known C2 domain names and IP addresses from threat feeds", B: "Network traffic analysis detecting periodic outbound connections to a C2 server", C: "EDR behavioral rules flagging process injection and hollow process creation techniques", D: "DNS sinkholing of known C2 infrastructure redirecting malware callbacks to an analyst-controlled server" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ061", exam: "Exam",
     question: "A SOC analyst is investigating an alert. The SIEM shows a PowerShell process spawned by winword.exe, followed by network connections to an external IP. Which MITRE ATT&CK tactic does this MOST likely represent?",
-    options: { A: "Initial access via spear phishing attachment", B: "Execution via macro-enabled document launching a PowerShell payload", C: "Persistence via scheduled task creation", D: "Lateral movement via pass-the-hash" },
+    options: { A: "Initial access via spear phishing delivering a malicious attachment to a targeted user", B: "Execution via macro-enabled document launching a PowerShell payload", C: "Persistence via scheduled task creation registering a malicious payload at system startup", D: "Lateral movement via pass-the-hash using captured NTLM credentials to authenticate remotely" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -389,7 +389,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ063", exam: "Exam",
     question: "A threat hunter discovers that an attacker is using DNS over HTTPS to bypass the organization's DNS filtering controls. Which of the following BEST mitigates this technique?",
-    options: { A: "Block all outbound DNS traffic on port 53", B: "Implement SSL/TLS inspection and block DoH to unauthorized resolvers", C: "Deploy DNSSEC to validate DNS responses", D: "Configure the SIEM to alert on high DNS query volumes" },
+    options: { A: "Block all outbound DNS traffic on port 53 using perimeter firewall egress rules", B: "Implement SSL/TLS inspection and block DoH to unauthorized resolvers", C: "Deploy DNSSEC to cryptographically validate DNS responses and detect tampering", D: "Configure the SIEM to correlate and alert on abnormally high DNS query volumes per host" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -413,7 +413,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ067", exam: "Exam",
     question: "An organization discovers that an attacker maintained persistence by creating a scheduled task running a base64-encoded PowerShell command. Which detection control would have MOST likely identified this?",
-    options: { A: "FIM monitoring for changes to the Windows registry", B: "SIEM correlation rule alerting on scheduled task creation with encoded commands", C: "EDR blocking all base64-encoded script execution", D: "Application whitelisting preventing unsigned scripts" },
+    options: { A: "FIM monitoring for unauthorized changes to critical Windows registry keys and values", B: "SIEM correlation rule alerting on scheduled task creation with encoded commands", C: "EDR policy blocking execution of all scripts containing base64-encoded command strings", D: "Application whitelisting policy preventing execution of any unsigned PowerShell scripts" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -425,7 +425,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ069", exam: "Exam",
     question: "A threat intelligence report indicates that a ransomware group targets organizations by exploiting unpatched VPN appliances to gain initial access. Which of the following is the MOST effective preventive control?",
-    options: { A: "Deploy MFA on all VPN connections", B: "Implement a patch management program with priority patching for internet-facing systems", C: "Segment the network to limit lateral movement after VPN compromise", D: "Enable EDR on VPN concentrators to detect exploitation attempts" },
+    options: { A: "Deploy MFA on all VPN connections to prevent unauthorized remote access using stolen credentials", B: "Implement a patch management program with priority patching for internet-facing systems", C: "Segment the network using VLANs and ACLs to contain the blast radius after a VPN compromise", D: "Enable EDR on VPN concentrators and authentication servers to detect active exploitation attempts" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -467,13 +467,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ076", exam: "Exam",
     question: "A security analyst discovers that an attacker used Kerberoasting to extract service account credential hashes. Which of the following BEST mitigates this attack?",
-    options: { A: "Disable SPN registration for all service accounts", B: "Use managed service accounts with long randomly generated passwords and enable AES encryption for Kerberos", C: "Implement PAM to vault all service account credentials", D: "Enable Kerberos armoring to protect TGT requests" },
+    options: { A: "Disable SPN registration for all service accounts removing them as Kerberoasting targets", B: "Use managed service accounts with long randomly generated passwords and enable AES encryption for Kerberos", C: "Implement a PAM solution to vault service account credentials and enable session recording", D: "Enable Kerberos armoring via FAST to protect TGT requests from offline brute force attacks" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ077", exam: "Exam",
     question: "A vulnerability scanner returns a finding classified as a false positive. The security team verifies that the application is not susceptible to the reported vulnerability. Which of the following BEST describes the appropriate action?",
-    options: { A: "Accept the risk and document it in the risk register", B: "Document the exception, mark as false positive, and tune the scanner to reduce recurrence", C: "Suppress all future scans of this asset", D: "Escalate to the vendor for scanner remediation" },
+    options: { A: "Accept the risk, document it in the risk register, and schedule a follow-up review", B: "Document the exception, mark as false positive, and tune the scanner to reduce recurrence", C: "Suppress all future scans of this specific asset to eliminate recurring false positive alerts", D: "Escalate to the scanner vendor with evidence requesting an updated plugin or signature fix" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -485,7 +485,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ079", exam: "Exam",
     question: "A SOC analyst is triaging an alert where a process injected code into lsass.exe and then spawned a new process with SYSTEM privileges. Which MITRE ATT&CK technique does this MOST represent?",
-    options: { A: "T1059 - Command and Scripting Interpreter", B: "T1055 - Process Injection combined with T1068 - Exploitation for Privilege Escalation", C: "T1078 - Valid Accounts with stolen credentials", D: "T1003 - OS Credential Dumping" },
+    options: { A: "T1059 - Command and Scripting Interpreter for executing malicious commands via the shell", B: "T1055 - Process Injection combined with T1068 - Exploitation for Privilege Escalation", C: "T1078 - Valid Accounts for maintaining persistence using legitimately obtained credentials", D: "T1003 - OS Credential Dumping to harvest credentials from LSASS memory" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -515,7 +515,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ084", exam: "Exam",
     question: "An organization conducts a credentialed vulnerability scan and discovers a critical CVSS 9.8 vulnerability on an internal database server with a public PoC exploit. Which factor MOST increases the urgency of remediation?",
-    options: { A: "The high CVSS base score", B: "The availability of a public PoC exploit increasing the likelihood of exploitation", C: "The internal network location reducing external exposure", D: "The database server's role in processing PII" },
+    options: { A: "The high CVSS base score indicating critical severity without contextual risk adjustment", B: "The availability of a public PoC exploit increasing the likelihood of exploitation", C: "The internal network location that reduces direct exposure from the public internet", D: "The database server's role in processing PII increasing data breach regulatory impact" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -527,19 +527,19 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ086", exam: "Exam",
     question: "A threat analyst is reviewing a malware sample that uses process hollowing to inject malicious code into a legitimate Windows process. Which EDR capability would MOST effectively detect this technique?",
-    options: { A: "Signature-based detection matching known malware hashes", B: "Behavioral detection monitoring for memory allocation in legitimate processes followed by code execution", C: "Network-based detection blocking C2 communication from the injected process", D: "Application whitelisting preventing the original process from running" },
+    options: { A: "Signature-based detection matching known malware hashes in file-based threat intelligence databases", B: "Behavioral detection monitoring for memory allocation in legitimate processes followed by code execution", C: "Network-based detection and blocking of C2 channel communications originating from the injected process", D: "Application whitelisting policies that prevent the host process from spawning unexpected child processes" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ087", exam: "Exam",
     question: "An organization is assessing the risk of a vulnerability with a CVSS base score of 7.5 but no known public exploits affecting only internally accessible systems. Which of the following BEST describes the appropriate response?",
-    options: { A: "Treat as critical and patch immediately based on CVSS score", B: "Use contextual risk factors to assign a lower effective risk rating and schedule remediation appropriately", C: "Accept the risk since there are no known exploits", D: "Transfer the risk by purchasing cyber insurance" },
+    options: { A: "Treat as critical and initiate emergency patching immediately based solely on the CVSS base score", B: "Use contextual risk factors to assign a lower effective risk rating and schedule remediation appropriately", C: "Accept the risk indefinitely since no known public exploits exist for this vulnerability", D: "Transfer the residual financial risk by purchasing cyber insurance covering ransomware events" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ088", exam: "Exam",
     question: "A security analyst discovers that an attacker used a golden ticket attack to forge Kerberos TGTs. Which of the following is the MOST effective remediation?",
-    options: { A: "Reset all user passwords immediately", B: "Reset the KRBTGT account password twice to invalidate all existing tickets", C: "Rebuild the domain controller from a clean backup", D: "Implement Kerberos armoring to validate ticket integrity" },
+    options: { A: "Reset all user passwords to force reauthentication and prevent use of harvested credentials", B: "Reset the KRBTGT account password twice to invalidate all existing tickets", C: "Rebuild the domain controller from a verified clean backup taken before the compromise", D: "Implement Kerberos armoring via FAST to validate ticket integrity and prevent forging" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -551,13 +551,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ090", exam: "Exam",
     question: "A threat analyst observes that an advanced threat actor uses domain fronting to route C2 traffic through a legitimate CDN. Which of the following BEST detects this technique?",
-    options: { A: "Block all traffic to known CDN IP ranges", B: "Implement TLS inspection and compare the SNI header with the HTTP Host header", C: "Deploy a DNS filtering solution to block CDN domains", D: "Enable NetFlow analysis to detect high-volume CDN traffic" },
+    options: { A: "Block all traffic to known CDN IP ranges using threat intelligence-based perimeter firewall rules", B: "Implement TLS inspection and compare the SNI header with the HTTP Host header", C: "Deploy a DNS filtering solution categorizing and blocking known CDN provider domains", D: "Enable NetFlow analysis to identify and flag endpoints generating high-volume CDN traffic" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ091", exam: "Exam",
     question: "A security team identifies that an attacker could manipulate the redirect_uri parameter in an OAuth flow to steal authorization codes. Which mitigation BEST addresses this threat?",
-    options: { A: "Use state parameters to prevent CSRF in OAuth flows", B: "Implement strict redirect_uri validation and whitelist approved URIs in the authorization server", C: "Require PKCE for all OAuth authorization code flows", D: "Use short-lived authorization codes with a 60-second expiration" },
+    options: { A: "Use cryptographically random state parameters to prevent CSRF attacks in OAuth authorization flows", B: "Implement strict redirect_uri validation and whitelist approved URIs in the authorization server", C: "Require PKCE for all public OAuth clients using the authorization code flow", D: "Use short-lived authorization codes with a strict 60-second expiration and single-use enforcement" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -581,13 +581,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ095", exam: "Exam",
     question: "A penetration tester discovers that the organization uses an outdated version of OpenSSL vulnerable to Heartbleed. Which of the following is the PRIMARY risk associated with this vulnerability?",
-    options: { A: "An attacker can decrypt all past TLS sessions using the private key", B: "An attacker can read arbitrary memory from the server potentially exposing private keys and session data", C: "An attacker can perform a downgrade attack to force weak cipher negotiation", D: "An attacker can inject malicious data into TLS handshakes" },
+    options: { A: "An attacker can decrypt all previously recorded TLS sessions retroactively using the stolen private key", B: "An attacker can read arbitrary memory from the server potentially exposing private keys and session data", C: "An attacker can perform a protocol downgrade attack forcing negotiation of a weak deprecated cipher", D: "An attacker can inject forged records into active TLS sessions to tamper with encrypted content" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ096", exam: "Exam",
     question: "An organization implements a threat intelligence platform ingesting STIX/TAXII feeds. A new IOC is received indicating a known APT group is targeting the organization's industry. Which action should be taken FIRST?",
-    options: { A: "Share the IOC with peer organizations via the ISAC", B: "Correlate the IOC against current SIEM logs to determine if the organization is already compromised", C: "Block the IOC at the perimeter firewall and email gateway", D: "Initiate a threat hunt focused on the APT group's known TTPs" },
+    options: { A: "Share the IOC with peer organizations via the ISAC to enable broader community detection", B: "Correlate the IOC against current SIEM logs to determine if the organization is already compromised", C: "Block the IOC at the perimeter firewall and email gateway to prevent future delivery attempts", D: "Initiate a proactive threat hunt using the APT group's full MITRE ATT&CK TTP profile" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -611,7 +611,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ100", exam: "Exam",
     question: "A security team discovers that an attacker exfiltrated 50GB of data over three months without triggering any alerts. Which of the following was MOST likely absent from the security architecture?",
-    options: { A: "A SIEM with real-time log correlation", B: "DLP with baseline behavioral analysis detecting anomalous data transfers", C: "A WAF inspecting outbound HTTP traffic", D: "EDR monitoring process execution on endpoints" },
+    options: { A: "A SIEM with real-time log correlation rules tuned for insider threat and data staging indicators", B: "DLP with baseline behavioral analysis detecting anomalous data transfers", C: "A WAF configured to inspect and block suspicious outbound HTTP and HTTPS traffic patterns", D: "EDR platform monitoring process execution chains and file access events on user endpoints" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -623,7 +623,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ102", exam: "Exam",
     question: "A penetration tester performs a man-in-the-browser attack by injecting malicious JavaScript into a banking application. The script modifies transaction details after the user submits but before transmission. Which of the following BEST mitigates this attack?",
-    options: { A: "Implement HSTS to prevent SSL stripping", B: "Use transaction verification with out-of-band confirmation sent to a registered mobile device", C: "Deploy a WAF to filter malicious JavaScript injection", D: "Implement CSP headers to prevent inline script execution" },
+    options: { A: "Implement HSTS to prevent SSL stripping attacks on browser sessions to the banking application", B: "Use transaction verification with out-of-band confirmation sent to a registered mobile device", C: "Deploy a WAF with rules to detect and block malicious JavaScript injection attempts", D: "Implement Content Security Policy headers to prevent execution of injected inline scripts" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -647,43 +647,43 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ106", exam: "Exam",
     question: "A vulnerability scanner discovers that a legacy PLC in industrial control systems is running an unpatched OS with several critical CVEs. The vendor no longer supports the system. Which of the following is the MOST appropriate risk treatment?",
-    options: { A: "Accept the risk since the PLC is on an isolated OT network", B: "Implement network segmentation, strict ACLs, and compensating controls while planning for hardware replacement", C: "Virtualize the PLC OS to enable security patching", D: "Replace the PLC immediately regardless of operational impact" },
+    options: { A: "Accept the risk since the PLC operates on an isolated OT network with no IT connectivity", B: "Implement network segmentation, strict ACLs, and compensating controls while planning for hardware replacement", C: "Virtualize the PLC operating environment to enable patching without replacing physical hardware", D: "Immediately replace the PLC hardware regardless of operational cost or production disruption" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ107", exam: "Exam",
     question: "A threat analyst discovers that malware is using process doppelganging to evade detection. Which of the following BEST describes this technique?",
-    options: { A: "Injecting malicious code into a legitimate process's memory space", B: "Creating a malicious process image using NTFS transactions to replace a legitimate executable without writing to disk", C: "Hollowing out a legitimate process and replacing its code with malicious content", D: "Using DLL side-loading to execute malicious code through a trusted application" },
+    options: { A: "Injecting shellcode directly into a legitimate process's allocated memory via WriteProcessMemory", B: "Creating a malicious process image using NTFS transactions to replace a legitimate executable without writing to disk", C: "Process hollowing by unmapping a legitimate process image and injecting malicious code into the cleared space", D: "DLL side-loading by placing a malicious library in the search path of a trusted signed application" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ108", exam: "Exam",
     question: "A SOC analyst receives an alert indicating that a user downloaded 10,000 files from a SharePoint site in 30 minutes. The user is in sales and has never accessed this site before. Which of the following BEST describes this behavior?",
-    options: { A: "Ransomware staging files for encryption", B: "Potential insider threat or compromised account performing data exfiltration", C: "Legitimate bulk download by a new employee onboarding", D: "Automated backup process running under user credentials" },
+    options: { A: "Ransomware staging large files prior to encryption and ransom demand deployment", B: "Potential insider threat or compromised account performing data exfiltration", C: "Legitimate bulk file download by a recently onboarded employee accessing shared resources", D: "An authorized automated backup process executing under a standard user account credential" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ109", exam: "Exam",
     question: "A penetration tester uses Responder to capture NTLMv2 hashes and then uses hashcat to crack a hash offline. Which of the following would MOST effectively prevent the cracked hash from being usable for further access?",
-    options: { A: "Enforce account lockout after five failed attempts", B: "Implement network segmentation to limit Responder's visibility", C: "Require LDAP signing to prevent downgrade attacks", D: "Enforce long complex passwords and disable NTLM authentication in favor of Kerberos" },
+    options: { A: "Enforce progressive account lockout policies to throttle credential stuffing and brute force attempts", B: "Implement network segmentation to limit Responder's broadcast and multicast listener visibility", C: "Require mandatory LDAP channel binding and signing to prevent relay and downgrade attacks", D: "Enforce long complex passwords and disable NTLM authentication in favor of Kerberos" },
     answer: "D", tier: "locked", domain: 2
   },
   {
     id: "EQ110", exam: "Exam",
     question: "A security analyst reviews threat intelligence and identifies that a known APT group uses spear phishing with weaponized PDF attachments exploiting a reader vulnerability. Which of the following is the MOST effective defensive control?",
-    options: { A: "Block all PDF attachments at the email gateway", B: "Deploy sandboxing to detonate attachments in an isolated environment before delivery", C: "Implement user training to identify malicious attachments", D: "Enable macros to be disabled by default in document readers" },
+    options: { A: "Block all PDF and Office attachments at the email gateway as a broad preventive measure", B: "Deploy sandboxing to detonate attachments in an isolated environment before delivery", C: "Implement targeted user training to recognize and report suspicious attachment-based phishing", D: "Configure document readers to disable macros by default for all untrusted content sources" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ111", exam: "Exam",
     question: "An organization's pen test report identifies an IDOR vulnerability in an API endpoint where an authenticated user can access other users' records by incrementing an ID parameter. Which of the following is the MOST effective remediation?",
-    options: { A: "Rate limit the API endpoint to prevent enumeration", B: "Implement server-side authorization checks verifying that the authenticated user owns the requested resource", C: "Use UUIDs instead of sequential integers for resource IDs", D: "Require additional authentication for sensitive API endpoints" },
+    options: { A: "Rate limit the API endpoint to slow enumeration and detect high-frequency automated requests", B: "Implement server-side authorization checks verifying that the authenticated user owns the requested resource", C: "Replace sequential integer IDs with non-guessable UUIDs to prevent direct object enumeration", D: "Require step-up authentication for sensitive operations to verify user intent before access" },
     answer: "B", tier: "locked", domain: 2
   },
   {
     id: "EQ112", exam: "Exam",
     question: "A threat analyst discovers that an attacker is using a RAT that communicates exclusively over port 443 using legitimate HTTPS traffic patterns. Which of the following BEST detects this C2 channel?",
-    options: { A: "Block all outbound port 443 traffic except to whitelisted destinations", B: "Implement TLS inspection combined with behavioral analysis detecting anomalous certificate characteristics and traffic patterns", C: "Deploy DNS filtering to block known C2 domains", D: "Enable IPS signatures for known RAT communication patterns" },
+    options: { A: "Block all outbound TLS traffic on port 443 except to explicitly whitelisted destination IP ranges", B: "Implement TLS inspection combined with behavioral analysis detecting anomalous certificate characteristics and traffic patterns", C: "Deploy DNS filtering to block resolution of known C2 domains using threat intelligence feeds", D: "Enable IPS signatures matched to known RAT beacon intervals and communication protocol fingerprints" },
     answer: "B", tier: "locked", domain: 2
   },
   {
@@ -695,7 +695,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
 {
     id: "EQ114", exam: "Exam",
     question: "A cloud architect is designing a multi-tenant SaaS application. The CISO requires that each tenant's data be cryptographically isolated. Which of the following BEST achieves this requirement?",
-    options: { A: "Separate database schemas with row-level security", B: "Tenant-specific encryption keys managed in a KMS with separate key hierarchies per tenant", C: "VPC peering between tenant environments", D: "Network segmentation using separate subnets per tenant" },
+    options: { A: "Shared database schemas with row-level security policies restricting each tenant to their data", B: "Tenant-specific encryption keys managed in a KMS with separate key hierarchies per tenant", C: "VPC peering configured between each tenant environment for controlled cross-tenant communication", D: "Network segmentation using dedicated subnets per tenant enforced by security group policies" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -725,19 +725,19 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ119", exam: "Exam",
     question: "An organization deploys a WAF in front of its web applications. A security engineer observes that certain legitimate API requests are being blocked. Which of the following BEST describes the appropriate action?",
-    options: { A: "Disable the WAF rule causing false positives to restore service", B: "Create a custom exception for the specific legitimate traffic pattern while maintaining protection", C: "Switch the WAF to detection mode to allow all traffic", D: "Whitelist the source IP addresses of the legitimate API consumers" },
+    options: { A: "Disable the specific WAF rule triggering false positives to fully restore service to all users", B: "Create a custom exception for the specific legitimate traffic pattern while maintaining protection", C: "Switch the entire WAF to passive detection mode allowing all traffic while alerts are investigated", D: "Whitelist the source IP addresses of all known legitimate API consumers bypassing WAF inspection" },
     answer: "B", tier: "locked", domain: 3
   },
   {
     id: "EQ120", exam: "Exam",
     question: "A cloud security engineer discovers that EC2 instances are using instance metadata service v1 which does not require session authentication. Which of the following attacks does this enable?",
-    options: { A: "Direct access to the instance's root volume via the hypervisor", B: "SSRF attacks allowing unauthorized retrieval of IAM role credentials from the metadata service", C: "Lateral movement between instances in the same VPC", D: "Privilege escalation via the AWS Systems Manager agent" },
+    options: { A: "Hypervisor-level access allowing direct reads of the instance's root EBS volume", B: "SSRF attacks allowing unauthorized retrieval of IAM role credentials from the metadata service", C: "Lateral movement to other instances in the same VPC via crafted internal SSRF requests", D: "Privilege escalation by exploiting the AWS Systems Manager agent's assumed IAM role" },
     answer: "B", tier: "locked", domain: 3
   },
   {
     id: "EQ121", exam: "Exam",
     question: "An organization wants to implement infrastructure as code for all cloud deployments. Which of the following security benefits does IaC PRIMARILY provide?",
-    options: { A: "Automated vulnerability scanning of all deployed resources", B: "Consistent version-controlled and auditable infrastructure configurations reducing configuration drift", C: "Real-time monitoring of infrastructure changes via the SIEM", D: "Automated compliance reporting against CIS benchmarks" },
+    options: { A: "Automated vulnerability scanning continuously detecting unpatched software across all deployed cloud resources", B: "Consistent version-controlled and auditable infrastructure configurations reducing configuration drift", C: "Real-time alerting on unauthorized infrastructure changes correlated through the SIEM", D: "Automated compliance reporting that maps deployed configurations against CIS benchmark requirements" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -761,13 +761,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ125", exam: "Exam",
     question: "An organization implements a cloud access security broker to manage SaaS application usage. Which of the following capabilities does a CASB provide that a traditional proxy does not?",
-    options: { A: "URL filtering for web browsing", B: "Visibility into shadow IT usage and enforcement of DLP policies across sanctioned SaaS applications", C: "SSL/TLS inspection of encrypted web traffic", D: "Antivirus scanning of downloaded files" },
+    options: { A: "URL filtering to block access to uncategorized or prohibited web browsing destinations", B: "Visibility into shadow IT usage and enforcement of DLP policies across sanctioned SaaS applications", C: "SSL/TLS traffic inspection to decrypt and analyze encrypted web sessions for threats", D: "Real-time antivirus scanning of all files downloaded from the internet to endpoints" },
     answer: "B", tier: "locked", domain: 3
   },
   {
     id: "EQ126", exam: "Exam",
     question: "A security architect is designing a network architecture for a manufacturing plant with OT systems. Which of the following BEST describes the Purdue model's purpose in this context?",
-    options: { A: "Defining patch management procedures for ICS components", B: "Providing a hierarchical network segmentation model separating OT and IT systems by function and trust level", C: "Establishing authentication requirements for SCADA system access", D: "Specifying encryption standards for industrial protocol communications" },
+    options: { A: "Defining patch management procedures specific to ICS components and legacy SCADA systems", B: "Providing a hierarchical network segmentation model separating OT and IT systems by function and trust level", C: "Establishing role-based authentication and authorization requirements for all SCADA system access", D: "Specifying encryption and integrity standards for Modbus, DNP3, and other industrial protocol communications" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -779,13 +779,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ128", exam: "Exam",
     question: "A cloud security engineer is designing a landing zone for a multi-account AWS environment. Which of the following BEST ensures consistent security controls across all accounts?",
-    options: { A: "Manual security configuration reviews for each new account", B: "Centralized policy enforcement using AWS Organizations SCPs and a security account with delegated admin", C: "Account-level IAM policies replicating the organization's security standards", D: "VPC sharing allowing security controls to be applied centrally" },
+    options: { A: "Manual security configuration reviews conducted by the security team for each newly provisioned account", B: "Centralized policy enforcement using AWS Organizations SCPs and a security account with delegated admin", C: "Duplicating IAM policies across each member account to replicate the organization's security standards", D: "VPC sharing topology enabling centrally managed security groups across member accounts" },
     answer: "B", tier: "locked", domain: 3
   },
   {
     id: "EQ129", exam: "Exam",
     question: "A security architect is evaluating SD-WAN for branch office connectivity. Which of the following security considerations is MOST important when deploying SD-WAN?",
-    options: { A: "Ensuring SD-WAN devices support all required routing protocols", B: "Integrating security functions such as NGFW, IPS, and secure web gateway into the SD-WAN solution", C: "Maximizing bandwidth utilization across all WAN links", D: "Deploying SD-WAN controllers in a highly available configuration" },
+    options: { A: "Ensuring SD-WAN appliances support all required dynamic routing protocols including BGP and OSPF", B: "Integrating security functions such as NGFW, IPS, and secure web gateway into the SD-WAN solution", C: "Maximizing bandwidth utilization across all WAN links using application-aware load balancing", D: "Deploying SD-WAN controllers in an active-active highly available configuration to prevent outages" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -827,7 +827,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ136", exam: "Exam",
     question: "An organization deploys containers in production without restricting container capabilities. A security audit identifies that containers are running as root and have access to the host network namespace. Which of the following BEST mitigates these risks?",
-    options: { A: "Implement network policies to restrict inter-container communication", B: "Enforce pod security standards requiring non-root execution and dropping unnecessary Linux capabilities", C: "Deploy a WAF to inspect container API traffic", D: "Enable container image scanning to detect known vulnerabilities" },
+    options: { A: "Implement Kubernetes network policies to explicitly restrict all inter-container and inter-namespace communication", B: "Enforce pod security standards requiring non-root execution and dropping unnecessary Linux capabilities", C: "Deploy a WAF in front of the container ingress to inspect and filter application layer API traffic", D: "Enable automated container image scanning in the CI/CD pipeline to detect known CVEs before deployment" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -845,13 +845,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ139", exam: "Exam",
     question: "An organization is evaluating IDS deployment options. The security team wants to detect attacks without disrupting legitimate traffic. Which deployment mode BEST meets this requirement?",
-    options: { A: "Inline IPS mode blocking detected attacks in real time", B: "Passive monitoring via SPAN port analyzing traffic copies without impacting network flow", C: "Transparent bridge mode with automatic threat blocking", D: "Host-based IDS deployed on all servers" },
+    options: { A: "Inline IPS deployment actively blocking detected attack traffic in real time within the flow path", B: "Passive monitoring via SPAN port analyzing traffic copies without impacting network flow", C: "Transparent bridge mode inserting the sensor inline while automatically dropping malicious sessions", D: "Host-based IDS deployed on each server monitoring local process execution and file system activity" },
     answer: "B", tier: "locked", domain: 3
   },
   {
     id: "EQ140", exam: "Exam",
     question: "A security architect is designing a solution for a retail organization processing payment card data. Which network segmentation approach is MOST appropriate for PCI DSS compliance?",
-    options: { A: "Placing all POS systems on a single VLAN with firewall rules", B: "Isolating the cardholder data environment in a separate network segment with strict ingress and egress controls", C: "Using a flat network with host-based firewalls on POS systems", D: "Deploying encryption on all network segments processing card data" },
+    options: { A: "Placing all POS systems on a single dedicated VLAN with firewall rules restricting outbound access", B: "Isolating the cardholder data environment in a separate network segment with strict ingress and egress controls", C: "Using a flat network topology with only host-based firewalls on individual POS terminals", D: "Encrypting all traffic on network segments that transmit or process cardholder data in transit" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -869,7 +869,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ143", exam: "Exam",
     question: "A cloud architect is designing a solution to ensure that all API calls to cloud management APIs are logged and traceable to individual users. Which of the following BEST achieves this?",
-    options: { A: "Enable VPC flow logs to capture all network traffic", B: "Enable cloud provider management plane logging and integrate with a centralized SIEM", C: "Deploy a CASB to monitor all API calls to cloud services", D: "Require MFA for all cloud management console access" },
+    options: { A: "Enable VPC flow logs and CloudWatch to capture all inbound and outbound network traffic", B: "Enable cloud provider management plane logging and integrate with a centralized SIEM", C: "Deploy a CASB to monitor all API calls to sanctioned and unsanctioned cloud services", D: "Require phishing-resistant MFA for all cloud management console and API access" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -881,13 +881,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ145", exam: "Exam",
     question: "A security architect is designing a solution to protect against BGP route leaks. Which of the following controls provides the MOST comprehensive protection?",
-    options: { A: "Implementing prefix filters on all BGP peering sessions", B: "Deploying RPKI with route origin validation and BGP ASPA to validate AS path integrity", C: "Enabling MD5 authentication on all BGP sessions", D: "Using private AS numbers for internal BGP routing" },
+    options: { A: "Implementing strict ingress and egress prefix filters on all external BGP peering sessions", B: "Deploying RPKI with route origin validation and BGP ASPA to validate AS path integrity", C: "Enabling MD5 TCP authentication on all BGP sessions to prevent session hijacking", D: "Using private AS numbers internally and filtering them at the internet boundary" },
     answer: "B", tier: "locked", domain: 3
   },
   {
     id: "EQ146", exam: "Exam",
     question: "An organization is designing a backup strategy. The CISO requires that backups be protected against ransomware that could encrypt backup files. Which of the following BEST mitigates this risk?",
-    options: { A: "Encrypt all backup files using AES-256", B: "Implement immutable backup storage with object lock preventing modification or deletion for a defined retention period", C: "Store backups on a separate network segment inaccessible from production", D: "Use incremental backups to minimize the data at risk" },
+    options: { A: "Encrypt all backup files using AES-256 and store encryption keys in a separate secure vault", B: "Implement immutable backup storage with object lock preventing modification or deletion for a defined retention period", C: "Store backups on an air-gapped or separate network segment not accessible from the production environment", D: "Use incremental daily backups to reduce the volume of data exposed in any single backup repository" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -917,7 +917,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ151", exam: "Exam",
     question: "A cloud architect is designing a solution to ensure that data stored in a cloud database cannot be accessed by the cloud provider's staff. Which approach provides the STRONGEST protection?",
-    options: { A: "Enable transparent data encryption with provider-managed keys", B: "Implement client-side encryption before data is sent to the database with keys managed on-premises", C: "Use customer-managed keys in the cloud provider's KMS", D: "Enable database audit logging to detect unauthorized access attempts" },
+    options: { A: "Enable transparent data encryption using provider-managed keys for encryption at rest", B: "Implement client-side encryption before data is sent to the database with keys managed on-premises", C: "Use customer-managed keys stored in the cloud provider's KMS for envelope encryption at rest", D: "Enable comprehensive database audit logging to detect and alert on unauthorized data access" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -935,19 +935,19 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ154", exam: "Exam",
     question: "A security engineer is hardening a Linux server. Which of the following changes MOST effectively reduces the server's attack surface?",
-    options: { A: "Enable firewalld to restrict inbound traffic", B: "Remove all unnecessary packages, disable unused services, and implement mandatory access controls using SELinux or AppArmor", C: "Configure fail2ban to block IPs after failed authentication attempts", D: "Enable full disk encryption using LUKS" },
+    options: { A: "Enable firewalld with strict zone policies to block all non-essential inbound network traffic", B: "Remove all unnecessary packages, disable unused services, and implement mandatory access controls using SELinux or AppArmor", C: "Configure fail2ban with aggressive rate limiting to block IPs after repeated failed authentication", D: "Enable full disk encryption using LUKS with TPM-bound key protection for data at rest" },
     answer: "B", tier: "locked", domain: 3
   },
   {
     id: "EQ155", exam: "Exam",
     question: "An organization deploys a honeypot network to detect lateral movement. An attacker triggers alerts by attempting to connect to honeypot systems. Which of the following actions should the security team take FIRST?",
-    options: { A: "Block the source IP at the perimeter firewall", B: "Investigate the source of the lateral movement to determine the scope of the compromise", C: "Isolate the honeypot systems to prevent further data collection", D: "Reset all passwords in the affected network segment" },
+    options: { A: "Block the source IP at the perimeter firewall to prevent additional inbound connections", B: "Investigate the source of the lateral movement to determine the scope of the compromise", C: "Immediately isolate the honeypot systems to prevent any further attacker interaction or data loss", D: "Force reset all user and service account passwords across the affected network segment" },
     answer: "B", tier: "locked", domain: 3
   },
   {
     id: "EQ156", exam: "Exam",
     question: "A security architect is evaluating network segmentation for a new healthcare facility. IoT medical devices must communicate with a central management server but must not access any other network resources. Which of the following BEST achieves this?",
-    options: { A: "Place IoT devices on the main corporate VLAN with host-based firewalls", B: "Deploy IoT devices on a dedicated VLAN with firewall rules permitting only traffic to the management server", C: "Implement MAC filtering to restrict IoT device communications", D: "Use a dedicated physical network switch for IoT devices" },
+    options: { A: "Connect IoT devices to the main corporate VLAN relying solely on host-based firewall policies", B: "Deploy IoT devices on a dedicated VLAN with firewall rules permitting only traffic to the management server", C: "Implement MAC address filtering on the switch to restrict which IoT devices can communicate", D: "Provision a physically separate switch exclusively for IoT device connectivity and management" },
     answer: "B", tier: "locked", domain: 3
   },
   {
@@ -971,7 +971,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ160", exam: "Exam",
     question: "A security analyst is triaging an incident where multiple endpoints exhibit similar behavioral indicators including encoded PowerShell execution and beaconing to the same external IP. Which of the following BEST describes the next step?",
-    options: { A: "Eradicate the malware from all affected endpoints simultaneously", B: "Determine the scope of the compromise by identifying all affected systems before containment", C: "Block the external IP at the perimeter firewall to stop C2 communication", D: "Restore all affected systems from clean backups" },
+    options: { A: "Immediately eradicate the malware from all discovered endpoints simultaneously before scoping", B: "Determine the scope of the compromise by identifying all affected systems before containment", C: "Block the identified external C2 IP at the perimeter firewall to disrupt active communication", D: "Restore all affected systems from the most recent verified clean backup immediately" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -983,7 +983,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ162", exam: "Exam",
     question: "During a forensic investigation, an analyst discovers that an attacker deleted event logs using wevtutil.exe. Which of the following would have BEST prevented log tampering?",
-    options: { A: "Increasing the maximum log size to retain more events", B: "Forwarding logs to a remote SIEM in real time before they could be deleted", C: "Enabling audit policies for log deletion events", D: "Restricting access to Event Viewer using ACLs" },
+    options: { A: "Increasing the maximum Windows Event Log size to retain more events on the local system", B: "Forwarding logs to a remote SIEM in real time before they could be deleted", C: "Enabling audit policies specifically to detect and alert on log deletion and clearing events", D: "Restricting Event Viewer access using ACLs to prevent unauthorized local log viewing" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -995,25 +995,25 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ164", exam: "Exam",
     question: "A security operations team wants to reduce the MTTD for network-based threats. Which of the following improvements would MOST directly reduce MTTD?",
-    options: { A: "Increasing the number of SOC analysts for faster alert triage", B: "Implementing network traffic analysis with ML-based anomaly detection and automated alerting", C: "Expanding log retention from 90 days to 365 days", D: "Deploying additional IPS sensors throughout the network" },
+    options: { A: "Hiring additional SOC analysts to increase manual alert review capacity and reduce response time", B: "Implementing network traffic analysis with ML-based anomaly detection and automated alerting", C: "Expanding log retention from 90 days to 365 days to provide broader historical context for investigations", D: "Deploying additional inline IPS sensors at key network chokepoints and lateral movement paths" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ165", exam: "Exam",
     question: "A security team is developing playbooks for a SOAR platform. Which of the following incidents is MOST appropriate for full automation without human review?",
-    options: { A: "Ransomware infection requiring endpoint isolation and recovery", B: "IP reputation alert automatically blocking a known malicious IP in the perimeter firewall", C: "Data breach requiring notification under GDPR Article 33", D: "Insider threat alert requiring employee account suspension" },
+    options: { A: "Active ransomware infection requiring immediate endpoint isolation and clean backup recovery", B: "IP reputation alert automatically blocking a known malicious IP in the perimeter firewall", C: "Confirmed data breach of personal data triggering notification obligations under GDPR Article 33", D: "Insider threat behavioral alert requiring HR involvement and account suspension review" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ166", exam: "Exam",
     question: "A forensic analyst is examining a disk image and needs to verify that the image is an exact copy of the original drive. Which of the following BEST verifies image integrity?",
-    options: { A: "Compare the file count between the original and the image", B: "Generate and compare cryptographic hashes of the original drive and the image using SHA-256", C: "Verify the image file size matches the original drive capacity", D: "Boot the image in a VM and compare application behavior" },
+    options: { A: "Compare total file and directory counts between the original evidence and the forensic image", B: "Generate and compare cryptographic hashes of the original drive and the image using SHA-256", C: "Verify the raw byte count of the forensic image matches the reported capacity of the source drive", D: "Boot the forensic image in an isolated VM and compare observable application and OS behavior" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ167", exam: "Exam",
     question: "A SIEM correlation rule generates 500 alerts per day for the same event type, but analysts determine that 495 are false positives. Which of the following is the MOST appropriate action?",
-    options: { A: "Disable the rule to eliminate the alert noise", B: "Tune the rule by adding contextual filters to reduce false positives while maintaining true positive detection", C: "Accept the false positive rate as unavoidable", D: "Increase SOC staffing to handle the additional alert volume" },
+    options: { A: "Permanently disable the SIEM rule to eliminate alert noise until a replacement can be developed", B: "Tune the rule by adding contextual filters to reduce false positives while maintaining true positive detection", C: "Accept the elevated false positive rate as an unavoidable characteristic of behavioral detection rules", D: "Increase SOC analyst headcount to absorb the additional alert triage workload" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1031,19 +1031,19 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ170", exam: "Exam",
     question: "A security team is implementing a CSPM solution for its multi-cloud environment. Which of the following capabilities does CSPM PRIMARILY provide?",
-    options: { A: "Real-time threat detection for cloud workloads", B: "Continuous assessment of cloud resource configurations against security benchmarks and compliance frameworks", C: "DLP enforcement for data stored in cloud services", D: "Identity and access management across cloud providers" },
+    options: { A: "Real-time runtime threat detection for cloud workloads using behavioral analysis and threat intel", B: "Continuous assessment of cloud resource configurations against security benchmarks and compliance frameworks", C: "DLP enforcement scanning data stored in cloud storage services for sensitive content violations", D: "Federated identity and access management governance spanning multiple cloud provider environments" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ171", exam: "Exam",
     question: "A security engineer is configuring log aggregation for a new deployment. Which of the following log sources provides the MOST value for detecting credential-based attacks?",
-    options: { A: "Web server access logs", B: "Authentication logs from domain controllers, VPN, and cloud IdP", C: "Network flow data from edge routers", D: "Application performance monitoring metrics" },
+    options: { A: "Web application server access logs showing HTTP request paths and response codes", B: "Authentication logs from domain controllers, VPN, and cloud IdP", C: "NetFlow or sFlow data from edge routers showing connection metadata and traffic volumes", D: "APM metrics tracking application response times and error rates across services" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ172", exam: "Exam",
     question: "A security operations team wants to improve analyst efficiency by reducing time spent on repetitive tasks. Which SOAR capability would MOST directly address this?",
-    options: { A: "Centralized case management for tracking incidents", B: "Automated enrichment of alerts with threat intelligence, asset data, and user context", C: "Integration with ticketing systems for workflow management", D: "Dashboards providing real-time metrics on SOC performance" },
+    options: { A: "Centralized case management for tracking all open and historical incident investigations", B: "Automated enrichment of alerts with threat intelligence, asset data, and user context", C: "Bidirectional integration with ITSM ticketing systems to manage incident workflow and SLAs", D: "Executive and operational dashboards providing real-time KPIs and SOC performance metrics" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1079,13 +1079,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ178", exam: "Exam",
     question: "A security team is responding to an incident where an attacker has compromised a cloud environment and created new IAM users and API keys. Which of the following should be done FIRST?",
-    options: { A: "Delete all newly created IAM users and API keys", B: "Identify and revoke all compromised and attacker-created credentials and review CloudTrail logs for full scope", C: "Terminate all cloud instances to prevent further damage", D: "Notify the cloud provider's abuse team" },
+    options: { A: "Delete all newly created IAM users and access keys and rotate the root account credentials", B: "Identify and revoke all compromised and attacker-created credentials and review CloudTrail logs for full scope", C: "Terminate all running cloud instances immediately to stop any ongoing attacker activity", D: "Notify the cloud provider's abuse team and request emergency account restriction support" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ179", exam: "Exam",
     question: "A security analyst is reviewing a UEBA alert indicating that a user accessed 500 files at 2 AM, significantly deviating from their baseline. Which of the following is the MOST appropriate initial action?",
-    options: { A: "Immediately suspend the user's account", B: "Investigate the alert by reviewing access logs and contacting the user's manager before taking action", C: "Escalate to law enforcement as potential insider threat activity", D: "Accept the alert as a false positive and tune the UEBA model" },
+    options: { A: "Immediately suspend the user's account pending a formal investigation by the security team", B: "Investigate the alert by reviewing access logs and contacting the user's manager before taking action", C: "Escalate directly to law enforcement given the geographic anomaly indicating potential insider threat", D: "Mark the alert as a false positive and update the UEBA model baseline to suppress recurrence" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1097,13 +1097,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ181", exam: "Exam",
     question: "A security engineer implements application control using software restriction policies. An attacker attempts to execute malicious code from the %APPDATA% directory. Which application control implementation would MOST effectively block this?",
-    options: { A: "Blacklist-based control blocking known malicious hashes", B: "Whitelist-based control allowing execution only from approved paths and signed executables", C: "Publisher rules allowing code signed by trusted vendors", D: "Zone-based rules blocking execution from the internet zone" },
+    options: { A: "Hash-based blocklist control preventing execution of known malicious file signatures", B: "Whitelist-based control allowing execution only from approved paths and signed executables", C: "Publisher certificate rules permitting execution of any code signed by a trusted vendor certificate", D: "Zone-based execution policy blocking programs downloaded from the internet or email attachments" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ182", exam: "Exam",
     question: "A security team discovers that a compromised insider copied sensitive files to a personal USB drive over several months. Which control would have MOST effectively prevented this?",
-    options: { A: "DLP monitoring for file access anomalies", B: "Endpoint controls blocking USB mass storage devices via MDM or GPO", C: "UEBA detecting unusual file access patterns", D: "FIM alerting on bulk file access events" },
+    options: { A: "DLP agent monitoring for anomalous file access patterns and sensitive data staging behavior", B: "Endpoint controls blocking USB mass storage devices via MDM or GPO", C: "UEBA platform detecting unusual large-scale file access deviating from the user's normal baseline", D: "FIM solution alerting on bulk file read or copy operations across sensitive directories" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1115,7 +1115,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ184", exam: "Exam",
     question: "A security team conducts a purple team exercise. After the red team successfully achieves their objective, the blue team reviews the attack chain. Which of the following is the PRIMARY goal of this exercise?",
-    options: { A: "Demonstrate the organization's security posture to executive leadership", B: "Identify detection gaps and improve defensive controls based on realistic attack scenarios", C: "Satisfy compliance requirements for annual penetration testing", D: "Train the red team on new attack techniques" },
+    options: { A: "Demonstrate the organization's current security posture and resilience to executive stakeholders", B: "Identify detection gaps and improve defensive controls based on realistic attack scenarios", C: "Satisfy annual penetration testing requirements mandated by PCI DSS or other compliance frameworks", D: "Train red team operators on newly published adversary TTPs and exploitation techniques" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1133,7 +1133,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ187", exam: "Exam",
     question: "A security analyst investigating suspicious PowerShell activity finds that PowerShell is downloading and executing code directly from memory without writing to disk. Which of the following BEST describes this technique?",
-    options: { A: "PowerShell constrained language mode bypass", B: "Fileless malware execution using PowerShell's IEX and DownloadString methods", C: "PowerShell remoting used for lateral movement", D: "AMSI bypass disabling antimalware scanning for PowerShell" },
+    options: { A: "PowerShell constrained language mode bypass to execute unrestricted commands on the endpoint", B: "Fileless malware execution using PowerShell's IEX and DownloadString methods", C: "PowerShell remoting over WinRM used for lateral movement to remote hosts", D: "AMSI bypass technique disabling the Antimalware Scan Interface for the current PowerShell session" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1151,7 +1151,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ190", exam: "Exam",
     question: "A security engineer is implementing privileged access workstations for all administrative activities. Which of the following BEST describes the security benefit of PAWs?",
-    options: { A: "PAWs provide dedicated hardware for administrative tasks isolated from user browsing and email", B: "PAWs enforce MFA for all administrative connections", C: "PAWs record all administrative sessions for audit purposes", D: "PAWs prevent credential theft by requiring smart card authentication" },
+    options: { A: "PAWs provide dedicated hardware for administrative tasks isolated from user browsing and email", B: "PAWs enforce phishing-resistant MFA for all privileged administrative connections", C: "PAWs require all administrative sessions to be recorded and retained for security audit review", D: "PAWs prevent credential theft by mandating smart card or hardware token authentication" },
     answer: "A", tier: "locked", domain: 4
   },
   {
@@ -1163,7 +1163,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ192", exam: "Exam",
     question: "A security engineer discovers that the organization's asset inventory is incomplete, missing 30% of servers. Which of the following is the PRIMARY risk associated with an incomplete asset inventory?",
-    options: { A: "Increased licensing costs for untracked software", B: "Unmanaged systems may have unknown vulnerabilities and misconfigurations creating blind spots in the security program", C: "Compliance audit failures due to incomplete documentation", D: "Difficulty allocating security budget without full asset visibility" },
+    options: { A: "Elevated software licensing costs due to untracked installations running without valid entitlements", B: "Unmanaged systems may have unknown vulnerabilities and misconfigurations creating blind spots in the security program", C: "Compliance audit failures resulting from incomplete asset inventory documentation and evidence gaps", D: "Inability to accurately allocate security budget across assets without a complete visibility baseline" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1181,7 +1181,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ195", exam: "Exam",
     question: "A security team is conducting a tabletop exercise simulating a data breach affecting customer PII. The legal counsel asks when the organization must notify affected customers. Which of the following BEST answers this question?",
-    options: { A: "Notification is required immediately upon discovery of the breach", B: "Notification timelines depend on applicable regulations such as GDPR's 72-hour notification to supervisory authorities and state breach notification laws", C: "Notification is only required if the breach affects more than 500 individuals", D: "Notification is at the organization's discretion based on breach severity" },
+    options: { A: "Notification must be sent to all affected individuals immediately upon the organization discovering the breach", B: "Notification timelines depend on applicable regulations such as GDPR's 72-hour notification to supervisory authorities and state breach notification laws", C: "Notification is only legally required when the breach involves more than 500 individuals' records", D: "Notification timing is entirely at the organization's discretion based on an internal breach severity assessment" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1199,19 +1199,19 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ198", exam: "Exam",
     question: "A security team implements a CSIRT. During an incident, the CSIRT lead needs to communicate breach details to the executive team. Which of the following is the MOST appropriate communication channel?",
-    options: { A: "Email to all executives using the corporate email system", B: "Out-of-band communication channel such as encrypted messaging if corporate systems may be compromised", C: "Public announcement to maintain transparency with stakeholders", D: "Verbal communication only to prevent information leakage" },
+    options: { A: "Send notifications to all executives via the corporate email system and internal Slack channels", B: "Out-of-band communication channel such as encrypted messaging if corporate systems may be compromised", C: "Issue a public announcement immediately to maintain transparency with customers and stakeholders", D: "Restrict all communications to verbal exchanges only to prevent any written evidence of the incident" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ199", exam: "Exam",
     question: "A security team discovers that an attacker has maintained access via a web shell on an internet-facing server. After removing the web shell, the team confirms the server's OS and application are patched. Which of the following should be done NEXT in the eradication phase?",
-    options: { A: "Restore the server from a clean backup", B: "Conduct a comprehensive review of all server configurations, user accounts, and scheduled tasks to identify additional persistence mechanisms", C: "Reimage the server to ensure complete eradication", D: "Monitor the server for 24 hours to confirm the attacker has been removed" },
+    options: { A: "Immediately restore the web server from the most recent verified clean backup snapshot", B: "Conduct a comprehensive review of all server configurations, user accounts, and scheduled tasks to identify additional persistence mechanisms", C: "Reimage the server from a trusted golden image to guarantee complete removal of all attacker artifacts", D: "Continue monitoring the server for 24 hours using EDR telemetry to confirm the attacker has been evicted" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ200", exam: "Exam",
     question: "A security engineer is implementing an EDR solution across 10,000 endpoints. Which deployment consideration is MOST critical for maximizing the EDR's effectiveness?",
-    options: { A: "Ensuring the EDR agent has the latest threat intelligence signatures", B: "Configuring the EDR to collect telemetry from all endpoints and integrate with the SIEM for centralized analysis", C: "Enabling automatic remediation to isolate compromised endpoints", D: "Deploying the EDR management console in a highly available configuration" },
+    options: { A: "Keeping the EDR agent updated with the latest threat intelligence and behavioral detection signatures", B: "Configuring the EDR to collect telemetry from all endpoints and integrate with the SIEM for centralized analysis", C: "Enabling automatic EDR remediation actions to isolate compromised endpoints without analyst intervention", D: "Deploying the EDR management console in a redundant highly available configuration for resilience" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1229,7 +1229,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ203", exam: "Exam",
     question: "A security engineer discovers that a critical server has been running without EDR coverage due to an agent installation failure. Which of the following compensating controls should be implemented IMMEDIATELY?",
-    options: { A: "Schedule the EDR agent installation during the next maintenance window", B: "Increase network monitoring on the server, restrict its communication, and implement enhanced logging until the agent is installed", C: "Accept the risk until the agent can be deployed", D: "Isolate the server from the network until EDR coverage is restored" },
+    options: { A: "Schedule the EDR agent installation for the next available maintenance window without interim action", B: "Increase network monitoring on the server, restrict its communication, and implement enhanced logging until the agent is installed", C: "Formally accept the temporary coverage gap as a documented risk until the agent can be deployed", D: "Immediately isolate the unprotected server from the network until full EDR coverage is restored" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1241,13 +1241,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ205", exam: "Exam",
     question: "A security team discovers that a developer committed AWS access keys to a public GitHub repository. The keys were exposed for 2 hours before the repository was made private. Which of the following should be done FIRST?",
-    options: { A: "Make the repository private and monitor for unauthorized API calls", B: "Immediately rotate the exposed access keys and review CloudTrail logs for unauthorized activity during the exposure window", C: "Notify the developer and implement a training program on secrets management", D: "Assess the blast radius by identifying all resources the access keys could access" },
+    options: { A: "Make the repository private and configure monitoring to alert on unauthorized API calls going forward", B: "Immediately rotate the exposed access keys and review CloudTrail logs for unauthorized activity during the exposure window", C: "Notify the developer and schedule mandatory secrets management training for the development team", D: "Assess the potential blast radius by enumerating all resources accessible with the exposed access keys" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ206", exam: "Exam",
     question: "A security operations manager wants to measure the effectiveness of the vulnerability management program. Which of the following metrics BEST indicates program effectiveness?",
-    options: { A: "Total number of vulnerabilities discovered per scan", B: "Mean time to remediate critical vulnerabilities and percentage of vulnerabilities remediated within SLA", C: "Number of vulnerability scans performed per quarter", D: "Total number of vulnerabilities in the risk register" },
+    options: { A: "Total count of vulnerabilities discovered per scan cycle regardless of severity or remediation status", B: "Mean time to remediate critical vulnerabilities and percentage of vulnerabilities remediated within SLA", C: "Number of authenticated vulnerability scans completed against the asset inventory per quarter", D: "Aggregate vulnerability count tracked across all open items in the risk and remediation register" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1259,7 +1259,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ208", exam: "Exam",
     question: "A security analyst discovers that a service running on a Linux server is listening on port 4444 and cannot be identified in the approved application inventory. Which of the following should be done FIRST?",
-    options: { A: "Immediately terminate the process", B: "Identify the process using netstat and lsof, capture network traffic, and analyze before taking action", C: "Block port 4444 at the host firewall", D: "Reboot the server to terminate all unknown processes" },
+    options: { A: "Immediately terminate the suspicious process and remove it from the running process list", B: "Identify the process using netstat and lsof, capture network traffic, and analyze before taking action", C: "Block port 4444 at the host-based firewall to disrupt the active outbound connection", D: "Reboot the server immediately to terminate all unidentified and suspicious processes" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1289,7 +1289,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ213", exam: "Exam",
     question: "A security analyst is reviewing a potential phishing incident and needs to determine if any users clicked the malicious link. Which of the following log sources provides the MOST direct evidence?",
-    options: { A: "Email gateway logs showing message delivery", B: "Web proxy logs showing outbound connections to the phishing domain from internal hosts", C: "DNS logs showing query resolution for the phishing domain", D: "Endpoint AV logs showing detection of malicious downloads" },
+    options: { A: "Email gateway delivery logs showing the phishing message was received by the victim's mailbox", B: "Web proxy logs showing outbound connections to the phishing domain from internal hosts", C: "DNS query logs confirming successful resolution of the phishing domain from the victim's system", D: "Endpoint antivirus logs showing detection of a malicious file downloaded from the phishing URL" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1307,31 +1307,31 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ216", exam: "Exam",
     question: "A security team is developing an incident response plan. Which of the following stakeholders should be included in the communication plan for a major data breach?",
-    options: { A: "Only the security team and C-suite executives", B: "Legal, PR, HR, executive leadership, affected customers, regulators, and potentially law enforcement", C: "All employees via company-wide email notification", D: "The security team, IT operations, and system owners" },
+    options: { A: "Only the CISO, security team members, and C-suite executives on a strict need-to-know basis", B: "Legal, PR, HR, executive leadership, affected customers, regulators, and potentially law enforcement", C: "All employees organization-wide via a company-wide email notification to maintain transparency", D: "The security team, IT operations, and the system owners directly impacted by the breach" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ217", exam: "Exam",
     question: "A security analyst is reviewing Windows event logs and identifies Event ID 4688 showing cmd.exe spawned by winword.exe. Which of the following BEST explains why this is suspicious?",
-    options: { A: "cmd.exe should never be executed on a workstation", B: "Word processing applications do not typically spawn command shell processes indicating possible macro-based malware", C: "Event ID 4688 indicates a failed process creation attempt", D: "winword.exe requires administrative privileges to spawn child processes" },
+    options: { A: "cmd.exe execution should always be blocked on user workstations regardless of parent process", B: "Word processing applications do not typically spawn command shell processes indicating possible macro-based malware", C: "Windows Event ID 4688 indicates a failed process creation attempt requiring immediate investigation", D: "winword.exe requires local administrator privileges to successfully spawn any child processes" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ218", exam: "Exam",
     question: "A security operations team wants to implement continuous compliance monitoring for their AWS environment. Which of the following services provides automated assessment against security benchmarks?",
-    options: { A: "AWS CloudTrail providing API activity logging", B: "AWS Security Hub aggregating findings and checking against CIS AWS Foundations Benchmark", C: "AWS GuardDuty providing threat detection for the AWS environment", D: "AWS Config tracking resource configuration changes" },
+    options: { A: "AWS CloudTrail enabling API activity logging for all management plane operations", B: "AWS Security Hub aggregating findings and checking against CIS AWS Foundations Benchmark", C: "AWS GuardDuty providing behavioral threat detection for accounts, instances, and S3 activity", D: "AWS Config tracking resource configuration changes and evaluating against compliance rules" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ219", exam: "Exam",
     question: "A security team discovers that an attacker pivoted from a compromised workstation to a database server using a pass-the-ticket attack. Which of the following would have MOST effectively prevented this lateral movement?",
-    options: { A: "Implementing network segmentation between workstations and servers", B: "Enabling Protected Users security group membership for privileged accounts preventing Kerberos ticket caching", C: "Deploying EDR on all servers to detect lateral movement", D: "Enabling SMB signing to prevent credential relay attacks" },
+    options: { A: "Implementing microsegmentation between workstation and server VLANs to block lateral movement paths", B: "Enabling Protected Users security group membership for privileged accounts preventing Kerberos ticket caching", C: "Deploying EDR on all servers with lateral movement detection rules and automated isolation response", D: "Enforcing mandatory SMB signing across all hosts to prevent NTLM relay and credential theft attacks" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ220", exam: "Exam",
     question: "A security analyst discovers evidence of timestomping on files related to a malware infection. Which of the following BEST describes what the attacker was attempting to accomplish?",
-    options: { A: "Encrypting file timestamps to prevent decryption by forensic tools", B: "Modifying file timestamps to make malicious files appear older and blend with legitimate files", C: "Deleting file timestamps to prevent timeline reconstruction", D: "Copying timestamps from legitimate files to the malware binary" },
+    options: { A: "Encrypting file system metadata to prevent forensic tools from reading original timestamps", B: "Modifying file timestamps to make malicious files appear older and blend with legitimate files", C: "Deleting all file system timestamps to prevent investigators from building an event timeline", D: "Cloning timestamps from a legitimate system file onto the malware binary to evade detection" },
     answer: "B", tier: "locked", domain: 4
   },
   {
@@ -1349,25 +1349,25 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ223", exam: "Exam",
     question: "A security engineer discovers that an application logs full credit card numbers in application error logs. Which of the following is the MOST appropriate immediate remediation?",
-    options: { A: "Encrypt the log files to protect the stored card data", B: "Modify the application to log only truncated or tokenized card numbers and delete existing logs containing full card data", C: "Restrict access to the log files to authorized personnel only", D: "Implement DLP to detect and alert when logs containing card data are accessed" },
+    options: { A: "Encrypt all application log files at rest using AES-256 to protect the stored card data", B: "Modify the application to log only truncated or tokenized card numbers and delete existing logs containing full card data", C: "Restrict read access to the application log files to a limited set of authorized personnel", D: "Deploy DLP to detect and generate alerts when application logs containing card data are accessed" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ224", exam: "Exam",
     question: "A CISO is presenting the security program's value to the board of directors. Which of the following metrics would MOST effectively communicate risk reduction?",
-    options: { A: "Number of security incidents responded to in the past year", B: "Reduction in mean time to detect and respond combined with cost avoidance from prevented incidents", C: "Total security budget spent versus allocated", D: "Percentage of employees who completed security awareness training" },
+    options: { A: "Total number of security incidents handled by the SOC during the prior fiscal year", B: "Reduction in mean time to detect and respond combined with cost avoidance from prevented incidents", C: "Variance between total security budget allocated and actual spending for the reporting period", D: "Percentage of employees who completed mandatory annual security awareness training on time" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ225", exam: "Exam",
     question: "A security analyst discovers that an attacker used compromised third-party vendor VPN credentials to access the organization's network. Which control would MOST effectively prevent this in the future?",
-    options: { A: "Require MFA for all VPN connections", B: "Implement vendor risk management with strict access controls, MFA, and least-privilege access scoped to specific systems", C: "Deploy NAC to verify vendor device compliance before granting VPN access", D: "Restrict VPN access to vendor IP address ranges" },
+    options: { A: "Require phishing-resistant MFA for all vendor VPN connections to prevent credential-based attacks", B: "Implement vendor risk management with strict access controls, MFA, and least-privilege access scoped to specific systems", C: "Deploy NAC to verify vendor device security posture and patch compliance before granting VPN access", D: "Restrict all VPN connections to pre-registered vendor static IP address ranges using firewall ACLs" },
     answer: "B", tier: "locked", domain: 4
   },
   {
     id: "EQ226", exam: "Exam",
     question: "A security team receives a notification that a zero-day vulnerability affecting a critical application has been publicly disclosed. No patch is available. Which of the following should be done FIRST?",
-    options: { A: "Immediately take the application offline until a patch is available", B: "Assess the vulnerability's exploitability and implement compensating controls while monitoring for exploitation attempts", C: "Accept the risk until the vendor releases an official patch", D: "Conduct a penetration test to determine if the organization is vulnerable" },
+    options: { A: "Immediately take the production application offline and disable access until the vendor releases a patch", B: "Assess the vulnerability's exploitability and implement compensating controls while monitoring for exploitation attempts", C: "Accept the risk without any action until the software vendor releases an official security patch", D: "Commission an emergency penetration test to confirm whether the organization can be exploited" },
     answer: "B", tier: "locked", domain: 4
   },,
 {
@@ -1391,7 +1391,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ230", exam: "Exam",
     question: "An organization subject to HIPAA discovers that a business associate experienced a data breach exposing PHI. Which of the following is the organization's FIRST obligation?",
-    options: { A: "Notify HHS within 72 hours of discovering the breach", B: "Verify the breach details with the business associate and ensure they notify affected individuals per the BAA", C: "Terminate the business associate agreement immediately", D: "Conduct an independent forensic investigation of the business associate's systems" },
+    options: { A: "Notify HHS and affected patients within 72 hours of discovering the breach as required by HIPAA", B: "Verify the breach details with the business associate and ensure they notify affected individuals per the BAA", C: "Immediately terminate the business associate agreement and migrate all data to a new provider", D: "Commission an independent forensic investigation of the business associate's environment and controls" },
     answer: "B", tier: "locked", domain: 5
   },
   {
@@ -1403,13 +1403,13 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ232", exam: "Exam",
     question: "An organization is implementing a GRC program and must meet requirements from PCI DSS, HIPAA, and SOX simultaneously. Which of the following approaches MOST efficiently addresses all three frameworks?",
-    options: { A: "Implement three separate compliance programs for each framework", B: "Map controls across frameworks to identify overlapping requirements and implement a unified control set", C: "Prioritize the most stringent framework and implement only those controls", D: "Obtain independent audits for each framework sequentially" },
+    options: { A: "Implement three fully independent compliance programs each with dedicated staff and documentation", B: "Map controls across frameworks to identify overlapping requirements and implement a unified control set", C: "Prioritize the most stringent single framework and apply only that framework's controls organization-wide", D: "Obtain sequential independent audits for each framework one at a time over multiple fiscal years" },
     answer: "B", tier: "locked", domain: 5
   },
   {
     id: "EQ233", exam: "Exam",
     question: "A security manager is conducting a vendor risk assessment. The vendor will process sensitive financial data on behalf of the organization. Which assessment method provides the MOST comprehensive view of the vendor's security controls?",
-    options: { A: "Review the vendor's self-completed security questionnaire", B: "Obtain the vendor's SOC 2 Type II report and conduct a right-to-audit clause assessment", C: "Review the vendor's ISO 27001 certification", D: "Request the vendor's vulnerability scan results" },
+    options: { A: "Review the vendor's self-completed security questionnaire without additional verification", B: "Obtain the vendor's SOC 2 Type II report and conduct a right-to-audit clause assessment", C: "Review the vendor's current ISO 27001 certification scope and Statement of Applicability", D: "Request the vendor's most recent authenticated vulnerability scan and remediation reports" },
     answer: "B", tier: "locked", domain: 5
   },
   {
@@ -1421,55 +1421,55 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ235", exam: "Exam",
     question: "An organization processes EU citizen data and experiences a personal data breach. Under GDPR Article 33, when must the organization notify the supervisory authority?",
-    options: { A: "Immediately upon discovery of the breach", B: "Within 72 hours of becoming aware of the breach unless it is unlikely to result in risk", C: "Within 30 days of the breach being confirmed", D: "Before notifying affected data subjects" },
+    options: { A: "Immediately upon the first indication of a potential breach before completing an investigation", B: "Within 72 hours of becoming aware of the breach unless it is unlikely to result in risk", C: "Within 30 days of the breach being formally confirmed through a completed forensic investigation", D: "Only after all affected data subjects have been individually notified about the breach details" },
     answer: "B", tier: "locked", domain: 5
   },
   {
     id: "EQ236", exam: "Exam",
     question: "A security manager identifies a risk that cannot be mitigated to an acceptable level through technical controls alone. The organization purchases cyber insurance to cover potential losses. Which of the following BEST describes a limitation of this risk treatment?",
-    options: { A: "Insurance premiums may exceed the cost of implementing technical controls", B: "Insurance transfers financial risk but does not reduce the likelihood or operational impact of the risk materializing", C: "Cyber insurance requires ISO 27001 certification to be valid", D: "Insurance is not an approved risk treatment under most compliance frameworks" },
+    options: { A: "Cyber insurance premiums will consistently exceed the cost of deploying equivalent technical controls", B: "Insurance transfers financial risk but does not reduce the likelihood or operational impact of the risk materializing", C: "Cyber insurance policies require the insured to hold an ISO 27001 certification to be underwritten", D: "Insurance-based risk transfer is not a recognized risk treatment option under major compliance frameworks" },
     answer: "B", tier: "locked", domain: 5
   },
   {
     id: "EQ237", exam: "Exam",
     question: "An organization is implementing a security awareness program. The CISO wants to measure behavioral change rather than knowledge acquisition. Which of the following metrics BEST measures behavioral change?",
-    options: { A: "Average score on post-training knowledge assessments", B: "Reduction in security incidents caused by human error combined with phishing simulation click rates", C: "Percentage of employees who completed the annual training", D: "Employee satisfaction scores for training content" },
+    options: { A: "Average knowledge assessment score achieved by employees on post-training competency tests", B: "Reduction in security incidents caused by human error combined with phishing simulation click rates", C: "Percentage of employees who completed all mandatory training modules within the compliance deadline", D: "Employee satisfaction and engagement scores collected via training feedback surveys" },
     answer: "B", tier: "locked", domain: 5
   },
   {
     id: "EQ238", exam: "Exam",
     question: "A security team is conducting a BIA for a critical payment processing system generating $100,000 in revenue per hour. The RTO is set at 4 hours. Which of the following BEST describes the business impact of a 6-hour outage?",
-    options: { A: "$400,000 in lost revenue equal to the RTO period", B: "$600,000 in direct revenue loss plus potential regulatory fines, reputational damage, and SLA penalties", C: "$200,000 in lost revenue for the 2 hours beyond the RTO", D: "$600,000 in lost revenue with no additional impact" },
+    options: { A: "$400,000 in direct revenue loss strictly equivalent to the 4-hour RTO period at full rate", B: "$600,000 in direct revenue loss plus potential regulatory fines, reputational damage, and SLA penalties", C: "$200,000 in direct revenue loss attributable only to the 2 hours exceeding the agreed RTO", D: "$600,000 in direct revenue loss with no additional indirect costs or cascading business impacts" },
     answer: "B", tier: "locked", domain: 5
   },
   {
     id: "EQ239", exam: "Exam",
     question: "An organization is negotiating a contract with a cloud provider. The security team wants the right to verify the provider's security controls. Which of the following contract clauses is MOST important?",
-    options: { A: "SLA guaranteeing 99.99% uptime", B: "Right-to-audit clause permitting the organization or its designee to assess the provider's controls", C: "Data residency clause restricting data storage to approved regions", D: "Incident notification clause requiring breach notification within 24 hours" },
+    options: { A: "SLA clause guaranteeing 99.99% service availability with defined financial remedies for violations", B: "Right-to-audit clause permitting the organization or its designee to assess the provider's controls", C: "Data residency clause restricting all data storage and processing to contractually approved regions", D: "Incident notification clause requiring the provider to notify the customer within 24 hours of a breach" },
     answer: "B", tier: "locked", domain: 5
   },
   {
     id: "EQ240", exam: "Exam",
     question: "A security manager is developing security policies for a new organization. Which of the following documents should be created FIRST to establish the foundation for all other security policies?",
-    options: { A: "Acceptable use policy defining employee behavior", B: "Information security policy establishing management's commitment and overall security direction", C: "Incident response policy defining response procedures", D: "Data classification policy establishing data handling requirements" },
+    options: { A: "Acceptable use policy defining permitted and prohibited employee use of organizational resources", B: "Information security policy establishing management's commitment and overall security direction", C: "Incident response policy defining escalation procedures and roles during a declared security event", D: "Data classification policy establishing sensitivity tiers and mandatory handling requirements per tier" },
     answer: "B", tier: "locked", domain: 5
   },
   {
     id: "EQ241", exam: "Exam",
     question: "An organization is assessing a proposed merger with a target company. The due diligence team discovers that the target has had three ransomware incidents in the past two years and has unpatchable legacy systems. Which of the following is the MOST appropriate response?",
-    options: { A: "Proceed with the merger and plan to remediate issues post-acquisition", B: "Factor the cybersecurity risk into the valuation and require remediation commitments or adjust the purchase price", C: "Terminate merger discussions due to the unacceptable security posture", D: "Purchase cyber insurance to cover the inherited risks" },
+    options: { A: "Proceed with the merger as scheduled and plan a post-acquisition cybersecurity remediation roadmap", B: "Factor the cybersecurity risk into the valuation and require remediation commitments or adjust the purchase price", C: "Immediately terminate merger discussions solely due to the target's unacceptable cybersecurity posture", D: "Purchase cyber insurance coverage to transfer the inherited financial risk from the acquisition" },
     answer: "B", tier: "locked", domain: 5
   },
   {
     id: "EQ242", exam: "Exam",
     question: "A CISO is reviewing the organization's third-party risk management program which assesses vendors annually. A critical payment processor experiences a significant breach between assessment cycles. Which program improvement would MOST effectively address this gap?",
-    options: { A: "Increase assessment frequency to quarterly for all vendors", B: "Implement continuous monitoring of critical vendors using security ratings services and threat intelligence", C: "Require vendors to provide monthly self-assessment updates", D: "Include security breach clauses in all vendor contracts" },
+    options: { A: "Increase vendor security assessment frequency to quarterly for all third-party relationships", B: "Implement continuous monitoring of critical vendors using security ratings services and threat intelligence", C: "Require all critical vendors to provide monthly self-assessment questionnaire updates on their security posture", D: "Include contractual security breach liability and remediation commitment clauses in all vendor agreements" },
     answer: "B", tier: "locked", domain: 5
   },
   {
     id: "EQ243", exam: "Exam",
     question: "An organization implements a security champions program embedding security-focused individuals in development teams. Which of the following BEST describes the PRIMARY goal of this program?",
-    options: { A: "Reducing the security team's workload by delegating security reviews to developers", B: "Shifting security left by integrating security practices into the development lifecycle through empowered developers", C: "Ensuring compliance with secure coding standards through peer review", D: "Providing developers with a reporting path to the CISO" },
+    options: { A: "Reducing the security team's workload by delegating all security testing responsibilities to developers", B: "Shifting security left by integrating security practices into the development lifecycle through empowered developers", C: "Ensuring compliance with secure coding standards by mandating peer code review before every deployment", D: "Providing developers with a direct reporting path to the CISO to escalate security concerns" },
     answer: "B", tier: "locked", domain: 5
   },
   {
@@ -1481,7 +1481,7 @@ export const examQuestions: ExamQuestion[] = ([] as ExamQuestion[]).concat([
   {
     id: "EQ245", exam: "Exam",
     question: "A multinational organization must comply with data privacy regulations in multiple jurisdictions including GDPR, CCPA, and PIPL. Which approach MOST effectively manages cross-jurisdictional compliance?",
-    options: { A: "Implement the most stringent regulation's requirements globally", B: "Develop a privacy program that maps requirements across all applicable regulations and implements controls satisfying each jurisdiction's requirements", C: "Maintain separate privacy programs for each jurisdiction", D: "Comply only with the regulations of the country where the headquarters is located" },
+    options: { A: "Apply the single most stringent regulation's requirements globally across all jurisdictions to achieve a unified baseline that exceeds every local requirement", B: "Develop a privacy program that maps requirements across all applicable regulations and implements controls satisfying each jurisdiction's requirements", C: "Maintain entirely separate and independent privacy compliance programs for every individual jurisdiction in which the organization operates", D: "Apply only the privacy regulations of the country where the organization's headquarters is located and use contractual clauses for other regions" },
     answer: "B", tier: "locked", domain: 5
   },] as ExamQuestion[]);
 

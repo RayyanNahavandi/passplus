@@ -245,10 +245,10 @@ export default function ResultsPage() {
 
             <div className="bg-muted border border-border rounded-xl px-5 py-3 text-xs text-muted-foreground max-w-sm leading-relaxed">
               {session.cert === "netplus"
-                ? "CompTIA Network+ typically requires ~75% to pass."
+                ? "CompTIA Network+ requires 720/900 to pass (80%)."
                 : session.cert === "aplus"
-                ? "CompTIA A+ typically requires ~675/900 (~75%) to pass."
-                : "CompTIA Security+ typically requires ~75% to pass."}
+                ? "CompTIA A+ requires 675/900 (Core 1) and 700/900 (Core 2) to pass."
+                : "CompTIA Security+ requires 750/900 to pass (83%)."}
             </div>
           </motion.div>
 

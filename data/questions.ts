@@ -55,7 +55,7 @@ export const questions: Question[] = [
   {
     id: "Q007", domain: 1, exam: "Original",
     question: "Which of the following BEST describes a corrective security control?",
-    options: { A: "A camera monitoring the entrance", B: "A sign warning of surveillance", C: "Restoring a system from backup after an attack", D: "Encrypting sensitive files" },
+    options: { A: "A camera recording activity to support post-incident investigation", B: "A warning sign posted to discourage unauthorized physical access", C: "Restoring a system from backup after an attack", D: "Encrypting sensitive files to prevent unauthorized data disclosure" },
     answer: "C", tier: "free"
   },
   {
@@ -91,7 +91,7 @@ export const questions: Question[] = [
   {
     id: "Q013", domain: 1, exam: "Original",
     question: "Which of the following is an example of a compensating control?",
-    options: { A: "Installing a patch to fix a vulnerability", B: "Using network segmentation when a vulnerable system cannot be patched", C: "Enabling full disk encryption on laptops", D: "Requiring MFA for all remote access" },
+    options: { A: "Installing a vendor-supplied patch to directly remediate a known software vulnerability", B: "Using network segmentation when a vulnerable system cannot be patched", C: "Enabling full disk encryption on laptops to protect data if a device is lost or stolen", D: "Requiring MFA for all remote access sessions to reduce credential-based attack risk" },
     answer: "B", tier: "free"
   },
   {
@@ -103,7 +103,7 @@ export const questions: Question[] = [
   {
     id: "Q015", domain: 1, exam: "Original",
     question: "Which of the following BEST describes the concept of zero trust?",
-    options: { A: "Trusting all users inside the network perimeter", B: "Never trusting any user or device without verification regardless of location", C: "Blocking all external network traffic by default", D: "Requiring physical presence for all system access" },
+    options: { A: "Trusting all users inside the network perimeter without requiring further authentication", B: "Never trusting any user or device without verification regardless of location", C: "Blocking all external network traffic by default unless explicitly permitted by policy", D: "Requiring physical presence at a facility before granting any level of system access" },
     answer: "B", tier: "free"
   },
   {
@@ -205,7 +205,7 @@ export const questions: Question[] = [
   {
     id: "Q032", domain: 1, exam: "Original",
     question: "A security administrator implements mandatory access control. Which of the following BEST describes this model?",
-    options: { A: "Resource owners assign permissions", B: "Access is based on job roles", C: "Access is based on security labels assigned by the system", D: "Users can delegate their access to others" },
+    options: { A: "Resource owners individually assign and manage permissions for their own data", B: "Access is based on job roles defined and managed by system administrators", C: "Access is based on security labels assigned by the system", D: "Users can delegate or transfer their own access rights to other individuals" },
     answer: "C", tier: "locked"
   },
   {
@@ -223,7 +223,7 @@ export const questions: Question[] = [
   {
     id: "Q035", domain: 1, exam: "Original",
     question: "Which of the following BEST describes tokenization?",
-    options: { A: "Encrypting data with a symmetric key", B: "Replacing sensitive data with a non-sensitive placeholder", C: "Hashing data to verify integrity", D: "Adding random data to a hash" },
+    options: { A: "Encrypting data with a symmetric key so only authorized parties can read it", B: "Replacing sensitive data with a non-sensitive placeholder", C: "Applying a one-way hash function to data to verify its integrity after transmission", D: "Adding a random salt value to data before hashing to prevent rainbow table attacks" },
     answer: "B", tier: "locked"
   },
   {
@@ -247,7 +247,7 @@ export const questions: Question[] = [
   {
     id: "Q039", domain: 1, exam: "Original",
     question: "Which of the following BEST describes the purpose of a digital signature?",
-    options: { A: "Encrypting data for confidentiality", B: "Verifying the identity of the sender and ensuring message integrity", C: "Storing encryption keys securely", D: "Providing anonymity during communication" },
+    options: { A: "Encrypting message content using the recipient's public key to ensure confidentiality", B: "Verifying the identity of the sender and ensuring message integrity", C: "Storing private encryption keys securely within a hardware security module", D: "Providing sender anonymity so recipients cannot identify the message origin" },
     answer: "B", tier: "locked"
   },
   {
@@ -283,7 +283,7 @@ export const questions: Question[] = [
   {
     id: "Q045", domain: 1, exam: "Original",
     question: "Which of the following BEST describes a certificate revocation list?",
-    options: { A: "A list of trusted certificate authorities", B: "A list of certificates that have been invalidated before expiration", C: "A database of public encryption keys", D: "A log of certificate signing requests" },
+    options: { A: "A list of certificate authorities trusted by browsers and operating systems", B: "A list of certificates that have been invalidated before expiration", C: "A centralized repository storing the public keys of all enrolled PKI users", D: "A historical log of all certificate signing requests submitted to the CA" },
     answer: "B", tier: "locked"
   },
   {
@@ -301,13 +301,13 @@ export const questions: Question[] = [
   {
     id: "Q048", domain: 1, exam: "Original",
     question: "An organization deploys an HSM to manage encryption keys. Which security benefit does this PRIMARILY provide?",
-    options: { A: "Faster encryption processing", B: "Secure storage and management of cryptographic keys", C: "Automatic certificate renewal", D: "Network traffic encryption" },
+    options: { A: "Accelerating bulk encryption operations using dedicated hardware processors", B: "Secure storage and management of cryptographic keys", C: "Automatically renewing certificates before they expire without administrator intervention", D: "Encrypting all inbound and outbound network traffic at the perimeter" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q049", domain: 1, exam: "Original",
     question: "Which of the following BEST describes key escrow?",
-    options: { A: "Sharing encryption keys with business partners", B: "Storing a copy of encryption keys with a trusted third party", C: "Encrypting keys before transmission", D: "Rotating encryption keys on a schedule" },
+    options: { A: "Sharing encryption keys directly with authorized business partners for collaborative decryption", B: "Storing a copy of encryption keys with a trusted third party", C: "Wrapping encryption keys with another key before transmitting them to a remote recipient", D: "Automatically rotating encryption keys on a defined schedule to limit exposure windows" },
     answer: "B", tier: "locked"
   },
   {
@@ -319,13 +319,13 @@ export const questions: Question[] = [
   {
     id: "Q051", domain: 1, exam: "Original",
     question: "Which of the following is the PRIMARY purpose of a TPM?",
-    options: { A: "Providing network encryption", B: "Storing cryptographic keys and enabling hardware-based security", C: "Managing user authentication", D: "Monitoring system performance" },
+    options: { A: "Providing transparent encryption for all network traffic leaving the device", B: "Storing cryptographic keys and enabling hardware-based security", C: "Managing multi-factor user authentication through software-based credential verification", D: "Collecting and reporting real-time performance metrics to a central management console" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q052", domain: 1, exam: "Original",
     question: "An administrator implements ABAC. Which of the following BEST describes this model?",
-    options: { A: "Access based on user job titles", B: "Access based on attributes of users, resources, and environment", C: "Access based on security clearance levels", D: "Access based on resource owner decisions" },
+    options: { A: "Access granted based solely on a user's job title within the organizational hierarchy", B: "Access based on attributes of users, resources, and environment", C: "Access determined by government-assigned security clearance levels and need-to-know rules", D: "Access permissions set at the discretion of individual resource owners for their own assets" },
     answer: "B", tier: "locked"
   },
   {
@@ -343,7 +343,7 @@ export const questions: Question[] = [
   {
     id: "Q055", domain: 1, exam: "Original",
     question: "Which of the following BEST describes the purpose of OCSP?",
-    options: { A: "Encrypting certificate data during transmission", B: "Checking the revocation status of a digital certificate in real time", C: "Distributing root certificates to clients", D: "Managing certificate renewal requests" },
+    options: { A: "Encrypting the full certificate payload when transmitting between PKI entities", B: "Checking the revocation status of a digital certificate in real time", C: "Automatically distributing trusted root CA certificates to all enrolled client devices", D: "Managing and tracking pending certificate renewal requests submitted to the CA" },
     answer: "B", tier: "locked"
   },
   {
@@ -355,19 +355,19 @@ export const questions: Question[] = [
   {
     id: "Q057", domain: 1, exam: "Original",
     question: "Which of the following BEST describes a wildcard certificate?",
-    options: { A: "A certificate valid for a single domain only", B: "A certificate that secures a domain and all its subdomains", C: "A certificate issued by multiple CAs", D: "A certificate used for code signing" },
+    options: { A: "A certificate bound to exactly one fully qualified domain name with no subdomain coverage", B: "A certificate that secures a domain and all its subdomains", C: "A certificate jointly issued and signed by two or more certificate authorities simultaneously", D: "A certificate specifically designed to authenticate the publisher of software executables" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q058", domain: 1, exam: "Original",
     question: "An organization wants to implement SSO for all internal applications. Which PRIMARY benefit does this provide?",
-    options: { A: "Stronger password requirements", B: "Reduced password fatigue and improved user experience", C: "Elimination of the need for MFA", D: "Automatic account provisioning" },
+    options: { A: "Enforcing stronger password length and complexity requirements across all applications", B: "Reduced password fatigue and improved user experience", C: "Complete elimination of the need for multi-factor authentication across the enterprise", D: "Automatically provisioning new user accounts when employees join the organization" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q059", domain: 1, exam: "Original",
     question: "Which of the following BEST describes federation in identity management?",
-    options: { A: "Requiring users to authenticate multiple times", B: "Allowing users to use credentials from one organization to access resources in another", C: "Synchronizing passwords across multiple systems", D: "Centralizing all user accounts in a single directory" },
+    options: { A: "Requiring users to re-authenticate at each application boundary regardless of prior session state", B: "Allowing users to use credentials from one organization to access resources in another", C: "Synchronizing password hashes across multiple identity directories to keep credentials consistent", D: "Migrating and centralizing all user accounts from distributed systems into one identity store" },
     answer: "B", tier: "locked"
   },
 
@@ -377,7 +377,7 @@ export const questions: Question[] = [
   {
     id: "Q060", domain: 2, exam: "Original",
     question: "An attacker sends an email pretending to be from the CEO asking an employee to wire funds immediately. Which type of attack is this?",
-    options: { A: "Smishing", B: "Vishing", C: "Business email compromise", D: "Watering hole" },
+    options: { A: "A text message-based phishing attack targeting victims via SMS on mobile devices", B: "A voice-based phishing attack where the attacker calls the victim over the phone", C: "Business email compromise", D: "An attack that compromises a website frequently visited by a specific target group" },
     answer: "C", tier: "locked"
   },
   {
@@ -431,7 +431,7 @@ export const questions: Question[] = [
   {
     id: "Q069", domain: 2, exam: "Original",
     question: "Which of the following BEST describes ransomware?",
-    options: { A: "Malware that secretly records keystrokes", B: "Malware that encrypts victim files and demands payment for decryption", C: "Malware that hijacks browser settings", D: "Malware that uses victim resources for cryptocurrency mining" },
+    options: { A: "Malware that silently records every keystroke to harvest credentials and sensitive data", B: "Malware that encrypts victim files and demands payment for decryption", C: "Malware that modifies browser settings and redirects traffic to attacker-controlled sites", D: "Malware that secretly consumes victim CPU and GPU resources to mine cryptocurrency for the attacker" },
     answer: "B", tier: "locked"
   },
   {
@@ -449,7 +449,7 @@ export const questions: Question[] = [
   {
     id: "Q072", domain: 2, exam: "Original",
     question: "A security scan reveals a critical vulnerability in a legacy system that cannot be patched. Which is the BEST mitigation?",
-    options: { A: "Ignore the vulnerability", B: "Implement network segmentation to isolate the system", C: "Increase password complexity on the system", D: "Enable full disk encryption" },
+    options: { A: "Accept the vulnerability and document it as an approved exception in the risk register", B: "Implement network segmentation to isolate the system", C: "Increase password complexity requirements and enforce account lockout on the legacy system", D: "Enable full disk encryption on the legacy system to protect data stored locally" },
     answer: "B", tier: "locked"
   },
   {
@@ -473,7 +473,7 @@ export const questions: Question[] = [
   {
     id: "Q076", domain: 2, exam: "Original",
     question: "Which of the following BEST describes a man-in-the-middle attack?",
-    options: { A: "Flooding a system with excessive requests", B: "Intercepting and potentially altering communications between two parties", C: "Injecting malicious code into a web application", D: "Cracking password hashes offline" },
+    options: { A: "Flooding a target system with excessive requests to exhaust its resources and deny service", B: "Intercepting and potentially altering communications between two parties", C: "Injecting malicious client-side scripts into a web application viewed by other users", D: "Performing offline dictionary or brute-force attacks against captured password hashes" },
     answer: "B", tier: "locked"
   },
   {
@@ -485,7 +485,7 @@ export const questions: Question[] = [
   {
     id: "Q078", domain: 2, exam: "Original",
     question: "Which of the following BEST describes a buffer overflow attack?",
-    options: { A: "Sending more data than a buffer can handle to overwrite adjacent memory", B: "Flooding a network with more traffic than it can process", C: "Injecting malicious SQL into a database query", D: "Intercepting unencrypted network traffic" },
+    options: { A: "Sending more data than a buffer can handle to overwrite adjacent memory", B: "Flooding a network with more traffic than its bandwidth can process to cause unavailability", C: "Injecting crafted SQL statements into an input field to manipulate a backend database query", D: "Capturing and reading unencrypted data packets traversing the network with a protocol analyzer" },
     answer: "A", tier: "locked"
   },
   {
@@ -509,7 +509,7 @@ export const questions: Question[] = [
   {
     id: "Q082", domain: 2, exam: "Original",
     question: "Which of the following BEST describes SQL injection?",
-    options: { A: "Inserting malicious HTML into a web page", B: "Injecting malicious SQL commands into an application's database query", C: "Flooding a database server with connection requests", D: "Stealing database backup files" },
+    options: { A: "Inserting malicious HTML or JavaScript into a web page that other users view and execute", B: "Injecting malicious SQL commands into an application's database query", C: "Flooding a database server with excessive connection requests to exhaust available resources", D: "Gaining unauthorized access to unprotected backup files that contain exported database contents" },
     answer: "B", tier: "locked"
   },
   {
@@ -521,7 +521,7 @@ export const questions: Question[] = [
   {
     id: "Q084", domain: 2, exam: "Original",
     question: "Which of the following BEST describes a trojan horse?",
-    options: { A: "Malware that replicates itself across networks", B: "Malware disguised as legitimate software that performs malicious actions", C: "Malware that encrypts files for ransom", D: "Malware that records user activity" },
+    options: { A: "Malware that autonomously replicates across network shares and connected devices without user interaction", B: "Malware disguised as legitimate software that performs malicious actions", C: "Malware that encrypts victim files and demands payment before providing the decryption key", D: "Malware that silently records user activity, keystrokes, and screenshots for exfiltration" },
     answer: "B", tier: "locked"
   },
   {
@@ -533,7 +533,7 @@ export const questions: Question[] = [
   {
     id: "Q086", domain: 2, exam: "Original",
     question: "Which of the following BEST describes a botnet?",
-    options: { A: "A network of security cameras", B: "A collection of compromised devices controlled by an attacker", C: "An automated vulnerability scanning system", D: "A network of honeypots designed to trap attackers" },
+    options: { A: "A network of IP-connected cameras centrally monitored by a physical security team", B: "A collection of compromised devices controlled by an attacker", C: "An automated system that continuously scans networks and hosts for known vulnerabilities", D: "A coordinated set of honeypots deployed across the network to detect and study attackers" },
     answer: "B", tier: "locked"
   },
   {
@@ -551,7 +551,7 @@ export const questions: Question[] = [
   {
     id: "Q089", domain: 2, exam: "Original",
     question: "Which of the following BEST describes a replay attack?",
-    options: { A: "Capturing and retransmitting valid network transmissions to gain unauthorized access", B: "Replaying recorded audio to bypass voice authentication", C: "Resending the same phishing email multiple times", D: "Repeating password attempts until one succeeds" },
+    options: { A: "Capturing and retransmitting valid network transmissions to gain unauthorized access", B: "Recording and replaying a victim's voice sample to trick a voice-based biometric system", C: "Resending the same crafted phishing email to many recipients to maximize the chance of success", D: "Repeatedly submitting password guesses against a login form until the correct one is accepted" },
     answer: "A", tier: "locked"
   },
   {
@@ -581,13 +581,13 @@ export const questions: Question[] = [
   {
     id: "Q094", domain: 2, exam: "Original",
     question: "An attacker uses multiple systems to overwhelm a target web server making it unavailable. Which attack is this?",
-    options: { A: "SQL injection", B: "Cross-site scripting", C: "Distributed denial of service", D: "Session hijacking" },
+    options: { A: "An attack that injects malicious SQL statements into input fields to manipulate a database", B: "An attack that embeds malicious scripts into web pages executed by other users' browsers", C: "Distributed denial of service", D: "An attack that steals or forges a session token to impersonate an authenticated user" },
     answer: "C", tier: "locked"
   },
   {
     id: "Q095", domain: 2, exam: "Original",
     question: "Which of the following BEST describes credential stuffing?",
-    options: { A: "Creating fake credentials to bypass authentication", B: "Using stolen username and password pairs from data breaches on other sites", C: "Guessing passwords through automation", D: "Intercepting credentials from network traffic" },
+    options: { A: "Creating synthetic fake credentials designed to bypass authentication controls entirely", B: "Using stolen username and password pairs from data breaches to gain access", C: "Automatically guessing passwords by systematically trying all possible character combinations", D: "Intercepting plaintext credentials transmitted over unencrypted network protocols" },
     answer: "B", tier: "locked"
   },
   {
@@ -599,7 +599,7 @@ export const questions: Question[] = [
   {
     id: "Q097", domain: 2, exam: "Original",
     question: "Which of the following BEST describes a cross-site request forgery (CSRF) attack?",
-    options: { A: "Injecting malicious scripts into web pages", B: "Tricking authenticated users into submitting unauthorized requests", C: "Intercepting web session cookies", D: "Bypassing web application firewalls" },
+    options: { A: "Injecting malicious client-side scripts into web pages that execute in other users' browsers", B: "Tricking authenticated users into submitting unauthorized requests", C: "Intercepting and stealing session cookies from network traffic to hijack active sessions", D: "Crafting requests with obfuscated payloads specifically designed to evade web application firewalls" },
     answer: "B", tier: "locked"
   },
   {
@@ -611,19 +611,19 @@ export const questions: Question[] = [
   {
     id: "Q099", domain: 2, exam: "Original",
     question: "Which of the following BEST describes a spear phishing attack?",
-    options: { A: "Bulk phishing emails sent to thousands of users", B: "Highly targeted phishing aimed at specific individuals using personalized information", C: "Phone-based phishing attacks", D: "SMS-based phishing attacks" },
+    options: { A: "Mass phishing emails sent broadly to thousands of recipients with generic lure content", B: "Highly targeted phishing aimed at specific individuals using personalized content", C: "Phone call-based social engineering attacks designed to extract sensitive information verbally", D: "Text message-based phishing attacks sent to victims' mobile phones via SMS" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q100", domain: 2, exam: "Original",
     question: "A malicious actor gains access to a network and remains undetected for months gathering intelligence. Which threat type is this?",
-    options: { A: "Botnet", B: "Ransomware", C: "Advanced persistent threat", D: "Rootkit" },
+    options: { A: "A network of compromised devices coordinated by an attacker to perform large-scale attacks", B: "Malware that encrypts victim files and demands payment before providing a decryption key", C: "Advanced persistent threat", D: "Malware that hides its presence by modifying core operating system components" },
     answer: "C", tier: "locked"
   },
   {
     id: "Q101", domain: 2, exam: "Original",
     question: "Which of the following is the BEST way to protect against phishing attacks?",
-    options: { A: "Firewall rules", B: "User security awareness training", C: "Full disk encryption", D: "Network segmentation" },
+    options: { A: "Configuring firewall rules to block known malicious IP addresses and phishing domains", B: "User security awareness training", C: "Deploying full disk encryption to protect data if a phishing attack leads to device theft", D: "Using network segmentation to limit the blast radius of a successful phishing compromise" },
     answer: "B", tier: "locked"
   },
   {
@@ -653,7 +653,7 @@ export const questions: Question[] = [
   {
     id: "Q106", domain: 2, exam: "Original",
     question: "Which of the following BEST describes privilege escalation?",
-    options: { A: "An attacker gains initial access to a system", B: "An attacker gains higher levels of access than originally authorized", C: "An attacker moves laterally across a network", D: "An attacker establishes persistence on a system" },
+    options: { A: "An attacker exploits a vulnerability to gain their very first foothold on a target system", B: "An attacker gains higher levels of access than originally authorized", C: "An attacker uses compromised credentials to move between systems within the same network", D: "An attacker installs backdoors or scheduled tasks to maintain access after initial compromise" },
     answer: "B", tier: "locked"
   },
   {
@@ -677,7 +677,7 @@ export const questions: Question[] = [
   {
     id: "Q110", domain: 2, exam: "Original",
     question: "Which of the following BEST describes an indicator of compromise (IOC)?",
-    options: { A: "A known vulnerability in software", B: "Evidence that a system or network has been compromised", C: "A security policy violation by an employee", D: "A failed authentication attempt" },
+    options: { A: "A documented security weakness in software awaiting a vendor-supplied patch or workaround", B: "Evidence that a system or network has been compromised", C: "A recorded instance of an employee violating an acceptable use or security policy", D: "A single failed authentication attempt logged by an access control or identity system" },
     answer: "B", tier: "locked"
   },
   {
@@ -705,7 +705,7 @@ export const questions: Question[] = [
   {
     id: "Q114", domain: 3, exam: "Original",
     question: "Which of the following BEST describes a screened subnet?",
-    options: { A: "A subnet used only for administrative access", B: "A network segment between the internet and internal network hosting public-facing services", C: "A subnet with no internet connectivity", D: "A network segment dedicated to wireless devices" },
+    options: { A: "A dedicated subnet reserved exclusively for privileged administrative management traffic", B: "A network segment between the internet and internal network for hosting public services", C: "An isolated subnet with no outbound internet connectivity used for sensitive internal systems", D: "A network segment dedicated to wireless access points and their associated client devices" },
     answer: "B", tier: "locked"
   },
   {
@@ -729,7 +729,7 @@ export const questions: Question[] = [
   {
     id: "Q118", domain: 3, exam: "Original",
     question: "Which of the following BEST describes infrastructure as code?",
-    options: { A: "Writing custom security policies in programming languages", B: "Managing and provisioning infrastructure through machine-readable configuration files", C: "Embedding security controls into application code", D: "Using code to encrypt infrastructure components" },
+    options: { A: "Writing security policies and compliance rules using scripting or programming languages", B: "Managing and provisioning infrastructure through machine-readable configuration files", C: "Embedding security validation logic and controls directly into application source code", D: "Using scripts to automatically encrypt storage volumes and network components at deployment" },
     answer: "B", tier: "locked"
   },
   {
@@ -741,7 +741,7 @@ export const questions: Question[] = [
   {
     id: "Q120", domain: 3, exam: "Original",
     question: "Which of the following BEST describes a jump server?",
-    options: { A: "A server that handles load balancing", B: "A hardened system used to access devices in separate security zones", C: "A server that processes VPN connections", D: "A backup server that activates during failures" },
+    options: { A: "A server that distributes incoming client requests across multiple backend application servers", B: "A hardened system used to access devices in separate security zones", C: "A dedicated server that terminates and manages encrypted VPN tunnels for remote users", D: "A standby server kept in reserve that takes over automatically when the primary server fails" },
     answer: "B", tier: "locked"
   },
   {
@@ -753,7 +753,7 @@ export const questions: Question[] = [
   {
     id: "Q122", domain: 3, exam: "Original",
     question: "Which of the following BEST describes an air gap?",
-    options: { A: "Physical space between server racks", B: "Complete physical isolation of a system from all external networks", C: "Distance between access points in wireless networks", D: "Space between security zones in a firewall" },
+    options: { A: "The required physical clearance space between server rack rows for cooling and maintenance access", B: "Complete physical isolation of a system from all external networks", C: "The minimum required distance between wireless access points to reduce co-channel interference", D: "A logical separation between firewall security zones enforced by policy-based access rules" },
     answer: "B", tier: "locked"
   },
   {
@@ -765,31 +765,31 @@ export const questions: Question[] = [
   {
     id: "Q124", domain: 3, exam: "Original",
     question: "Which of the following BEST describes software-defined networking (SDN)?",
-    options: { A: "Using software to encrypt network traffic", B: "Separating the network control plane from the data plane for centralized management", C: "Defining security policies in software rather than hardware", D: "Using virtual machines instead of physical network devices" },
+    options: { A: "Applying software-defined encryption to all traffic flowing between network segments", B: "Separating the network control plane from the data plane for centralized management", C: "Defining and enforcing network security policies entirely through software without hardware appliances", D: "Replacing physical routers and switches with virtual network appliances running on hypervisors" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q125", domain: 3, exam: "Original",
     question: "A company wants to create an isolated network for testing malware without risking production systems. Which approach should be used?",
-    options: { A: "DMZ", B: "Sandbox environment", C: "Honeypot", D: "Virtual LAN" },
+    options: { A: "A screened subnet that exposes limited services to the internet while shielding internal systems", B: "Sandbox environment", C: "A decoy system designed to attract and monitor attackers without running real malware", D: "A logically segmented network partition that isolates traffic using 802.1Q tagging" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q126", domain: 3, exam: "Original",
     question: "Which of the following BEST describes the shared responsibility model in cloud computing?",
-    options: { A: "Both cloud provider and customer share equal costs", B: "Security responsibilities are divided between the cloud provider and the customer", C: "The cloud provider is responsible for all security", D: "The customer is responsible for all security" },
+    options: { A: "Cloud provider and customer split all infrastructure and operational costs equally between them", B: "Security responsibilities are divided between the cloud provider and the customer", C: "The cloud provider assumes full responsibility for every security control across all service layers", D: "The customer retains complete ownership and accountability for every aspect of cloud security" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q127", domain: 3, exam: "Original",
     question: "An organization deploys a next-generation firewall. Which capability does this provide beyond traditional firewalls?",
-    options: { A: "Basic packet filtering", B: "Application-layer inspection and user identity awareness", C: "Simple port-based filtering", D: "MAC address filtering" },
+    options: { A: "Stateless packet filtering using source and destination IP addresses only", B: "Application-layer inspection and user identity awareness", C: "Port-based filtering allowing or blocking traffic by protocol and port number", D: "Layer 2 filtering based on device hardware addresses to control switch port access" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q128", domain: 3, exam: "Original",
     question: "Which of the following BEST describes a proxy server?",
-    options: { A: "A server that assigns IP addresses", B: "An intermediary that forwards requests between clients and servers", C: "A server that resolves domain names", D: "A server that stores backup data" },
+    options: { A: "A server that dynamically assigns IP addresses and network configuration to clients", B: "An intermediary that forwards requests between clients and servers", C: "A server that translates human-readable domain names into numeric IP addresses", D: "A server that maintains replicated copies of data for recovery and redundancy" },
     answer: "B", tier: "locked"
   },
   {
@@ -807,7 +807,7 @@ export const questions: Question[] = [
   {
     id: "Q131", domain: 3, exam: "Original",
     question: "An organization wants to ensure communications between remote sites are encrypted. Which technology should be implemented?",
-    options: { A: "VLAN", B: "NAT", C: "Site-to-site VPN", D: "Proxy server" },
+    options: { A: "Remote access VPN", B: "IPsec transport mode", C: "Site-to-site VPN", D: "SSL VPN gateway" },
     answer: "C", tier: "locked"
   },
   {
@@ -825,13 +825,13 @@ export const questions: Question[] = [
   {
     id: "Q134", domain: 3, exam: "Original",
     question: "Which of the following BEST describes network access control (NAC)?",
-    options: { A: "Controlling access to cloud resources", B: "Enforcing security policies on devices before allowing network access", C: "Managing user permissions on network shares", D: "Filtering network traffic based on IP addresses" },
+    options: { A: "Restricting and auditing access to cloud-hosted applications based on user identity", B: "Enforcing security policies on devices before allowing network access", C: "Controlling file and folder permissions assigned to users on shared network storage", D: "Inspecting and controlling traffic flows based on source and destination IP address rules" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q135", domain: 3, exam: "Original",
     question: "An organization deploys systems that appear vulnerable to attract attackers and gather intelligence. Which technology is being used?",
-    options: { A: "IDS", B: "Honeypot", C: "Sandbox", D: "DMZ" },
+    options: { A: "Sinkhole", B: "Honeypot", C: "Tarpit", D: "Darknet" },
     answer: "B", tier: "locked"
   },
   {
@@ -843,19 +843,19 @@ export const questions: Question[] = [
   {
     id: "Q137", domain: 3, exam: "Original",
     question: "A company wants to ensure its website remains available even during hardware failures. Which approach provides the BEST availability?",
-    options: { A: "Data encryption", B: "Redundant systems with automatic failover", C: "Regular vulnerability scanning", D: "Security awareness training" },
+    options: { A: "Data encryption at rest using AES-256 to protect stored content", B: "Redundant systems with automatic failover", C: "Scheduled vulnerability scanning to identify weaknesses before exploitation", D: "Employee awareness training to reduce human error and social engineering risk" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q138", domain: 3, exam: "Original",
     question: "Which of the following BEST describes the purpose of network segmentation?",
-    options: { A: "Increasing network speed", B: "Limiting the spread of attacks by dividing the network into zones", C: "Reducing the number of IP addresses needed", D: "Simplifying network management" },
+    options: { A: "Improving throughput by reducing broadcast domain collision and congestion overhead", B: "Limiting the spread of attacks by dividing the network into zones", C: "Reducing public IP address consumption by using private addressing with NAT", D: "Simplifying administration by consolidating all devices onto a single flat network" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q139", domain: 3, exam: "Original",
     question: "An organization wants to ensure IoT devices on its network cannot communicate with corporate systems. Which control is MOST effective?",
-    options: { A: "Updating IoT device firmware", B: "Placing IoT devices on a separate VLAN with firewall restrictions", C: "Installing antivirus on IoT devices", D: "Requiring authentication for all IoT devices" },
+    options: { A: "Applying vendor firmware updates to address known IoT device vulnerabilities", B: "Placing IoT devices on a separate VLAN with firewall restrictions", C: "Deploying endpoint protection software on IoT devices to scan for malware activity", D: "Requiring certificate-based authentication before any IoT device joins the network" },
     answer: "B", tier: "locked"
   },
   {
@@ -879,7 +879,7 @@ export const questions: Question[] = [
   {
     id: "Q143", domain: 3, exam: "Original",
     question: "Which of the following BEST describes the purpose of a CASB?",
-    options: { A: "Providing secure remote access to corporate networks", B: "Enforcing security policies between cloud service users and providers", C: "Managing certificates for cloud applications", D: "Monitoring on-premises network traffic" },
+    options: { A: "Providing encrypted remote access tunnels for users connecting to corporate infrastructure", B: "Enforcing security policies between cloud service users and providers", C: "Issuing and renewing TLS certificates for externally facing cloud-hosted applications", D: "Capturing and analyzing traffic on internal network segments for anomaly detection" },
     answer: "B", tier: "locked"
   },
   {
@@ -927,19 +927,19 @@ export const questions: Question[] = [
   {
     id: "Q151", domain: 3, exam: "Original",
     question: "Which of the following BEST describes geographic dispersal in business continuity?",
-    options: { A: "Distributing marketing materials across regions", B: "Placing redundant systems in different physical locations to survive regional disasters", C: "Hiring employees in multiple geographic locations", D: "Maintaining data centers in different time zones" },
+    options: { A: "Distributing operational workload across regional teams to improve business responsiveness", B: "Placing redundant systems in different physical locations to survive regional disasters", C: "Recruiting staff across multiple countries to reduce workforce concentration risk", D: "Operating data centers across time zones to provide follow-the-sun support coverage" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q152", domain: 3, exam: "Original",
     question: "An organization implements a solution that allows users to access applications without a traditional VPN. Which technology is this?",
-    options: { A: "CASB", B: "Zero trust network access", C: "SDN", D: "NAC" },
+    options: { A: "Cloud access security broker", B: "Zero trust network access", C: "Secure access service edge", D: "Network access control" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q153", domain: 3, exam: "Original",
     question: "Which of the following BEST describes a warm site?",
-    options: { A: "A fully operational backup site", B: "A site with some equipment that requires configuration before use", C: "A site with only basic power and connectivity", D: "A mobile backup facility" },
+    options: { A: "A fully operational backup site with live data replication ready for immediate failover", B: "A site with some equipment that requires configuration before use", C: "A site with only basic power and connectivity but no equipment pre-installed", D: "A trailer-mounted portable recovery unit that can be deployed at any location" },
     answer: "B", tier: "locked"
   },
   {
@@ -951,7 +951,7 @@ export const questions: Question[] = [
   {
     id: "Q155", domain: 3, exam: "Original",
     question: "Which of the following BEST describes the purpose of network address translation (NAT)?",
-    options: { A: "Encrypting network communications", B: "Translating private IP addresses to public addresses for internet access", C: "Filtering network traffic based on ports", D: "Assigning IP addresses to network devices" },
+    options: { A: "Encrypting all traffic between endpoints using symmetric keys negotiated at session start", B: "Translating private IP addresses to public addresses for internet access", C: "Filtering inbound and outbound traffic based on configured port and protocol rules", D: "Dynamically assigning addresses and network configuration to connecting client devices" },
     answer: "B", tier: "locked"
   },
   {
@@ -963,7 +963,7 @@ export const questions: Question[] = [
   {
     id: "Q157", domain: 3, exam: "Original",
     question: "Which of the following BEST describes serverless computing?",
-    options: { A: "Computing without any servers", B: "A model where the cloud provider manages server infrastructure and scales automatically", C: "Computing using only virtual machines", D: "A model where customers manage all server resources" },
+    options: { A: "A deployment model eliminating the need for any underlying compute or storage resources", B: "A model where the cloud provider manages server infrastructure and scales automatically", C: "A model that exclusively uses virtual machines provisioned and managed by the customer", D: "A model where customers retain full ownership and control over all server-side resources" },
     answer: "B", tier: "locked"
   },
 
@@ -973,7 +973,7 @@ export const questions: Question[] = [
   {
     id: "Q158", domain: 4, exam: "Original",
     question: "A security analyst discovers a system sending large amounts of data to an external IP address at unusual hours. Which is the FIRST step in incident response?",
-    options: { A: "Eradication", B: "Recovery", C: "Identification and containment", D: "Lessons learned" },
+    options: { A: "Threat eradication and cleanup", B: "System recovery and restoration", C: "Identification and containment", D: "Post-incident lessons review" },
     answer: "C", tier: "locked"
   },
   {
@@ -1015,19 +1015,19 @@ export const questions: Question[] = [
   {
     id: "Q165", domain: 4, exam: "Original",
     question: "Which of the following BEST describes patch management?",
-    options: { A: "Repairing physical damage to network cables", B: "The process of identifying, acquiring, testing, and installing software updates", C: "Managing firewall rule changes", D: "Documenting network topology changes" },
+    options: { A: "Repairing hardware faults and replacing damaged components in the IT infrastructure", B: "The process of identifying, acquiring, testing, and installing software updates", C: "Reviewing and approving changes to firewall rules through a formal change control board", D: "Recording and maintaining current diagrams of all network device interconnections" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q166", domain: 4, exam: "Original",
     question: "A forensic investigator creates an exact copy of a hard drive before analysis. What is this called?",
-    options: { A: "Backup", B: "Clone", C: "Forensic image", D: "Archive" },
+    options: { A: "Differential backup", B: "Verified clone", C: "Forensic image", D: "Encrypted archive" },
     answer: "C", tier: "locked"
   },
   {
     id: "Q167", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of a SOC?",
-    options: { A: "Developing security policies", B: "Monitoring, detecting, and responding to security incidents in real time", C: "Managing user accounts and permissions", D: "Conducting penetration tests" },
+    options: { A: "Drafting and maintaining the organization's information security policies and procedures", B: "Monitoring, detecting, and responding to security incidents in real time", C: "Provisioning, modifying, and revoking user accounts and their associated permissions", D: "Simulating adversary attacks to identify exploitable vulnerabilities in production systems" },
     answer: "B", tier: "locked"
   },
   {
@@ -1051,7 +1051,7 @@ export const questions: Question[] = [
   {
     id: "Q171", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of log aggregation?",
-    options: { A: "Compressing log files to save storage space", B: "Collecting logs from multiple sources into a central location for analysis", C: "Encrypting log files to prevent tampering", D: "Automatically deleting old log files" },
+    options: { A: "Reducing the size of log files using compression algorithms to conserve storage capacity", B: "Collecting logs from multiple sources into a central location for analysis", C: "Applying cryptographic signatures to log entries to ensure they have not been modified", D: "Automatically purging log entries that exceed the configured retention period" },
     answer: "B", tier: "locked"
   },
   {
@@ -1063,7 +1063,7 @@ export const questions: Question[] = [
   {
     id: "Q173", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the eradication phase of incident response?",
-    options: { A: "Detecting and acknowledging the incident", B: "Removing malware and closing attack vectors after containment", C: "Restoring systems to normal operation", D: "Documenting lessons learned" },
+    options: { A: "Detecting suspicious activity and formally acknowledging that an incident has occurred", B: "Removing malware and closing attack vectors after containment", C: "Rebuilding and returning affected systems to normal production operation", D: "Reviewing the incident to identify improvements for future response capabilities" },
     answer: "B", tier: "locked"
   },
   {
@@ -1087,7 +1087,7 @@ export const questions: Question[] = [
   {
     id: "Q177", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the concept of least functionality?",
-    options: { A: "Granting users minimal permissions", B: "Configuring systems to provide only necessary functions and no others", C: "Using the simplest security controls available", D: "Minimizing the number of security tools deployed" },
+    options: { A: "Granting users only the permissions required to perform their assigned job functions", B: "Configuring systems to provide only necessary functions and no others", C: "Selecting the least complex security controls to reduce operational overhead", D: "Reducing the number of deployed security tools to streamline the security stack" },
     answer: "B", tier: "locked"
   },
   {
@@ -1099,7 +1099,7 @@ export const questions: Question[] = [
   {
     id: "Q179", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of network flow analysis?",
-    options: { A: "Capturing and analyzing full packet contents", B: "Analyzing metadata about network connections to identify anomalies", C: "Monitoring bandwidth utilization", D: "Filtering network traffic based on rules" },
+    options: { A: "Capturing and deep-inspecting full packet payloads to reconstruct application sessions", B: "Analyzing metadata about network connections to identify anomalies", C: "Measuring throughput and utilization across links to support capacity planning", D: "Applying stateful inspection rules to permit or deny traffic flows at the perimeter" },
     answer: "B", tier: "locked"
   },
   {
@@ -1111,7 +1111,7 @@ export const questions: Question[] = [
   {
     id: "Q181", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of a runbook in security operations?",
-    options: { A: "Documentation of security policies", B: "Step-by-step procedures for handling specific security events", C: "A log of all security incidents", D: "A schedule for security team rotations" },
+    options: { A: "High-level documentation describing the organization's overall security requirements and intent", B: "Step-by-step procedures for handling specific security events", C: "A historical record of all detected and reported security incidents and their outcomes", D: "A rotating schedule defining on-call assignments and shift coverage for the security team" },
     answer: "B", tier: "locked"
   },
   {
@@ -1123,7 +1123,7 @@ export const questions: Question[] = [
   {
     id: "Q183", domain: 4, exam: "Original",
     question: "Which of the following BEST describes a penetration test?",
-    options: { A: "Scanning systems for known vulnerabilities", B: "Authorized simulation of attacks to identify exploitable vulnerabilities", C: "Reviewing security policies for compliance", D: "Monitoring network traffic for anomalies" },
+    options: { A: "Running automated scans to enumerate known vulnerabilities across systems and applications", B: "Authorized simulation of attacks to identify exploitable vulnerabilities", C: "Auditing security policies and configurations against a compliance framework standard", D: "Passively capturing and analyzing network traffic flows to detect unusual patterns" },
     answer: "B", tier: "locked"
   },
   {
@@ -1135,7 +1135,7 @@ export const questions: Question[] = [
   {
     id: "Q185", domain: 4, exam: "Original",
     question: "Which of the following BEST describes identity and access management (IAM)?",
-    options: { A: "Managing physical access to facilities", B: "Policies and technologies for managing digital identities and access rights", C: "Monitoring network access patterns", D: "Encrypting user credentials" },
+    options: { A: "Controlling physical entry to buildings and sensitive areas using badge and biometric systems", B: "Policies and technologies for managing digital identities and access rights", C: "Tracking and analyzing how users authenticate and access network resources over time", D: "Protecting stored and transmitted user credentials using hashing and encryption algorithms" },
     answer: "B", tier: "locked"
   },
   {
@@ -1177,19 +1177,19 @@ export const questions: Question[] = [
   {
     id: "Q192", domain: 4, exam: "Original",
     question: "An incident responder wants to preserve volatile data before powering off a compromised system. Which data should be captured FIRST?",
-    options: { A: "Hard drive contents", B: "Running processes and memory contents", C: "Log files", D: "Registry entries" },
+    options: { A: "Hard drive contents and file system artifacts", B: "Running processes and memory contents", C: "System and application log files", D: "Windows registry hive entries" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q193", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of a security audit?",
-    options: { A: "Testing systems for exploitable vulnerabilities", B: "Systematically evaluating security controls against established criteria", C: "Monitoring real-time network traffic", D: "Developing new security policies" },
+    options: { A: "Actively testing systems by simulating attacker techniques to find exploitable weaknesses", B: "Systematically evaluating security controls against established criteria", C: "Continuously inspecting live network traffic for indicators of compromise or policy violations", D: "Drafting and updating security policies to reflect new regulatory and business requirements" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q194", domain: 4, exam: "Original",
     question: "A company implements a system that automatically responds to detected threats without human intervention. Which capability does this represent?",
-    options: { A: "SIEM", B: "IDS", C: "Security orchestration and automated response", D: "Threat intelligence" },
+    options: { A: "Security information and event management", B: "Endpoint detection and response", C: "Security orchestration and automated response", D: "User and entity behavior analytics" },
     answer: "C", tier: "locked"
   },
   {
@@ -1201,13 +1201,13 @@ export const questions: Question[] = [
   {
     id: "Q196", domain: 4, exam: "Original",
     question: "An organization wants to reduce the time to detect security incidents. Which metric measures detection effectiveness?",
-    options: { A: "RTO", B: "MTTR", C: "Mean time to detect", D: "RPO" },
+    options: { A: "Recovery time objective", B: "Mean time between failures", C: "Mean time to detect", D: "Mean time to repair" },
     answer: "C", tier: "locked"
   },
   {
     id: "Q197", domain: 4, exam: "Original",
     question: "Which of the following BEST describes a credentialed vulnerability scan?",
-    options: { A: "A scan using administrator credentials to identify vulnerabilities from inside the system", B: "A scan that tests the strength of user credentials", C: "A scan that requires attacker credentials", D: "A scan authorized by management credentials" },
+    options: { A: "A scan using administrator credentials to identify vulnerabilities from inside the system", B: "An unauthenticated scan that tests password complexity and lockout policies externally", C: "A red team scan conducted from the perspective of a credential-holding threat actor", D: "A scan formally authorized and signed off by senior management before execution" },
     answer: "A", tier: "locked"
   },
   {
@@ -1219,13 +1219,13 @@ export const questions: Question[] = [
   {
     id: "Q199", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the recovery phase of incident response?",
-    options: { A: "Identifying the scope of the incident", B: "Removing malware from compromised systems", C: "Restoring systems to normal operations and verifying functionality", D: "Documenting what was learned from the incident" },
+    options: { A: "Identifying the full scope of compromised systems and establishing the incident timeline", B: "Removing malware and attacker footholds from all affected systems and endpoints", C: "Restoring systems to normal operations and verifying functionality", D: "Conducting a post-incident review and updating procedures to prevent recurrence" },
     answer: "C", tier: "locked"
   },
   {
     id: "Q200", domain: 4, exam: "Original",
     question: "An organization wants to ensure that software changes do not introduce new vulnerabilities. Which process should be implemented?",
-    options: { A: "Change management with security review", B: "Regular penetration testing", C: "Security awareness training", D: "Network segmentation" },
+    options: { A: "Change management with security review", B: "Scheduled penetration testing to identify vulnerabilities in existing production code", C: "Developer security awareness training to improve secure coding knowledge and practices", D: "Network segmentation to isolate development environments from production systems" },
     answer: "A", tier: "locked"
   },
   {
@@ -1237,7 +1237,7 @@ export const questions: Question[] = [
   {
     id: "Q202", domain: 4, exam: "Original",
     question: "A forensic analyst wants to verify that evidence has not been tampered with. Which technique should be used?",
-    options: { A: "Encryption", B: "Hashing to create a digital fingerprint", C: "Digital signatures", D: "Steganography" },
+    options: { A: "Asymmetric encryption to protect evidence files during transmission", B: "Hashing to create a digital fingerprint", C: "Digital signatures to authenticate the investigator's identity", D: "Steganographic watermarking to embed hidden metadata in the evidence file" },
     answer: "B", tier: "locked"
   },
   {
@@ -1255,7 +1255,7 @@ export const questions: Question[] = [
   {
     id: "Q205", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of threat modeling?",
-    options: { A: "Creating visual representations of network topology", B: "Identifying potential threats and vulnerabilities early in system design", C: "Developing models for predicting attack frequency", D: "Training security staff on threat awareness" },
+    options: { A: "Producing architectural diagrams that visualize current network topology and trust boundaries", B: "Identifying potential threats and vulnerabilities early in system design", C: "Building statistical models to forecast attack likelihood and predict breach frequency", D: "Delivering structured training to security staff on emerging threat actor techniques" },
     answer: "B", tier: "locked"
   },
   {
@@ -1291,13 +1291,13 @@ export const questions: Question[] = [
   {
     id: "Q211", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of endpoint protection platforms?",
-    options: { A: "Protecting network perimeter devices", B: "Providing comprehensive security for end-user devices", C: "Monitoring server performance", D: "Managing network access control" },
+    options: { A: "Protecting edge network devices such as routers and switches from external attacks", B: "Providing comprehensive security for end-user devices", C: "Tracking CPU, memory, and disk utilization to ensure server health and capacity", D: "Controlling which devices are permitted to join the network based on compliance posture" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q212", domain: 4, exam: "Original",
     question: "A company wants to ensure sensitive data is destroyed when hard drives are decommissioned. Which method provides the HIGHEST assurance?",
-    options: { A: "Formatting the drive", B: "Deleting all files", C: "Physical destruction or degaussing", D: "Encrypting the drive" },
+    options: { A: "Performing a full format to overwrite all existing partition and file system structures", B: "Manually deleting all files and emptying the recycle bin before re-imaging the drive", C: "Physical destruction or degaussing", D: "Encrypting the drive contents with a key that is then securely discarded" },
     answer: "C", tier: "locked"
   },
   {
@@ -1309,7 +1309,7 @@ export const questions: Question[] = [
   {
     id: "Q214", domain: 4, exam: "Original",
     question: "An organization wants to implement continuous monitoring of its security posture. Which approach is MOST effective?",
-    options: { A: "Annual penetration tests", B: "Real-time security monitoring with SIEM and automated alerting", C: "Quarterly vulnerability assessments", D: "Monthly security policy reviews" },
+    options: { A: "Annual penetration tests simulating attacker techniques against production systems", B: "Real-time security monitoring with SIEM and automated alerting", C: "Quarterly vulnerability assessments scanning for unpatched software and misconfigurations", D: "Monthly security policy reviews to verify documentation remains current and accurate" },
     answer: "B", tier: "locked"
   },
   {
@@ -1327,19 +1327,19 @@ export const questions: Question[] = [
   {
     id: "Q217", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of a security assessment report?",
-    options: { A: "Documenting successful security implementations", B: "Communicating security findings, risks, and recommendations to stakeholders", C: "Recording daily security events", D: "Tracking security budget expenditures" },
+    options: { A: "Documenting successfully implemented controls and configurations for compliance records", B: "Communicating security findings, risks, and recommendations to stakeholders", C: "Recording daily security alerts and events observed by the monitoring team", D: "Tracking approved security expenditures and forecasting future budget requirements" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q218", domain: 4, exam: "Original",
     question: "An organization implements a process where all code changes require review by another developer before deployment. Which security principle does this implement?",
-    options: { A: "Least privilege", B: "Defense in depth", C: "Peer review as separation of duties", D: "Zero trust" },
+    options: { A: "Least privilege access control", B: "Defense in depth layering", C: "Peer review as separation of duties", D: "Need-to-know information access" },
     answer: "C", tier: "locked"
   },
   {
     id: "Q219", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of security awareness training?",
-    options: { A: "Teaching employees technical security skills", B: "Reducing human risk by educating employees about security threats and best practices", C: "Training employees to use security tools", D: "Certifying employees in security disciplines" },
+    options: { A: "Teaching employees hands-on technical skills such as scripting and penetration testing", B: "Reducing human risk by educating employees about security threats and best practices", C: "Training employees to operate security tools such as SIEM platforms and vulnerability scanners", D: "Preparing employees to earn vendor-neutral or vendor-specific security certifications" },
     answer: "B", tier: "locked"
   },
   {
@@ -1351,19 +1351,19 @@ export const questions: Question[] = [
   {
     id: "Q221", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of threat intelligence?",
-    options: { A: "Automatically blocking all threats", B: "Providing actionable information about current and emerging threats to inform defenses", C: "Identifying vulnerabilities in systems", D: "Training security analysts on new attack techniques" },
+    options: { A: "Automatically blocking detected threats in real time without requiring analyst intervention", B: "Providing actionable information about current and emerging threats to inform defenses", C: "Identifying software vulnerabilities through automated scanning and patch assessment", D: "Training security analysts to recognize and respond to the latest attack techniques" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q222", domain: 4, exam: "Original",
     question: "An organization wants to enforce configuration standards across all servers. Which approach is MOST efficient?",
-    options: { A: "Manual configuration of each server", B: "Configuration management tools with baseline templates", C: "Quarterly security audits", D: "Security awareness training for administrators" },
+    options: { A: "Manually configuring each server individually according to the published hardening guide", B: "Configuration management tools with baseline templates", C: "Quarterly security audits reviewing server settings against the current baseline", D: "Security awareness training for administrators covering hardening and patch procedures" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q223", domain: 4, exam: "Original",
     question: "Which of the following BEST describes the purpose of a security champion program?",
-    options: { A: "Identifying the best security analyst in the organization", B: "Embedding security-minded individuals within development teams to promote security practices", C: "Rewarding employees who report security incidents", D: "Selecting security vendors" },
+    options: { A: "Recognizing and rewarding the highest-performing security analyst with a formal designation", B: "Embedding security-minded individuals within development teams to promote security practices", C: "Incentivizing employees who proactively report security vulnerabilities or incidents", D: "Running a competitive evaluation process to select approved security tools and vendors" },
     answer: "B", tier: "locked"
   },
   {
@@ -1375,7 +1375,7 @@ export const questions: Question[] = [
   {
     id: "Q225", domain: 4, exam: "Original",
     question: "Which of the following BEST describes a red team exercise?",
-    options: { A: "A defensive team that monitors for attacks", B: "An offensive team that simulates real-world attacks against an organization", C: "A team that reviews security policies", D: "A team that conducts security awareness training" },
+    options: { A: "A defensive team that monitors alerts and responds to active attacks in real time", B: "An offensive team that simulates real-world attacks against an organization", C: "A team responsible for reviewing and updating security policies and procedures", D: "A team that delivers security awareness training and phishing simulation exercises" },
     answer: "B", tier: "locked"
   },
   {
@@ -1391,7 +1391,7 @@ export const questions: Question[] = [
   {
     id: "Q227", domain: 5, exam: "Original",
     question: "Which of the following BEST describes risk appetite?",
-    options: { A: "The total risk facing an organization", B: "The amount of risk an organization is willing to accept in pursuit of its objectives", C: "The risk remaining after controls are implemented", D: "The maximum risk an organization can handle before failure" },
+    options: { A: "The total inherent risk exposure across all assets before any controls are applied", B: "The amount of risk an organization is willing to accept in pursuit of its objectives", C: "The residual risk that persists after security controls have been evaluated and applied", D: "The maximum risk threshold beyond which the organization would face regulatory or financial failure" },
     answer: "B", tier: "locked"
   },
   {
@@ -1403,7 +1403,7 @@ export const questions: Question[] = [
   {
     id: "Q229", domain: 5, exam: "Original",
     question: "Which of the following BEST describes the purpose of a risk register?",
-    options: { A: "Recording all security incidents", B: "Documenting identified risks, their likelihood, impact, and treatment plans", C: "Registering security tools and licenses", D: "Tracking employee security certifications" },
+    options: { A: "Logging all detected security incidents with timestamps and severity classifications", B: "Documenting identified risks, their likelihood, impact, and treatment plans", C: "Maintaining an inventory of approved security tools, software licenses, and renewal dates", D: "Tracking which employees hold current security certifications and their expiration dates" },
     answer: "B", tier: "locked"
   },
   {
@@ -1415,13 +1415,13 @@ export const questions: Question[] = [
   {
     id: "Q231", domain: 5, exam: "Original",
     question: "Which of the following BEST describes a data classification policy?",
-    options: { A: "A policy that organizes data by creation date", B: "A policy that categorizes data by sensitivity level to guide protection requirements", C: "A policy that determines data backup frequency", D: "A policy that defines data ownership" },
+    options: { A: "A policy that organizes data records chronologically by creation or modification date", B: "A policy that categorizes data by sensitivity level to guide protection requirements", C: "A policy that specifies how frequently different data types must be backed up and retained", D: "A policy that assigns custodianship and accountability for each category of organizational data" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q232", domain: 5, exam: "Original",
     question: "An organization must comply with regulations requiring specific security controls for payment card data. Which standard applies?",
-    options: { A: "HIPAA", B: "GDPR", C: "PCI DSS", D: "SOX" },
+    options: { A: "HIPAA", B: "GDPR", C: "PCI DSS", D: "FISMA" },
     answer: "C", tier: "locked"
   },
   {
@@ -1451,19 +1451,19 @@ export const questions: Question[] = [
   {
     id: "Q237", domain: 5, exam: "Original",
     question: "Which of the following BEST describes the purpose of a service level agreement (SLA)?",
-    options: { A: "Defining the security requirements for a service", B: "Documenting the expected performance and availability standards for a service", C: "Establishing confidentiality requirements between parties", D: "Defining the scope of a penetration test" },
+    options: { A: "Defining the minimum security controls required for a cloud or managed service provider", B: "Documenting the expected performance and availability standards for a service", C: "Establishing confidentiality obligations and non-disclosure requirements between parties", D: "Defining the scope, rules of engagement, and boundaries for a penetration test" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q238", domain: 5, exam: "Original",
     question: "An organization wants to implement a framework for managing information security. Which standard provides guidance?",
-    options: { A: "PCI DSS", B: "HIPAA", C: "ISO 27001", D: "SOX" },
+    options: { A: "PCI DSS", B: "HIPAA", C: "ISO 27001", D: "NIST CSF" },
     answer: "C", tier: "locked"
   },
   {
     id: "Q239", domain: 5, exam: "Original",
     question: "Which of the following BEST describes the purpose of a memorandum of understanding (MOU)?",
-    options: { A: "A legally binding contract between two organizations", B: "A non-binding agreement outlining intentions for cooperation between parties", C: "A document defining service levels", D: "An agreement for sharing sensitive data" },
+    options: { A: "A legally binding contract that creates enforceable obligations between the signing parties", B: "A non-binding agreement outlining intentions for cooperation between parties", C: "A formal agreement specifying performance metrics and availability targets for a service", D: "A data sharing agreement governing how regulated or sensitive information is exchanged" },
     answer: "B", tier: "locked"
   },
   {
@@ -1481,7 +1481,7 @@ export const questions: Question[] = [
   {
     id: "Q242", domain: 5, exam: "Original",
     question: "An organization wants to ensure its security program aligns with business objectives. Which approach is MOST effective?",
-    options: { A: "Implementing the latest security technologies", B: "Aligning security strategy with organizational risk appetite and business goals", C: "Hiring more security staff", D: "Increasing the security budget" },
+    options: { A: "Deploying cutting-edge security technologies to address the most advanced threat scenarios", B: "Aligning security strategy with organizational risk appetite and business goals", C: "Expanding the security team headcount to increase monitoring and response coverage", D: "Increasing the annual security budget to fund additional tools and third-party assessments" },
     answer: "B", tier: "locked"
   },
   {
@@ -1493,13 +1493,13 @@ export const questions: Question[] = [
   {
     id: "Q244", domain: 5, exam: "Original",
     question: "An organization wants to ensure vendors with access to its systems meet security requirements. Which document should be used?",
-    options: { A: "Non-disclosure agreement", B: "Memorandum of understanding", C: "Right-to-audit clause in vendor contracts", D: "Service level agreement" },
+    options: { A: "Non-disclosure agreement prohibiting vendors from sharing proprietary information externally", B: "Memorandum of understanding establishing shared expectations without legally binding obligations", C: "Right-to-audit clause in vendor contracts", D: "Service level agreement specifying uptime guarantees and response time commitments" },
     answer: "C", tier: "locked"
   },
   {
     id: "Q245", domain: 5, exam: "Original",
     question: "Which of the following BEST describes the purpose of a privacy impact assessment?",
-    options: { A: "Evaluating the financial impact of a data breach", B: "Identifying and addressing privacy risks in systems that handle personal data", C: "Assessing employee privacy concerns", D: "Reviewing the organization's privacy policy for accuracy" },
+    options: { A: "Calculating the monetary losses and regulatory fines resulting from a data breach event", B: "Identifying and addressing privacy risks in systems that handle personal data", C: "Surveying employees to understand their concerns about workplace monitoring and data collection", D: "Auditing the public-facing privacy policy to verify it accurately reflects data handling practices" },
     answer: "B", tier: "locked"
   },
   // ============================================
@@ -1526,19 +1526,19 @@ export const questions: Question[] = [
   {
     id: "Q249", domain: 4, exam: "Original",
     question: "During a purple team exercise, the red team successfully exfiltrates data using DNS tunneling. Which of the following controls would MOST effectively detect this TTP?",
-    options: { A: "Deploying a CASB solution", B: "Implementing DNS sinkholing and monitoring with a SIEM", C: "Enabling DLP on all endpoints", D: "Configuring IPS rules for known CVEs" },
+    options: { A: "Deploying a CASB to enforce data loss prevention policies on cloud application traffic", B: "Implementing DNS sinkholing and monitoring with a SIEM", C: "Enabling endpoint DLP agents to block unauthorized transfers of sensitive file types", D: "Configuring IPS signatures to detect and block traffic matching known CVE exploit patterns" },
     answer: "B", tier: "locked"
   },
   {
     id: "Q250", domain: 5, exam: "Original",
     question: "An organization's ISSO discovers that a third-party SaaS application stores PII without encrypting data at rest. The vendor's SLA does not address encryption requirements. Which of the following should be done FIRST?",
-    options: { A: "Terminate the SaaS contract immediately", B: "Conduct a BIA to assess the impact", C: "Escalate to the CISO and initiate a vendor risk assessment", D: "Implement a CASB to enforce DLP policies" },
+    options: { A: "Immediately terminate the SaaS contract and migrate all data to an approved internal system", B: "Conduct a full business impact analysis to quantify the risk of continuing the relationship", C: "Escalate to the CISO and initiate a vendor risk assessment", D: "Deploy a CASB to enforce DLP policies and encrypt data in transit to the SaaS application" },
     answer: "C", tier: "locked"
   },
   {
     id: "Q251", domain: 2, exam: "Original",
     question: "A penetration tester uses OSINT to identify an organization's externally exposed RDP and SMB ports. Which of the following BEST describes the risk presented?",
-    options: { A: "Increased likelihood of a DDoS attack", B: "Expanded attack surface vulnerable to lateral movement and exploitation", C: "Risk of DNS hijacking via BGP route manipulation", D: "Exposure to MITM attacks on the organization's PKI" },
+    options: { A: "Increased likelihood of a volumetric DDoS attack disrupting internet-facing services", B: "Expanded attack surface vulnerable to lateral movement and exploitation", C: "Risk of DNS hijacking through BGP route manipulation redirecting traffic to attacker infrastructure", D: "Exposure to adversary-in-the-middle attacks targeting the organization's PKI certificate validation" },
     answer: "B", tier: "locked"
   },
   {
