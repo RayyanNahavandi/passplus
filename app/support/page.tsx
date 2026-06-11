@@ -7,8 +7,6 @@ import { Mail, Lock } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { unlock } from "@/lib/quiz-store"
 
-const SUPPORT_TOKEN = "SUPPORT2026"
-
 function SupportForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -17,7 +15,20 @@ function SupportForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "notfound" | "error" | "success">("idle")
 
   useEffect(() => {
-    setAuthorized(searchParams.get("token") === SUPPORT_TOKEN)
+    const token = searchParams.get("token")
+    if (!token) {
+      setAuthorized(false)
+      return
+    }
+    // Validated server-side so the token value never ships in the bundle
+    fetch("/api/verify-token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, type: "support" }),
+    })
+      .then((r) => r.json())
+      .then((data: { valid: boolean }) => setAuthorized(data.valid))
+      .catch(() => setAuthorized(false))
   }, [searchParams])
 
   if (!authorized) {
