@@ -50,6 +50,7 @@ export default function QuizPage() {
     null | "restart" | "to-exam" | "to-practice"
   >(null)
   const [streakCount, setStreakCount] = useState(0)
+  const [combo, setCombo] = useState(0)
   const [streakMilestone, setStreakMilestone] = useState<number | null>(null)
   // 1 = forward, -1 = backward - drives slide direction
   const directionRef = useRef<1 | -1>(1)
@@ -192,6 +193,7 @@ export default function QuizPage() {
       }
       saveSession(updated)
       setSession(updated)
+      setCombo(correct ? (c) => c + 1 : 0)
 
       // Update streak once per session (idempotent within the same day)
       if (!streakUpdatedRef.current) {
@@ -300,6 +302,7 @@ export default function QuizPage() {
       setSession(s)
       setSelected(null)
       setExplanation(null)
+      setCombo(0)
       streakUpdatedRef.current = false
     } else if (confirmAction === "to-exam") {
       setConfirmAction(null)
@@ -309,6 +312,7 @@ export default function QuizPage() {
       setSession(updated)
       setSelected(null)
       setExplanation(null)
+      setCombo(0)
       streakUpdatedRef.current = false
     } else if (confirmAction === "to-practice") {
       setConfirmAction(null)
@@ -318,6 +322,7 @@ export default function QuizPage() {
       setSession(updated)
       setSelected(null)
       setExplanation(null)
+      setCombo(0)
       streakUpdatedRef.current = false
     }
   }, [session, confirmAction])
@@ -330,6 +335,7 @@ export default function QuizPage() {
     setSession(s)
     setShowPaywall(false)
     setSelected(null)
+    setCombo(0)
   }, [])
 
   if (loading) {
@@ -496,6 +502,25 @@ export default function QuizPage() {
                 <span className="hidden sm:inline">Score </span>
                 <span className="text-accent-green font-medium">{session.score}</span>
               </span>
+              <AnimatePresence>
+                {combo >= 3 && (
+                  <motion.span
+                    key={combo}
+                    initial={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.7, y: 4 }}
+                    animate={shouldReduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={
+                      shouldReduce
+                        ? { duration: 0.15 }
+                        : { type: "spring", stiffness: 500, damping: 22 }
+                    }
+                    className="flex items-center gap-1 bg-accent-green/10 border border-accent-green/25 text-accent-green font-semibold px-2 py-0.5 rounded-full"
+                  >
+                    <Zap className="w-3 h-3 shrink-0" />
+                    {combo}x
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </>
           )}
 
