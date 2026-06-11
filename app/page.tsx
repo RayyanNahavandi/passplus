@@ -545,7 +545,7 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "aplus" })}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
-                  {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
+                  {isUnlocked ? "Start Quiz" : "Start Free Quiz"}
                 </Link>
                 {!isUnlocked && (
                   <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
@@ -560,7 +560,7 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "netplus" })}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
-                  {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
+                  {isUnlocked ? "Start Quiz" : "Start Free Quiz"}
                 </Link>
                 {!isUnlocked && (
                   <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
@@ -575,7 +575,7 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "quiz_started")}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
-                  {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
+                  {isUnlocked ? "Start Quiz" : "Start Free Quiz"}
                 </Link>
                 {!isUnlocked && (
                   <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
