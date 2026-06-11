@@ -6,13 +6,13 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 export const metadata: Metadata = {
   title: "Free Security+ SY0-701 Practice Questions | PassPlus",
   description:
-    "490 Security+ SY0-701 practice questions across Practice Mode and Exam Mode. No signup required.",
+    "500 Security+ SY0-701 practice questions across Practice Mode and Exam Mode. No signup required.",
   keywords:
     "security plus practice questions, SY0-701 practice test, free security+ quiz, comptia security+ study guide",
   openGraph: {
     title: "Free Security+ SY0-701 Practice Questions | PassPlus",
     description:
-      "490 Security+ SY0-701 practice questions across Practice Mode and Exam Mode. No signup required.",
+      "500 Security+ SY0-701 practice questions across Practice Mode and Exam Mode. No signup required.",
     type: "article",
   },
 }
@@ -34,7 +34,7 @@ const faqSchema = {
       name: "How many Security+ SY0-701 practice questions does PassPlus offer?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "PassPlus offers 490 Security+ SY0-701 practice questions across Practice Mode and Exam Mode, covering all five exam domains. The first 25 questions are free with no account or signup required.",
+        text: "PassPlus offers 500 Security+ SY0-701 practice questions across Practice Mode and Exam Mode, covering all five exam domains. The first 25 questions are free with no account or signup required.",
       },
     },
     {
@@ -42,7 +42,7 @@ const faqSchema = {
       name: "Is PassPlus free to use for Security+ practice?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. PassPlus gives you 25 free SY0-701 practice questions with instant feedback and no account required. Full access to all 490 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
+        text: "Yes. PassPlus gives you 25 free SY0-701 practice questions with instant feedback and no account required. Full access to all 500 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
       },
     },
     {
@@ -198,7 +198,7 @@ export default function BlogPost() {
                 <strong>
                   <Link href="/quiz">PassPlus</Link>
                 </strong>{" "}
-                490 questions across Practice Mode and Exam Mode covering every SY0-701
+                500 questions across Practice Mode and Exam Mode covering every SY0-701
                 domain. Instant feedback on every answer, score tracking, and a
                 "Practice Missed" mode that drills your weak spots. No signup required.
               </li>
@@ -255,7 +255,7 @@ export default function BlogPost() {
             </p>
 
             <p>
-              If you want all 490 questions across Practice Mode and Exam Mode, it's a
+              If you want all 500 questions across Practice Mode and Exam Mode, it's a
               one-time $9.99 unlock. No subscription. Good luck on the exam.
             </p>
           </div>
@@ -280,7 +280,7 @@ export default function BlogPost() {
       </main>
 
       <footer className="border-t border-border px-6 py-5 text-center text-xs text-muted-foreground/50">
-        PassPlus - Not affiliated with CompTIA. Questions adapted from Professor Messer SY0-701 practice materials.
+        PassPlus - Not affiliated with CompTIA. Original practice questions based on publicly available SY0-701 exam objectives.
       </footer>
     </div>
   )

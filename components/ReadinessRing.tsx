@@ -38,8 +38,6 @@ export function ReadinessRing({ pct, size = 120 }: ReadinessRingProps) {
   const center = size / 2
 
   const targetOffset = circumference * (1 - pct / 100)
-  // Before mount (or reduced motion): show full ring immediately
-  const dashOffset = !mounted || shouldReduce ? circumference * (1 - pct / 100) : targetOffset
   // Start invisible ring before mount so animation fires on first render
   const startOffset = shouldReduce ? targetOffset : circumference
 

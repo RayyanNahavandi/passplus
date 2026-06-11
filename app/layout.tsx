@@ -15,8 +15,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.studypassplus.com"),
   title: "PassPlus | Free CompTIA Practice Questions",
-  description: "Ace the CompTIA Security+ SY0-701 exam with 200+ practice questions.",
+  description:
+    "Pass your CompTIA cert with 1,480 practice questions across Security+ SY0-701, Network+ N10-009, and A+ Core 1 & 2. Free questions, no signup required.",
+  openGraph: {
+    siteName: "PassPlus",
+    type: "website",
+    url: "https://www.studypassplus.com",
+    title: "PassPlus | Free CompTIA Practice Questions",
+    description:
+      "Pass your CompTIA cert with 1,480 practice questions across Security+ SY0-701, Network+ N10-009, and A+ Core 1 & 2. Free questions, no signup required.",
+  },
+  twitter: {
+    card: "summary",
+    title: "PassPlus | Free CompTIA Practice Questions",
+    description:
+      "Pass your CompTIA cert with 1,480 practice questions across Security+, Network+, and A+. Free questions, no signup required.",
+  },
 };
 
 export default function RootLayout({

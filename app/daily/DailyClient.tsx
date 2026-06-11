@@ -119,7 +119,7 @@ export function DailyClient({
 
           {/* Question meta */}
           <span className="text-xs text-muted-foreground">
-            Exam {question.exam} · Q{question.id}
+            Exam {question.exam} · {question.id}
           </span>
 
           {/* Question card */}
@@ -325,7 +325,7 @@ export function DailyClient({
             <div>
               <p className="font-semibold text-sm mb-0.5">Want more questions?</p>
               <p className="text-xs text-muted-foreground">
-                490 questions across Practice + Exam Mode. No signup.
+                500 questions across Practice + Exam Mode. No signup.
               </p>
             </div>
             <Link

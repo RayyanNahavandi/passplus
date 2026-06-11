@@ -20,6 +20,7 @@ export interface QuizSession {
   examMode?: boolean
   examStartedAt?: number // epoch ms
   cert?: Cert
+  resultsRecorded?: boolean
 }
 
 // Fixed set of free practice questions - same 25 questions, same order, on every device.

@@ -6,13 +6,13 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 export const metadata: Metadata = {
   title: "Free A+ Core 2 220-1102 Practice Questions | PassPlus",
   description:
-    "245 free A+ Core 2 220-1102 practice questions covering operating systems, security, software troubleshooting, and operational procedures.",
+    "Free A+ Core 2 220-1102 practice questions covering operating systems, security, software troubleshooting, and operational procedures.",
   keywords:
     "a plus core 2 practice questions, 220-1102 practice test, free comptia a+ quiz, a+ core 2 study guide",
   openGraph: {
     title: "Free A+ Core 2 220-1102 Practice Questions | PassPlus",
     description:
-      "245 free A+ Core 2 220-1102 practice questions covering operating systems, security, software troubleshooting, and operational procedures.",
+      "Free A+ Core 2 220-1102 practice questions covering operating systems, security, software troubleshooting, and operational procedures.",
     type: "article",
   },
 }
@@ -34,7 +34,7 @@ const faqSchema = {
       name: "How many A+ Core 2 practice questions does PassPlus offer?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "PassPlus offers 245 A+ Core 2 220-1102 practice questions across Practice Mode and Exam Mode, covering all four domains. The first 10 questions are free with no account or signup required.",
+        text: "PassPlus offers 490 A+ practice questions across Core 1 (220-1101) and Core 2 (220-1102) in Practice Mode and Exam Mode, covering all four Core 2 domains. The first 25 practice questions are free with no account or signup required.",
       },
     },
     {
@@ -207,10 +207,10 @@ export default function BlogPost() {
               </li>
               <li>
                 <strong>
-                  <Link href="/quiz">PassPlus</Link>
+                  <Link href="/quiz?cert=aplus">PassPlus</Link>
                 </strong>{" "}
-                - 245 Core 2 questions across Practice Mode and Exam Mode covering every
-                220-1102 domain. Instant feedback on every answer, score tracking, and a
+                - 490 A+ questions (Core 1 &amp; Core 2) across Practice Mode and Exam
+                Mode covering every 220-1102 domain. Instant feedback on every answer, score tracking, and a
                 domain breakdown at the end showing exactly where you lost points. No
                 signup required.
               </li>
@@ -247,14 +247,14 @@ export default function BlogPost() {
 
             <p>
               The fastest way to find your knowledge gaps is to start answering questions.{" "}
-              <Link href="/quiz">PassPlus</Link> gives you 25 free A+ Core 2 practice
+              <Link href="/quiz?cert=aplus">PassPlus</Link> gives you 25 free A+ Core 2 practice
               questions with no account, no email, and no payment required. You get
               instant feedback on every answer and a full breakdown at the end showing
               exactly where you lost points.
             </p>
 
             <p>
-              If you want full access across all 1470 questions covering A+, Network+, and
+              If you want full access across all 1480 questions covering A+, Network+, and
               Security+, it is a one-time $9.99 unlock. No subscription. Good luck on the
               exam.
             </p>

@@ -30,7 +30,7 @@ import {
   type QuizSession,
 } from "@/lib/quiz-store"
 import { ReadinessRing } from "@/components/ReadinessRing"
-import { questions, type Question } from "@/data/questions"
+import { type Question } from "@/data/questions"
 
 const containerVariants = {
   hidden: {},
@@ -58,8 +58,13 @@ export default function ResultsPage() {
     setLoading(false)
     if (s && Object.keys(s.answers).length > 0) {
       const answeredTotal = Object.keys(s.answers).length
-      sendGAEvent("event", "quiz_completed", { score: s.score, total: answeredTotal })
-      recordQuizScore(s.score, answeredTotal)
+      if (!s.resultsRecorded) {
+        sendGAEvent("event", "quiz_completed", { score: s.score, total: answeredTotal })
+        recordQuizScore(s.score, answeredTotal)
+        const updated = { ...s, resultsRecorded: true }
+        saveSession(updated)
+        setSession(updated)
+      }
       setReadiness(getReadinessScore())
       if (!s.isUnlocked) {
         localStorage.setItem("passplus_completed", "true")
@@ -95,7 +100,7 @@ export default function ResultsPage() {
   const total = Object.keys(session.answers).length
   const score = session.score
   const pct = Math.round((score / total) * 100)
-  const missedQuestions = questions.filter((q) =>
+  const missedQuestions = session.questions.filter((q) =>
     session.missedIds.includes(q.id)
   )
 
@@ -126,7 +131,7 @@ export default function ResultsPage() {
     SECPLUS_DOMAINS
 
   const domainStats = DOMAINS.map(({ id, name }) => {
-    const domainQs = questions.filter(
+    const domainQs = session.questions.filter(
       (q) => q.domain === id && q.id in session.answers
     )
     const correct = domainQs.filter(
@@ -506,7 +511,7 @@ export default function ResultsPage() {
                 Correct ({score})
               </h2>
               <div className="flex flex-col gap-2">
-                {questions
+                {session.questions
                   .filter(
                     (q) =>
                       q.id in session.answers &&
@@ -520,7 +525,7 @@ export default function ResultsPage() {
                       <CheckCircle className="w-3.5 h-3.5 text-accent-green shrink-0 mt-0.5" />
                       <div>
                         <span className="text-muted-foreground text-xs">
-                          Q{q.id}{" "}
+                          {q.id}{" "}
                         </span>
                         <span className="text-sm line-clamp-2">{q.question}</span>
                         <div className="text-accent-green text-xs mt-1">
@@ -589,11 +594,12 @@ function MissedCard({
     <div className="bg-card border border-red-500/15 rounded-2xl overflow-hidden">
       <button
         onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
         className="w-full flex items-start gap-3 px-5 py-4 text-left hover:bg-muted/50 transition-colors min-h-[44px]"
       >
         <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
         <div className="flex-1 min-w-0">
-          <span className="text-muted-foreground text-xs">Q{question.id} </span>
+          <span className="text-muted-foreground text-xs">{question.id} </span>
           <span className="text-sm line-clamp-2">{question.question}</span>
         </div>
         {expanded

@@ -34,7 +34,7 @@ const faqSchema = {
       name: "How many Network+ N10-009 practice questions does PassPlus offer?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "PassPlus offers 490 Network+ N10-009 practice questions across Practice Mode and Exam Mode, covering all five exam domains. The first 10 questions are free with no account or signup required.",
+        text: "PassPlus offers 490 Network+ N10-009 practice questions across Practice Mode and Exam Mode, covering all five exam domains. The first 38 practice questions are free with no account or signup required.",
       },
     },
     {
@@ -42,7 +42,7 @@ const faqSchema = {
       name: "Is PassPlus free to use for Network+ practice?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. PassPlus gives you 25 free N10-009 practice questions with instant feedback and no account required. Full access to all 490 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
+        text: "Yes. PassPlus gives you 38 free N10-009 practice questions with instant feedback and no account required. Full access to all 490 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
       },
     },
     {
@@ -217,7 +217,7 @@ export default function BlogPost() {
               </li>
               <li>
                 <strong>
-                  <Link href="/quiz">PassPlus</Link>
+                  <Link href="/quiz?cert=netplus">PassPlus</Link>
                 </strong>{" "}
                 - 490 questions across Practice Mode and Exam Mode covering every N10-009
                 domain. Instant feedback on every answer, score tracking, and a domain
@@ -270,7 +270,7 @@ export default function BlogPost() {
 
             <p>
               The fastest way to find your knowledge gaps is to start answering questions.{" "}
-              <Link href="/quiz">PassPlus</Link> gives you 25 free N10-009 practice
+              <Link href="/quiz?cert=netplus">PassPlus</Link> gives you 38 free N10-009 practice
               questions with no account, no email, and no payment required. You get
               instant feedback on every answer and a full breakdown at the end showing
               exactly where you lost points.
@@ -286,7 +286,7 @@ export default function BlogPost() {
             <div>
               <p className="font-semibold text-sm mb-0.5">Ready to practice?</p>
               <p className="text-xs text-muted-foreground">
-                25 free questions, no signup, instant feedback.
+                38 free questions, no signup, instant feedback.
               </p>
             </div>
             <Link
@@ -301,7 +301,7 @@ export default function BlogPost() {
       </main>
 
       <footer className="border-t border-border px-6 py-5 text-center text-xs text-muted-foreground/50">
-        PassPlus - Not affiliated with CompTIA. Questions based on publicly available N10-009 exam objectives.
+        PassPlus - Not affiliated with CompTIA. Original practice questions based on publicly available N10-009 exam objectives.
       </footer>
     </div>
   )

@@ -6,7 +6,7 @@ import { ArrowRight, BookOpen } from "lucide-react"
 export const metadata: Metadata = {
   title: "Blog | PassPlus",
   description:
-    "Security+ study guides, exam tips, and practice resources for CompTIA SY0-701 candidates.",
+    "CompTIA study guides, exam tips, and free practice resources for Security+ SY0-701, Network+ N10-009, and A+ Core 1 & Core 2 candidates.",
 }
 
 const posts = [
@@ -14,7 +14,7 @@ const posts = [
     slug: "free-a-plus-core-1-practice-questions",
     title: "Free A+ Core 1 220-1101 Practice Questions. No Signup Required.",
     description:
-      "245 free A+ Core 1 220-1101 practice questions covering mobile devices, networking, hardware, virtualization, and troubleshooting.",
+      "Free A+ Core 1 220-1101 practice questions covering mobile devices, networking, hardware, virtualization, and troubleshooting.",
     date: "May 29, 2026",
     readTime: "6 min read",
   },
@@ -22,7 +22,7 @@ const posts = [
     slug: "free-a-plus-core-2-practice-questions",
     title: "Free A+ Core 2 220-1102 Practice Questions. No Signup Required.",
     description:
-      "245 free A+ Core 2 220-1102 practice questions covering operating systems, security, software troubleshooting, and operational procedures.",
+      "Free A+ Core 2 220-1102 practice questions covering operating systems, security, software troubleshooting, and operational procedures.",
     date: "May 29, 2026",
     readTime: "6 min read",
   },
@@ -153,7 +153,7 @@ export default function BlogIndexPage() {
       </main>
 
       <footer className="border-t border-border px-6 py-5 text-center text-xs text-muted-foreground/50">
-        PassPlus - Not affiliated with CompTIA. Questions adapted from Professor Messer SY0-701 practice materials.
+        PassPlus - Not affiliated with CompTIA. Original practice questions based on publicly available CompTIA exam objectives.
       </footer>
     </div>
   )

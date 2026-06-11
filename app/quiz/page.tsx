@@ -387,7 +387,7 @@ export default function QuizPage() {
       "@type": "Course",
       name: "CompTIA Security+ SY0-701 Practice Quiz",
       description:
-        "Free practice questions for CompTIA Security+ SY0-701. 490 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
+        "Free practice questions for CompTIA Security+ SY0-701. 500 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
       url: "https://www.studypassplus.com/quiz",
       provider: {
         "@type": "Organization",
@@ -404,7 +404,7 @@ export default function QuizPage() {
           price: "0",
           priceCurrency: "USD",
           description:
-            "25 free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
+            "25 free practice questions, no signup required. Full access to 500 questions for $9.99 one-time.",
         },
       },
     },
@@ -430,7 +430,7 @@ export default function QuizPage() {
           price: "0",
           priceCurrency: "USD",
           description:
-            "25 free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
+            "38 free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
         },
       },
     },
@@ -456,7 +456,7 @@ export default function QuizPage() {
           price: "0",
           priceCurrency: "USD",
           description:
-            "Free practice questions, no signup required. Full access to 1470 questions for $9.99 one-time.",
+            "Free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
         },
       },
     },
@@ -526,6 +526,7 @@ export default function QuizPage() {
               <button
                 onClick={() => setConfirmAction("restart")}
                 title="Restart quiz"
+                aria-label="Restart quiz"
                 className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -607,7 +608,14 @@ export default function QuizPage() {
 
       {/* Animated progress bar */}
       {!showModeSelect && (
-        <div className="h-1.5 bg-border w-full">
+        <div
+          className="h-1.5 bg-border w-full"
+          role="progressbar"
+          aria-label="Quiz progress"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress)}
+        >
           <motion.div
             className="h-full origin-left rounded-r-full relative"
             style={{ background: "linear-gradient(90deg, rgba(16,185,129,0.8) 0%, #10b981 100%)" }}
@@ -653,7 +661,7 @@ export default function QuizPage() {
                 {/* Question meta */}
                 <div className="flex items-center gap-2 mb-5">
                   <span className="inline-flex items-center gap-1.5 text-xs font-medium bg-muted border border-border px-2.5 py-1 rounded-md text-muted-foreground">
-                    Exam {currentQuestion?.exam} · Q{currentQuestion?.id}
+                    Exam {currentQuestion?.exam} · {currentQuestion?.id}
                   </span>
                   {isReviewing && (
                     <span className="inline-flex items-center gap-1 text-xs font-medium bg-muted border border-border px-2.5 py-1 rounded-md text-muted-foreground">
@@ -803,8 +811,6 @@ export default function QuizPage() {
                             ? "Continue →"
                             : session.currentIndex + 1 >= session.questions.length
                             ? "See Results"
-                            : isReviewing
-                            ? "Next Question"
                             : "Next Question"}
                           <ChevronRight className="w-4 h-4" />
                         </motion.button>
@@ -825,7 +831,7 @@ export default function QuizPage() {
             onUnlock={handleUnlock}
             onGoToResults={() => router.push("/results")}
             shouldReduce={!!shouldReduce}
-            isExamMode={isExamMode}
+            freeCount={session.questions.length}
           />
         )}
       </AnimatePresence>
@@ -833,21 +839,13 @@ export default function QuizPage() {
   )
 }
 
-const COUNT_OPTIONS = [
-  { label: "25", value: 25 },
-  { label: "50", value: 50 },
-  { label: "75", value: 75 },
-  { label: "100", value: 100 },
-  { label: "All (255)", value: 255 },
-]
-
 const DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[] = [
   { label: "All Domains", sublabel: "255 questions", value: null },
-  { label: "Domain 1", sublabel: "General Security Concepts · 59 Qs", value: 1 },
-  { label: "Domain 2", sublabel: "Threats, Vulnerabilities & Mitigations · 54 Qs", value: 2 },
-  { label: "Domain 3", sublabel: "Security Architecture · 44 Qs", value: 3 },
-  { label: "Domain 4", sublabel: "Security Operations · 69 Qs", value: 4 },
-  { label: "Domain 5", sublabel: "Security Program Management · 19 Qs", value: 5 },
+  { label: "Domain 1", sublabel: "General Security Concepts · 61 Qs", value: 1 },
+  { label: "Domain 2", sublabel: "Threats, Vulnerabilities & Mitigations · 55 Qs", value: 2 },
+  { label: "Domain 3", sublabel: "Security Architecture · 46 Qs", value: 3 },
+  { label: "Domain 4", sublabel: "Security Operations · 73 Qs", value: 4 },
+  { label: "Domain 5", sublabel: "Security Program Management · 20 Qs", value: 5 },
 ]
 
 const NETWORK_DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[] = [
@@ -883,6 +881,14 @@ function ModeSelectScreen({
   const [step, setStep] = useState<"mode" | "practice-config">("mode")
   const [questionCount, setQuestionCount] = useState(25)
   const [domainFilter, setDomainFilter] = useState<number | null>(null)
+  const allCount = cert === "secplus" ? 255 : 245
+  const countOptions = [
+    { label: "25", value: 25 },
+    { label: "50", value: 50 },
+    { label: "75", value: 75 },
+    { label: "100", value: 100 },
+    { label: `All (${allCount})`, value: allCount },
+  ]
   const activeDomainOptions =
     cert === "netplus" ? NETWORK_DOMAIN_OPTIONS
     : cert === "aplus" ? APLUS_DOMAIN_OPTIONS
@@ -1003,7 +1009,7 @@ function ModeSelectScreen({
             <div className="flex flex-col gap-3">
               <label className="text-sm font-semibold">Questions</label>
               <div className="flex flex-wrap gap-2">
-                {COUNT_OPTIONS.map((opt) => {
+                {countOptions.map((opt) => {
                   const locked = !isUnlocked && opt.value !== 25
                   const selected = questionCount === opt.value
                   return (
@@ -1214,12 +1220,12 @@ function PaywallOverlay({
   onUnlock,
   onGoToResults,
   shouldReduce,
-  isExamMode,
+  freeCount,
 }: {
   onUnlock: () => void
   onGoToResults: () => void
   shouldReduce: boolean
-  isExamMode: boolean
+  freeCount: number
 }) {
   return (
     <>
@@ -1275,8 +1281,8 @@ function PaywallOverlay({
               Don&apos;t walk into your exam underprepared
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              You&apos;ve used your {isExamMode ? "10" : "25"} free questions. Candidates who
-              practice all 1,470 questions pass{" "}
+              You&apos;ve used your {freeCount} free questions. Candidates who
+              practice all 1,480 questions pass{" "}
               <strong className="text-foreground">2× more often</strong>.
             </p>
           </div>
@@ -1284,7 +1290,7 @@ function PaywallOverlay({
           {/* What you get bullets */}
           <ul className="w-full text-left space-y-2 text-sm">
             {[
-              "1,470 questions across Security+, Network+ & A+",
+              "1,480 questions across Security+, Network+ & A+",
               "Practice Mode + timed Exam Mode simulation",
               "AI explanations for every question",
               "Lifetime access - pay once, use forever",
@@ -1337,7 +1343,7 @@ function PaywallOverlay({
                 }
                 className="relative w-full bg-accent-green hover:bg-accent-hover text-black font-bold py-3.5 rounded-xl transition-colors min-h-[48px] text-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-accent-green focus-visible:ring-offset-2"
               >
-                Unlock All 1,470 Questions - $9.99
+                Unlock All 1,480 Questions - $9.99
               </motion.button>
             </div>
 

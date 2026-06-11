@@ -58,6 +58,15 @@ export default function Home() {
     }
   }
 
+  // Close About modal on Escape
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setShowAboutModal(false)
+    }
+    if (showAboutModal) document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [showAboutModal])
+
   // Close desktop account dropdown on click-outside
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -218,6 +227,8 @@ export default function Home() {
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setShowAccountMenu((v) => !v)}
+                aria-expanded={showAccountMenu}
+                aria-haspopup="menu"
                 className="flex items-center gap-1.5 text-sm font-medium text-foreground border border-border hover:border-foreground/40 hover:bg-muted px-3 py-1.5 rounded-lg transition-colors min-h-[36px]"
               >
                 <User className="w-3.5 h-3.5 text-muted-foreground" />
@@ -394,6 +405,7 @@ export default function Home() {
           onClick={() => setShowMobileMenu((v) => !v)}
           className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg border border-border hover:bg-muted transition-colors text-foreground"
           aria-label="Menu"
+          aria-expanded={showMobileMenu}
         >
           {showMobileMenu ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
         </button>
@@ -472,7 +484,7 @@ export default function Home() {
             {...fadeUp(0.2)}
             className="text-base sm:text-lg text-muted-foreground max-w-[480px] leading-relaxed"
           >
-            1470 questions across Security+, Network+, and A+. Practice Mode, Exam Mode, instant feedback, and domain breakdown.
+            1480 questions across Security+, Network+, and A+. Practice Mode, Exam Mode, instant feedback, and domain breakdown.
           </motion.p>
 
           {/* Cert selector */}
@@ -511,7 +523,7 @@ export default function Home() {
                     You&apos;ve completed your free quiz
                   </p>
                   <p className="text-xs text-muted-foreground max-w-xs">
-                    Unlock full access to all 1470 questions across both modes and get
+                    Unlock full access to all 1480 questions across both modes and get
                     AI explanations for every answer
                   </p>
                 </div>
@@ -522,7 +534,7 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "unlock_clicked")}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)] hover:shadow-[0_0_32px_-4px_rgba(16,185,129,0.55)]"
                 >
-                  Unlock All 1470 Questions - $9.99
+                  Unlock All 1480 Questions - $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
               </div>
@@ -552,7 +564,7 @@ export default function Home() {
                 </Link>
                 {!isUnlocked && (
                   <span className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
-                    25 free questions · Network+ N10-009 · No signup required
+                    Free questions · Network+ N10-009 · No signup required
                   </span>
                 )}
               </>
@@ -579,14 +591,14 @@ export default function Home() {
             className="inline-flex items-center gap-2 border border-border rounded-full px-3.5 py-1.5 text-xs text-muted-foreground bg-card/50"
           >
             <Zap className="w-3 h-3 text-accent-green" />
-            Security+ · Network+ · A+ · 1470 questions · Practice + Exam Mode
+            Security+ · Network+ · A+ · 1480 questions · Practice + Exam Mode
           </motion.div>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-2xl">
           {[
-            { value: "1470", label: "Total Questions" },
+            { value: "1480", label: "Total Questions" },
             { value: "2", label: "Study Modes" },
             { value: "3", label: "Certs Covered" },
             { value: "Free", label: "First 25 Questions" },
@@ -655,7 +667,7 @@ export default function Home() {
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20">
+                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                 ))}
@@ -700,7 +712,7 @@ export default function Home() {
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20">
+                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                 ))}
@@ -745,7 +757,7 @@ export default function Home() {
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20">
+                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                 ))}
@@ -801,7 +813,7 @@ export default function Home() {
             {
               icon: <Lock className="w-4 h-4 text-accent-green" />,
               title: "Full Question Bank",
-              desc: "Unlock all 1470 questions across Security+, Network+, and A+ for $9.99.",
+              desc: "Unlock all 1480 questions across Security+, Network+, and A+ for $9.99.",
             },
           ].map((f, i) => (
             <motion.div
@@ -912,6 +924,9 @@ export default function Home() {
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
           onClick={() => setShowAboutModal(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="About PassPlus"
         >
           <motion.div
             initial={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 12 }}
@@ -941,7 +956,7 @@ export default function Home() {
                 PassPlus is a free CompTIA practice quiz built to help people actually pass their certification exams - not just memorize dumps.
               </p>
               <p>
-                It covers <strong className="text-foreground">Security+ SY0-701</strong>, <strong className="text-foreground">Network+ N10-009</strong>, and <strong className="text-foreground">A+ Core 1 & 2</strong> with 1,470 questions across Practice Mode and Exam Mode. Paid users get AI explanations for every answer.
+                It covers <strong className="text-foreground">Security+ SY0-701</strong>, <strong className="text-foreground">Network+ N10-009</strong>, and <strong className="text-foreground">A+ Core 1 & 2</strong> with 1,480 questions across Practice Mode and Exam Mode. Paid users get AI explanations for every answer.
               </p>
               <p>
                 Built and maintained independently. Questions are original, written from CompTIA exam objectives - not recycled braindumps.
