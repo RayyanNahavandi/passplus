@@ -131,7 +131,7 @@ export default function BlogIndexPage() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group flex flex-col gap-3 bg-card border border-border hover:border-accent-green/40 rounded-2xl px-6 py-5 transition-all hover:shadow-[0_0_20px_-6px_rgba(16,185,129,0.12)] cursor-pointer"
+              className="group flex flex-col gap-3 bg-card border border-border hover:border-accent-green/40 rounded-2xl px-6 py-5 transition-all hover:shadow-[0_0_20px_-6px_rgba(34,197,94,0.12)] cursor-pointer"
             >
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span>{post.date}</span>

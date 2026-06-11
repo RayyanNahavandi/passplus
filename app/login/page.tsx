@@ -319,7 +319,7 @@ export default function LoginPage() {
 
       <main className="flex-1 flex items-center justify-center px-4 py-12 relative overflow-hidden">
         {/* Subtle depth gradient */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_30%,rgba(16,185,129,0.04)_0%,transparent_70%)]" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_30%,rgba(34,197,94,0.04)_0%,transparent_70%)]" aria-hidden />
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}

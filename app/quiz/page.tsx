@@ -372,7 +372,7 @@ export default function QuizPage() {
 
   const timerColor =
     timeLeft !== null && timeLeft <= 300
-      ? "text-red-400 animate-pulse"
+      ? "text-red-400 animate-pulse bg-red-500/10 border border-red-500/25 rounded-md px-1.5"
       : timeLeft !== null && timeLeft <= 900
       ? "text-orange-400"
       : timeLeft !== null && timeLeft <= 1800
@@ -469,15 +469,15 @@ export default function QuizPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
       />
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-border bg-background/90 backdrop-blur-sm px-5 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-10 border-b border-border bg-background/90 backdrop-blur-sm px-4 sm:px-5 py-3 flex items-center justify-between">
         <Link
           href="/"
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
         >
           <Logo size={28} />
-          <span className="font-semibold text-sm tracking-tight">PassPlus</span>
+          <span className="hidden sm:inline font-semibold text-sm tracking-tight">PassPlus</span>
         </Link>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2 sm:gap-3 text-xs text-muted-foreground">
           {/* Streak */}
           {streakCount > 0 && (
             <span className="flex items-center gap-1 text-orange-400 font-medium">
@@ -493,7 +493,7 @@ export default function QuizPage() {
               </span>
               <span className="w-px h-3 bg-border" />
               <span>
-                Score{" "}
+                <span className="hidden sm:inline">Score </span>
                 <span className="text-accent-green font-medium">{session.score}</span>
               </span>
             </>
@@ -618,12 +618,12 @@ export default function QuizPage() {
         >
           <motion.div
             className="h-full origin-left rounded-r-full relative"
-            style={{ background: "linear-gradient(90deg, rgba(16,185,129,0.8) 0%, #10b981 100%)" }}
+            style={{ background: "linear-gradient(90deg, rgba(34,197,94,0.8) 0%, #22C55E 100%)" }}
             animate={{ width: `${progress}%` }}
             transition={{ type: "spring", stiffness: 80, damping: 18 }}
           >
             {/* Glow dot at the leading edge */}
-            <span className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent-green shadow-[0_0_6px_2px_rgba(16,185,129,0.6)]" aria-hidden />
+            <span className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent-green shadow-[0_0_6px_2px_rgba(34,197,94,0.6)]" aria-hidden />
           </motion.div>
         </div>
       )}
@@ -671,7 +671,7 @@ export default function QuizPage() {
                 </div>
 
                 {/* Question text */}
-                <div className="bg-card border border-border rounded-2xl p-6 mb-5 shadow-sm ring-0">
+                <div className="bg-card border border-border rounded-2xl p-6 sm:p-7 mb-5 shadow-sm">
                   <p className="text-base leading-[1.75] font-medium">
                     {currentQuestion?.question}
                   </p>
@@ -928,7 +928,7 @@ function ModeSelectScreen({
                 initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" as const }}
-                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-all hover:shadow-[0_0_20px_-6px_rgba(16,185,129,0.2)] group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
+                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-all hover:shadow-[0_0_20px_-6px_rgba(34,197,94,0.2)] group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
               >
                 <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
                   <Zap className="w-5 h-5 text-accent-green" />
@@ -950,7 +950,7 @@ function ModeSelectScreen({
                 initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.18, ease: "easeOut" as const }}
-                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-all hover:shadow-[0_0_20px_-6px_rgba(16,185,129,0.2)] group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
+                className="flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-all hover:shadow-[0_0_20px_-6px_rgba(34,197,94,0.2)] group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
               >
                 <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
                   <Clock className="w-5 h-5 text-accent-green" />
@@ -1138,21 +1138,21 @@ function OptionButton({
 
   const borderColor =
     variant === "correct"
-      ? "rgba(16,185,129,0.7)"
+      ? "rgba(34,197,94,0.7)"
       : variant === "wrong"
       ? "rgba(239,68,68,0.7)"
       : "var(--border)"
 
   const boxShadow =
     variant === "correct"
-      ? "0 0 14px -4px rgba(16,185,129,0.3)"
+      ? "0 0 14px -4px rgba(34,197,94,0.3)"
       : variant === "wrong"
       ? "0 0 14px -4px rgba(239,68,68,0.25)"
       : "none"
 
   const textClass =
     variant === "correct"
-      ? "text-green-400"
+      ? "text-accent-green"
       : variant === "wrong"
       ? "text-red-400"
       : "text-foreground"
@@ -1184,7 +1184,7 @@ function OptionButton({
         backgroundColor: { type: "spring", stiffness: 300, damping: 25 },
         borderColor: { type: "spring", stiffness: 300, damping: 25 },
       }}
-      whileHover={!disabled && !shouldReduce ? { scale: 1.005 } : {}}
+      whileHover={!disabled && !shouldReduce ? { scale: 1.01 } : {}}
       whileTap={!disabled && !shouldReduce ? { scale: 0.99 } : {}}
       onClick={onClick}
       disabled={disabled}
@@ -1252,11 +1252,11 @@ function PaywallOverlay({
       >
         {/* Card - premium dark with green glow border */}
         <div
-          className="w-full max-w-md pointer-events-auto rounded-2xl p-7 flex flex-col items-center text-center gap-5 shadow-2xl"
+          className="w-full max-w-md pointer-events-auto rounded-2xl p-6 sm:p-7 flex flex-col items-center text-center gap-5 shadow-2xl"
           style={{
             background: "linear-gradient(160deg, #0d1a12 0%, #0a1210 100%)",
-            border: "1px solid rgba(16,185,129,0.35)",
-            boxShadow: "0 0 40px rgba(16,185,129,0.12), 0 25px 50px rgba(0,0,0,0.7)",
+            border: "1px solid rgba(34,197,94,0.35)",
+            boxShadow: "0 0 40px rgba(34,197,94,0.12), 0 25px 50px rgba(0,0,0,0.7)",
           }}
         >
           {/* Urgency pill */}
@@ -1306,8 +1306,8 @@ function PaywallOverlay({
           <div
             className="w-full rounded-xl px-5 py-4 text-center"
             style={{
-              background: "rgba(16,185,129,0.06)",
-              border: "1px solid rgba(16,185,129,0.2)",
+              background: "rgba(34,197,94,0.06)",
+              border: "1px solid rgba(34,197,94,0.2)",
             }}
           >
             <div className="flex items-center justify-center gap-3">
@@ -1329,7 +1329,7 @@ function PaywallOverlay({
                   animate={{ opacity: [0.35, 0.65, 0.35] }}
                   transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
                   className="absolute inset-0 rounded-xl blur-md"
-                  style={{ background: "rgba(16,185,129,0.45)" }}
+                  style={{ background: "rgba(34,197,94,0.45)" }}
                 />
               )}
               <motion.button

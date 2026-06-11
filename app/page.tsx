@@ -495,7 +495,7 @@ export default function Home() {
                 onClick={() => setSelectedCert(cert.id)}
                 className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all cursor-pointer ${
                   selectedCert === cert.id
-                    ? "bg-accent-green/10 border-accent-green/40 text-foreground shadow-[0_0_16px_-4px_rgba(16,185,129,0.25)]"
+                    ? "bg-accent-green/10 border-accent-green/40 text-foreground shadow-[0_0_16px_-4px_rgba(34,197,94,0.25)]"
                     : "bg-card border-border text-muted-foreground hover:border-accent-green/30 hover:text-foreground"
                 }`}
               >
@@ -532,7 +532,7 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => sendGAEvent("event", "unlock_clicked")}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)] hover:shadow-[0_0_32px_-4px_rgba(16,185,129,0.55)]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
                   Unlock All 1480 Questions - $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -543,7 +543,7 @@ export default function Home() {
                 <Link
                   href="/quiz?cert=aplus"
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "aplus" })}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)] hover:shadow-[0_0_32px_-4px_rgba(16,185,129,0.55)]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
                   {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
                 </Link>
@@ -558,7 +558,7 @@ export default function Home() {
                 <Link
                   href="/quiz?cert=netplus"
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "netplus" })}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)] hover:shadow-[0_0_32px_-4px_rgba(16,185,129,0.55)]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
                   {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
                 </Link>
@@ -573,7 +573,7 @@ export default function Home() {
                 <Link
                   href="/quiz"
                   onClick={() => sendGAEvent("event", "quiz_started")}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(16,185,129,0.45)] hover:shadow-[0_0_32px_-4px_rgba(16,185,129,0.55)]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
                   {isUnlocked ? "Start Quiz →" : "Start Free Quiz →"}
                 </Link>
@@ -609,7 +609,7 @@ export default function Home() {
               whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-20px" }}
               transition={{ delay: i * 0.07, duration: 0.4, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center gap-1 bg-card border border-border hover:border-accent-green/30 rounded-xl h-24 px-3 transition-all hover:shadow-[0_0_20px_-8px_rgba(16,185,129,0.18)]"
+              className="flex flex-col items-center justify-center gap-1 bg-card border border-border hover:border-accent-green/30 rounded-xl h-24 px-3 transition-all hover:shadow-[0_0_20px_-8px_rgba(34,197,94,0.18)]"
             >
               <span className="text-2xl font-bold tabular-nums">{stat.value}</span>
               <span className="text-xs text-muted-foreground text-center">
@@ -654,7 +654,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="px-6 py-16">
+      <section className="px-6 py-16 sm:py-24">
         <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {/* Testimonial 1 */}
           <motion.div
@@ -663,7 +663,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
-            <div className="relative bg-card border border-accent-green/20 rounded-2xl px-7 py-7 shadow-[0_0_32px_-6px_rgba(16,185,129,0.12)] hover:shadow-[0_0_40px_-6px_rgba(16,185,129,0.18)] hover:border-accent-green/30 transition-all h-full">
+            <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -686,7 +686,7 @@ export default function Home() {
               </p>
 
               {/* Attribution */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-auto">
                 <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
                   A
                 </div>
@@ -708,7 +708,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
           >
-            <div className="relative bg-card border border-accent-green/20 rounded-2xl px-7 py-7 shadow-[0_0_32px_-6px_rgba(16,185,129,0.12)] hover:shadow-[0_0_40px_-6px_rgba(16,185,129,0.18)] hover:border-accent-green/30 transition-all h-full">
+            <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -731,7 +731,7 @@ export default function Home() {
               </p>
 
               {/* Attribution */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-auto">
                 <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
                   D
                 </div>
@@ -753,7 +753,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
           >
-            <div className="relative bg-card border border-accent-green/20 rounded-2xl px-7 py-7 shadow-[0_0_32px_-6px_rgba(16,185,129,0.12)] hover:shadow-[0_0_40px_-6px_rgba(16,185,129,0.18)] hover:border-accent-green/30 transition-all h-full">
+            <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -776,7 +776,7 @@ export default function Home() {
               </p>
 
               {/* Attribution */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-auto">
                 <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
                   M
                 </div>
@@ -797,7 +797,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="px-6 py-24">
+      <section className="px-6 py-16 sm:py-24">
         <div className="max-w-4xl mx-auto grid sm:grid-cols-3 gap-5">
           {[
             {
@@ -822,7 +822,7 @@ export default function Home() {
               whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-20px" }}
               transition={{ delay: i * 0.1, duration: 0.4, ease: "easeOut" }}
-              className="flex flex-col gap-4 p-6 bg-card border border-border hover:border-accent-green/30 rounded-2xl transition-all hover:shadow-[0_0_20px_-6px_rgba(16,185,129,0.14)]"
+              className="flex flex-col gap-4 p-6 bg-card border border-border hover:border-accent-green/30 rounded-2xl transition-all hover:shadow-[0_0_20px_-6px_rgba(34,197,94,0.14)]"
             >
               <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
                 {f.icon}
@@ -840,7 +840,7 @@ export default function Home() {
 
       {/* CTA */}
       {!freeCompleted && (
-        <section className="px-6 py-20 text-center">
+        <section className="px-6 py-16 sm:py-24 text-center">
           <motion.div
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
@@ -870,7 +870,7 @@ export default function Home() {
       )}
 
       {/* Community CTA */}
-      <section className="px-6 py-20">
+      <section className="px-6 py-16 sm:py-24">
         <motion.div
           initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
           whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
@@ -911,7 +911,7 @@ export default function Home() {
       </section>
 
       <footer className="px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground/50">
-        <span>
+        <span className="text-center sm:text-left">
           PassPlus - Not affiliated with CompTIA. Original practice questions based on publicly available CompTIA exam objectives.
         </span>
         <Link href="/blog" className="text-accent-green hover:text-accent-hover transition-colors">

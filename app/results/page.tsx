@@ -199,7 +199,7 @@ export default function ResultsPage() {
           {/* Score card */}
           <motion.div
             variants={shouldReduce ? {} : itemVariants}
-            className="bg-card border border-border rounded-2xl p-8 flex flex-col items-center text-center gap-6 shadow-[0_0_40px_-12px_rgba(0,0,0,0.4)]"
+            className="bg-card border border-border rounded-2xl p-6 sm:p-8 flex flex-col items-center text-center gap-6 shadow-[0_0_40px_-12px_rgba(0,0,0,0.4)]"
           >
             {/* Trophy with glow for good scores */}
             <div className={`relative flex items-center justify-center ${pct >= 70 ? "" : ""}`}>
@@ -211,7 +211,7 @@ export default function ResultsPage() {
               <ScoreCounter
                 target={pct}
                 shouldReduce={!!shouldReduce}
-                className={`text-7xl font-bold block mb-2 tabular-nums ${grade.color}`}
+                className={`text-6xl sm:text-7xl font-bold block mb-2 tabular-nums ${grade.color}`}
                 suffix="%"
               />
               <div className={`text-base font-semibold tracking-wide ${grade.color}`}>
@@ -300,7 +300,7 @@ export default function ResultsPage() {
                           {d.pct > 0 && (
                             <motion.div
                               className="rounded-l-full"
-                              style={{ background: "linear-gradient(90deg, rgba(16,185,129,0.6) 0%, rgba(16,185,129,0.85) 100%)" }}
+                              style={{ background: "linear-gradient(90deg, rgba(34,197,94,0.6) 0%, rgba(34,197,94,0.85) 100%)" }}
                               initial={shouldReduce ? { width: `${d.pct}%` } : { width: "0%" }}
                               animate={{ width: `${d.pct}%` }}
                               transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.08 }}
@@ -325,7 +325,7 @@ export default function ResultsPage() {
                 {/* Legend */}
                 <div className="flex items-center gap-5 pt-1 border-t border-border">
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-2.5 rounded-full" style={{ background: "rgba(16,185,129,0.7)" }} />
+                    <div className="w-3 h-2.5 rounded-full" style={{ background: "rgba(34,197,94,0.7)" }} />
                     <span className="text-xs text-muted-foreground">Correct</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -347,8 +347,8 @@ export default function ResultsPage() {
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center"
                       style={{
-                        background: "rgba(16,185,129,0.12)",
-                        border: "1px solid rgba(16,185,129,0.35)",
+                        background: "rgba(34,197,94,0.12)",
+                        border: "1px solid rgba(34,197,94,0.35)",
                       }}
                     >
                       <Lock className="w-5 h-5 text-accent-green" />
@@ -433,7 +433,11 @@ export default function ResultsPage() {
                     whileHover={shouldReduce ? {} : { scale: 1.01 }}
                     whileTap={shouldReduce ? {} : { scale: 0.98 }}
                     onClick={() => setConfirmRestart(true)}
-                    className="flex-1 flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors text-sm min-h-[44px]"
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-colors text-sm min-h-[44px] ${
+                      missedQuestions.length > 0
+                        ? "border border-border hover:bg-muted hover:border-accent-green/30 text-foreground font-medium"
+                        : "bg-accent-green hover:bg-accent-hover text-black font-semibold"
+                    }`}
                   >
                     <RefreshCw className="w-4 h-4" />
                     Restart Quiz
@@ -444,7 +448,7 @@ export default function ResultsPage() {
                       whileHover={shouldReduce ? {} : { scale: 1.01 }}
                       whileTap={shouldReduce ? {} : { scale: 0.98 }}
                       onClick={handlePracticeMissed}
-                      className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-3 rounded-xl transition-colors text-sm min-h-[44px]"
+                      className="flex-1 flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors text-sm min-h-[44px]"
                     >
                       <Target className="w-4 h-4" />
                       Practice {missedQuestions.length} Missed
@@ -453,7 +457,7 @@ export default function ResultsPage() {
 
                   <Link
                     href="/"
-                    className="flex-1 flex items-center justify-center gap-2 border border-border hover:bg-muted text-foreground font-medium py-3 rounded-xl transition-colors text-sm min-h-[44px]"
+                    className="flex-1 flex items-center justify-center gap-2 border border-border hover:bg-muted text-muted-foreground hover:text-foreground font-medium py-3 rounded-xl transition-colors text-sm min-h-[44px]"
                   >
                     <BookOpen className="w-4 h-4" />
                     Back Home
@@ -626,9 +630,9 @@ function MissedCard({
                     key={opt}
                     className={`flex items-start gap-2 px-3 py-2 rounded-lg text-sm ${
                       isCorrect
-                        ? "bg-accent-green/10 border border-accent-green/25 text-green-300"
+                        ? "bg-accent-green/10 border border-accent-green/25 text-accent-green"
                         : isYours
-                        ? "bg-red-500/10 border border-red-500/25 text-red-300"
+                        ? "bg-red-500/10 border border-red-500/25 text-red-400"
                         : "text-muted-foreground"
                     }`}
                   >
