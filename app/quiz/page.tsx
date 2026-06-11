@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target } from "lucide-react"
+import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target, Mail } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
@@ -832,6 +832,9 @@ export default function QuizPage() {
             onGoToResults={() => router.push("/results")}
             shouldReduce={!!shouldReduce}
             freeCount={session.questions.length}
+            cert={session.cert ?? "secplus"}
+            score={session.score}
+            total={Object.keys(session.answers).length}
           />
         )}
       </AnimatePresence>
@@ -1221,12 +1224,38 @@ function PaywallOverlay({
   onGoToResults,
   shouldReduce,
   freeCount,
+  cert,
+  score,
+  total,
 }: {
   onUnlock: () => void
   onGoToResults: () => void
   shouldReduce: boolean
   freeCount: number
+  cert: string
+  score: number
+  total: number
 }) {
+  const [leadEmail, setLeadEmail] = useState("")
+  const [leadStatus, setLeadStatus] = useState<"idle" | "sending" | "done" | "error">("idle")
+
+  async function handleLeadSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!leadEmail) return
+    setLeadStatus("sending")
+    try {
+      const r = await fetch("/api/capture-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: leadEmail, cert, score, total }),
+      })
+      const data: { ok: boolean } = await r.json()
+      setLeadStatus(data.ok ? "done" : "error")
+    } catch {
+      setLeadStatus("error")
+    }
+  }
+
   return (
     <>
       {/* Backdrop */}
@@ -1359,6 +1388,52 @@ function PaywallOverlay({
             >
               See my results so far →
             </button>
+
+            {/* Email capture */}
+            <div className="w-full border-t border-border/60 pt-4">
+              {leadStatus === "done" ? (
+                <div className="flex items-center justify-center gap-2 text-sm text-accent-green min-h-[44px]">
+                  <CheckCircle className="w-4 h-4 shrink-0" />
+                  You&apos;re on the list. Check your inbox soon.
+                </div>
+              ) : (
+                <form onSubmit={handleLeadSubmit} className="flex flex-col gap-2">
+                  <label
+                    htmlFor="paywall-lead-email"
+                    className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground"
+                  >
+                    <Mail className="w-3.5 h-3.5 shrink-0" />
+                    Email me my results + a 7-day study plan
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      id="paywall-lead-email"
+                      type="email"
+                      value={leadEmail}
+                      onChange={(e) => {
+                        setLeadEmail(e.target.value)
+                        if (leadStatus === "error") setLeadStatus("idle")
+                      }}
+                      placeholder="you@example.com"
+                      required
+                      className="flex-1 min-w-0 bg-muted border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-green/50 transition-colors min-h-[44px]"
+                    />
+                    <button
+                      type="submit"
+                      disabled={leadStatus === "sending" || !leadEmail}
+                      className="shrink-0 border border-accent-green/40 hover:bg-accent-green/10 disabled:opacity-50 disabled:cursor-not-allowed text-accent-green font-medium px-4 rounded-xl transition-colors min-h-[44px] text-sm cursor-pointer"
+                    >
+                      {leadStatus === "sending" ? "Sending…" : "Send"}
+                    </button>
+                  </div>
+                  {leadStatus === "error" && (
+                    <p className="text-xs text-red-400 text-left">
+                      Something went wrong. Please try again.
+                    </p>
+                  )}
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </motion.div>
