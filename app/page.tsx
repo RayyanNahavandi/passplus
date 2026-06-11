@@ -8,7 +8,7 @@ import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, 
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
-import { getStreak, getReadinessScore, unlock } from "@/lib/quiz-store"
+import { getStreak, getReadinessScore, getExamCountdown, unlock } from "@/lib/quiz-store"
 import { ReadinessRing } from "@/components/ReadinessRing"
 import { supabase } from "@/lib/supabase"
 
@@ -23,6 +23,7 @@ export default function Home() {
   const [selectedCert, setSelectedCert] = useState<"secplus" | "netplus" | "aplus">("secplus")
   const [streak, setStreak] = useState(0)
   const [readiness, setReadiness] = useState<ReturnType<typeof getReadinessScore>>(null)
+  const [examCountdown, setExamCountdown] = useState<ReturnType<typeof getExamCountdown>>(null)
   const [greeting, setGreeting] = useState<{ line1: string; line2: string | null } | null>(null)
   const [editingName, setEditingName] = useState(false)
   const [nameInput, setNameInput] = useState("")
@@ -141,6 +142,10 @@ export default function Home() {
     setStreak(getStreak().count)
     setReadiness(getReadinessScore())
   }, [])
+
+  useEffect(() => {
+    setExamCountdown(getExamCountdown(selectedCert))
+  }, [selectedCert])
 
   // Reactively update when AuthProvider async-confirms paid status.
   // Handles new devices / cleared localStorage: even if the sync localStorage
@@ -620,7 +625,7 @@ export default function Home() {
         </div>
 
         {/* Streak + Readiness - shown only when data exists */}
-        {(streak > 0 || readiness) && (
+        {(streak > 0 || readiness || examCountdown) && (
           <motion.div
             {...fadeUp(0.35)}
             className="flex flex-wrap justify-center gap-3 w-full max-w-2xl"
@@ -631,6 +636,23 @@ export default function Home() {
                 <div>
                   <span className="text-sm font-bold text-orange-400">{streak} day streak</span>
                   <span className="text-xs text-muted-foreground block leading-none mt-0.5">Keep it going!</span>
+                </div>
+              </div>
+            )}
+            {examCountdown && (
+              <div className="flex items-center justify-center gap-2 bg-card border border-accent-green/20 rounded-xl px-3 h-24 overflow-hidden w-[calc(50%-6px)] sm:w-40">
+                <CalendarDays className="w-5 h-5 text-accent-green shrink-0" />
+                <div>
+                  <span className="text-sm font-bold text-accent-green">
+                    {examCountdown.daysLeft === 0
+                      ? "Exam today"
+                      : examCountdown.daysLeft === 1
+                      ? "1 day left"
+                      : `${examCountdown.daysLeft} days left`}
+                  </span>
+                  <span className="text-xs text-muted-foreground block leading-none mt-0.5">
+                    {examCountdown.onTrack ? "On track" : `Aim for ${examCountdown.neededPerDay}/day`}
+                  </span>
                 </div>
               </div>
             )}

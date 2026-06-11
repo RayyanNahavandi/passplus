@@ -222,6 +222,24 @@ export function recordQuizScore(score: number, total: number): void {
     history.push({ score, total })
     localStorage.setItem("passplus_quiz_history", JSON.stringify(history.slice(-3)))
   } catch { /* ignore */ }
+
+  // Lifetime answered count + rolling 7-day pace map, both used for the
+  // exam countdown's on-track calculation.
+  try {
+    const lifetime = parseInt(localStorage.getItem("passplus_total_answered") ?? "0", 10) || 0
+    localStorage.setItem("passplus_total_answered", String(lifetime + total))
+
+    const paceRaw = localStorage.getItem("passplus_pace")
+    const pace: Record<string, number> = paceRaw ? JSON.parse(paceRaw) : {}
+    const today = localDateString()
+    pace[today] = (pace[today] ?? 0) + total
+    const cutoff = new Date()
+    cutoff.setDate(cutoff.getDate() - 7)
+    for (const date of Object.keys(pace)) {
+      if (new Date(date + "T00:00:00") < cutoff) delete pace[date]
+    }
+    localStorage.setItem("passplus_pace", JSON.stringify(pace))
+  } catch { /* ignore */ }
 }
 
 export function getReadinessScore(): {
@@ -241,6 +259,57 @@ export function getReadinessScore(): {
     if (pct >= 75) return { pct, label: "Almost Ready",   textColor: "text-green-400",      bgColor: "bg-green-500/10 border-green-500/20" }
     if (pct >= 60) return { pct, label: "Getting There",  textColor: "text-yellow-400",     bgColor: "bg-yellow-500/10 border-yellow-500/20" }
     return           { pct, label: "Not Ready",       textColor: "text-red-400",        bgColor: "bg-red-500/10 border-red-500/20" }
+  } catch {
+    return null
+  }
+}
+
+// ─── Exam date countdown ──────────────────────────────────────────────────────
+
+const BANK_SIZES: Record<Cert, number> = { secplus: 500, netplus: 490, aplus: 490 }
+
+export function getExamDate(): string | null {
+  if (typeof window === "undefined") return null
+  const raw = localStorage.getItem("passplus_exam_date")
+  return raw && /^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw : null
+}
+
+export function setExamDate(date: string): void {
+  if (typeof window === "undefined") return
+  localStorage.setItem("passplus_exam_date", date)
+}
+
+export function clearExamDate(): void {
+  if (typeof window === "undefined") return
+  localStorage.removeItem("passplus_exam_date")
+}
+
+export function getExamCountdown(cert: Cert = "secplus"): {
+  daysLeft: number
+  neededPerDay: number
+  recentPerDay: number
+  onTrack: boolean
+} | null {
+  if (typeof window === "undefined") return null
+  const date = getExamDate()
+  if (!date) return null
+  try {
+    const exam = new Date(date + "T00:00:00")
+    const now = new Date()
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const daysLeft = Math.ceil((exam.getTime() - todayStart.getTime()) / 86_400_000)
+    if (daysLeft < 0) return null
+
+    const answered = parseInt(localStorage.getItem("passplus_total_answered") ?? "0", 10) || 0
+    const remaining = Math.max(0, BANK_SIZES[cert] - answered)
+    const neededPerDay = Math.ceil(remaining / Math.max(1, daysLeft))
+
+    const paceRaw = localStorage.getItem("passplus_pace")
+    const pace: Record<string, number> = paceRaw ? JSON.parse(paceRaw) : {}
+    const recentTotal = Object.values(pace).reduce((s, n) => s + n, 0)
+    const recentPerDay = Math.round(recentTotal / 7)
+
+    return { daysLeft, neededPerDay, recentPerDay, onTrack: recentPerDay >= neededPerDay }
   } catch {
     return null
   }
