@@ -718,6 +718,7 @@ export default function QuizPage() {
                         label={opt}
                         text={currentQuestion?.options[opt] ?? ""}
                         variant={variant}
+                        chosen={isChosen}
                         onClick={() => handleAnswer(opt)}
                         disabled={selected !== null}
                         index={i}
@@ -1132,6 +1133,7 @@ function OptionButton({
   label,
   text,
   variant,
+  chosen,
   onClick,
   disabled,
   index,
@@ -1140,6 +1142,7 @@ function OptionButton({
   label: string
   text: string
   variant: "default" | "correct" | "wrong"
+  chosen: boolean
   onClick: () => void
   disabled: boolean
   index: number
@@ -1155,11 +1158,29 @@ function OptionButton({
         { duration: 0.4, ease: "easeInOut" }
       )
     }
-  }, [variant, shouldReduce])
+    if (variant === "correct" && chosen && !shouldReduce && buttonRef.current) {
+      motionAnimate(
+        buttonRef.current,
+        { scale: [1, 1.03, 1] },
+        { duration: 0.3, ease: "easeOut" }
+      )
+      motionAnimate(
+        buttonRef.current,
+        {
+          boxShadow: [
+            "0 0 0 0 rgba(34,197,94,0.45)",
+            "0 0 0 10px rgba(34,197,94,0)",
+            "0 0 14px -4px rgba(34,197,94,0.3)",
+          ],
+        },
+        { duration: 0.6, ease: "easeOut" }
+      )
+    }
+  }, [variant, chosen, shouldReduce])
 
   const bgColor =
     variant === "correct"
-      ? "rgba(16, 185, 129, 0.1)"
+      ? "rgba(34,197,94,0.1)"
       : variant === "wrong"
       ? "rgba(239, 68, 68, 0.1)"
       : "var(--card)"
