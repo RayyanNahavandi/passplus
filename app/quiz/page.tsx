@@ -51,6 +51,7 @@ export default function QuizPage() {
   >(null)
   const [streakCount, setStreakCount] = useState(0)
   const [combo, setCombo] = useState(0)
+  const [showSummary, setShowSummary] = useState(false)
   const [streakMilestone, setStreakMilestone] = useState<number | null>(null)
   // 1 = forward, -1 = backward - drives slide direction
   const directionRef = useRef<1 | -1>(1)
@@ -264,7 +265,7 @@ export default function QuizPage() {
 
     if (nextIndex >= session.questions.length) {
       saveSession({ ...session, currentIndex: nextIndex })
-      router.push("/results")
+      setShowSummary(true)
       return
     }
 
@@ -850,6 +851,18 @@ export default function QuizPage() {
         </main>
       )}
 
+      {/* Session summary overlay */}
+      <AnimatePresence>
+        {showSummary && (
+          <SessionSummaryOverlay
+            session={session}
+            streakCount={streakCount}
+            shouldReduce={!!shouldReduce}
+            onContinue={() => router.push("/results")}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Paywall overlay */}
       <AnimatePresence>
         {showPaywall && (
@@ -1262,6 +1275,145 @@ function OptionButton({
         <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5 ml-auto" />
       )}
     </motion.button>
+  )
+}
+
+const SUMMARY_DOMAIN_NAMES: Record<string, Record<number, string>> = {
+  secplus: {
+    1: "General Security Concepts",
+    2: "Threats, Vulnerabilities & Mitigations",
+    3: "Security Architecture",
+    4: "Security Operations",
+    5: "Security Program Management & Oversight",
+  },
+  netplus: {
+    1: "Networking Concepts",
+    2: "Network Implementation",
+    3: "Network Operations",
+    4: "Network Security",
+    5: "Network Troubleshooting",
+  },
+  aplus: {
+    1: "Mobile Devices",
+    2: "Networking",
+    3: "Hardware",
+    4: "Virtualization & Cloud Computing",
+    5: "Hardware & Network Troubleshooting",
+  },
+}
+
+function SessionSummaryOverlay({
+  session,
+  streakCount,
+  shouldReduce,
+  onContinue,
+}: {
+  session: QuizSession
+  streakCount: number
+  shouldReduce: boolean
+  onContinue: () => void
+}) {
+  const total = Object.keys(session.answers).length
+  const accuracy = total > 0 ? Math.round((session.score / total) * 100) : 0
+
+  const domainNames = SUMMARY_DOMAIN_NAMES[session.cert ?? "secplus"]
+  let weakest: { id: number; pct: number } | null = null
+  for (const id of [1, 2, 3, 4, 5]) {
+    const qs = session.questions.filter((q) => q.domain === id && q.id in session.answers)
+    if (qs.length === 0) continue
+    const correct = qs.filter((q) => session.answers[q.id] === q.answer).length
+    const domainPct = Math.round((correct / qs.length) * 100)
+    if (weakest === null || domainPct < weakest.pct) weakest = { id, pct: domainPct }
+  }
+
+  const rows = [
+    {
+      icon: <Target className="w-4 h-4 text-accent-green shrink-0" />,
+      text: (
+        <>
+          You scored <strong className="text-foreground">{session.score}/{total}</strong> ({accuracy}% accuracy)
+        </>
+      ),
+    },
+    ...(streakCount > 0
+      ? [{
+          icon: <Flame className="w-4 h-4 text-orange-400 shrink-0" />,
+          text: (
+            <>
+              <strong className="text-foreground">{streakCount} day streak</strong> - keep it going
+            </>
+          ),
+        }]
+      : []),
+    ...(weakest !== null && weakest.pct < 100
+      ? [{
+          icon: <Zap className="w-4 h-4 text-yellow-400 shrink-0" />,
+          text: (
+            <>
+              Weakest area: <strong className="text-foreground">{domainNames[weakest.id]}</strong> ({weakest.pct}%)
+            </>
+          ),
+        }]
+      : []),
+  ]
+
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        className="fixed inset-0 z-40 bg-black/85 backdrop-blur-md"
+      />
+      <motion.div
+        initial={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.92, y: 16 }}
+        animate={shouldReduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={
+          shouldReduce
+            ? { duration: 0.2 }
+            : { type: "spring", stiffness: 380, damping: 28 }
+        }
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+      >
+        <div className="w-full max-w-sm pointer-events-auto bg-card border border-border rounded-2xl p-6 sm:p-7 flex flex-col items-center text-center gap-5 shadow-2xl">
+          <div className="w-14 h-14 rounded-2xl bg-accent-green/10 border border-accent-green/25 flex items-center justify-center">
+            <CheckCircle className="w-7 h-7 text-accent-green" />
+          </div>
+
+          <h2 className="text-xl font-bold tracking-tight">Session complete</h2>
+
+          <div className="w-full flex flex-col gap-3 text-left">
+            {rows.map((row, i) => (
+              <motion.div
+                key={i}
+                initial={shouldReduce ? { opacity: 0 } : { opacity: 0, x: -8 }}
+                animate={shouldReduce ? { opacity: 1 } : { opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 + i * 0.15, ease: "easeOut" }}
+                className="flex items-center gap-2.5 text-sm text-muted-foreground bg-muted border border-border rounded-xl px-4 py-3"
+              >
+                {row.icon}
+                <span>{row.text}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.2 + rows.length * 0.15 }}
+            whileHover={shouldReduce ? {} : { scale: 1.01 }}
+            whileTap={shouldReduce ? {} : { scale: 0.98 }}
+            onClick={onContinue}
+            className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm cursor-pointer flex items-center justify-center gap-2"
+          >
+            See Full Results
+            <ChevronRight className="w-4 h-4" />
+          </motion.button>
+        </div>
+      </motion.div>
+    </>
   )
 }
 
