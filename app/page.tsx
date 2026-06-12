@@ -708,9 +708,11 @@ export default function Home() {
 
       {/* Testimonials */}
       <section className="px-6 py-16 sm:py-24">
-        <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Flex-wrap with justify-center so an incomplete bottom row centers itself */}
+        <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-5">
           {/* Testimonial 1 */}
           <motion.div
+            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
@@ -756,6 +758,7 @@ export default function Home() {
 
           {/* Testimonial 2 */}
           <motion.div
+            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
@@ -801,6 +804,7 @@ export default function Home() {
 
           {/* Testimonial 3 */}
           <motion.div
+            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
@@ -849,6 +853,7 @@ export default function Home() {
 
           {/* Testimonial 4 */}
           <motion.div
+            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
@@ -897,6 +902,7 @@ export default function Home() {
 
           {/* Testimonial 5 */}
           <motion.div
+            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
@@ -921,7 +927,7 @@ export default function Home() {
               </span>
 
               <p className="text-sm sm:text-base text-foreground leading-relaxed -mt-2 mb-4">
-                I passed! Got 789, well above the 750 passing score.
+                I passed!!! 789/750
               </p>
 
               {/* Attribution */}
