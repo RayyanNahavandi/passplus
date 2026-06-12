@@ -849,7 +849,6 @@ export default function Home() {
 
           {/* Testimonial 4 */}
           <motion.div
-            className="lg:col-start-2"
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
@@ -886,6 +885,54 @@ export default function Home() {
                   <div className="flex items-center gap-1.5 leading-none">
                     <span className="text-sm font-medium text-foreground">Dami</span>
                     <span className="text-xs text-muted-foreground/50 font-normal">· 767</span>
+                  </div>
+                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
+                    <CheckCircle className="w-3 h-3 shrink-0" />
+                    CompTIA Security+ Certified
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Testimonial 5 */}
+          <motion.div
+            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
+            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-20px" }}
+            transition={{ duration: 0.4, ease: "easeOut", delay: 0.4 }}
+          >
+            <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
+              {/* Stars */}
+              <div className="flex items-center gap-0.5 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+                <span className="ml-2 text-xs font-medium text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full">
+                  Verified Pass
+                </span>
+              </div>
+
+              {/* Quote mark */}
+              <span className="text-4xl font-serif leading-none text-accent-green select-none" aria-hidden>
+                &ldquo;
+              </span>
+
+              <p className="text-sm sm:text-base text-foreground leading-relaxed -mt-2 mb-4">
+                I passed! Got 789, well above the 750 passing score.
+              </p>
+
+              {/* Attribution */}
+              <div className="flex items-center gap-2 mt-auto">
+                <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
+                  N
+                </div>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-1.5 leading-none">
+                    <span className="text-sm font-medium text-foreground">Nate</span>
+                    <span className="text-xs text-muted-foreground/50 font-normal">· 789</span>
                   </div>
                   <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
                     <CheckCircle className="w-3 h-3 shrink-0" />
