@@ -849,6 +849,7 @@ export default function Home() {
 
           {/* Testimonial 4 */}
           <motion.div
+            className="lg:col-start-2"
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
