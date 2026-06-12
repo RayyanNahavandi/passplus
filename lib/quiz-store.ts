@@ -314,3 +314,82 @@ export function getExamCountdown(cert: Cert = "secplus"): {
     return null
   }
 }
+
+// ─── Domain mastery (cumulative per cert) ─────────────────────────────────────
+
+export type MasteryTier = "Learning" | "Familiar" | "Proficient" | "Mastered"
+
+export function masteryTier(pct: number): MasteryTier {
+  if (pct >= 90) return "Mastered"
+  if (pct >= 75) return "Proficient"
+  if (pct >= 60) return "Familiar"
+  return "Learning"
+}
+
+export const DOMAIN_NAMES: Record<Cert, Record<number, string>> = {
+  secplus: {
+    1: "General Security Concepts",
+    2: "Threats, Vulnerabilities & Mitigations",
+    3: "Security Architecture",
+    4: "Security Operations",
+    5: "Security Program Management & Oversight",
+  },
+  netplus: {
+    1: "Networking Concepts",
+    2: "Network Implementation",
+    3: "Network Operations",
+    4: "Network Security",
+    5: "Network Troubleshooting",
+  },
+  aplus: {
+    1: "Mobile Devices",
+    2: "Networking",
+    3: "Hardware",
+    4: "Virtualization & Cloud Computing",
+    5: "Hardware & Network Troubleshooting",
+  },
+}
+
+type MasteryStore = Record<string, Record<string, { correct: number; total: number }>>
+
+export function recordDomainMastery(
+  cert: Cert,
+  sessionStats: { domain: number; correct: number; total: number }[]
+): void {
+  if (typeof window === "undefined") return
+  try {
+    const raw = localStorage.getItem("passplus_domain_mastery")
+    const store: MasteryStore = raw ? JSON.parse(raw) : {}
+    const certStats = store[cert] ?? {}
+    for (const s of sessionStats) {
+      if (s.total === 0) continue
+      const prev = certStats[s.domain] ?? { correct: 0, total: 0 }
+      certStats[s.domain] = { correct: prev.correct + s.correct, total: prev.total + s.total }
+    }
+    store[cert] = certStats
+    localStorage.setItem("passplus_domain_mastery", JSON.stringify(store))
+  } catch { /* ignore */ }
+}
+
+export function getDomainMastery(
+  cert: Cert
+): { domain: number; pct: number; tier: MasteryTier; total: number }[] | null {
+  if (typeof window === "undefined") return null
+  try {
+    const raw = localStorage.getItem("passplus_domain_mastery")
+    if (!raw) return null
+    const store: MasteryStore = JSON.parse(raw)
+    const certStats = store[cert]
+    if (!certStats) return null
+    const entries = Object.entries(certStats)
+      .map(([domain, { correct, total }]) => {
+        const pct = total > 0 ? Math.round((correct / total) * 100) : 0
+        return { domain: Number(domain), pct, tier: masteryTier(pct), total }
+      })
+      .filter((e) => e.total > 0)
+      .sort((a, b) => a.domain - b.domain)
+    return entries.length > 0 ? entries : null
+  } catch {
+    return null
+  }
+}

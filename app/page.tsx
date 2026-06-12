@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame, Pencil, Check, Mail, Info, KeyRound, ExternalLink } from "lucide-react"
+import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame, Pencil, Check, Mail, Info, KeyRound, ExternalLink, Star } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
-import { getStreak, getReadinessScore, getExamCountdown, unlock } from "@/lib/quiz-store"
+import { getStreak, getReadinessScore, getExamCountdown, getDomainMastery, DOMAIN_NAMES, unlock } from "@/lib/quiz-store"
 import { ReadinessRing } from "@/components/ReadinessRing"
 import { supabase } from "@/lib/supabase"
 
@@ -24,6 +24,7 @@ export default function Home() {
   const [streak, setStreak] = useState(0)
   const [readiness, setReadiness] = useState<ReturnType<typeof getReadinessScore>>(null)
   const [examCountdown, setExamCountdown] = useState<ReturnType<typeof getExamCountdown>>(null)
+  const [mastery, setMastery] = useState<ReturnType<typeof getDomainMastery>>(null)
   const [greeting, setGreeting] = useState<{ line1: string; line2: string | null } | null>(null)
   const [editingName, setEditingName] = useState(false)
   const [nameInput, setNameInput] = useState("")
@@ -145,6 +146,7 @@ export default function Home() {
 
   useEffect(() => {
     setExamCountdown(getExamCountdown(selectedCert))
+    setMastery(getDomainMastery(selectedCert))
   }, [selectedCert])
 
   // Reactively update when AuthProvider async-confirms paid status.
@@ -661,6 +663,35 @@ export default function Home() {
                 <ReadinessRing pct={readiness.pct} size={72} />
               </div>
             )}
+          </motion.div>
+        )}
+
+        {/* Domain mastery badges */}
+        {mastery && (
+          <motion.div
+            {...fadeUp(0.4)}
+            className="flex flex-wrap justify-center gap-2 w-full max-w-2xl"
+          >
+            {mastery.map((m) => {
+              const tierClass =
+                m.tier === "Mastered"
+                  ? "bg-accent-green/10 border-accent-green/25 text-accent-green"
+                  : m.tier === "Proficient"
+                  ? "bg-green-500/10 border-green-500/20 text-green-400"
+                  : m.tier === "Familiar"
+                  ? "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
+                  : "bg-card border-border text-muted-foreground"
+              return (
+                <span
+                  key={m.domain}
+                  title={`${DOMAIN_NAMES[selectedCert][m.domain]}: ${m.pct}% (${m.tier})`}
+                  className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border ${tierClass}`}
+                >
+                  {m.tier === "Mastered" && <Star className="w-3 h-3 shrink-0" />}
+                  {DOMAIN_NAMES[selectedCert][m.domain]}
+                </span>
+              )
+            })}
           </motion.div>
         )}
 

@@ -18,6 +18,7 @@ import {
   CalendarDays,
   TrendingUp,
   TrendingDown,
+  Star,
 } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { DiscordBanner } from "@/components/DiscordBanner"
@@ -33,6 +34,8 @@ import {
   getExamDate,
   setExamDate as saveExamDate,
   getExamCountdown,
+  recordDomainMastery,
+  getDomainMastery,
   type QuizSession,
 } from "@/lib/quiz-store"
 import { ReadinessRing } from "@/components/ReadinessRing"
@@ -59,6 +62,7 @@ export default function ResultsPage() {
   const [countdown, setCountdown] = useState<ReturnType<typeof getExamCountdown>>(null)
   const [hasExamDate, setHasExamDate] = useState(false)
   const [dateInput, setDateInput] = useState("")
+  const [mastery, setMastery] = useState<ReturnType<typeof getDomainMastery>>(null)
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
@@ -70,6 +74,17 @@ export default function ResultsPage() {
       if (!s.resultsRecorded) {
         sendGAEvent("event", "quiz_completed", { score: s.score, total: answeredTotal })
         recordQuizScore(s.score, answeredTotal)
+        recordDomainMastery(
+          s.cert ?? "secplus",
+          [1, 2, 3, 4, 5].map((id) => {
+            const qs = s.questions.filter((q) => q.domain === id && q.id in s.answers)
+            return {
+              domain: id,
+              correct: qs.filter((q) => s.answers[q.id] === q.answer).length,
+              total: qs.length,
+            }
+          })
+        )
         const updated = { ...s, resultsRecorded: true }
         saveSession(updated)
         setSession(updated)
@@ -77,6 +92,7 @@ export default function ResultsPage() {
       setReadiness(getReadinessScore())
       setHasExamDate(getExamDate() !== null)
       setCountdown(getExamCountdown(s.cert ?? "secplus"))
+      setMastery(getDomainMastery(s.cert ?? "secplus"))
       if (!s.isUnlocked) {
         localStorage.setItem("passplus_completed", "true")
       }
@@ -376,11 +392,29 @@ export default function ResultsPage() {
                     const incorrectPct = 100 - d.pct
                     return (
                       <div key={d.id} className="flex flex-col gap-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-foreground">
-                            {d.id}.0 {d.name}
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="flex items-center gap-2 min-w-0 text-sm font-medium text-foreground">
+                            <span className="truncate">{d.id}.0 {d.name}</span>
+                            {(() => {
+                              const m = mastery?.find((e) => e.domain === d.id)
+                              if (!m) return null
+                              const tierClass =
+                                m.tier === "Mastered"
+                                  ? "bg-accent-green/10 border-accent-green/25 text-accent-green"
+                                  : m.tier === "Proficient"
+                                  ? "bg-green-500/10 border-green-500/20 text-green-400"
+                                  : m.tier === "Familiar"
+                                  ? "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
+                                  : "bg-muted border-border text-muted-foreground"
+                              return (
+                                <span className={`flex items-center gap-1 shrink-0 text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-full border ${tierClass}`}>
+                                  {m.tier === "Mastered" && <Star className="w-2.5 h-2.5 shrink-0" />}
+                                  {m.tier}
+                                </span>
+                              )
+                            })()}
                           </span>
-                          <span className={`text-xs font-semibold tabular-nums ${d.pct >= 75 ? "text-accent-green" : d.pct >= 60 ? "text-yellow-400" : "text-red-400"}`}>
+                          <span className={`shrink-0 text-xs font-semibold tabular-nums ${d.pct >= 75 ? "text-accent-green" : d.pct >= 60 ? "text-yellow-400" : "text-red-400"}`}>
                             {d.pct}% ({d.total}q)
                           </span>
                         </div>
