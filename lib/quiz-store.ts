@@ -284,6 +284,16 @@ export function clearExamDate(): void {
   localStorage.removeItem("passplus_exam_date")
 }
 
+export function isExamDateSkipped(): boolean {
+  if (typeof window === "undefined") return false
+  return localStorage.getItem("passplus_exam_date_skipped") === "true"
+}
+
+export function skipExamDate(): void {
+  if (typeof window === "undefined") return
+  localStorage.setItem("passplus_exam_date_skipped", "true")
+}
+
 export function getExamCountdown(cert: Cert = "secplus"): {
   daysLeft: number
   neededPerDay: number

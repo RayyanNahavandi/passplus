@@ -34,6 +34,8 @@ import {
   getExamDate,
   setExamDate as saveExamDate,
   getExamCountdown,
+  isExamDateSkipped,
+  skipExamDate,
   recordDomainMastery,
   getDomainMastery,
   type QuizSession,
@@ -60,7 +62,7 @@ export default function ResultsPage() {
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [readiness, setReadiness] = useState<ReturnType<typeof getReadinessScore>>(null)
   const [countdown, setCountdown] = useState<ReturnType<typeof getExamCountdown>>(null)
-  const [hasExamDate, setHasExamDate] = useState(false)
+  const [examCard, setExamCard] = useState<"hidden" | "prompt" | "form" | "countdown">("hidden")
   const [dateInput, setDateInput] = useState("")
   const [mastery, setMastery] = useState<ReturnType<typeof getDomainMastery>>(null)
   const shouldReduce = useReducedMotion()
@@ -90,8 +92,13 @@ export default function ResultsPage() {
         setSession(updated)
       }
       setReadiness(getReadinessScore())
-      setHasExamDate(getExamDate() !== null)
-      setCountdown(getExamCountdown(s.cert ?? "secplus"))
+      const cd = getExamCountdown(s.cert ?? "secplus")
+      setCountdown(cd)
+      if (getExamDate() !== null && cd) {
+        setExamCard("countdown")
+      } else if (!isExamDateSkipped()) {
+        setExamCard("prompt")
+      }
       setMastery(getDomainMastery(s.cert ?? "secplus"))
       if (!s.isUnlocked) {
         localStorage.setItem("passplus_completed", "true")
@@ -103,8 +110,14 @@ export default function ResultsPage() {
     e.preventDefault()
     if (!dateInput) return
     saveExamDate(dateInput)
-    setHasExamDate(true)
-    setCountdown(getExamCountdown(session?.cert ?? "secplus"))
+    const cd = getExamCountdown(session?.cert ?? "secplus")
+    setCountdown(cd)
+    setExamCard(cd ? "countdown" : "hidden")
+  }
+
+  function handleSkipExamDate() {
+    skipExamDate()
+    setExamCard("hidden")
   }
 
   if (loading) {
@@ -306,75 +319,103 @@ export default function ResultsPage() {
             </motion.div>
           )}
 
-          {/* Exam countdown */}
-          <motion.div
-            variants={shouldReduce ? {} : itemVariants}
-            className="bg-card border border-border rounded-2xl p-6 flex flex-col items-center gap-3 shadow-sm"
-          >
-            {hasExamDate && countdown ? (
-              <>
-                <div className="flex items-center gap-2 text-sm font-semibold">
-                  <CalendarDays className="w-4 h-4 text-accent-green shrink-0" />
-                  {countdown.daysLeft === 0
-                    ? "Your exam is today"
-                    : countdown.daysLeft === 1
-                    ? "1 day until your exam"
-                    : `${countdown.daysLeft} days until your exam`}
-                </div>
-                <div
-                  className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full border ${
-                    countdown.onTrack
-                      ? "bg-accent-green/10 border-accent-green/25 text-accent-green"
-                      : "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
-                  }`}
-                >
-                  {countdown.onTrack ? (
-                    <TrendingUp className="w-3.5 h-3.5 shrink-0" />
-                  ) : (
-                    <TrendingDown className="w-3.5 h-3.5 shrink-0" />
-                  )}
-                  {countdown.onTrack ? "On track" : "Behind pace"}
-                </div>
-                <p className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
-                  Aim for {countdown.neededPerDay} questions a day to cover the full bank.
-                  You are averaging {countdown.recentPerDay} a day this week.
-                </p>
-                <button
-                  onClick={() => { setHasExamDate(false); setCountdown(null) }}
-                  className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors cursor-pointer"
-                >
-                  Change exam date
-                </button>
-              </>
-            ) : (
-              <>
-                <div className="flex items-center gap-2 text-sm font-semibold">
-                  <CalendarDays className="w-4 h-4 text-accent-green shrink-0" />
-                  When is your exam?
-                </div>
-                <p className="text-xs text-muted-foreground text-center max-w-xs">
-                  Set your exam date to get a daily question target and pace tracking.
-                </p>
-                <form onSubmit={handleSaveExamDate} className="flex gap-2 w-full max-w-xs">
-                  <input
-                    type="date"
-                    value={dateInput}
-                    onChange={(e) => setDateInput(e.target.value)}
-                    min={new Date().toISOString().slice(0, 10)}
-                    required
-                    className="flex-1 min-w-0 bg-muted border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:border-accent-green/50 transition-colors min-h-[44px]"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!dateInput}
-                    className="shrink-0 border border-accent-green/40 hover:bg-accent-green/10 disabled:opacity-50 disabled:cursor-not-allowed text-accent-green font-medium px-4 rounded-xl transition-colors min-h-[44px] text-sm cursor-pointer"
+          {/* Exam countdown (optional - only shown until set or skipped) */}
+          {examCard !== "hidden" && (
+            <motion.div
+              variants={shouldReduce ? {} : itemVariants}
+              className="bg-card border border-border rounded-2xl p-6 flex flex-col items-center gap-3 shadow-sm"
+            >
+              {examCard === "countdown" && countdown ? (
+                <>
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    <CalendarDays className="w-4 h-4 text-accent-green shrink-0" />
+                    {countdown.daysLeft === 0
+                      ? "Your exam is today"
+                      : countdown.daysLeft === 1
+                      ? "1 day until your exam"
+                      : `${countdown.daysLeft} days until your exam`}
+                  </div>
+                  <div
+                    className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full border ${
+                      countdown.onTrack
+                        ? "bg-accent-green/10 border-accent-green/25 text-accent-green"
+                        : "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
+                    }`}
                   >
-                    Save
+                    {countdown.onTrack ? (
+                      <TrendingUp className="w-3.5 h-3.5 shrink-0" />
+                    ) : (
+                      <TrendingDown className="w-3.5 h-3.5 shrink-0" />
+                    )}
+                    {countdown.onTrack ? "On track" : "Behind pace"}
+                  </div>
+                  <p className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
+                    Aim for {countdown.neededPerDay} questions a day to cover the full bank.
+                    You are averaging {countdown.recentPerDay} a day this week.
+                  </p>
+                  <button
+                    onClick={() => setExamCard("form")}
+                    className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors cursor-pointer"
+                  >
+                    Change exam date
                   </button>
-                </form>
-              </>
-            )}
-          </motion.div>
+                </>
+              ) : examCard === "form" ? (
+                <>
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    <CalendarDays className="w-4 h-4 text-accent-green shrink-0" />
+                    When is your exam?
+                  </div>
+                  <form onSubmit={handleSaveExamDate} className="flex gap-2 w-full max-w-xs">
+                    <input
+                      type="date"
+                      value={dateInput}
+                      onChange={(e) => setDateInput(e.target.value)}
+                      min={new Date().toISOString().slice(0, 10)}
+                      required
+                      autoFocus
+                      className="flex-1 min-w-0 bg-muted border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:border-accent-green/50 transition-colors min-h-[44px]"
+                    />
+                    <button
+                      type="submit"
+                      disabled={!dateInput}
+                      className="shrink-0 border border-accent-green/40 hover:bg-accent-green/10 disabled:opacity-50 disabled:cursor-not-allowed text-accent-green font-medium px-4 rounded-xl transition-colors min-h-[44px] text-sm cursor-pointer"
+                    >
+                      Save
+                    </button>
+                  </form>
+                  <button
+                    onClick={handleSkipExamDate}
+                    className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors cursor-pointer"
+                  >
+                    Not right now
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    <CalendarDays className="w-4 h-4 text-accent-green shrink-0" />
+                    Set your exam date for a personalized study plan
+                  </div>
+                  <p className="text-xs text-muted-foreground text-center max-w-xs">
+                    Get a daily question target and pace tracking. Studying casually? Skip it.
+                  </p>
+                  <button
+                    onClick={() => setExamCard("form")}
+                    className="border border-accent-green/40 hover:bg-accent-green/10 text-accent-green font-medium px-5 py-2.5 rounded-xl transition-colors min-h-[44px] text-sm cursor-pointer"
+                  >
+                    Set Date
+                  </button>
+                  <button
+                    onClick={handleSkipExamDate}
+                    className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors cursor-pointer"
+                  >
+                    Not right now
+                  </button>
+                </>
+              )}
+            </motion.div>
+          )}
 
           {/* Domain breakdown */}
           {domainStats.length > 0 && (

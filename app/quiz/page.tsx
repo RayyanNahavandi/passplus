@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target, Mail } from "lucide-react"
+import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target, Mail, CalendarDays } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
@@ -23,6 +23,7 @@ import {
   unlock,
   updateStreak,
   getStreak,
+  getExamCountdown,
   type QuizSession,
 } from "@/lib/quiz-store"
 import { type Question } from "@/data/questions"
@@ -52,6 +53,7 @@ export default function QuizPage() {
   const [streakCount, setStreakCount] = useState(0)
   const [combo, setCombo] = useState(0)
   const [showSummary, setShowSummary] = useState(false)
+  const [examCountdown, setExamCountdown] = useState<ReturnType<typeof getExamCountdown>>(null)
   const [streakMilestone, setStreakMilestone] = useState<number | null>(null)
   // 1 = forward, -1 = backward - drives slide direction
   const directionRef = useRef<1 | -1>(1)
@@ -93,6 +95,7 @@ export default function QuizPage() {
       setSession(s)
     }
     setStreakCount(getStreak().count)
+    setExamCountdown(getExamCountdown(certParam))
     setLoading(false)
   }, [router])
 
@@ -489,6 +492,17 @@ export default function QuizPage() {
           {streakCount > 0 && (
             <span className="flex items-center gap-1 text-orange-400 font-medium">
               <Flame className="w-3.5 h-3.5" />{streakCount}
+            </span>
+          )}
+
+          {/* Exam countdown - only when the user has set an exam date */}
+          {!isExamMode && examCountdown && (
+            <span
+              className="flex items-center gap-1 text-accent-green font-medium"
+              title={`${examCountdown.daysLeft} days until your exam`}
+            >
+              <CalendarDays className="w-3.5 h-3.5" />
+              {examCountdown.daysLeft}d
             </span>
           )}
 
