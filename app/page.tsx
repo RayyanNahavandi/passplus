@@ -12,6 +12,96 @@ import { getStreak, getReadinessScore, getExamCountdown, getDomainMastery, DOMAI
 import { ReadinessRing } from "@/components/ReadinessRing"
 import { supabase } from "@/lib/supabase"
 
+type Testimonial = {
+  initial: string
+  name: string
+  score: string | null
+  quote: string
+}
+
+const TESTIMONIALS: Testimonial[] = [
+  {
+    initial: "A",
+    name: "Alexxx",
+    score: null,
+    quote:
+      "I passed! The questions were very similar to the real exam. Highly recommend studying all 200+ questions!",
+  },
+  {
+    initial: "D",
+    name: "Dame",
+    score: null,
+    quote:
+      "I just took my test this afternoon and I passed! These questions helped me so much thank you for the content I believe in everyone in here you guys got this",
+  },
+  {
+    initial: "M",
+    name: "Community Member",
+    score: "802",
+    quote:
+      "I did your test before the exam, all questions and had 95% right. Still passed so it's ok. Thank you for your website mate.",
+  },
+  {
+    initial: "D",
+    name: "Dami",
+    score: "767",
+    quote:
+      "Used your app mostly. Did the exam earlier than planned cause I was nervous, wanted to get it out of the way. 767!",
+  },
+  {
+    initial: "N",
+    name: "Nate",
+    score: "789",
+    quote: "I passed!!! 789/750",
+  },
+]
+
+function TestimonialCard({ t }: { t: Testimonial }) {
+  return (
+    <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
+      {/* Stars */}
+      <div className="flex items-center gap-0.5 mb-4">
+        {[...Array(5)].map((_, i) => (
+          <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        ))}
+        <span className="ml-2 text-xs font-medium text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full">
+          Verified Pass
+        </span>
+      </div>
+
+      {/* Quote mark */}
+      <span className="text-4xl font-serif leading-none text-accent-green select-none" aria-hidden>
+        &ldquo;
+      </span>
+
+      <p className="text-sm sm:text-base text-foreground leading-relaxed -mt-2 mb-4">
+        {t.quote}
+      </p>
+
+      {/* Attribution */}
+      <div className="flex items-center gap-2 mt-auto">
+        <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
+          {t.initial}
+        </div>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1.5 leading-none">
+            <span className="text-sm font-medium text-foreground">{t.name}</span>
+            {t.score && (
+              <span className="text-xs text-muted-foreground/50 font-normal">· {t.score}</span>
+            )}
+          </div>
+          <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
+            <CheckCircle className="w-3 h-3 shrink-0" />
+            CompTIA Security+ Certified
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   const shouldReduce = useReducedMotion()
   const router = useRouter()
@@ -708,247 +798,34 @@ export default function Home() {
 
       {/* Testimonials */}
       <section className="px-6 py-16 sm:py-24">
-        {/* Flex-wrap with justify-center so an incomplete bottom row centers itself */}
-        <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-5">
-          {/* Testimonial 1 */}
-          <motion.div
-            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
-            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          >
-            <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
-              {/* Stars */}
-              <div className="flex items-center gap-0.5 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-                <span className="ml-2 text-xs font-medium text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full">
-                  Verified Pass
-                </span>
+        {shouldReduce ? (
+          /* Reduced motion: static centered grid */
+          <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-5">
+            {TESTIMONIALS.map((t, i) => (
+              <div
+                key={i}
+                className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
+              >
+                <TestimonialCard t={t} />
               </div>
-
-              {/* Quote mark */}
-              <span className="text-4xl font-serif leading-none text-accent-green select-none" aria-hidden>
-                &ldquo;
-              </span>
-
-              <p className="text-sm sm:text-base text-foreground leading-relaxed -mt-2 mb-4">
-                I passed! The questions were very similar to the real exam. Highly recommend studying all 200+ questions!
-              </p>
-
-              {/* Attribution */}
-              <div className="flex items-center gap-2 mt-auto">
-                <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
-                  A
+            ))}
+          </div>
+        ) : (
+          /* Infinite horizontal marquee, paused on hover, faded edges */
+          <div className="marquee-mask overflow-hidden">
+            <div className="marquee-track py-1">
+              {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+                <div
+                  key={i}
+                  className="w-[320px] shrink-0 mr-5"
+                  aria-hidden={i >= TESTIMONIALS.length}
+                >
+                  <TestimonialCard t={t} />
                 </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-foreground leading-none">Alexxx</span>
-                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
-                    <CheckCircle className="w-3 h-3 shrink-0" />
-                    CompTIA Security+ Certified
-                  </span>
-                </div>
-              </div>
+              ))}
             </div>
-          </motion.div>
-
-          {/* Testimonial 2 */}
-          <motion.div
-            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
-            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
-          >
-            <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
-              {/* Stars */}
-              <div className="flex items-center gap-0.5 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-                <span className="ml-2 text-xs font-medium text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full">
-                  Verified Pass
-                </span>
-              </div>
-
-              {/* Quote mark */}
-              <span className="text-4xl font-serif leading-none text-accent-green select-none" aria-hidden>
-                &ldquo;
-              </span>
-
-              <p className="text-sm sm:text-base text-foreground leading-relaxed -mt-2 mb-4">
-                I just took my test this afternoon and I passed! These questions helped me so much thank you for the content I believe in everyone in here you guys got this
-              </p>
-
-              {/* Attribution */}
-              <div className="flex items-center gap-2 mt-auto">
-                <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
-                  D
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-foreground leading-none">Dame</span>
-                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
-                    <CheckCircle className="w-3 h-3 shrink-0" />
-                    CompTIA Security+ Certified
-                  </span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Testimonial 3 */}
-          <motion.div
-            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
-            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
-          >
-            <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
-              {/* Stars */}
-              <div className="flex items-center gap-0.5 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-                <span className="ml-2 text-xs font-medium text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full">
-                  Verified Pass
-                </span>
-              </div>
-
-              {/* Quote mark */}
-              <span className="text-4xl font-serif leading-none text-accent-green select-none" aria-hidden>
-                &ldquo;
-              </span>
-
-              <p className="text-sm sm:text-base text-foreground leading-relaxed -mt-2 mb-4">
-                I did your test before the exam, all questions and had 95% right. Still passed so it&apos;s ok. Thank you for your website mate.
-              </p>
-
-              {/* Attribution */}
-              <div className="flex items-center gap-2 mt-auto">
-                <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
-                  M
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-1.5 leading-none">
-                    <span className="text-sm font-medium text-foreground">Community Member</span>
-                    <span className="text-xs text-muted-foreground/50 font-normal">· 802</span>
-                  </div>
-                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
-                    <CheckCircle className="w-3 h-3 shrink-0" />
-                    CompTIA Security+ Certified
-                  </span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Testimonial 4 */}
-          <motion.div
-            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
-            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.4, ease: "easeOut", delay: 0.3 }}
-          >
-            <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
-              {/* Stars */}
-              <div className="flex items-center gap-0.5 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-                <span className="ml-2 text-xs font-medium text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full">
-                  Verified Pass
-                </span>
-              </div>
-
-              {/* Quote mark */}
-              <span className="text-4xl font-serif leading-none text-accent-green select-none" aria-hidden>
-                &ldquo;
-              </span>
-
-              <p className="text-sm sm:text-base text-foreground leading-relaxed -mt-2 mb-4">
-                Used your app mostly. Did the exam earlier than planned cause I was nervous, wanted to get it out of the way. 767!
-              </p>
-
-              {/* Attribution */}
-              <div className="flex items-center gap-2 mt-auto">
-                <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
-                  D
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-1.5 leading-none">
-                    <span className="text-sm font-medium text-foreground">Dami</span>
-                    <span className="text-xs text-muted-foreground/50 font-normal">· 767</span>
-                  </div>
-                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
-                    <CheckCircle className="w-3 h-3 shrink-0" />
-                    CompTIA Security+ Certified
-                  </span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Testimonial 5 */}
-          <motion.div
-            className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.34px)]"
-            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
-            whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.4, ease: "easeOut", delay: 0.4 }}
-          >
-            <div className="relative flex flex-col bg-card border border-accent-green/20 rounded-2xl p-6 sm:p-7 shadow-[0_0_32px_-6px_rgba(34,197,94,0.12)] hover:shadow-[0_0_40px_-6px_rgba(34,197,94,0.18)] hover:border-accent-green/30 transition-all h-full">
-              {/* Stars */}
-              <div className="flex items-center gap-0.5 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-accent-green fill-accent-green" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-                <span className="ml-2 text-xs font-medium text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full">
-                  Verified Pass
-                </span>
-              </div>
-
-              {/* Quote mark */}
-              <span className="text-4xl font-serif leading-none text-accent-green select-none" aria-hidden>
-                &ldquo;
-              </span>
-
-              <p className="text-sm sm:text-base text-foreground leading-relaxed -mt-2 mb-4">
-                I passed!!! 789/750
-              </p>
-
-              {/* Attribution */}
-              <div className="flex items-center gap-2 mt-auto">
-                <div className="w-9 h-9 rounded-full bg-accent-green/15 border border-accent-green/25 flex items-center justify-center text-sm font-bold text-accent-green shrink-0">
-                  N
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-1.5 leading-none">
-                    <span className="text-sm font-medium text-foreground">Nate</span>
-                    <span className="text-xs text-muted-foreground/50 font-normal">· 789</span>
-                  </div>
-                  <span className="inline-flex items-center gap-1 text-xs text-accent-green bg-accent-green/10 border border-accent-green/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap w-fit">
-                    <CheckCircle className="w-3 h-3 shrink-0" />
-                    CompTIA Security+ Certified
-                  </span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+          </div>
+        )}
       </section>
 
       {/* Features */}
