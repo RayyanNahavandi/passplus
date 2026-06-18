@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback } from "react"
+import { useEffect, useRef, useState, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import {
@@ -29,6 +29,23 @@ import {
 import { type Question } from "@/data/questions"
 
 const EXAM_DURATION = 90 * 60 // 5400 seconds
+
+// Display positions for answer options (top to bottom).
+const POSITION_LETTERS = ["A", "B", "C", "D"] as const
+type Letter = "A" | "B" | "C" | "D"
+
+// Fisher-Yates shuffle. Used to randomize answer-option order at render time
+// so the correct answer does not cluster on any single letter (fixes the
+// reported A/B/C/D distribution bias). The underlying question data is never
+// mutated; only the display order changes.
+function shuffleLetters(): Letter[] {
+  const a: Letter[] = ["A", "B", "C", "D"]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
 
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60)
@@ -169,6 +186,23 @@ export default function QuizPage() {
 
   const currentQuestion: Question | undefined =
     session?.questions[session.currentIndex]
+
+  // Randomized display order of the four options for the current question.
+  // Recomputed whenever the displayed question changes (new id or index), so a
+  // fresh order is produced each time a question is shown, while staying stable
+  // across re-renders of the same question (e.g. after the user answers). The
+  // original option letters are preserved underneath, so answer tracking,
+  // scoring, and results are unaffected by the visual reordering.
+  const displayOrder = useMemo<Letter[]>(
+    () => shuffleLetters(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentQuestion?.id, session?.currentIndex]
+  )
+
+  // The display position (A-D) the correct answer now occupies after shuffling.
+  const correctDisplayLetter: Letter | undefined = currentQuestion
+    ? POSITION_LETTERS[displayOrder.indexOf(currentQuestion.answer)]
+    : undefined
 
   const progress = session
     ? (session.currentIndex / session.questions.length) * 100
@@ -719,7 +753,10 @@ export default function QuizPage() {
 
                 {/* Options */}
                 <div className="flex flex-col gap-2.5">
-                  {(["A", "B", "C", "D"] as const).map((opt, i) => {
+                  {displayOrder.map((opt, i) => {
+                    // `opt` is the original data letter; `i` is its shuffled
+                    // display slot, relabeled A-D top to bottom.
+                    const positionLetter = POSITION_LETTERS[i]
                     const isCorrect = opt === currentQuestion?.answer
                     const isChosen = selected === opt
                     let variant: "default" | "correct" | "wrong" = "default"
@@ -730,7 +767,7 @@ export default function QuizPage() {
                     return (
                       <OptionButton
                         key={opt}
-                        label={opt}
+                        label={positionLetter}
                         text={currentQuestion?.options[opt] ?? ""}
                         variant={variant}
                         chosen={isChosen}
@@ -767,7 +804,7 @@ export default function QuizPage() {
                           <>
                             <XCircle className="w-4 h-4" />
                             Wrong. Correct answer:{" "}
-                            {currentQuestion?.answer}.{" "}
+                            {correctDisplayLetter}.{" "}
                             {currentQuestion?.options[currentQuestion.answer]}
                           </>
                         )}
