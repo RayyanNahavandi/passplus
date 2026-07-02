@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target, Mail, CalendarDays } from "lucide-react"
+import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target, Mail, CalendarDays, Puzzle } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
@@ -17,6 +17,7 @@ import { supabase } from "@/lib/supabase"
 import {
   createSession,
   createExamSession,
+  createPBQSession,
   saveSession,
   loadSession,
   isUnlocked,
@@ -27,6 +28,8 @@ import {
   type QuizSession,
 } from "@/lib/quiz-store"
 import { type Question } from "@/data/questions"
+import { getPBQById, getPBQsForCert } from "@/data/pbqQuestions"
+import PBQRunner from "@/components/pbq/PBQRunner"
 
 const EXAM_DURATION = 90 * 60 // 5400 seconds
 
@@ -69,6 +72,7 @@ export default function QuizPage() {
   >(null)
   const [streakCount, setStreakCount] = useState(0)
   const [combo, setCombo] = useState(0)
+  const [paywallContext, setPaywallContext] = useState<"pbq" | null>(null)
   const [showSummary, setShowSummary] = useState(false)
   const [examCountdown, setExamCountdown] = useState<ReturnType<typeof getExamCountdown>>(null)
   const [streakMilestone, setStreakMilestone] = useState<number | null>(null)
@@ -96,10 +100,14 @@ export default function QuizPage() {
     // a fresh paid session rather than resuming the 25-question free one.
     const existingCert = existing?.cert ?? "secplus"
     const sessionNeedsUpgrade = existing && !existing.isUnlocked && isUnlocked()
+    // PBQ drill sessions have no multiple-choice questions, so they resume
+    // whenever any PBQ is still unanswered.
+    const pbqPending =
+      existing?.pbqIds?.some((id) => !existing.pbqResults?.[id]) ?? false
     if (
       existing &&
       !sessionNeedsUpgrade &&
-      existing.currentIndex < existing.questions.length &&
+      (existing.currentIndex < existing.questions.length || pbqPending) &&
       existingCert === certParam
     ) {
       setSession(existing)
@@ -184,8 +192,37 @@ export default function QuizPage() {
     sendGAEvent("event", "quiz_mode_selected", { mode: "exam" })
   }, [session?.cert])
 
+  const handleStartPbq = useCallback(() => {
+    if (!session?.isUnlocked) {
+      sendGAEvent("event", "pbq_paywall_shown")
+      setPaywallContext("pbq")
+      setShowPaywall(true)
+      return
+    }
+    const s = createPBQSession(session?.cert ?? "secplus")
+    const updated: QuizSession = { ...s, examMode: false }
+    saveSession(updated)
+    setSession(updated)
+    setSelected(null)
+    setExplanation(null)
+    sendGAEvent("event", "quiz_mode_selected", { mode: "pbq" })
+  }, [session?.cert, session?.isUnlocked])
+
   const currentQuestion: Question | undefined =
     session?.questions[session.currentIndex]
+
+  // PBQ phase: any session with unanswered PBQs shows those first (exam
+  // sessions front-load them like the real CompTIA exam; drill sessions
+  // contain only PBQs).
+  const pbqCount = session?.pbqIds?.length ?? 0
+  const pbqDone = session?.pbqResults
+    ? Object.keys(session.pbqResults).length
+    : 0
+  const pendingPbqId = session?.pbqIds?.find(
+    (id) => !session.pbqResults?.[id]
+  )
+  const currentPbq = pendingPbqId ? getPBQById(pendingPbqId) : undefined
+  const inPbqPhase = !!currentPbq && !showModeSelect && !showPaywall
 
   // Randomized display order of the four options for the current question.
   // Recomputed whenever the displayed question changes (new id or index), so a
@@ -204,9 +241,13 @@ export default function QuizPage() {
     ? POSITION_LETTERS[displayOrder.indexOf(currentQuestion.answer)]
     : undefined
 
-  const progress = session
+  const progress = !session
+    ? 0
+    : inPbqPhase
+    ? (pbqDone / Math.max(pbqCount, 1)) * 100
+    : session.questions.length > 0
     ? (session.currentIndex / session.questions.length) * 100
-    : 0
+    : 100
 
   const handleAnswer = useCallback(
     (choice: "A" | "B" | "C" | "D") => {
@@ -317,6 +358,43 @@ export default function QuizPage() {
     setLoadingExplanation(false)
   }, [session, selected, router])
 
+  const handlePbqComplete = useCallback(
+    (result: { correct: number; total: number; domain: number }) => {
+      if (!session || !currentPbq) return
+      const updated: QuizSession = {
+        ...session,
+        pbqResults: { ...(session.pbqResults ?? {}), [currentPbq.id]: result },
+      }
+      saveSession(updated)
+      sendGAEvent("event", "pbq_completed", {
+        pbq_id: currentPbq.id,
+        correct: result.correct,
+        total: result.total,
+      })
+
+      if (!streakUpdatedRef.current) {
+        streakUpdatedRef.current = true
+        const { count, milestone } = updateStreak()
+        setStreakCount(count)
+        if (milestone !== null) {
+          setStreakMilestone(milestone)
+          setTimeout(() => setStreakMilestone(null), 4000)
+        }
+      }
+
+      const remaining =
+        updated.pbqIds?.some((id) => !updated.pbqResults?.[id]) ?? false
+      if (!remaining && updated.questions.length === 0) {
+        // PBQ-only drill finished: go straight to results without updating
+        // state so the empty-question guard never flashes.
+        router.push("/results")
+        return
+      }
+      setSession(updated)
+    },
+    [session, currentPbq, router]
+  )
+
   const handlePrev = useCallback(() => {
     if (!session || session.currentIndex <= 0) return
     const prevIndex = session.currentIndex - 1
@@ -390,7 +468,7 @@ export default function QuizPage() {
     )
   }
 
-  if (!session || (!currentQuestion && !showPaywall && !showModeSelect)) {
+  if (!session || (!currentQuestion && !showPaywall && !showModeSelect && !inPbqPhase)) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <p className="text-muted-foreground text-sm">No questions found.</p>
@@ -540,7 +618,17 @@ export default function QuizPage() {
             </span>
           )}
 
-          {!showModeSelect && (
+          {!showModeSelect && inPbqPhase && (
+            <>
+              <span className="w-px h-3 bg-border" />
+              <span className="flex items-center gap-1">
+                <Puzzle className="w-3 h-3 shrink-0" />
+                PBQ {Math.min(pbqDone + 1, pbqCount)}/{pbqCount}
+              </span>
+            </>
+          )}
+
+          {!showModeSelect && !inPbqPhase && (
             <>
               <span className="w-px h-3 bg-border" />
               <span>
@@ -707,11 +795,26 @@ export default function QuizPage() {
         <ModeSelectScreen
           onPractice={handleStartPractice}
           onExam={handleStartExam}
+          onPbq={handleStartPbq}
           shouldReduce={!!shouldReduce}
           displayName={displayName}
           isUnlocked={session.isUnlocked}
           cert={session?.cert ?? cert}
         />
+      ) : inPbqPhase && currentPbq ? (
+        <main className="flex-1 flex flex-col items-center px-4 py-10">
+          <div className="w-full max-w-2xl">
+            <PBQRunner
+              key={currentPbq.id}
+              pbq={currentPbq}
+              index={pbqDone}
+              count={pbqCount}
+              shouldReduce={!!shouldReduce}
+              isLast={pbqDone + 1 >= pbqCount && session.questions.length === 0}
+              onComplete={handlePbqComplete}
+            />
+          </div>
+        </main>
       ) : (
         /* Quiz content */
         <main className="flex-1 flex flex-col items-center px-4 py-10">
@@ -919,12 +1022,20 @@ export default function QuizPage() {
         {showPaywall && (
           <PaywallOverlay
             onUnlock={handleUnlock}
-            onGoToResults={() => router.push("/results")}
+            onGoToResults={() => {
+              if (paywallContext === "pbq") {
+                setShowPaywall(false)
+                setPaywallContext(null)
+              } else {
+                router.push("/results")
+              }
+            }}
             shouldReduce={!!shouldReduce}
             freeCount={session.questions.length}
             cert={session.cert ?? "secplus"}
             score={session.score}
             total={Object.keys(session.answers).length}
+            context={paywallContext}
           />
         )}
       </AnimatePresence>
@@ -959,6 +1070,7 @@ const APLUS_DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | n
 function ModeSelectScreen({
   onPractice,
   onExam,
+  onPbq,
   shouldReduce,
   displayName,
   isUnlocked,
@@ -966,6 +1078,7 @@ function ModeSelectScreen({
 }: {
   onPractice: (opts: { count: number; domain: number | null }) => void
   onExam: () => void
+  onPbq: () => void
   shouldReduce: boolean
   displayName?: string | null
   isUnlocked: boolean
@@ -1059,6 +1172,39 @@ function ModeSelectScreen({
                   </p>
                 </div>
               </motion.button>
+
+              {/* PBQ Drill - certs with PBQ content only */}
+              {getPBQsForCert(cert).length > 0 && (
+                <motion.button
+                  onClick={onPbq}
+                  whileHover={shouldReduce ? {} : { scale: 1.02 }}
+                  whileTap={shouldReduce ? {} : { scale: 0.98 }}
+                  initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: 0.26, ease: "easeOut" as const }}
+                  className="sm:col-span-2 flex flex-col items-start gap-4 bg-card border border-border hover:border-accent-green/40 rounded-2xl p-6 text-left transition-all hover:shadow-[0_0_20px_-6px_rgba(34,197,94,0.2)] group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50"
+                >
+                  <div className="w-full flex items-start justify-between">
+                    <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center group-hover:bg-accent-green/15 transition-colors">
+                      <Puzzle className="w-5 h-5 text-accent-green" />
+                    </div>
+                    {!isUnlocked && (
+                      <span className="flex items-center gap-1.5 text-xs font-medium text-yellow-500 bg-yellow-500/10 border border-yellow-500/25 px-2.5 py-1 rounded-full">
+                        <Lock className="w-3 h-3" />
+                        Paid
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <h2 className="font-semibold text-base mb-1">PBQ Drill</h2>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {isUnlocked
+                        ? "Performance Based Questions: drag-and-drop matching, ordering, and fill-in scenarios, just like the real exam."
+                        : "Performance Based Questions like the real exam opens with. Unlock to practice matching, ordering, and fill-in scenarios."}
+                    </p>
+                  </div>
+                </motion.button>
+              )}
             </div>
 
             <p className="text-xs text-muted-foreground/60 text-center">
@@ -1364,8 +1510,13 @@ function SessionSummaryOverlay({
   shouldReduce: boolean
   onContinue: () => void
 }) {
-  const total = Object.keys(session.answers).length
-  const accuracy = total > 0 ? Math.round((session.score / total) * 100) : 0
+  // Each PBQ counts as one question; partial credit is a fraction of it.
+  const pbqEntries = session.pbqResults ? Object.values(session.pbqResults) : []
+  const pbqScore = pbqEntries.reduce((s, r) => s + r.correct / r.total, 0)
+  const total = Object.keys(session.answers).length + pbqEntries.length
+  const combinedScore = session.score + pbqScore
+  const displayScore = Math.round(combinedScore * 10) / 10
+  const accuracy = total > 0 ? Math.round((combinedScore / total) * 100) : 0
 
   const domainNames = SUMMARY_DOMAIN_NAMES[session.cert ?? "secplus"]
   let weakest: { id: number; pct: number } | null = null
@@ -1382,7 +1533,7 @@ function SessionSummaryOverlay({
       icon: <Target className="w-4 h-4 text-accent-green shrink-0" />,
       text: (
         <>
-          You scored <strong className="text-foreground">{session.score}/{total}</strong> ({accuracy}% accuracy)
+          You scored <strong className="text-foreground">{displayScore}/{total}</strong> ({accuracy}% accuracy)
         </>
       ),
     },
@@ -1476,6 +1627,7 @@ function PaywallOverlay({
   cert,
   score,
   total,
+  context = null,
 }: {
   onUnlock: () => void
   onGoToResults: () => void
@@ -1484,6 +1636,7 @@ function PaywallOverlay({
   cert: string
   score: number
   total: number
+  context?: "pbq" | null
 }) {
   const [leadEmail, setLeadEmail] = useState("")
   const [leadStatus, setLeadStatus] = useState<"idle" | "sending" | "done" | "error">("idle")
@@ -1559,15 +1712,28 @@ function PaywallOverlay({
               Don&apos;t walk into your exam underprepared
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              You&apos;ve used your {freeCount} free questions. Candidates who
-              practice all 1,480 questions pass{" "}
-              <strong className="text-foreground">2× more often</strong>.
+              {context === "pbq" ? (
+                <>
+                  Performance Based Questions are a paid feature. The real exam
+                  opens with PBQs, and candidates who practice them pass{" "}
+                  <strong className="text-foreground">2× more often</strong>.
+                </>
+              ) : (
+                <>
+                  You&apos;ve used your {freeCount} free questions. Candidates who
+                  practice all 1,480 questions pass{" "}
+                  <strong className="text-foreground">2× more often</strong>.
+                </>
+              )}
             </p>
           </div>
 
           {/* What you get bullets */}
           <ul className="w-full text-left space-y-2 text-sm">
             {[
+              ...(context === "pbq"
+                ? ["Interactive PBQs: matching, ordering & fill-in drills"]
+                : []),
               "1,480 questions across Security+, Network+ & A+",
               "Practice Mode + timed Exam Mode simulation",
               "AI explanations for every question",
@@ -1635,7 +1801,7 @@ function PaywallOverlay({
               onClick={onGoToResults}
               className="w-full text-muted-foreground/50 hover:text-muted-foreground text-xs transition-colors py-1 min-h-[36px] cursor-pointer"
             >
-              See my results so far →
+              {context === "pbq" ? "Maybe later" : "See my results so far →"}
             </button>
 
             {/* Email capture */}

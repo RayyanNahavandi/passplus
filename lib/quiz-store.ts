@@ -6,6 +6,7 @@ import { networkPracticeQuestions } from "@/data/networkPlusQuestions"
 import { networkExamQuestions } from "@/data/networkPlusExamQuestions"
 import { aplusPracticeQuestions } from "@/data/aplusPracticeQuestions"
 import { aplusExamQuestions } from "@/data/aplusExamQuestions"
+import { getPBQsForCert } from "@/data/pbqQuestions"
 
 type Cert = "secplus" | "netplus" | "aplus"
 
@@ -21,6 +22,8 @@ export interface QuizSession {
   examStartedAt?: number // epoch ms
   cert?: Cert
   resultsRecorded?: boolean
+  pbqIds?: string[]
+  pbqResults?: Record<string, { correct: number; total: number; domain: number }>
 }
 
 // Fixed set of free practice questions - same 25 questions, same order, on every device.
@@ -127,6 +130,8 @@ export function createExamSession(cert: Cert = "secplus"): QuizSession {
     : cert === "aplus" ? FREE_APLUS_EXAM_QUESTIONS
     : FREE_EXAM_QUESTIONS
   const pool: Question[] = unlocked ? shuffle(allExamQs) : freeExamQs
+  // Like the real CompTIA exam, paid exam sessions open with PBQs.
+  const certPbqs = unlocked ? getPBQsForCert(cert) : []
   return {
     questions: pool,
     currentIndex: 0,
@@ -136,6 +141,25 @@ export function createExamSession(cert: Cert = "secplus"): QuizSession {
     mode: "normal",
     isUnlocked: unlocked,
     cert,
+    ...(certPbqs.length > 0
+      ? { pbqIds: shuffle(certPbqs.map((p) => p.id)), pbqResults: {} }
+      : {}),
+  }
+}
+
+/** Creates a PBQ-only drill session (paid feature). */
+export function createPBQSession(cert: Cert = "secplus"): QuizSession {
+  return {
+    questions: [],
+    currentIndex: 0,
+    answers: {},
+    missedIds: [],
+    score: 0,
+    mode: "normal",
+    isUnlocked: isUnlocked(),
+    cert,
+    pbqIds: shuffle(getPBQsForCert(cert).map((p) => p.id)),
+    pbqResults: {},
   }
 }
 

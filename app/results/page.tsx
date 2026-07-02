@@ -71,19 +71,28 @@ export default function ResultsPage() {
     const s = loadSession()
     setSession(s)
     setLoading(false)
-    if (s && Object.keys(s.answers).length > 0) {
-      const answeredTotal = Object.keys(s.answers).length
+    const sPbqEntries = s?.pbqResults ? Object.values(s.pbqResults) : []
+    if (s && (Object.keys(s.answers).length > 0 || sPbqEntries.length > 0)) {
+      // Each PBQ counts as one question with partial credit as a fraction.
+      const pbqScore = sPbqEntries.reduce((sum, r) => sum + r.correct / r.total, 0)
+      const answeredTotal = Object.keys(s.answers).length + sPbqEntries.length
       if (!s.resultsRecorded) {
-        sendGAEvent("event", "quiz_completed", { score: s.score, total: answeredTotal })
-        recordQuizScore(s.score, answeredTotal)
+        sendGAEvent("event", "quiz_completed", {
+          score: s.score + pbqScore,
+          total: answeredTotal,
+        })
+        recordQuizScore(s.score + pbqScore, answeredTotal)
         recordDomainMastery(
           s.cert ?? "secplus",
           [1, 2, 3, 4, 5].map((id) => {
             const qs = s.questions.filter((q) => q.domain === id && q.id in s.answers)
+            const domainPbqs = sPbqEntries.filter((r) => r.domain === id)
             return {
               domain: id,
-              correct: qs.filter((q) => s.answers[q.id] === q.answer).length,
-              total: qs.length,
+              correct:
+                qs.filter((q) => s.answers[q.id] === q.answer).length +
+                domainPbqs.reduce((sum, r) => sum + r.correct / r.total, 0),
+              total: qs.length + domainPbqs.length,
             }
           })
         )
@@ -134,7 +143,11 @@ export default function ResultsPage() {
     )
   }
 
-  if (!session || Object.keys(session.answers).length === 0) {
+  if (
+    !session ||
+    (Object.keys(session.answers).length === 0 &&
+      Object.keys(session.pbqResults ?? {}).length === 0)
+  ) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <p className="text-muted-foreground text-sm">No results to show yet.</p>
@@ -145,9 +158,11 @@ export default function ResultsPage() {
     )
   }
 
-  const total = Object.keys(session.answers).length
-  const score = session.score
-  const pct = Math.round((score / total) * 100)
+  const pbqEntries = session.pbqResults ? Object.values(session.pbqResults) : []
+  const pbqScore = pbqEntries.reduce((s, r) => s + r.correct / r.total, 0)
+  const total = Object.keys(session.answers).length + pbqEntries.length
+  const score = Math.round((session.score + pbqScore) * 10) / 10
+  const pct = Math.round(((session.score + pbqScore) / total) * 100)
   const missedQuestions = session.questions.filter((q) =>
     session.missedIds.includes(q.id)
   )
@@ -182,12 +197,19 @@ export default function ResultsPage() {
     const domainQs = session.questions.filter(
       (q) => q.domain === id && q.id in session.answers
     )
-    const correct = domainQs.filter(
-      (q) => session.answers[q.id] === q.answer
-    ).length
-    const domainTotal = domainQs.length
+    const domainPbqs = pbqEntries.filter((r) => r.domain === id)
+    const correct =
+      domainQs.filter((q) => session.answers[q.id] === q.answer).length +
+      domainPbqs.reduce((s, r) => s + r.correct / r.total, 0)
+    const domainTotal = domainQs.length + domainPbqs.length
     const domainPct = domainTotal > 0 ? Math.round((correct / domainTotal) * 100) : 0
-    return { id, name, correct, total: domainTotal, pct: domainPct }
+    return {
+      id,
+      name,
+      correct: Math.round(correct * 10) / 10,
+      total: domainTotal,
+      pct: domainPct,
+    }
   }).filter((d) => d.total > 0)
     .sort((a, b) => a.pct - b.pct)
 
@@ -273,6 +295,7 @@ export default function ResultsPage() {
                   <ScoreCounter
                     target={score}
                     shouldReduce={!!shouldReduce}
+                    decimals={score % 1 !== 0 ? 1 : 0}
                     className="text-2xl font-bold text-accent-green tabular-nums"
                   />
                 </div>
@@ -281,8 +304,9 @@ export default function ResultsPage() {
               <div className="flex flex-col items-center gap-1.5">
                 <div className="flex items-center gap-1.5 bg-red-500/10 rounded-xl px-4 py-2">
                   <ScoreCounter
-                    target={total - score}
+                    target={Math.round((total - score) * 10) / 10}
                     shouldReduce={!!shouldReduce}
+                    decimals={score % 1 !== 0 ? 1 : 0}
                     className="text-2xl font-bold text-red-400 tabular-nums"
                   />
                 </div>
@@ -716,11 +740,13 @@ function ScoreCounter({
   shouldReduce,
   className,
   suffix = "",
+  decimals = 0,
 }: {
   target: number
   shouldReduce: boolean
   className?: string
   suffix?: string
+  decimals?: number
 }) {
   const [display, setDisplay] = useState(shouldReduce ? target : 0)
 
@@ -731,15 +757,16 @@ function ScoreCounter({
     }
     const start = performance.now()
     const duration = 1200
+    const factor = Math.pow(10, decimals)
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1)
       const eased = 1 - Math.pow(1 - t, 2)
-      setDisplay(Math.round(eased * target))
+      setDisplay(Math.round(eased * target * factor) / factor)
       if (t < 1) requestAnimationFrame(tick)
     }
     const id = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(id)
-  }, [target, shouldReduce])
+  }, [target, shouldReduce, decimals])
 
   return (
     <span className={className}>
