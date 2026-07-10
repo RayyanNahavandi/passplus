@@ -32,6 +32,9 @@ import { getPBQById, getPBQsForCert, getFreePBQsForCert } from "@/data/pbqQuesti
 import PBQRunner from "@/components/pbq/PBQRunner"
 
 const EXAM_DURATION = 90 * 60 // 5400 seconds
+// Free users get AI explanations on their first answers each session as a
+// taste of the paid feature.
+const FREE_EXPLANATIONS = 5
 
 // Display positions for answer options (top to bottom).
 const POSITION_LETTERS = ["A", "B", "C", "D"] as const
@@ -294,10 +297,29 @@ export default function QuizPage() {
               question: currentQuestion.question,
               options: currentQuestion.options,
               answer: currentQuestion.answer,
+              cert: session.cert ?? "secplus",
             }),
           })
         })
           .then((r) => (r instanceof Response ? r : null)?.json())
+          .then((data) => {
+            setExplanation(data?.explanation ?? null)
+            setLoadingExplanation(false)
+          })
+          .catch(() => setLoadingExplanation(false))
+      } else if (Object.keys(session.answers).length < FREE_EXPLANATIONS) {
+        // Free sample: AI explanations for the first few answers per session.
+        fetch("/api/explain", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            question: currentQuestion.question,
+            options: currentQuestion.options,
+            answer: currentQuestion.answer,
+            cert: session.cert ?? "secplus",
+          }),
+        })
+          .then((r) => r.json())
           .then((data) => {
             setExplanation(data?.explanation ?? null)
             setLoadingExplanation(false)
@@ -998,8 +1020,11 @@ export default function QuizPage() {
                         )}
                       </div>
 
-                      {/* Locked teaser - free users, wrong answer only */}
-                      {!session.isUnlocked && !answeredCorrectly && (
+                      {/* Locked teaser - free users past the sample, wrong answer only */}
+                      {!session.isUnlocked &&
+                        !answeredCorrectly &&
+                        !loadingExplanation &&
+                        !explanation && (
                         <motion.p
                           initial={{ opacity: 0, y: 4 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -1019,9 +1044,9 @@ export default function QuizPage() {
                         </motion.p>
                       )}
 
-                      {/* AI explanation - paid users only */}
+                      {/* AI explanation - paid users always, free users for the first sample answers */}
                       <AnimatePresence>
-                        {session.isUnlocked && (loadingExplanation || explanation) && (
+                        {(loadingExplanation || explanation) && (
                           <motion.p
                             key="explanation"
                             initial={{ opacity: 0, y: 6 }}
@@ -1040,6 +1065,27 @@ export default function QuizPage() {
                                   Why:{" "}
                                 </span>
                                 {explanation}
+                                {!session.isUnlocked && (
+                                  <span className="block mt-1.5 text-xs text-muted-foreground/60">
+                                    Free AI explanation{" "}
+                                    {Math.min(
+                                      Object.keys(session.answers).length,
+                                      FREE_EXPLANATIONS
+                                    )}{" "}
+                                    of {FREE_EXPLANATIONS}.{" "}
+                                    <a
+                                      href="https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={() =>
+                                        sendGAEvent("event", "unlock_clicked_teaser")
+                                      }
+                                      className="text-accent-green hover:text-accent-hover transition-colors"
+                                    >
+                                      Unlock unlimited
+                                    </a>
+                                  </span>
+                                )}
                               </>
                             )}
                           </motion.p>
