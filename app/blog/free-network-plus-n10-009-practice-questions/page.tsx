@@ -42,7 +42,7 @@ const faqSchema = {
       name: "Is PassPlus free to use for Network+ practice?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. PassPlus gives you 38 free N10-009 practice questions with instant feedback and no account required. Full access to all 490 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
+        text: "Yes. PassPlus gives you 38 free N10-009 practice questions with instant feedback and no account required. Full access to all 510 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
       },
     },
     {
@@ -219,7 +219,7 @@ export default function BlogPost() {
                 <strong>
                   <Link href="/quiz?cert=netplus">PassPlus</Link>
                 </strong>{" "}
-                - 490 questions across Practice Mode and Exam Mode covering every N10-009
+                - 510 questions across Practice Mode and Exam Mode covering every N10-009
                 domain. Instant feedback on every answer, score tracking, and a domain
                 breakdown at the end showing exactly where you lost points. No signup
                 required.
@@ -277,7 +277,7 @@ export default function BlogPost() {
             </p>
 
             <p>
-              If you want all 490 questions across Practice Mode and Exam Mode, it is a
+              If you want all 510 questions across Practice Mode and Exam Mode, it is a
               one-time $9.99 unlock. No subscription. Good luck on the exam.
             </p>
           </div>

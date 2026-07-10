@@ -42,7 +42,7 @@ const faqSchema = {
       name: "Is PassPlus free to use for Security+ practice?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. PassPlus gives you 25 free SY0-701 practice questions with instant feedback and no account required. Full access to all 500 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
+        text: "Yes. PassPlus gives you 25 free SY0-701 practice questions with instant feedback and no account required. Full access to all 520 questions across Practice Mode and Exam Mode is a one-time $9.99 unlock with no subscription.",
       },
     },
     {
@@ -198,7 +198,7 @@ export default function BlogPost() {
                 <strong>
                   <Link href="/quiz">PassPlus</Link>
                 </strong>{" "}
-                500 questions across Practice Mode and Exam Mode covering every SY0-701
+                520 questions across Practice Mode and Exam Mode covering every SY0-701
                 domain. Instant feedback on every answer, score tracking, and a
                 "Practice Missed" mode that drills your weak spots. No signup required.
               </li>
@@ -255,7 +255,7 @@ export default function BlogPost() {
             </p>
 
             <p>
-              If you want all 500 questions across Practice Mode and Exam Mode, it's a
+              If you want all 520 questions across Practice Mode and Exam Mode, it's a
               one-time $9.99 unlock. No subscription. Good luck on the exam.
             </p>
           </div>

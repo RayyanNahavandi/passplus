@@ -1484,4 +1484,124 @@ export const networkPracticeQuestions: NetworkQuestion[] = ([] as NetworkQuestio
     question: "A network technician is troubleshooting a site-to-site VPN that has stopped passing traffic. The VPN tunnel shows as established. Which of the following should be checked?",
     options: { A: "Physical connectivity between sites", B: "Routing and interesting traffic ACLs defining which traffic should be encrypted", C: "DNS resolution at both sites", D: "DHCP server configuration at both sites" },
     answer: "B", tier: "locked", domain: 5
+  },
+  {
+    id: "NQ246", exam: "Original",
+    question: "A server needs a DNS record that maps its hostname to an IPv6 address. Which of the following record types should be created?",
+    options: { A: "A", B: "AAAA", C: "CNAME", D: "PTR" },
+    answer: "B", tier: "locked", domain: 1
+  },
+  {
+    id: "NQ247", exam: "Original",
+    question: "A storage administrator wants to enable jumbo frames on a dedicated iSCSI network. Which of the following is the PRIMARY benefit?",
+    options: { A: "Stronger encryption of storage traffic", B: "Fewer frames and less processing overhead for large data transfers", C: "Automatic failover between storage paths", D: "Compatibility with older 100 Mbps switches" },
+    answer: "B", tier: "locked", domain: 1
+  },
+  {
+    id: "NQ248", exam: "Original",
+    question: "Which of the following IP addresses falls within an RFC 1918 private address range?",
+    options: { A: "172.32.10.5", B: "192.169.1.20", C: "172.20.45.100", D: "11.0.0.15" },
+    answer: "C", tier: "locked", domain: 1
+  },
+  {
+    id: "NQ249", exam: "Original",
+    question: "Which of the following BEST describes the purpose of the TTL field in an IP packet header?",
+    options: { A: "It encrypts the packet payload between hops", B: "It prevents packets from circulating forever by limiting the number of hops", C: "It defines the maximum payload size for the path", D: "It prioritizes the packet in QoS queues" },
+    answer: "B", tier: "locked", domain: 1
+  },
+  {
+    id: "NQ250", exam: "Original",
+    question: "A technician is installing a PTZ security camera that requires 25 watts of power over its network cable. Which of the following PoE standards is the MINIMUM required?",
+    options: { A: "802.3af (PoE)", B: "802.3at (PoE+)", C: "802.3bt (PoE++)", D: "Passive 24V PoE" },
+    answer: "B", tier: "locked", domain: 2
+  },
+  {
+    id: "NQ251", exam: "Original",
+    question: "After connecting two switches with a trunk link, a technician sees repeated native VLAN mismatch errors. Which of the following is the MOST likely cause?",
+    options: { A: "The trunk ports are configured with different untagged VLANs", B: "Spanning tree is disabled on both switches", C: "The link speed is negotiated at 100 Mbps", D: "Both switches share the same bridge priority" },
+    answer: "A", tier: "locked", domain: 2
+  },
+  {
+    id: "NQ252", exam: "Original",
+    question: "A wireless engineer is designing a high-density deployment for a conference hall with many access points. Which of the following reduces co-channel interference?",
+    options: { A: "Using 40 MHz channel widths on 2.4 GHz", B: "Using narrower 20 MHz channels and lowering AP transmit power", C: "Setting every AP to the same channel", D: "Disabling the 5 GHz band" },
+    answer: "B", tier: "locked", domain: 2
+  },
+  {
+    id: "NQ253", exam: "Original",
+    question: "A company wants two routers to share a single virtual gateway IP so clients keep connectivity if one router fails. Which of the following protocols provides this?",
+    options: { A: "VRRP", B: "BGP", C: "OSPF", D: "LACP" },
+    answer: "A", tier: "locked", domain: 2
+  },
+  {
+    id: "NQ254", exam: "Original",
+    question: "A monitoring server should be notified immediately when a switch interface goes down, rather than waiting for the next polling cycle. Which of the following should be configured?",
+    options: { A: "SNMP traps", B: "Syslog rotation", C: "NetFlow sampling", D: "ICMP echo requests" },
+    answer: "A", tier: "locked", domain: 3
+  },
+  {
+    id: "NQ255", exam: "Original",
+    question: "Before making changes to a core switch configuration, which of the following should a technician do FIRST according to change management best practices?",
+    options: { A: "Reboot the switch to clear old settings", B: "Back up the current running configuration", C: "Disable logging to reduce noise during the change", D: "Notify end users after the change is complete" },
+    answer: "B", tier: "locked", domain: 3
+  },
+  {
+    id: "NQ256", exam: "Original",
+    question: "A network engineer needs to identify which applications and hosts are consuming the most WAN bandwidth over time. Which of the following technologies BEST provides this visibility?",
+    options: { A: "SNMP polling of interface counters", B: "NetFlow or IPFIX flow data export", C: "Syslog messages from the WAN router", D: "Ping sweeps of the remote subnet" },
+    answer: "B", tier: "locked", domain: 3
+  },
+  {
+    id: "NQ257", exam: "Original",
+    question: "A service provider advertises five nines (99.999%) availability. Approximately how much unplanned downtime per year does this allow?",
+    options: { A: "About 5 minutes", B: "About 53 minutes", C: "About 8.8 hours", D: "About 3.7 days" },
+    answer: "A", tier: "locked", domain: 3
+  },
+  {
+    id: "NQ258", exam: "Original",
+    question: "A network team wants per-command authorization and full accounting for administrators managing routers and switches. Which of the following protocols BEST meets this requirement?",
+    options: { A: "RADIUS", B: "TACACS+", C: "Kerberos", D: "LDAP" },
+    answer: "B", tier: "locked", domain: 4
+  },
+  {
+    id: "NQ259", exam: "Original",
+    question: "Users report connecting to a Wi-Fi network with the company's exact SSID in the lobby, after which their credentials were stolen. The AP was not company equipment. Which of the following attacks occurred?",
+    options: { A: "Deauthentication attack", B: "Evil twin", C: "Wardriving", D: "Bluesnarfing" },
+    answer: "B", tier: "locked", domain: 4
+  },
+  {
+    id: "NQ260", exam: "Original",
+    question: "An office deploys dozens of smart TVs and IoT sensors. Which of the following BEST limits the damage if one of these devices is compromised?",
+    options: { A: "Placing IoT devices on an isolated VLAN with restrictive ACLs", B: "Assigning IoT devices static IP addresses", C: "Enabling jumbo frames on the IoT switch ports", D: "Using the same SSID for IoT and corporate devices" },
+    answer: "A", tier: "locked", domain: 4
+  },
+  {
+    id: "NQ261", exam: "Original",
+    question: "A technician secures a wireless network using MAC address filtering only. Which of the following BEST describes why this is insufficient?",
+    options: { A: "MAC filtering encrypts traffic too slowly", B: "Attackers can observe allowed MAC addresses and spoof them", C: "MAC filtering only works on 5 GHz networks", D: "MAC addresses change every time a device reboots" },
+    answer: "B", tier: "locked", domain: 4
+  },
+  {
+    id: "NQ262", exam: "Original",
+    question: "Users on one switch lose connectivity intermittently, and logs show the fiber uplink interface repeatedly transitioning up and down. Which of the following is the MOST likely cause?",
+    options: { A: "A failing SFP transceiver or damaged fiber patch cable", B: "An exhausted DHCP scope", C: "Incorrect DNS forwarders", D: "A misconfigured NTP server" },
+    answer: "A", tier: "locked", domain: 5
+  },
+  {
+    id: "NQ263", exam: "Original",
+    question: "A user cannot reach any websites by name, but pinging 8.8.8.8 succeeds. Which of the following is the MOST likely cause?",
+    options: { A: "The default gateway is down", B: "DNS resolution is failing", C: "The NIC driver is corrupted", D: "The subnet mask is wrong" },
+    answer: "B", tier: "locked", domain: 5
+  },
+  {
+    id: "NQ264", exam: "Original",
+    question: "Users in a break room report Wi-Fi disconnects around midday. A spectrum analysis shows heavy interference on the 2.4 GHz band during that time. Which of the following is the MOST likely source?",
+    options: { A: "The microwave oven in the break room", B: "A misconfigured DNS server", C: "An oversized DHCP scope", D: "A failing fiber transceiver" },
+    answer: "A", tier: "locked", domain: 5
+  },
+  {
+    id: "NQ265", exam: "Original",
+    question: "A traceroute to a remote server shows the same two router hops repeating until the trace times out. Which of the following does this indicate?",
+    options: { A: "Asymmetric routing", B: "A routing loop between the two routers", C: "Normal load balancing behavior", D: "An MTU black hole" },
+    answer: "B", tier: "locked", domain: 5
   },] as NetworkQuestion[])

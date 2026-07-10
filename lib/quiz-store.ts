@@ -307,7 +307,7 @@ export function getReadinessScore(): {
 
 // ─── Exam date countdown ──────────────────────────────────────────────────────
 
-const BANK_SIZES: Record<Cert, number> = { secplus: 500, netplus: 490, aplus: 490 }
+const BANK_SIZES: Record<Cert, number> = { secplus: 520, netplus: 510, aplus: 510 }
 
 export function getExamDate(): string | null {
   if (typeof window === "undefined") return null

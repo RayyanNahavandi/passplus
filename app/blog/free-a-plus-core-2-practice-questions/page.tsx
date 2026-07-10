@@ -254,7 +254,7 @@ export default function BlogPost() {
             </p>
 
             <p>
-              If you want full access across all 1480 questions covering A+, Network+, and
+              If you want full access across all 1540 questions covering A+, Network+, and
               Security+, it is a one-time $9.99 unlock. No subscription. Good luck on the
               exam.
             </p>

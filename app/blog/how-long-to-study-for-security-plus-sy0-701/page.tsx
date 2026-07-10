@@ -235,7 +235,7 @@ export default function BlogPost() {
             </p>
 
             <p>
-              Full access to all 490 questions across Practice Mode and Exam Mode is a
+              Full access to all 520 questions across Practice Mode and Exam Mode is a
               one-time $9.99 unlock. No subscription. Good luck on the exam.
             </p>
           </div>

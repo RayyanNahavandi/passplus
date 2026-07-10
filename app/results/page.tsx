@@ -395,7 +395,7 @@ export default function ResultsPage() {
                   {getPBQsForCert(session.cert ?? "secplus").length} PBQs
                 </p>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Unlock every Performance Based Question plus 1,480 practice
+                  Unlock every Performance Based Question plus 1,540 practice
                   questions across all three certs. One payment, lifetime access.
                 </p>
               </div>

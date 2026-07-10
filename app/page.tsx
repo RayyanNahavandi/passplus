@@ -581,7 +581,7 @@ export default function Home() {
             {...fadeUp(0.2)}
             className="text-base sm:text-lg text-muted-foreground max-w-[480px] leading-relaxed"
           >
-            1480 questions and 30 hands-on PBQs across Security+, Network+, and A+. Practice Mode, Exam Mode, AI explanations, and domain breakdown.
+            1540 questions and 30 hands-on PBQs across Security+, Network+, and A+. Practice Mode, Exam Mode, AI explanations, and domain breakdown.
           </motion.p>
 
           {/* Cert selector */}
@@ -620,7 +620,7 @@ export default function Home() {
                     You&apos;ve completed your free quiz
                   </p>
                   <p className="text-xs text-muted-foreground max-w-xs">
-                    Unlock all 1480 questions, every Performance Based Question, and
+                    Unlock all 1540 questions, every Performance Based Question, and
                     AI explanations for every answer
                   </p>
                 </div>
@@ -631,7 +631,7 @@ export default function Home() {
                   onClick={() => sendGAEvent("event", "unlock_clicked")}
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
-                  Unlock All 1480 Questions - $9.99
+                  Unlock All 1540 Questions - $9.99
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
               </div>
@@ -688,14 +688,14 @@ export default function Home() {
             className="inline-flex items-center gap-2 border border-border rounded-full px-3.5 py-1.5 text-xs text-muted-foreground bg-card/50"
           >
             <Zap className="w-3 h-3 text-accent-green" />
-            Security+ · Network+ · A+ · 1480 questions · PBQs · Practice + Exam Mode
+            Security+ · Network+ · A+ · 1540 questions · PBQs · Practice + Exam Mode
           </motion.div>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-2xl">
           {[
-            { value: "1480", label: "Total Questions" },
+            { value: "1540", label: "Total Questions" },
             { value: "30", label: "Hands-On PBQs" },
             { value: "3", label: "Certs Covered" },
             { value: "Free", label: "First 25 Questions" },
@@ -850,7 +850,7 @@ export default function Home() {
             {
               icon: <Lock className="w-4 h-4 text-accent-green" />,
               title: "Full Question Bank",
-              desc: "Unlock all 1480 questions across Security+, Network+, and A+ for $9.99. One payment, lifetime access.",
+              desc: "Unlock all 1540 questions across Security+, Network+, and A+ for $9.99. One payment, lifetime access.",
             },
           ].map((f, i) => (
             <motion.div
@@ -993,7 +993,7 @@ export default function Home() {
                 PassPlus is a free CompTIA practice quiz built to help people actually pass their certification exams - not just memorize dumps.
               </p>
               <p>
-                It covers <strong className="text-foreground">Security+ SY0-701</strong>, <strong className="text-foreground">Network+ N10-009</strong>, and <strong className="text-foreground">A+ Core 1 & 2</strong> with 1,480 questions and 30 Performance Based Questions across Practice Mode, Exam Mode, and a PBQ Drill. Paid users get AI explanations for every answer.
+                It covers <strong className="text-foreground">Security+ SY0-701</strong>, <strong className="text-foreground">Network+ N10-009</strong>, and <strong className="text-foreground">A+ Core 1 & 2</strong> with 1,540 questions and 30 Performance Based Questions across Practice Mode, Exam Mode, and a PBQ Drill. Paid users get AI explanations for every answer.
               </p>
               <p>
                 Built and maintained independently. Questions are original, written from CompTIA exam objectives - not recycled braindumps.

@@ -594,7 +594,7 @@ export default function QuizPage() {
       "@type": "Course",
       name: "CompTIA Security+ SY0-701 Practice Quiz",
       description:
-        "Free practice questions for CompTIA Security+ SY0-701. 500 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
+        "Free practice questions for CompTIA Security+ SY0-701. 520 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
       url: "https://www.studypassplus.com/quiz",
       provider: {
         "@type": "Organization",
@@ -611,7 +611,7 @@ export default function QuizPage() {
           price: "0",
           priceCurrency: "USD",
           description:
-            "25 free practice questions, no signup required. Full access to 500 questions for $9.99 one-time.",
+            "25 free practice questions, no signup required. Full access to 520 questions for $9.99 one-time.",
         },
       },
     },
@@ -620,7 +620,7 @@ export default function QuizPage() {
       "@type": "Course",
       name: "CompTIA Network+ N10-009 Practice Quiz",
       description:
-        "Free practice questions for CompTIA Network+ N10-009. 490 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
+        "Free practice questions for CompTIA Network+ N10-009. 510 questions across Practice Mode and Exam Mode covering all five domains with instant feedback and domain-level score breakdown.",
       url: "https://www.studypassplus.com/quiz?cert=netplus",
       provider: {
         "@type": "Organization",
@@ -637,7 +637,7 @@ export default function QuizPage() {
           price: "0",
           priceCurrency: "USD",
           description:
-            "38 free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
+            "38 free practice questions, no signup required. Full access to 510 questions for $9.99 one-time.",
         },
       },
     },
@@ -646,7 +646,7 @@ export default function QuizPage() {
       "@type": "Course",
       name: "CompTIA A+ Core 1 & Core 2 Practice Quiz",
       description:
-        "Free practice questions for CompTIA A+ (220-1101 Core 1 & 220-1102 Core 2). 490 questions across Practice Mode and Exam Mode covering both Core exams with instant feedback and domain-level score breakdown.",
+        "Free practice questions for CompTIA A+ (220-1101 Core 1 & 220-1102 Core 2). 510 questions across Practice Mode and Exam Mode covering both Core exams with instant feedback and domain-level score breakdown.",
       url: "https://www.studypassplus.com/quiz?cert=aplus",
       provider: {
         "@type": "Organization",
@@ -663,7 +663,7 @@ export default function QuizPage() {
           price: "0",
           priceCurrency: "USD",
           description:
-            "Free practice questions, no signup required. Full access to 490 questions for $9.99 one-time.",
+            "Free practice questions, no signup required. Full access to 510 questions for $9.99 one-time.",
         },
       },
     },
@@ -1166,27 +1166,27 @@ export default function QuizPage() {
 }
 
 const DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[] = [
-  { label: "All Domains", sublabel: "255 questions", value: null },
-  { label: "Domain 1", sublabel: "General Security Concepts · 61 Qs", value: 1 },
-  { label: "Domain 2", sublabel: "Threats, Vulnerabilities & Mitigations · 55 Qs", value: 2 },
-  { label: "Domain 3", sublabel: "Security Architecture · 46 Qs", value: 3 },
-  { label: "Domain 4", sublabel: "Security Operations · 73 Qs", value: 4 },
-  { label: "Domain 5", sublabel: "Security Program Management · 20 Qs", value: 5 },
+  { label: "All Domains", sublabel: "275 questions", value: null },
+  { label: "Domain 1", sublabel: "General Security Concepts · 65 Qs", value: 1 },
+  { label: "Domain 2", sublabel: "Threats, Vulnerabilities & Mitigations · 59 Qs", value: 2 },
+  { label: "Domain 3", sublabel: "Security Architecture · 50 Qs", value: 3 },
+  { label: "Domain 4", sublabel: "Security Operations · 77 Qs", value: 4 },
+  { label: "Domain 5", sublabel: "Security Program Management · 24 Qs", value: 5 },
 ]
 
 const NETWORK_DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[] = [
-  { label: "All Domains", sublabel: "245 questions", value: null },
-  { label: "Domain 1", sublabel: "Networking Concepts · 56 Qs", value: 1 },
-  { label: "Domain 2", sublabel: "Network Implementation · 49 Qs", value: 2 },
-  { label: "Domain 3", sublabel: "Network Operations · 48 Qs", value: 3 },
-  { label: "Domain 4", sublabel: "Network Security · 45 Qs", value: 4 },
-  { label: "Domain 5", sublabel: "Network Troubleshooting · 47 Qs", value: 5 },
+  { label: "All Domains", sublabel: "265 questions", value: null },
+  { label: "Domain 1", sublabel: "Networking Concepts · 60 Qs", value: 1 },
+  { label: "Domain 2", sublabel: "Network Implementation · 53 Qs", value: 2 },
+  { label: "Domain 3", sublabel: "Network Operations · 52 Qs", value: 3 },
+  { label: "Domain 4", sublabel: "Network Security · 49 Qs", value: 4 },
+  { label: "Domain 5", sublabel: "Network Troubleshooting · 51 Qs", value: 5 },
 ]
 
 // A+ spans two exams (Core 1 & Core 2) whose domain numbers overlap, so the
 // domain-number filter cannot cleanly separate them. Offer the full bank only.
 const APLUS_DOMAIN_OPTIONS: { label: string; sublabel: string; value: number | null }[] = [
-  { label: "All Domains", sublabel: "245 questions · Core 1 & Core 2", value: null },
+  { label: "All Domains", sublabel: "265 questions · Core 1 & Core 2", value: null },
 ]
 
 function ModeSelectScreen({
@@ -1209,7 +1209,7 @@ function ModeSelectScreen({
   const [step, setStep] = useState<"mode" | "practice-config">("mode")
   const [questionCount, setQuestionCount] = useState(25)
   const [domainFilter, setDomainFilter] = useState<number | null>(null)
-  const allCount = cert === "secplus" ? 255 : 245
+  const allCount = cert === "secplus" ? 275 : 265
   const countOptions = [
     { label: "25", value: 25 },
     { label: "50", value: 50 },
@@ -1832,7 +1832,7 @@ function PaywallOverlay({
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
               You&apos;ve used your {freeCount} free questions. Candidates who
-              practice all 1,480 questions pass{" "}
+              practice all 1,540 questions pass{" "}
               <strong className="text-foreground">2× more often</strong>.
             </p>
           </div>
@@ -1840,7 +1840,7 @@ function PaywallOverlay({
           {/* What you get bullets */}
           <ul className="w-full text-left space-y-2 text-sm">
             {[
-              "1,480 questions across Security+, Network+ & A+",
+              "1,540 questions across Security+, Network+ & A+",
               "30 interactive PBQs: matching, ordering & fill-in drills",
               "Practice Mode + timed Exam Mode simulation",
               "AI explanations for every question",
@@ -1894,7 +1894,7 @@ function PaywallOverlay({
                 }
                 className="relative w-full bg-accent-green hover:bg-accent-hover text-black font-bold py-3.5 rounded-xl transition-colors min-h-[48px] text-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-accent-green focus-visible:ring-offset-2"
               >
-                Unlock All 1,480 Questions - $9.99
+                Unlock All 1,540 Questions - $9.99
               </motion.button>
             </div>
 

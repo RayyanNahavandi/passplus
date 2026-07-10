@@ -249,7 +249,7 @@ export default function BlogPost() {
             </p>
 
             <p>
-              Full access to all 1480 questions across Security+, Network+, and
+              Full access to all 1540 questions across Security+, Network+, and
               A+ is a one-time $9.99 unlock. No subscription.
             </p>
           </div>

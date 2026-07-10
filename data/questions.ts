@@ -1565,6 +1565,126 @@ export const questions: Question[] = [
     options: { A: "Daily full backups stored offsite with a cold site DR plan", B: "Hourly incremental backups with a warm site failover capability", C: "Weekly differential backups replicated to a cloud DR environment", D: "Continuous data replication to a hot site with automated failover" },
     answer: "D", tier: "locked"
   },
+  {
+    id: "Q256", domain: 1, exam: "Original",
+    question: "A security team compares the organization's current controls against the requirements of a new compliance framework to identify what is missing. Which of the following BEST describes this activity?",
+    options: { A: "Penetration test", B: "Gap analysis", C: "Tabletop exercise", D: "Risk transference" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q257", domain: 1, exam: "Original",
+    question: "A change advisory board is reviewing a proposal to upgrade a core database server. Which of the following components of the change request describes how to restore service if the upgrade fails?",
+    options: { A: "Impact analysis", B: "Maintenance window", C: "Backout plan", D: "Standard operating procedure" },
+    answer: "C", tier: "locked"
+  },
+  {
+    id: "Q258", domain: 1, exam: "Original",
+    question: "In a zero trust architecture, which of the following components evaluates identity, device posture, and context to decide whether a subject may access a resource?",
+    options: { A: "Policy engine", B: "Policy enforcement point", C: "Implicit trust zone", D: "Data plane" },
+    answer: "A", tier: "locked"
+  },
+  {
+    id: "Q259", domain: 1, exam: "Original",
+    question: "A data center is located next to a public parking lot. Which of the following physical controls BEST protects the building entrance from vehicle ramming attacks?",
+    options: { A: "Access control vestibule", B: "Bollards", C: "Security cameras", D: "Motion-activated lighting" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q260", domain: 2, exam: "Original",
+    question: "An attacker within wireless range silently extracts the contact list and emails from an employee's phone over its Bluetooth connection. Which of the following attacks does this describe?",
+    options: { A: "Bluejacking", B: "Bluesnarfing", C: "Evil twin", D: "NFC skimming" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q261", domain: 2, exam: "Original",
+    question: "A web server log shows requests containing sequences such as ../../../etc/passwd in the URL. Which of the following attacks is being attempted?",
+    options: { A: "SQL injection", B: "Directory traversal", C: "Cross-site request forgery", D: "Command injection" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q262", domain: 2, exam: "Original",
+    question: "A DLP alert shows that an employee who recently gave two weeks notice has copied several gigabytes of customer records to a personal cloud storage account. Which of the following threat actors does this BEST describe?",
+    options: { A: "Nation-state actor", B: "Hacktivist", C: "Insider threat", D: "Organized crime" },
+    answer: "C", tier: "locked"
+  },
+  {
+    id: "Q263", domain: 2, exam: "Original",
+    question: "Attackers inject malicious code into a software vendor's build system, and the tainted update is then digitally signed and distributed to thousands of the vendor's customers. Which of the following BEST describes this attack?",
+    options: { A: "Supply chain attack", B: "Logic bomb", C: "Rootkit infection", D: "Birthday attack" },
+    answer: "A", tier: "locked"
+  },
+  {
+    id: "Q264", domain: 3, exam: "Original",
+    question: "A power plant needs to ensure its industrial control network can never be reached from the corporate network or the internet. Which of the following provides the STRONGEST isolation?",
+    options: { A: "Screened subnet", B: "Air-gapped network", C: "VLAN segmentation", D: "Host-based firewalls" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q265", domain: 3, exam: "Original",
+    question: "A multinational company is told that customer records collected in one country must be stored and processed only on servers physically located in that country. Which of the following concepts does this requirement describe?",
+    options: { A: "Data minimization", B: "Data sovereignty", C: "Data masking", D: "Geofencing" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q266", domain: 3, exam: "Original",
+    question: "An e-commerce site runs identical application servers in two regions, with both actively serving traffic behind a global load balancer. Which of the following BEST describes this design?",
+    options: { A: "Active-passive failover", B: "Active-active high availability", C: "Warm site redundancy", D: "Vertical scaling" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q267", domain: 3, exam: "Original",
+    question: "A cloud team defines its servers, networks, and firewall rules in version-controlled template files that are deployed automatically. Which of the following is the PRIMARY security benefit of this approach?",
+    options: { A: "It eliminates the need for patching", B: "Consistent, repeatable configurations that reduce drift and misconfiguration", C: "It encrypts all infrastructure traffic by default", D: "It removes the need for access controls in the cloud" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q268", domain: 4, exam: "Original",
+    question: "A compliance requirement states that audit logs must be protected so that not even administrators can alter them after they are written. Which of the following BEST meets this requirement?",
+    options: { A: "Storing logs on write-once read-many (WORM) storage", B: "Compressing logs daily", C: "Restricting log access with NTFS permissions", D: "Hashing passwords in the log files" },
+    answer: "A", tier: "locked"
+  },
+  {
+    id: "Q269", domain: 4, exam: "Original",
+    question: "An organization wants outbound emails containing Social Security numbers to be automatically blocked before leaving the network. Which of the following solutions BEST accomplishes this?",
+    options: { A: "Email encryption gateway", B: "Data loss prevention", C: "Spam filter", D: "Endpoint detection and response" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q270", domain: 4, exam: "Original",
+    question: "A critical patch is released for a production ERP system. Which of the following should the security team do FIRST before deploying it to production?",
+    options: { A: "Deploy immediately to all systems to reduce exposure", B: "Test the patch in a staging environment that mirrors production", C: "Disable the ERP system until the patch is applied", D: "Wait for the next quarterly maintenance window" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q271", domain: 4, exam: "Original",
+    question: "A SIEM combines a failed VPN login from a foreign country, a successful login seconds later, and an unusual file download into a single high-severity alert. Which of the following SIEM capabilities does this demonstrate?",
+    options: { A: "Log aggregation", B: "Event correlation", C: "Log retention", D: "Packet capture" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q272", domain: 5, exam: "Original",
+    question: "A risk manager maintains a document listing each identified risk, its owner, likelihood, impact, and current mitigation status. Which of the following BEST describes this document?",
+    options: { A: "Business impact analysis", B: "Risk register", C: "Statement of work", D: "Audit report" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q273", domain: 5, exam: "Original",
+    question: "A company needs a cloud provider to commit contractually to 99.9% uptime with defined penalties if the target is missed. Which of the following documents contains this commitment?",
+    options: { A: "Memorandum of understanding", B: "Service level agreement", C: "Non-disclosure agreement", D: "Acceptable use policy" },
+    answer: "B", tier: "locked"
+  },
+  {
+    id: "Q274", domain: 5, exam: "Original",
+    question: "Before signing with a third-party payment processor, a company wants the contractual ability to inspect the vendor's security controls on demand. Which of the following clauses should be included?",
+    options: { A: "Right-to-audit clause", B: "Indemnification clause", C: "Arbitration clause", D: "Auto-renewal clause" },
+    answer: "A", tier: "locked"
+  },
+  {
+    id: "Q275", domain: 5, exam: "Original",
+    question: "A security team runs monthly simulated phishing campaigns. Which of the following metrics BEST measures the effectiveness of the awareness program over time?",
+    options: { A: "Number of emails sent per campaign", B: "Declining click rate and increasing report rate across campaigns", C: "Total number of employees enrolled", D: "Time required to build each campaign" },
+    answer: "B", tier: "locked"
+  },
 ];
 
 export default questions;
