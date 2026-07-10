@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import Link from "next/link"
 import { Logo } from "@/components/Logo"
-import { ArrowRight, BookOpen } from "lucide-react"
+import { BookOpen } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Blog | PassPlus",
@@ -145,7 +145,7 @@ export default function BlogIndexPage() {
                 {post.description}
               </p>
               <span className="text-xs text-accent-green flex items-center gap-1.5 font-medium">
-                Read more <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                Read more
               </span>
             </Link>
           ))}

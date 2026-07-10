@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame, Pencil, Check, Mail, Info, KeyRound, ExternalLink, Star, Puzzle, Sparkles } from "lucide-react"
+import { Zap, CheckCircle, Lock, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame, Pencil, Check, Mail, Info, KeyRound, ExternalLink, Star, Puzzle, Sparkles } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
@@ -655,7 +655,6 @@ export default function Home() {
                   className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
                   Unlock All 1540 Questions - $9.99
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
               </div>
             ) : selectedCert === "aplus" ? (
@@ -922,7 +921,6 @@ export default function Home() {
                 className="relative flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-bold px-10 py-4 rounded-xl transition-all text-base min-h-[52px] w-full sm:w-auto justify-center"
               >
                 {isUnlocked ? "Start Quiz" : "Start Free Quiz"}
-                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </motion.div>

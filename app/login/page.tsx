@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, AnimatePresence } from "motion/react"
-import { Mail, Lock, User, ArrowRight, CheckCircle, Eye, EyeOff } from "lucide-react"
+import { Mail, Lock, User, CheckCircle, Eye, EyeOff } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { supabase } from "@/lib/supabase"
 import { unlock } from "@/lib/quiz-store"
@@ -280,7 +280,6 @@ export default function LoginPage() {
                     ) : (
                       <>
                         Send reset link
-                        <ArrowRight className="w-4 h-4" />
                       </>
                     )}
                   </button>
@@ -453,7 +452,6 @@ export default function LoginPage() {
                 ) : (
                   <>
                     {mode === "signin" ? "Sign in" : "Create account"}
-                    <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>

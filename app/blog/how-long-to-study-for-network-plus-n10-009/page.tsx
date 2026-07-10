@@ -1,7 +1,6 @@
 import { Metadata } from "next"
 import Link from "next/link"
 import { Logo } from "@/components/Logo"
-import { ArrowLeft, ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "How Long Does It Take to Study for Network+ N10-009 | PassPlus",
@@ -84,7 +83,7 @@ export default function BlogPost() {
           href="/blog"
           className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-10"
         >
-          <ArrowLeft className="w-3 h-3" /> Blog
+          Blog
         </Link>
 
         <article>
@@ -262,7 +261,7 @@ export default function BlogPost() {
             </p>
 
             <p>
-              Full access to all 490 Network+ questions across Practice Mode and Exam
+              Full access to all 510 Network+ questions across Practice Mode and Exam
               Mode is a one-time $9.99 unlock. No subscription. Good luck on the exam.
             </p>
           </div>
@@ -279,7 +278,6 @@ export default function BlogPost() {
               className="shrink-0 inline-flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
             >
               Start Free Quiz
-              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </article>

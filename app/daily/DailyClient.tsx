@@ -10,7 +10,6 @@ import {
   Share2,
   Copy,
   Check,
-  ArrowRight,
 } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { type Question } from "@/data/questions"
@@ -333,7 +332,6 @@ export function DailyClient({
               className="shrink-0 inline-flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
             >
               Start Free Quiz
-              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </motion.div>

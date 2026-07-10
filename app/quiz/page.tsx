@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target, Mail, CalendarDays, Puzzle, Flag } from "lucide-react"
+import { Lock, Trophy, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target, Mail, CalendarDays, Puzzle, Flag } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
@@ -1128,7 +1128,6 @@ export default function QuizPage() {
                             onClick={handlePrev}
                             className="flex items-center justify-center gap-1.5 border border-border hover:bg-muted text-foreground font-medium py-3 rounded-xl transition-colors min-h-[44px] text-sm px-4 shrink-0"
                           >
-                            <ChevronLeft className="w-4 h-4" />
                             Previous
                           </motion.button>
                         )}
@@ -1145,7 +1144,6 @@ export default function QuizPage() {
                             : session.currentIndex + 1 >= session.questions.length
                             ? "See Results"
                             : "Next Question"}
-                          <ChevronRight className="w-4 h-4" />
                         </motion.button>
                       </motion.div>
                     </motion.div>
@@ -1373,7 +1371,6 @@ function ModeSelectScreen({
                 onClick={() => setStep("mode")}
                 className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4 min-h-[40px] cursor-pointer"
               >
-                <ChevronLeft className="w-4 h-4" />
                 Back
               </button>
               <div className="flex items-center gap-3 mb-1">
@@ -1473,7 +1470,6 @@ function ModeSelectScreen({
               className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3.5 rounded-xl transition-colors min-h-[52px] text-sm"
             >
               Start Practice
-              <ChevronRight className="w-4 h-4" />
             </motion.button>
           </motion.div>
         )}
@@ -1754,7 +1750,6 @@ function SessionSummaryOverlay({
             className="w-full bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm cursor-pointer flex items-center justify-center gap-2"
           >
             See Full Results
-            <ChevronRight className="w-4 h-4" />
           </motion.button>
         </div>
       </motion.div>

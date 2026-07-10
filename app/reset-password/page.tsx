@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion } from "motion/react"
-import { Lock, CheckCircle, ArrowRight, Eye, EyeOff } from "lucide-react"
+import { Lock, CheckCircle, Eye, EyeOff } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { supabase } from "@/lib/supabase"
 
@@ -188,7 +188,6 @@ export default function ResetPasswordPage() {
                   ) : (
                     <>
                       Update password
-                      <ArrowRight className="w-4 h-4" />
                     </>
                   )}
                 </button>

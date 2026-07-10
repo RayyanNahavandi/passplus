@@ -1,7 +1,6 @@
 import { Metadata } from "next"
 import Link from "next/link"
 import { Logo } from "@/components/Logo"
-import { ArrowLeft, ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Free A+ Core 2 220-1102 Practice Questions | PassPlus",
@@ -34,7 +33,7 @@ const faqSchema = {
       name: "How many A+ Core 2 practice questions does PassPlus offer?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "PassPlus offers 490 A+ practice questions across Core 1 (220-1101) and Core 2 (220-1102) in Practice Mode and Exam Mode, covering all four Core 2 domains. The first 25 practice questions are free with no account or signup required.",
+        text: "PassPlus offers 510 A+ practice questions across Core 1 (220-1101) and Core 2 (220-1102) in Practice Mode and Exam Mode, covering all four Core 2 domains. The first 25 practice questions are free with no account or signup required.",
       },
     },
     {
@@ -83,7 +82,7 @@ export default function BlogPost() {
           href="/blog"
           className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-10"
         >
-          <ArrowLeft className="w-3 h-3" /> Blog
+          Blog
         </Link>
 
         <article>
@@ -209,7 +208,7 @@ export default function BlogPost() {
                 <strong>
                   <Link href="/quiz?cert=aplus">PassPlus</Link>
                 </strong>{" "}
-                - 490 A+ questions (Core 1 &amp; Core 2) across Practice Mode and Exam
+                - 510 A+ questions (Core 1 &amp; Core 2) across Practice Mode and Exam
                 Mode covering every 220-1102 domain. Instant feedback on every answer, score tracking, and a
                 domain breakdown at the end showing exactly where you lost points. No
                 signup required.
@@ -272,7 +271,6 @@ export default function BlogPost() {
               className="shrink-0 inline-flex items-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
             >
               Start Free Quiz
-              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </article>
