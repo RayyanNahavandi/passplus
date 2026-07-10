@@ -9,7 +9,7 @@ import {
   animate as motionAnimate,
   useReducedMotion,
 } from "motion/react"
-import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target, Mail, CalendarDays, Puzzle } from "lucide-react"
+import { Lock, Trophy, ChevronRight, ChevronLeft, CheckCircle, XCircle, Clock, Zap, RotateCcw, Flame, Target, Mail, CalendarDays, Puzzle, Flag } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { sendGAEvent } from "@next/third-parties/google"
 import { useAuth } from "@/components/AuthProvider"
@@ -454,8 +454,20 @@ export default function QuizPage() {
     setCombo(0)
   }, [])
 
+  const handleToggleFlag = useCallback(() => {
+    if (!session || !currentQuestion) return
+    const flagged = session.flaggedIds ?? []
+    const next = flagged.includes(currentQuestion.id)
+      ? flagged.filter((id) => id !== currentQuestion.id)
+      : [...flagged, currentQuestion.id]
+    const updated: QuizSession = { ...session, flaggedIds: next }
+    saveSession(updated)
+    setSession(updated)
+  }, [session, currentQuestion])
+
   // Keyboard shortcuts: 1-4 or A-D to answer, Enter/ArrowRight for next,
-  // ArrowLeft for previous. Disabled while overlays, PBQs, or inputs are active.
+  // ArrowLeft for previous, F to flag. Disabled while overlays, PBQs, or
+  // inputs are active.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (showModeSelect || showPaywall || showSummary || inPbqPhase || confirmAction) return
@@ -485,6 +497,11 @@ export default function QuizPage() {
       if (key === "arrowleft") {
         e.preventDefault()
         handlePrev()
+        return
+      }
+      if (key === "f") {
+        e.preventDefault()
+        handleToggleFlag()
       }
     }
     window.addEventListener("keydown", onKey)
@@ -500,6 +517,7 @@ export default function QuizPage() {
     handleAnswer,
     handleNext,
     handlePrev,
+    handleToggleFlag,
   ])
 
   if (loading) {
@@ -534,6 +552,10 @@ export default function QuizPage() {
     session.answers[currentQuestion.id] !== undefined &&
     // Only "reviewing" if we're not at the frontier (frontier = highest answered index)
     session.currentIndex < Object.keys(session.answers).length
+
+  const isFlagged =
+    currentQuestion !== undefined &&
+    (session.flaggedIds ?? []).includes(currentQuestion.id)
 
   const answeredCorrectly = selected !== null && selected === currentQuestion?.answer
   const isLastFreeQuestion =
@@ -893,6 +915,20 @@ export default function QuizPage() {
                       Review
                     </span>
                   )}
+                  <button
+                    onClick={handleToggleFlag}
+                    aria-pressed={isFlagged}
+                    aria-label={isFlagged ? "Remove flag from this question" : "Flag this question for review"}
+                    title={isFlagged ? "Unflag question" : "Flag for review (F)"}
+                    className={`ml-auto inline-flex items-center gap-1.5 text-xs font-medium border px-2.5 py-2 rounded-md transition-colors min-h-[36px] cursor-pointer ${
+                      isFlagged
+                        ? "bg-yellow-500/10 border-yellow-500/40 text-yellow-400"
+                        : "bg-muted border-border text-muted-foreground hover:text-foreground hover:border-yellow-500/30"
+                    }`}
+                  >
+                    <Flag className={`w-3.5 h-3.5 ${isFlagged ? "fill-yellow-400" : ""}`} />
+                    <span className="hidden sm:inline">{isFlagged ? "Flagged" : "Flag"}</span>
+                  </button>
                 </div>
 
                 {/* Question text */}

@@ -24,6 +24,7 @@ export interface QuizSession {
   resultsRecorded?: boolean
   pbqIds?: string[]
   pbqResults?: Record<string, { correct: number; total: number; domain: number }>
+  flaggedIds?: string[]
 }
 
 // Fixed set of free practice questions - same 25 questions, same order, on every device.
@@ -88,7 +89,15 @@ export function createSession(
 
   let pool: Question[]
   if (mode === "missed" && missedIds?.length) {
-    pool = shuffle(allQuestions.filter((q) => missedIds.includes(q.id)))
+    // Missed/flagged ids can come from an exam-mode session, so search the
+    // exam bank as well as the practice bank.
+    const examQs: Question[] =
+      cert === "netplus" ? (networkExamQuestions as unknown as Question[])
+      : cert === "aplus" ? (aplusExamQuestions as unknown as Question[])
+      : (examQuestions as unknown as Question[])
+    pool = shuffle(
+      [...allQuestions, ...examQs].filter((q) => missedIds.includes(q.id))
+    )
   } else if (unlocked) {
     // Paid users: optionally filter by domain, then shuffle, then cap at count.
     let base = options?.domain

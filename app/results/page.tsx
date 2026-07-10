@@ -19,6 +19,7 @@ import {
   TrendingUp,
   TrendingDown,
   Star,
+  Flag,
 } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { DiscordBanner } from "@/components/DiscordBanner"
@@ -166,6 +167,9 @@ export default function ResultsPage() {
   const missedQuestions = session.questions.filter((q) =>
     session.missedIds.includes(q.id)
   )
+  const flaggedQuestions = session.questions.filter((q) =>
+    (session.flaggedIds ?? []).includes(q.id)
+  )
 
   const SECPLUS_DOMAINS = [
     { id: 1 as const, name: "General Security Concepts" },
@@ -248,6 +252,15 @@ export default function ResultsPage() {
     clearSession()
     const cert = (session?.cert ?? "secplus") as "secplus" | "netplus" | "aplus"
     const s = createSession("missed", session.missedIds, { cert })
+    saveSession(s)
+    router.push(certPath(cert))
+  }
+
+  const handlePracticeFlagged = () => {
+    if (flaggedQuestions.length === 0) return
+    clearSession()
+    const cert = (session?.cert ?? "secplus") as "secplus" | "netplus" | "aplus"
+    const s = createSession("missed", flaggedQuestions.map((q) => q.id), { cert })
     saveSession(s)
     router.push(certPath(cert))
   }
@@ -665,6 +678,43 @@ export default function ResultsPage() {
             </button>
           </motion.div>
 
+          {/* Flagged questions */}
+          {flaggedQuestions.length > 0 && (
+            <motion.div
+              variants={shouldReduce ? {} : itemVariants}
+              className="flex flex-col gap-4"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2 text-muted-foreground uppercase tracking-wide">
+                  <Flag className="w-4 h-4 text-yellow-400" />
+                  Flagged ({flaggedQuestions.length})
+                </h2>
+                <button
+                  onClick={handlePracticeFlagged}
+                  className="flex items-center gap-1.5 text-xs font-medium border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10 px-3 py-2 rounded-lg transition-colors min-h-[36px] cursor-pointer"
+                >
+                  <Target className="w-3.5 h-3.5" />
+                  Practice flagged
+                </button>
+              </div>
+              <div className="flex flex-col gap-2">
+                {flaggedQuestions.map((q, i) => (
+                  <motion.div
+                    key={q.id}
+                    variants={shouldReduce ? {} : itemVariants}
+                    custom={i}
+                  >
+                    <MissedCard
+                      question={q}
+                      yourAnswer={session.answers[q.id]}
+                      flagged
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
           {/* Missed questions */}
           {missedQuestions.length > 0 && (
             <motion.div
@@ -779,20 +829,26 @@ function ScoreCounter({
 function MissedCard({
   question,
   yourAnswer,
+  flagged = false,
 }: {
   question: Question
-  yourAnswer: "A" | "B" | "C" | "D"
+  yourAnswer?: "A" | "B" | "C" | "D"
+  flagged?: boolean
 }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="bg-card border border-red-500/15 rounded-2xl overflow-hidden">
+    <div className={`bg-card border rounded-2xl overflow-hidden ${flagged ? "border-yellow-500/15" : "border-red-500/15"}`}>
       <button
         onClick={() => setExpanded(!expanded)}
         aria-expanded={expanded}
         className="w-full flex items-start gap-3 px-5 py-4 text-left hover:bg-muted/50 transition-colors min-h-[44px]"
       >
-        <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+        {flagged ? (
+          <Flag className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
+        ) : (
+          <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+        )}
         <div className="flex-1 min-w-0">
           <span className="text-muted-foreground text-xs">{question.id} </span>
           <span className="text-sm line-clamp-2">{question.question}</span>
