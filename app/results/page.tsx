@@ -45,6 +45,7 @@ import {
 } from "@/lib/quiz-store"
 import { ReadinessRing } from "@/components/ReadinessRing"
 import { type Question } from "@/data/questions"
+import { getPBQsForCert } from "@/data/pbqQuestions"
 
 const containerVariants = {
   hidden: {},
@@ -381,6 +382,36 @@ export default function ResultsPage() {
               )}
             </button>
           </motion.div>
+
+          {/* PBQ upsell for free users who just tried the sample PBQs */}
+          {!session.isUnlocked && pbqEntries.length > 0 && (
+            <motion.div
+              variants={shouldReduce ? {} : itemVariants}
+              className="bg-card border border-accent-green/30 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4"
+            >
+              <div className="flex-1">
+                <p className="text-sm font-semibold mb-1">
+                  You tried {pbqEntries.length} of{" "}
+                  {getPBQsForCert(session.cert ?? "secplus").length} PBQs
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Unlock every Performance Based Question plus 1,480 practice
+                  questions across all three certs. One payment, lifetime access.
+                </p>
+              </div>
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://buy.stripe.com/4gM7sKfJ459a9E85ny2Nq00",
+                    "_blank"
+                  )
+                }
+                className="bg-accent-green hover:bg-accent-hover text-black font-bold py-2.5 px-5 rounded-xl transition-colors text-sm min-h-[44px] cursor-pointer shrink-0"
+              >
+                Unlock All PBQs - $9.99
+              </button>
+            </motion.div>
+          )}
 
           {/* Readiness ring */}
           {readiness && (

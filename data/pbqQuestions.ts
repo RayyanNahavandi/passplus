@@ -8,6 +8,8 @@ export interface PBQBase {
   domain: number
   title: string
   instructions: string
+  // Free-tier sample PBQs. Fixed set so free users always see the same ones.
+  free?: boolean
 }
 
 export interface MatchingPBQ extends PBQBase {
@@ -34,6 +36,7 @@ export const pbqQuestions: PBQQuestion[] = [
     id: "pbq-sec-attacks",
     cert: "secplus",
     domain: 2,
+    free: true,
     type: "matching",
     title: "Match the Attack to Its Description",
     instructions:
@@ -70,6 +73,7 @@ export const pbqQuestions: PBQQuestion[] = [
     id: "pbq-sec-ir-order",
     cert: "secplus",
     domain: 4,
+    free: true,
     type: "ordering",
     title: "Order the Incident Response Lifecycle",
     instructions:
@@ -161,6 +165,7 @@ export const pbqQuestions: PBQQuestion[] = [
     id: "pbq-net-devices",
     cert: "netplus",
     domain: 1,
+    free: true,
     type: "matching",
     title: "Match the Network Device to Its Function",
     instructions:
@@ -192,6 +197,7 @@ export const pbqQuestions: PBQQuestion[] = [
     id: "pbq-net-troubleshoot-order",
     cert: "netplus",
     domain: 5,
+    free: true,
     type: "ordering",
     title: "Order the Network Troubleshooting Methodology",
     instructions:
@@ -301,6 +307,7 @@ export const pbqQuestions: PBQQuestion[] = [
     id: "pbq-aplus-mobile-wireless",
     cert: "aplus",
     domain: 1,
+    free: true,
     type: "matching",
     title: "Match the Mobile Technology to Its Use Case",
     instructions:
@@ -365,6 +372,7 @@ export const pbqQuestions: PBQQuestion[] = [
     id: "pbq-aplus-laser-order",
     cert: "aplus",
     domain: 3,
+    free: true,
     type: "ordering",
     title: "Order the Laser Printer Imaging Process",
     instructions:
@@ -441,10 +449,432 @@ export const pbqQuestions: PBQQuestion[] = [
       },
     ],
   },
+  {
+    id: "pbq-sec-controls",
+    cert: "secplus",
+    domain: 1,
+    type: "matching",
+    title: "Match the Control Type to the Scenario",
+    instructions:
+      "Drag each control type onto the scenario that best describes it, or tap a control and then tap a slot.",
+    pairs: [
+      {
+        prompt: "Preventive",
+        answer: "A firewall rule blocks all inbound Telnet connections before they reach hosts",
+      },
+      {
+        prompt: "Deterrent",
+        answer: "Warning signs state that the facility is under video surveillance",
+      },
+      {
+        prompt: "Detective",
+        answer: "A SIEM alert fires when a user logs in from two countries within an hour",
+      },
+      {
+        prompt: "Corrective",
+        answer: "Infected files are quarantined and restored from a clean backup after an incident",
+      },
+      {
+        prompt: "Compensating",
+        answer: "A legacy system that cannot be patched is isolated on its own monitored VLAN",
+      },
+    ],
+  },
+  {
+    id: "pbq-sec-crypto",
+    cert: "secplus",
+    domain: 1,
+    type: "matching",
+    title: "Match the Cryptographic Concept to Its Use",
+    instructions:
+      "Drag each cryptographic concept onto the description it matches, or tap a concept and then tap a slot.",
+    pairs: [
+      {
+        prompt: "Symmetric encryption",
+        answer: "One shared key encrypts and decrypts a large database quickly",
+      },
+      {
+        prompt: "Asymmetric encryption",
+        answer: "A public key encrypts a message that only the private key holder can read",
+      },
+      {
+        prompt: "Hashing",
+        answer: "A one-way function verifies a downloaded file has not been altered",
+      },
+      {
+        prompt: "Digital signature",
+        answer: "A sender's private key proves a message came from them and was not modified",
+      },
+      {
+        prompt: "Key escrow",
+        answer: "Copies of encryption keys are held by a trusted third party for recovery",
+      },
+    ],
+  },
+  {
+    id: "pbq-sec-volatility-order",
+    cert: "secplus",
+    domain: 4,
+    type: "ordering",
+    title: "Order the Evidence by Volatility",
+    instructions:
+      "During forensic collection, evidence must be captured from most volatile to least volatile. Arrange the sources in the correct collection order.",
+    steps: [
+      "CPU registers and cache",
+      "RAM contents",
+      "Swap file and temporary files",
+      "Data on local disk",
+      "Remote logs and monitoring data",
+      "Archived backups",
+    ],
+  },
+  {
+    id: "pbq-sec-log-analysis",
+    cert: "secplus",
+    domain: 4,
+    type: "fill-blank",
+    title: "Analyze the Authentication Log",
+    instructions:
+      "Review the log excerpt and fill in each answer. Answers are not case sensitive.",
+    intro:
+      "Log excerpt: 04:12:01 sshd: Failed password for admin from 203.0.113.50. The same message repeats 400 times in 10 minutes, each attempt using a different password.",
+    blanks: [
+      {
+        label: "Attack type",
+        accepted: ["brute force", "brute-force", "password brute force", "brute force attack"],
+        placeholder: "type of attack",
+      },
+      {
+        label: "Targeted service",
+        accepted: ["ssh", "sshd", "secure shell"],
+        placeholder: "service name",
+      },
+      {
+        label: "Default port of the targeted service",
+        accepted: ["22"],
+        placeholder: "port number",
+      },
+      {
+        label: "Attacker IP address",
+        accepted: ["203.0.113.50"],
+        placeholder: "IP address",
+      },
+      {
+        label: "Account policy that limits repeated failed logins",
+        accepted: ["account lockout", "lockout", "account lockout policy", "lockout policy"],
+        placeholder: "policy name",
+      },
+    ],
+  },
+  {
+    id: "pbq-sec-appliances",
+    cert: "secplus",
+    domain: 3,
+    type: "matching",
+    title: "Match the Security Appliance to Its Role",
+    instructions:
+      "Drag each appliance onto the role it performs, or tap an appliance and then tap a slot.",
+    pairs: [
+      {
+        prompt: "IDS",
+        answer: "Monitors traffic and raises alerts but does not block anything",
+      },
+      {
+        prompt: "IPS",
+        answer: "Sits inline and actively drops malicious traffic in real time",
+      },
+      {
+        prompt: "WAF",
+        answer: "Inspects HTTP requests to block SQL injection and XSS against a web app",
+      },
+      {
+        prompt: "Forward proxy",
+        answer: "Makes web requests on behalf of internal clients and filters content",
+      },
+      {
+        prompt: "Jump server",
+        answer: "A hardened host admins must connect through to manage sensitive systems",
+      },
+    ],
+  },
+  {
+    id: "pbq-net-ports",
+    cert: "netplus",
+    domain: 1,
+    type: "matching",
+    title: "Match Each Protocol to Its Port",
+    instructions:
+      "Drag each protocol onto its default port number, or tap a protocol and then tap a port slot.",
+    pairs: [
+      { prompt: "FTP", answer: "Port 21" },
+      { prompt: "Telnet", answer: "Port 23" },
+      { prompt: "TFTP", answer: "Port 69" },
+      { prompt: "HTTP", answer: "Port 80" },
+      { prompt: "NTP", answer: "Port 123" },
+      { prompt: "SNMP", answer: "Port 161" },
+    ],
+  },
+  {
+    id: "pbq-net-dhcp-order",
+    cert: "netplus",
+    domain: 1,
+    type: "ordering",
+    title: "Order the DHCP Lease Process",
+    instructions:
+      "Arrange the four DHCP messages in the order they occur when a client obtains an address (DORA).",
+    steps: [
+      "Discover: client broadcasts to find a DHCP server",
+      "Offer: server proposes an available IP address",
+      "Request: client asks to use the offered address",
+      "Acknowledge: server confirms and finalizes the lease",
+    ],
+  },
+  {
+    id: "pbq-net-vlan",
+    cert: "netplus",
+    domain: 2,
+    type: "fill-blank",
+    title: "Configure the Switch Ports",
+    instructions:
+      "Fill in the switch configuration values for the scenario. Answers are not case sensitive.",
+    intro:
+      "Scenario: A new workstation must join the Accounting VLAN (VLAN 30). Its switch port connects only that workstation. A separate uplink port carries traffic for all VLANs to another switch.",
+    blanks: [
+      {
+        label: "Port mode for the workstation port",
+        accepted: ["access"],
+        placeholder: "access or trunk",
+      },
+      {
+        label: "VLAN ID assigned to the workstation port",
+        accepted: ["30", "vlan 30"],
+        placeholder: "VLAN number",
+      },
+      {
+        label: "Port mode for the uplink between switches",
+        accepted: ["trunk"],
+        placeholder: "access or trunk",
+      },
+      {
+        label: "Tagging protocol used on the uplink",
+        accepted: ["802.1q", "dot1q", "802.1 q"],
+        placeholder: "IEEE standard",
+      },
+    ],
+  },
+  {
+    id: "pbq-net-topologies",
+    cert: "netplus",
+    domain: 1,
+    type: "matching",
+    title: "Match the Topology to Its Description",
+    instructions:
+      "Drag each network topology onto the description it matches, or tap a topology and then tap a slot.",
+    pairs: [
+      {
+        prompt: "Star",
+        answer: "Every node connects to a central switch; one cable failure affects one node",
+      },
+      {
+        prompt: "Full mesh",
+        answer: "Every node connects directly to every other node for maximum redundancy",
+      },
+      {
+        prompt: "Point-to-point",
+        answer: "A single dedicated link connects exactly two endpoints",
+      },
+      {
+        prompt: "Hub-and-spoke",
+        answer: "Branch sites each connect to one central site that relays traffic between them",
+      },
+      {
+        prompt: "Hybrid",
+        answer: "A network combining two or more different topology types",
+      },
+    ],
+  },
+  {
+    id: "pbq-net-tools",
+    cert: "netplus",
+    domain: 5,
+    type: "matching",
+    title: "Match the Tool to the Troubleshooting Task",
+    instructions:
+      "Drag each tool onto the task it is best suited for, or tap a tool and then tap a slot.",
+    pairs: [
+      {
+        prompt: "Cable tester",
+        answer: "Verify the wiring pinout and continuity of a patch cable",
+      },
+      {
+        prompt: "Toner probe",
+        answer: "Locate the far end of an unlabeled cable inside a crowded patch panel",
+      },
+      {
+        prompt: "ping",
+        answer: "Confirm basic reachability of a remote host by IP address",
+      },
+      {
+        prompt: "traceroute",
+        answer: "Identify which hop along a path is dropping or delaying traffic",
+      },
+      {
+        prompt: "Protocol analyzer",
+        answer: "Capture and inspect individual packets to diagnose an application issue",
+      },
+    ],
+  },
+  {
+    id: "pbq-aplus-connectors",
+    cert: "aplus",
+    domain: 3,
+    type: "matching",
+    title: "Match the Connector to Its Purpose",
+    instructions:
+      "Drag each connector onto the purpose it serves, or tap a connector and then tap a slot.",
+    pairs: [
+      {
+        prompt: "USB-C",
+        answer: "Reversible connector that can carry data, video, and device charging",
+      },
+      {
+        prompt: "HDMI",
+        answer: "Carries digital video and audio to a monitor or TV over one cable",
+      },
+      {
+        prompt: "RJ45",
+        answer: "Terminates twisted-pair Ethernet cable for wired network connections",
+      },
+      {
+        prompt: "SATA",
+        answer: "Connects an internal hard drive or SSD to the motherboard",
+      },
+      {
+        prompt: "Lightning",
+        answer: "Apple proprietary connector used to charge and sync older iPhones",
+      },
+    ],
+  },
+  {
+    id: "pbq-aplus-ram-order",
+    cert: "aplus",
+    domain: 3,
+    type: "ordering",
+    title: "Order the Steps to Install RAM Safely",
+    instructions:
+      "Arrange the steps to safely upgrade the memory in a desktop PC, from first to last.",
+    steps: [
+      "Power down the PC and unplug it from the wall",
+      "Attach an ESD strap to your wrist and ground it",
+      "Open the case and locate the memory slots",
+      "Seat the module until both retention clips click",
+      "Close the case and reconnect power",
+      "Boot and verify the OS reports the new memory total",
+    ],
+  },
+  {
+    id: "pbq-aplus-soho-wifi",
+    cert: "aplus",
+    domain: 2,
+    type: "fill-blank",
+    title: "Configure the SOHO Wireless Router",
+    instructions:
+      "Fill in the wireless settings for the scenario. Answers are not case sensitive.",
+    intro:
+      "Scenario: You are securing a small office wireless router. Nearby networks are congesting 2.4 GHz channels 3 and 9. The router supports the newest wireless security protocol.",
+    blanks: [
+      {
+        label: "Most secure wireless protocol to enable",
+        accepted: ["wpa3", "wpa 3"],
+        placeholder: "security protocol",
+      },
+      {
+        label: "A non-overlapping 2.4 GHz channel to use",
+        accepted: ["1", "6", "11", "channel 1", "channel 6", "channel 11"],
+        placeholder: "channel number",
+      },
+      {
+        label: "Band that offers higher speeds at shorter range",
+        accepted: ["5 ghz", "5ghz", "5"],
+        placeholder: "frequency band",
+      },
+      {
+        label: "Setting that hides the network name from casual view",
+        accepted: ["disable ssid broadcast", "ssid broadcast", "hide ssid", "disable ssid"],
+        placeholder: "router setting",
+      },
+    ],
+  },
+  {
+    id: "pbq-aplus-virtualization",
+    cert: "aplus",
+    domain: 4,
+    type: "matching",
+    title: "Match the Virtualization Concept to Its Description",
+    instructions:
+      "Drag each concept onto the description it matches, or tap a concept and then tap a slot.",
+    pairs: [
+      {
+        prompt: "Type 1 hypervisor",
+        answer: "Runs directly on server hardware with no host operating system underneath",
+      },
+      {
+        prompt: "Type 2 hypervisor",
+        answer: "Runs as an application on top of a normal desktop operating system",
+      },
+      {
+        prompt: "Virtual machine",
+        answer: "A complete guest OS with its own virtual hardware, isolated from the host",
+      },
+      {
+        prompt: "Container",
+        answer: "Packages an app and its dependencies while sharing the host OS kernel",
+      },
+      {
+        prompt: "Sandbox",
+        answer: "An isolated test environment for safely running untrusted software",
+      },
+    ],
+  },
+  {
+    id: "pbq-aplus-printers",
+    cert: "aplus",
+    domain: 3,
+    type: "matching",
+    title: "Match the Printer Type to Its Characteristics",
+    instructions:
+      "Drag each printer type onto its matching characteristics, or tap a printer type and then tap a slot.",
+    pairs: [
+      {
+        prompt: "Laser",
+        answer: "Uses toner fused to the page with heat; fast with a low cost per page",
+      },
+      {
+        prompt: "Inkjet",
+        answer: "Sprays liquid ink through nozzles; great photo quality but pricier ink",
+      },
+      {
+        prompt: "Thermal",
+        answer: "Heats special paper to print receipts; no ink or toner required",
+      },
+      {
+        prompt: "Impact",
+        answer: "Pins strike a ribbon, so it can print through multi-part carbon forms",
+      },
+      {
+        prompt: "3D printer",
+        answer: "Builds physical objects layer by layer, commonly from melted filament",
+      },
+    ],
+  },
 ]
 
 export function getPBQsForCert(cert: string): PBQQuestion[] {
   return pbqQuestions.filter((p) => p.cert === cert)
+}
+
+export function getFreePBQsForCert(cert: string): PBQQuestion[] {
+  return pbqQuestions.filter((p) => p.cert === cert && p.free)
 }
 
 export function getPBQById(id: string): PBQQuestion | undefined {

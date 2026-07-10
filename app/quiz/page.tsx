@@ -28,7 +28,7 @@ import {
   type QuizSession,
 } from "@/lib/quiz-store"
 import { type Question } from "@/data/questions"
-import { getPBQById, getPBQsForCert } from "@/data/pbqQuestions"
+import { getPBQById, getPBQsForCert, getFreePBQsForCert } from "@/data/pbqQuestions"
 import PBQRunner from "@/components/pbq/PBQRunner"
 
 const EXAM_DURATION = 90 * 60 // 5400 seconds
@@ -193,12 +193,6 @@ export default function QuizPage() {
   }, [session?.cert])
 
   const handleStartPbq = useCallback(() => {
-    if (!session?.isUnlocked) {
-      sendGAEvent("event", "pbq_paywall_shown")
-      setPaywallContext("pbq")
-      setShowPaywall(true)
-      return
-    }
     const s = createPBQSession(session?.cert ?? "secplus")
     const updated: QuizSession = { ...s, examMode: false }
     saveSession(updated)
@@ -1280,9 +1274,8 @@ function ModeSelectScreen({
                       <Puzzle className="w-5 h-5 text-accent-green" />
                     </div>
                     {!isUnlocked && (
-                      <span className="flex items-center gap-1.5 text-xs font-medium text-yellow-500 bg-yellow-500/10 border border-yellow-500/25 px-2.5 py-1 rounded-full">
-                        <Lock className="w-3 h-3" />
-                        Paid
+                      <span className="flex items-center gap-1.5 text-xs font-medium text-accent-green bg-accent-green/10 border border-accent-green/25 px-2.5 py-1 rounded-full">
+                        Try {getFreePBQsForCert(cert).length} free
                       </span>
                     )}
                   </div>
@@ -1291,7 +1284,7 @@ function ModeSelectScreen({
                     <p className="text-xs text-muted-foreground leading-relaxed">
                       {isUnlocked
                         ? "Performance Based Questions: drag-and-drop matching, ordering, and fill-in scenarios, just like the real exam."
-                        : "Performance Based Questions like the real exam opens with. Unlock to practice matching, ordering, and fill-in scenarios."}
+                        : `Performance Based Questions like the real exam opens with. Try ${getFreePBQsForCert(cert).length} free, unlock all ${getPBQsForCert(cert).length}.`}
                     </p>
                   </div>
                 </motion.button>

@@ -6,7 +6,7 @@ import { networkPracticeQuestions } from "@/data/networkPlusQuestions"
 import { networkExamQuestions } from "@/data/networkPlusExamQuestions"
 import { aplusPracticeQuestions } from "@/data/aplusPracticeQuestions"
 import { aplusExamQuestions } from "@/data/aplusExamQuestions"
-import { getPBQsForCert } from "@/data/pbqQuestions"
+import { getPBQsForCert, getFreePBQsForCert } from "@/data/pbqQuestions"
 
 type Cert = "secplus" | "netplus" | "aplus"
 
@@ -139,8 +139,12 @@ export function createExamSession(cert: Cert = "secplus"): QuizSession {
     : cert === "aplus" ? FREE_APLUS_EXAM_QUESTIONS
     : FREE_EXAM_QUESTIONS
   const pool: Question[] = unlocked ? shuffle(allExamQs) : freeExamQs
-  // Like the real CompTIA exam, paid exam sessions open with PBQs.
-  const certPbqs = unlocked ? getPBQsForCert(cert) : []
+  // Like the real CompTIA exam, exam sessions open with PBQs. Free users get
+  // the fixed free sample; paid users get the full shuffled bank.
+  const certPbqs = unlocked ? getPBQsForCert(cert) : getFreePBQsForCert(cert)
+  const pbqIds = unlocked
+    ? shuffle(certPbqs.map((p) => p.id))
+    : certPbqs.map((p) => p.id)
   return {
     questions: pool,
     currentIndex: 0,
@@ -150,14 +154,16 @@ export function createExamSession(cert: Cert = "secplus"): QuizSession {
     mode: "normal",
     isUnlocked: unlocked,
     cert,
-    ...(certPbqs.length > 0
-      ? { pbqIds: shuffle(certPbqs.map((p) => p.id)), pbqResults: {} }
-      : {}),
+    ...(pbqIds.length > 0 ? { pbqIds, pbqResults: {} } : {}),
   }
 }
 
-/** Creates a PBQ-only drill session (paid feature). */
+/**
+ * Creates a PBQ-only drill session. Paid users drill the full shuffled bank;
+ * free users get the fixed free sample set.
+ */
 export function createPBQSession(cert: Cert = "secplus"): QuizSession {
+  const unlocked = isUnlocked()
   return {
     questions: [],
     currentIndex: 0,
@@ -165,9 +171,11 @@ export function createPBQSession(cert: Cert = "secplus"): QuizSession {
     missedIds: [],
     score: 0,
     mode: "normal",
-    isUnlocked: isUnlocked(),
+    isUnlocked: unlocked,
     cert,
-    pbqIds: shuffle(getPBQsForCert(cert).map((p) => p.id)),
+    pbqIds: unlocked
+      ? shuffle(getPBQsForCert(cert).map((p) => p.id))
+      : getFreePBQsForCert(cert).map((p) => p.id),
     pbqResults: {},
   }
 }
