@@ -187,7 +187,7 @@ export default function LoginPage() {
               onClick={() => switchMode("signin")}
               className="text-sm text-accent-green hover:text-accent-hover transition-colors"
             >
-              Back to sign in →
+              Back to sign in
             </button>
           </motion.div>
         </main>
@@ -208,7 +208,7 @@ export default function LoginPage() {
             href="/"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            ← Back
+            Back
           </Link>
         </header>
         <main className="flex-1 flex items-center justify-center px-4 py-12">
@@ -232,7 +232,7 @@ export default function LoginPage() {
                   onClick={() => switchMode("signin")}
                   className="text-sm text-accent-green hover:text-accent-hover transition-colors"
                 >
-                  Back to sign in →
+                  Back to sign in
                 </button>
               </div>
             ) : (
@@ -313,7 +313,7 @@ export default function LoginPage() {
           href="/"
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
-          ← Back
+          Back
         </Link>
       </header>
 

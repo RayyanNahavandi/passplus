@@ -157,7 +157,7 @@ export default function ResultsPage() {
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <p className="text-muted-foreground text-sm">No results to show yet.</p>
         <Link href="/quiz" className="text-accent-green text-sm hover:underline">
-          Start a quiz →
+          Start a quiz
         </Link>
       </div>
     )

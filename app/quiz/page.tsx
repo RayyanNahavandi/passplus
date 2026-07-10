@@ -83,6 +83,28 @@ export default function QuizPage() {
   const streakUpdatedRef = useRef(false)
   const shouldReduce = useReducedMotion()
 
+  // Anonymous heartbeat while a session is active - powers the live
+  // "studying right now" counter on the landing page.
+  const hasSession = session !== null
+  useEffect(() => {
+    if (!hasSession) return
+    let id = localStorage.getItem("passplus_presence_id")
+    if (!id) {
+      id = crypto.randomUUID()
+      localStorage.setItem("passplus_presence_id", id)
+    }
+    const beat = () => {
+      fetch("/api/presence", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      }).catch(() => {})
+    }
+    beat()
+    const interval = setInterval(beat, 60_000)
+    return () => clearInterval(interval)
+  }, [hasSession])
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const certParam = (params.get("cert") ?? "secplus") as "secplus" | "netplus" | "aplus"
@@ -554,7 +576,7 @@ export default function QuizPage() {
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <p className="text-muted-foreground text-sm">No questions found.</p>
         <Link href="/" className="text-accent-green text-sm hover:underline">
-          ← Back home
+          Back home
         </Link>
       </div>
     )
@@ -1119,7 +1141,7 @@ export default function QuizPage() {
                           className="flex flex-1 items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm"
                         >
                           {isLastFreeQuestion
-                            ? "Continue →"
+                            ? "Continue"
                             : session.currentIndex + 1 >= session.questions.length
                             ? "See Results"
                             : "Next Question"}
@@ -1908,7 +1930,7 @@ function PaywallOverlay({
               onClick={onGoToResults}
               className="w-full text-muted-foreground/50 hover:text-muted-foreground text-xs transition-colors py-1 min-h-[36px] cursor-pointer"
             >
-              See my results so far →
+              See my results so far
             </button>
 
             {/* Email capture */}

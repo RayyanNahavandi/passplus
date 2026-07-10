@@ -92,7 +92,7 @@ export default function ResetPasswordPage() {
           href="/"
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
-          ← Back
+          Back
         </Link>
       </header>
 
@@ -118,7 +118,7 @@ export default function ResetPasswordPage() {
                 href="/login"
                 className="text-sm text-accent-green hover:text-accent-hover transition-colors"
               >
-                Go to sign in →
+                Go to sign in
               </Link>
             </div>
           ) : (

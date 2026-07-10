@@ -39,6 +39,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: 'https://www.studypassplus.com/help',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
       url: 'https://www.studypassplus.com/blog/free-security-plus-sy0-701-practice-questions',
       lastModified: new Date('2026-05-19'),
       changeFrequency: 'monthly',
