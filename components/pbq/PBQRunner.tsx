@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { motion } from "motion/react"
-import { Puzzle, ChevronRight } from "lucide-react"
+import { Puzzle } from "lucide-react"
 import type { PBQQuestion } from "@/data/pbqQuestions"
 import MatchingPBQ from "./MatchingPBQ"
 import OrderingPBQ from "./OrderingPBQ"
@@ -148,7 +148,6 @@ export default function PBQRunner({
             className="flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-accent-green text-black font-semibold text-sm hover:bg-accent-hover transition-colors cursor-pointer"
           >
             {isLast ? "Finish" : "Next"}
-            <ChevronRight className="w-4 h-4" />
           </button>
         </motion.div>
       )}
