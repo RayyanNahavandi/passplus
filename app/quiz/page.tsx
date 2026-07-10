@@ -75,7 +75,6 @@ export default function QuizPage() {
   >(null)
   const [streakCount, setStreakCount] = useState(0)
   const [combo, setCombo] = useState(0)
-  const [paywallContext, setPaywallContext] = useState<"pbq" | null>(null)
   const [showSummary, setShowSummary] = useState(false)
   const [examCountdown, setExamCountdown] = useState<ReturnType<typeof getExamCountdown>>(null)
   const [streakMilestone, setStreakMilestone] = useState<number | null>(null)
@@ -1153,20 +1152,12 @@ export default function QuizPage() {
         {showPaywall && (
           <PaywallOverlay
             onUnlock={handleUnlock}
-            onGoToResults={() => {
-              if (paywallContext === "pbq") {
-                setShowPaywall(false)
-                setPaywallContext(null)
-              } else {
-                router.push("/results")
-              }
-            }}
+            onGoToResults={() => router.push("/results")}
             shouldReduce={!!shouldReduce}
             freeCount={session.questions.length}
             cert={session.cert ?? "secplus"}
             score={session.score}
             total={Object.keys(session.answers).length}
-            context={paywallContext}
           />
         )}
       </AnimatePresence>
@@ -1757,7 +1748,6 @@ function PaywallOverlay({
   cert,
   score,
   total,
-  context = null,
 }: {
   onUnlock: () => void
   onGoToResults: () => void
@@ -1766,7 +1756,6 @@ function PaywallOverlay({
   cert: string
   score: number
   total: number
-  context?: "pbq" | null
 }) {
   const [leadEmail, setLeadEmail] = useState("")
   const [leadStatus, setLeadStatus] = useState<"idle" | "sending" | "done" | "error">("idle")
@@ -1842,29 +1831,17 @@ function PaywallOverlay({
               Don&apos;t walk into your exam underprepared
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              {context === "pbq" ? (
-                <>
-                  Performance Based Questions are a paid feature. The real exam
-                  opens with PBQs, and candidates who practice them pass{" "}
-                  <strong className="text-foreground">2× more often</strong>.
-                </>
-              ) : (
-                <>
-                  You&apos;ve used your {freeCount} free questions. Candidates who
-                  practice all 1,480 questions pass{" "}
-                  <strong className="text-foreground">2× more often</strong>.
-                </>
-              )}
+              You&apos;ve used your {freeCount} free questions. Candidates who
+              practice all 1,480 questions pass{" "}
+              <strong className="text-foreground">2× more often</strong>.
             </p>
           </div>
 
           {/* What you get bullets */}
           <ul className="w-full text-left space-y-2 text-sm">
             {[
-              ...(context === "pbq"
-                ? ["Interactive PBQs: matching, ordering & fill-in drills"]
-                : []),
               "1,480 questions across Security+, Network+ & A+",
+              "30 interactive PBQs: matching, ordering & fill-in drills",
               "Practice Mode + timed Exam Mode simulation",
               "AI explanations for every question",
               "Lifetime access - pay once, use forever",
@@ -1931,7 +1908,7 @@ function PaywallOverlay({
               onClick={onGoToResults}
               className="w-full text-muted-foreground/50 hover:text-muted-foreground text-xs transition-colors py-1 min-h-[36px] cursor-pointer"
             >
-              {context === "pbq" ? "Maybe later" : "See my results so far →"}
+              See my results so far →
             </button>
 
             {/* Email capture */}

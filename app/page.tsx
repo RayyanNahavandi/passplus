@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame, Pencil, Check, Mail, Info, KeyRound, ExternalLink, Star } from "lucide-react"
+import { Zap, CheckCircle, Lock, ArrowRight, CalendarDays, ChevronDown, LogOut, User, Menu, X, Flame, Pencil, Check, Mail, Info, KeyRound, ExternalLink, Star, Puzzle, Sparkles } from "lucide-react"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
@@ -581,7 +581,7 @@ export default function Home() {
             {...fadeUp(0.2)}
             className="text-base sm:text-lg text-muted-foreground max-w-[480px] leading-relaxed"
           >
-            1480 questions across Security+, Network+, and A+. Practice Mode, Exam Mode, instant feedback, and domain breakdown.
+            1480 questions and 30 hands-on PBQs across Security+, Network+, and A+. Practice Mode, Exam Mode, AI explanations, and domain breakdown.
           </motion.p>
 
           {/* Cert selector */}
@@ -620,7 +620,7 @@ export default function Home() {
                     You&apos;ve completed your free quiz
                   </p>
                   <p className="text-xs text-muted-foreground max-w-xs">
-                    Unlock full access to all 1480 questions across both modes and get
+                    Unlock all 1480 questions, every Performance Based Question, and
                     AI explanations for every answer
                   </p>
                 </div>
@@ -688,7 +688,7 @@ export default function Home() {
             className="inline-flex items-center gap-2 border border-border rounded-full px-3.5 py-1.5 text-xs text-muted-foreground bg-card/50"
           >
             <Zap className="w-3 h-3 text-accent-green" />
-            Security+ · Network+ · A+ · 1480 questions · Practice + Exam Mode
+            Security+ · Network+ · A+ · 1480 questions · PBQs · Practice + Exam Mode
           </motion.div>
         </div>
 
@@ -696,7 +696,7 @@ export default function Home() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-2xl">
           {[
             { value: "1480", label: "Total Questions" },
-            { value: "2", label: "Study Modes" },
+            { value: "30", label: "Hands-On PBQs" },
             { value: "3", label: "Certs Covered" },
             { value: "Free", label: "First 25 Questions" },
           ].map((stat, i) => (
@@ -830,22 +830,27 @@ export default function Home() {
 
       {/* Features */}
       <section className="px-6 py-16 sm:py-24">
-        <div className="max-w-4xl mx-auto grid sm:grid-cols-3 gap-5">
+        <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-5">
           {[
             {
-              icon: <Zap className="w-4 h-4 text-accent-green" />,
-              title: "Instant Feedback",
-              desc: "See the correct answer immediately after every question.",
+              icon: <Sparkles className="w-4 h-4 text-accent-green" />,
+              title: "AI Explanations",
+              desc: "Understand why every answer is right. Your first 5 explanations are free, no signup needed.",
+            },
+            {
+              icon: <Puzzle className="w-4 h-4 text-accent-green" />,
+              title: "Hands-On PBQs",
+              desc: "Drag-and-drop matching, ordering, and fill-in scenarios like the real exam opens with. Try 2 free per cert.",
             },
             {
               icon: <CheckCircle className="w-4 h-4 text-accent-green" />,
               title: "Practice Missed",
-              desc: "Drill the questions you got wrong until they stick.",
+              desc: "Drill the questions you got wrong until they stick, and flag questions to review later.",
             },
             {
               icon: <Lock className="w-4 h-4 text-accent-green" />,
               title: "Full Question Bank",
-              desc: "Unlock all 1480 questions across Security+, Network+, and A+ for $9.99.",
+              desc: "Unlock all 1480 questions across Security+, Network+, and A+ for $9.99. One payment, lifetime access.",
             },
           ].map((f, i) => (
             <motion.div
@@ -988,7 +993,7 @@ export default function Home() {
                 PassPlus is a free CompTIA practice quiz built to help people actually pass their certification exams - not just memorize dumps.
               </p>
               <p>
-                It covers <strong className="text-foreground">Security+ SY0-701</strong>, <strong className="text-foreground">Network+ N10-009</strong>, and <strong className="text-foreground">A+ Core 1 & 2</strong> with 1,480 questions across Practice Mode and Exam Mode. Paid users get AI explanations for every answer.
+                It covers <strong className="text-foreground">Security+ SY0-701</strong>, <strong className="text-foreground">Network+ N10-009</strong>, and <strong className="text-foreground">A+ Core 1 & 2</strong> with 1,480 questions and 30 Performance Based Questions across Practice Mode, Exam Mode, and a PBQ Drill. Paid users get AI explanations for every answer.
               </p>
               <p>
                 Built and maintained independently. Questions are original, written from CompTIA exam objectives - not recycled braindumps.
