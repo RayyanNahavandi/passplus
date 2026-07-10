@@ -500,7 +500,7 @@ export default function Home() {
         {/* Hamburger - mobile only */}
         <button
           onClick={() => setShowMobileMenu((v) => !v)}
-          className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg border border-border hover:bg-muted transition-colors text-foreground"
+          className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg border border-border hover:bg-muted transition-colors text-foreground relative before:absolute before:-inset-1 before:content-['']"
           aria-label="Menu"
           aria-expanded={showMobileMenu}
         >
@@ -980,7 +980,7 @@ export default function Home() {
               </div>
               <button
                 onClick={() => setShowAboutModal(false)}
-                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground cursor-pointer relative before:absolute before:-inset-1.5 before:content-['']"
                 aria-label="Close"
               >
                 <X className="w-4 h-4" />

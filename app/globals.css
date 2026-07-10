@@ -98,7 +98,8 @@
   --secondary: #1A1A1A;
   --secondary-foreground: #FAFAFA;
   --muted: #1A1A1A;
-  --muted-foreground: #71717A;
+  /* 4.6:1+ contrast on card/secondary surfaces (WCAG AA); #71717A fell short */
+  --muted-foreground: #82828B;
   --accent: #1A1A1A;
   --accent-foreground: #FAFAFA;
   --destructive: #EF4444;
@@ -129,6 +130,15 @@
   }
   html {
     @apply font-sans;
+  }
+  /* Tailwind v4 preflight sets buttons to cursor: default */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 }
 

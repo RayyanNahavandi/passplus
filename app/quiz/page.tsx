@@ -774,7 +774,7 @@ export default function QuizPage() {
                 onClick={() => setConfirmAction("restart")}
                 title="Restart quiz"
                 aria-label="Restart quiz"
-                className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground relative before:absolute before:-inset-1.5 before:content-['']"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
