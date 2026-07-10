@@ -454,6 +454,54 @@ export default function QuizPage() {
     setCombo(0)
   }, [])
 
+  // Keyboard shortcuts: 1-4 or A-D to answer, Enter/ArrowRight for next,
+  // ArrowLeft for previous. Disabled while overlays, PBQs, or inputs are active.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (showModeSelect || showPaywall || showSummary || inPbqPhase || confirmAction) return
+      const target = e.target as HTMLElement
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable
+      )
+        return
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      const key = e.key.toLowerCase()
+      if (selected === null) {
+        const numIdx = ["1", "2", "3", "4"].indexOf(key)
+        const letterIdx = ["a", "b", "c", "d"].indexOf(key)
+        const idx = numIdx !== -1 ? numIdx : letterIdx
+        if (idx !== -1) {
+          e.preventDefault()
+          handleAnswer(displayOrder[idx])
+          return
+        }
+      } else if (key === "enter" || key === "arrowright") {
+        e.preventDefault()
+        handleNext()
+        return
+      }
+      if (key === "arrowleft") {
+        e.preventDefault()
+        handlePrev()
+      }
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [
+    showModeSelect,
+    showPaywall,
+    showSummary,
+    inPbqPhase,
+    confirmAction,
+    selected,
+    displayOrder,
+    handleAnswer,
+    handleNext,
+    handlePrev,
+  ])
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -882,6 +930,13 @@ export default function QuizPage() {
                     )
                   })}
                 </div>
+
+                {/* Keyboard hint - desktop only */}
+                {selected === null && (
+                  <p className="hidden sm:block mt-3 text-[11px] text-muted-foreground/50 text-center">
+                    Press 1-4 or A-D to answer
+                  </p>
+                )}
 
                 {/* Feedback + navigation */}
                 <AnimatePresence>
