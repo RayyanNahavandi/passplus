@@ -20,6 +20,8 @@ import {
   TrendingDown,
   Star,
   Flag,
+  Share2,
+  Check,
 } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { DiscordBanner } from "@/components/DiscordBanner"
@@ -66,6 +68,7 @@ export default function ResultsPage() {
   const [examCard, setExamCard] = useState<"hidden" | "prompt" | "form" | "countdown">("hidden")
   const [dateInput, setDateInput] = useState("")
   const [mastery, setMastery] = useState<ReturnType<typeof getDomainMastery>>(null)
+  const [shared, setShared] = useState(false)
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
@@ -256,6 +259,25 @@ export default function ResultsPage() {
     router.push(certPath(cert))
   }
 
+  const handleShare = () => {
+    const certName =
+      session.cert === "netplus" ? "Network+" :
+      session.cert === "aplus" ? "A+" :
+      "Security+"
+    const modeName = session.examMode ? "exam simulation" : "practice quiz"
+    const text = `I scored ${pct}% on a CompTIA ${certName} ${modeName} at PassPlus. Think you can beat it?`
+    const url = "https://www.studypassplus.com"
+    sendGAEvent("event", "results_shared", { score: pct, cert: session.cert ?? "secplus" })
+    if (navigator.share) {
+      navigator.share({ text, url }).catch(() => {})
+    } else {
+      navigator.clipboard.writeText(`${text} ${url}`).then(() => {
+        setShared(true)
+        setTimeout(() => setShared(false), 2000)
+      })
+    }
+  }
+
   const handlePracticeFlagged = () => {
     if (flaggedQuestions.length === 0) return
     clearSession()
@@ -340,6 +362,24 @@ export default function ResultsPage() {
                 ? "CompTIA A+ requires 675/900 (Core 1) and 700/900 (Core 2) to pass."
                 : "CompTIA Security+ requires 750/900 to pass (83%)."}
             </div>
+
+            <button
+              type="button"
+              onClick={handleShare}
+              className="flex items-center gap-2 min-h-[36px] px-4 py-2 rounded-lg border border-border text-xs text-muted-foreground hover:text-foreground hover:border-accent-green/40 transition-colors cursor-pointer"
+            >
+              {shared ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-accent-green" />
+                  Copied to clipboard
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-3.5 h-3.5" />
+                  Share my score
+                </>
+              )}
+            </button>
           </motion.div>
 
           {/* Readiness ring */}
