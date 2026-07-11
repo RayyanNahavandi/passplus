@@ -23,6 +23,25 @@ interface QuestionData {
 
 interface RenderProps extends QuestionData {
   audioSrc?: string
+  audioQuestionSrc?: string
+  audioRevealSrc?: string
+  s3?: number
+  s4?: number
+  durationInFrames?: number
+}
+
+const FPS = 30
+const COUNTDOWN_SECONDS = 6
+// CTA line ("New question every day...") is ~2.6s of the reveal segment;
+// the outro card appears when it starts.
+const CTA_SECONDS = 2.6
+
+/** Audio duration in seconds via afinfo (ships with macOS). */
+function audioDuration(file: string): number {
+  const out = execSync(`afinfo "${file}"`, { encoding: "utf-8" })
+  const match = out.match(/estimated duration: ([\d.]+)/)
+  if (!match) throw new Error(`Could not read duration of ${file}`)
+  return parseFloat(match[1])
 }
 
 async function renderVideo(): Promise<void> {
@@ -42,13 +61,44 @@ async function renderVideo(): Promise<void> {
 
   const props: RenderProps = { ...questionData }
 
-  // Include audio if it was generated
-  const audioPath = path.join(cwd, "out", "daily-question-audio.mp3")
-  if (fs.existsSync(audioPath)) {
-    props.audioSrc = audioPath
-    console.log("[remotion] Audio found - voiceover will be included")
+  // Preferred: two-segment voiceover. Scene boundaries are derived from the
+  // measured segment durations so the reveal always lands on the audio.
+  const questionAudio = path.join(cwd, "out", "audio-question.mp3")
+  const revealAudio = path.join(cwd, "out", "audio-reveal.mp3")
+  const legacyAudio = path.join(cwd, "out", "daily-question-audio.mp3")
+
+  // Remotion serves audio via staticFile() from public/, so segments are
+  // copied there and referenced by filename (gitignored as tiktok-audio-*).
+  const staticize = (file: string): string => {
+    const name = `tiktok-${path.basename(file)}`
+    fs.copyFileSync(file, path.join(cwd, "public", name))
+    return name
+  }
+
+  if (fs.existsSync(questionAudio) && fs.existsSync(revealAudio)) {
+    const d1 = audioDuration(questionAudio)
+    const d2 = audioDuration(revealAudio)
+    const s3 = Math.round((d1 + COUNTDOWN_SECONDS) * FPS)
+    const s4 = s3 + Math.round(Math.max(3, d2 - CTA_SECONDS) * FPS)
+    const durationInFrames = s3 + Math.round((d2 + 0.8) * FPS)
+    Object.assign(props, {
+      audioQuestionSrc: staticize(questionAudio),
+      audioRevealSrc: staticize(revealAudio),
+      s3,
+      s4,
+      durationInFrames,
+    })
+    console.log(
+      `[remotion] Two-segment audio: question ${d1.toFixed(1)}s, reveal ${d2.toFixed(1)}s`
+    )
+    console.log(
+      `[remotion] Timing: reveal @ frame ${s3}, outro @ ${s4}, total ${durationInFrames} frames (${(durationInFrames / FPS).toFixed(1)}s)`
+    )
+  } else if (fs.existsSync(legacyAudio)) {
+    props.audioSrc = staticize(legacyAudio)
+    console.log("[remotion] Legacy single audio found - using fixed 30s timing")
   } else {
-    console.log("[remotion] No audio file - rendering without voiceover")
+    console.log("[remotion] No audio files - rendering silent with fixed timing")
   }
 
   // Write props to a file to avoid shell escaping issues with special chars

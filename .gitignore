@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# TikTok pipeline audio staged for Remotion static serving
+public/tiktok-audio-*.mp3
+public/tiktok-daily-question-audio.mp3
+public/tiktok-meme-question-audio.mp3

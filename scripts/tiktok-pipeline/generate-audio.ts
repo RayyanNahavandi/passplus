@@ -35,21 +35,31 @@ const IS_MEME = process.argv.includes("--meme")
 
 // ── Script builders ────────────────────────────────────────────────────────
 
-function buildScript(data: QuestionData): string {
+// Spoken versions of the answer letters so TTS pronounces them cleanly.
+const LETTER_SPOKEN: Record<QuestionData["correct"], string> = {
+  A: "A",
+  B: "Bee",
+  C: "See",
+  D: "Dee",
+}
+
+// The voiceover is generated in two segments so render-video.ts can measure
+// each one and derive the scene boundaries: segment 1 plays from frame 0,
+// then a 6s silent countdown, then segment 2 plays over the reveal.
+function buildQuestionScript(data: QuestionData): string {
   return [
-    "Stop scrolling for a second and lock in.",
-    "Here is your daily Security plus question.",
-    "",
-    data.question,
-    "",
-    `A. ${data.answers.A}`,
-    `B. ${data.answers.B}`,
-    `C. ${data.answers.C}`,
-    `D. ${data.answers.D}`,
-    "",
-    "Drop your answer in the comments.",
-    "Check back tomorrow for the answer and explanation.",
-    "More practice questions at studypassplus dot com.",
+    'Can you pass Security Plus? Prove it. <break time="0.6s" />',
+    `${data.question} <break time="0.4s" />`,
+    `${data.answers.A}. ${data.answers.B}. ${data.answers.C}. Or ${data.answers.D}? <break time="0.4s" />`,
+    "Six seconds. Lock it in.",
+  ].join("\n")
+}
+
+function buildRevealScript(data: QuestionData): string {
+  return [
+    `It's ${LETTER_SPOKEN[data.correct]}. ${data.answers[data.correct]}. <break time="0.4s" />`,
+    `${data.explanation} <break time="0.5s" />`,
+    "New question every day, at study pass plus dot com.",
   ].join("\n")
 }
 
@@ -96,57 +106,62 @@ async function generateAudio(): Promise<void> {
   )
 
   const style = IS_MEME ? "meme" : "standard"
-  const script = IS_MEME
-    ? buildMemeScript(questionData)
-    : buildScript(questionData)
-  const outputFile = IS_MEME
-    ? "meme-question-audio.mp3"
-    : "daily-question-audio.mp3"
-
   console.log(`[elevenlabs] Style     : ${style}`)
   console.log(`[elevenlabs] Voice ID  : ${voiceId}`)
-  console.log(`[elevenlabs] Characters: ${script.length}`)
-
-  const response = await fetch(
-    `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
-    {
-      method: "POST",
-      headers: {
-        "xi-api-key": apiKey,
-        "Content-Type": "application/json",
-        Accept: "audio/mpeg",
-      },
-      body: JSON.stringify({
-        text: script,
-        model_id: "eleven_monolingual_v1",
-        voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.75,
-        },
-      }),
-    }
-  )
-
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(
-      `ElevenLabs API error ${response.status}: ${errorText}`
-    )
-  }
-
-  const audioBuffer = await response.arrayBuffer()
 
   const outDir = path.join(process.cwd(), "out")
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true })
   }
 
-  const outputPath = path.join(outDir, outputFile)
-  fs.writeFileSync(outputPath, Buffer.from(audioBuffer))
+  async function tts(script: string, outputFile: string): Promise<void> {
+    console.log(`[elevenlabs] Generating ${outputFile} (${script.length} chars)`)
+    const response = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
+      {
+        method: "POST",
+        headers: {
+          "xi-api-key": apiKey!,
+          "Content-Type": "application/json",
+          Accept: "audio/mpeg",
+        },
+        body: JSON.stringify({
+          text: script,
+          // multilingual v2 respects <break> tags; monolingual v1 does not
+          model_id: "eleven_multilingual_v2",
+          voice_settings: {
+            stability: 0.45,
+            similarity_boost: 0.75,
+            style: 0.3,
+            // Adam reads slowly; slight speed-up keeps the video ~45s
+            speed: 1.1,
+          },
+        }),
+      }
+    )
 
-  const kb = (audioBuffer.byteLength / 1024).toFixed(1)
-  console.log(`[elevenlabs] Saved to  : ${outputPath}`)
-  console.log(`[elevenlabs] File size : ${kb} KB`)
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`ElevenLabs API error ${response.status}: ${errorText}`)
+    }
+
+    const audioBuffer = await response.arrayBuffer()
+    const outputPath = path.join(outDir, outputFile)
+    fs.writeFileSync(outputPath, Buffer.from(audioBuffer))
+    const kb = (audioBuffer.byteLength / 1024).toFixed(1)
+    console.log(`[elevenlabs] Saved ${outputPath} (${kb} KB)`)
+  }
+
+  if (IS_MEME) {
+    await tts(buildMemeScript(questionData), "meme-question-audio.mp3")
+  } else {
+    await tts(buildQuestionScript(questionData), "audio-question.mp3")
+    await tts(buildRevealScript(questionData), "audio-reveal.mp3")
+    // Remove the legacy single-file voiceover so render-video.ts doesn't
+    // pick up a stale one alongside the two-segment audio.
+    const legacy = path.join(outDir, "daily-question-audio.mp3")
+    if (fs.existsSync(legacy)) fs.unlinkSync(legacy)
+  }
 }
 
 generateAudio().catch((err: unknown) => {

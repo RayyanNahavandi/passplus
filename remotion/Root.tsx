@@ -15,6 +15,11 @@ export function RemotionRoot() {
         height={1920}
         fps={30}
         durationInFrames={900}
+        // Two-segment audio renders pass a computed duration via props
+        calculateMetadata={({ props }) => ({
+          durationInFrames:
+            (props as { durationInFrames?: number }).durationInFrames ?? 900,
+        })}
         defaultProps={{ ...exampleQuestion, audioSrc: undefined }}
       />
       <Composition

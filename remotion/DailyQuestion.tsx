@@ -5,9 +5,15 @@ import {
   interpolate,
   Easing,
   Audio,
+  Sequence,
   spring,
   random,
+  staticFile,
 } from "remotion"
+
+// Audio props are filenames inside public/; remote URLs pass through as-is.
+const resolveAudio = (src: string): string =>
+  src.startsWith("http") ? src : staticFile(src)
 
 export interface DailyQuestionProps {
   question: string
@@ -15,7 +21,15 @@ export interface DailyQuestionProps {
   correct: "A" | "B" | "C" | "D"
   explanation: string
   domain: string
+  /** Legacy single voiceover, plays from frame 0 with the fixed 30s timing */
   audioSrc?: string
+  /** Two-segment voiceover: question part plays from 0, reveal part from s3 */
+  audioQuestionSrc?: string
+  audioRevealSrc?: string
+  /** Scene boundary overrides (frames), derived from audio by render-video.ts */
+  s3?: number
+  s4?: number
+  durationInFrames?: number
 }
 
 // ── constants ──────────────────────────────────────────────────────────────
@@ -31,11 +45,12 @@ const RED_BORDER = "#7f1d1d"
 const FONT_FAMILY =
   "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
 
-// Scene boundaries (frames @ 30fps) - tuned to the voiceover cadence,
-// do not shift without re-checking audio sync.
+// Default scene boundaries (frames @ 30fps), used when no timing props are
+// passed. With two-segment audio, render-video.ts computes s3/s4 from the
+// measured voiceover durations instead.
 const S2 = 90
-const S3 = 600
-const S4 = 840
+const DEFAULT_S3 = 600
+const DEFAULT_S4 = 840
 
 const easeOut = Easing.out(Easing.cubic)
 const easeInOut = Easing.inOut(Easing.cubic)
@@ -168,8 +183,8 @@ function PPLogo({ size = 96, glow = 0 }: { size?: number; glow?: number }) {
 }
 
 // ── countdown ring (last seconds of the question scene) ────────────────────
-function CountdownRing({ frame }: { frame: number }) {
-  const START = S3 - 190 // appears ~6.3s before the reveal
+function CountdownRing({ frame, s3 }: { frame: number; s3: number }) {
+  const START = s3 - 190 // appears ~6.3s before the reveal
   const DURATION = 180 // 6 seconds
   if (frame < START) return null
 
@@ -377,10 +392,16 @@ export function DailyQuestion({
   explanation,
   domain,
   audioSrc,
+  audioQuestionSrc,
+  audioRevealSrc,
+  s3,
+  s4,
 }: DailyQuestionProps) {
   const frame = useCurrentFrame()
   const { fps, durationInFrames } = useVideoConfig()
   const letters = ["A", "B", "C", "D"] as const
+  const S3 = s3 ?? DEFAULT_S3
+  const S4 = s4 ?? DEFAULT_S4
 
   // ── Scene 1: intro (0 - S2) ──────────────────────────────────────────────
   const logoSpring = spring({ frame, fps, config: { damping: 10, stiffness: 120, mass: 0.8 } })
@@ -435,7 +456,15 @@ export function DailyQuestion({
         position: "relative",
       }}
     >
-      {audioSrc && <Audio src={audioSrc} startFrom={0} />}
+      {audioSrc && <Audio src={resolveAudio(audioSrc)} startFrom={0} />}
+      {audioQuestionSrc && (
+        <Audio src={resolveAudio(audioQuestionSrc)} startFrom={0} />
+      )}
+      {audioRevealSrc && (
+        <Sequence from={S3}>
+          <Audio src={resolveAudio(audioRevealSrc)} startFrom={0} />
+        </Sequence>
+      )}
 
       <AmbientBackground frame={frame} />
       <ProgressBar frame={frame} duration={durationInFrames} />
@@ -584,7 +613,7 @@ export function DailyQuestion({
             })}
           </div>
 
-          <CountdownRing frame={frame} />
+          <CountdownRing frame={frame} s3={S3} />
         </div>
       )}
 
