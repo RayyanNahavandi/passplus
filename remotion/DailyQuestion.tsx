@@ -1,5 +1,13 @@
 import * as React from "react"
-import { useCurrentFrame, useVideoConfig, interpolate, Easing, Audio } from "remotion"
+import {
+  useCurrentFrame,
+  useVideoConfig,
+  interpolate,
+  Easing,
+  Audio,
+  spring,
+  random,
+} from "remotion"
 
 export interface DailyQuestionProps {
   question: string
@@ -12,7 +20,7 @@ export interface DailyQuestionProps {
 
 // ── constants ──────────────────────────────────────────────────────────────
 const GREEN = "#22c55e"
-const BG = "#000000"
+const BG = "#050505"
 const CARD_BG = "#111111"
 const CARD_BORDER = "#2a2a2a"
 const MUTED = "#9ca3af"
@@ -23,19 +31,113 @@ const RED_BORDER = "#7f1d1d"
 const FONT_FAMILY =
   "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
 
-// ease-out cubic
-const easeOut = Easing.out(Easing.cubic)
+// Scene boundaries (frames @ 30fps) - tuned to the voiceover cadence,
+// do not shift without re-checking audio sync.
+const S2 = 90
+const S3 = 600
+const S4 = 840
 
-function eased(frame: number, start: number, end: number, outputRange: [number, number]) {
+const easeOut = Easing.out(Easing.cubic)
+const easeInOut = Easing.inOut(Easing.cubic)
+
+function eased(
+  frame: number,
+  start: number,
+  end: number,
+  outputRange: [number, number],
+  easing = easeOut
+) {
   return interpolate(frame, [start, end], outputRange, {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
-    easing: easeOut,
+    easing,
   })
 }
 
+// ── ambient animated background ────────────────────────────────────────────
+function AmbientBackground({ frame }: { frame: number }) {
+  // Two glow orbs drifting slowly in opposite directions
+  const drift1 = Math.sin(frame / 90) * 90
+  const drift2 = Math.cos(frame / 110) * 110
+  return (
+    <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+      <div
+        style={{
+          position: "absolute",
+          width: 900,
+          height: 900,
+          borderRadius: "50%",
+          left: -300 + drift1,
+          top: -250 + drift2 * 0.5,
+          background:
+            "radial-gradient(circle, rgba(34,197,94,0.10) 0%, rgba(34,197,94,0) 65%)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          width: 1000,
+          height: 1000,
+          borderRadius: "50%",
+          right: -400 - drift1 * 0.6,
+          bottom: -350 + drift2,
+          background:
+            "radial-gradient(circle, rgba(34,197,94,0.07) 0%, rgba(34,197,94,0) 65%)",
+        }}
+      />
+      {/* faint dot grid */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.045) 1.5px, transparent 1.5px)",
+          backgroundSize: "56px 56px",
+          backgroundPosition: `0px ${(frame * 0.25) % 56}px`,
+        }}
+      />
+      {/* vignette */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%)",
+        }}
+      />
+    </div>
+  )
+}
+
+// ── top progress bar ───────────────────────────────────────────────────────
+function ProgressBar({ frame, duration }: { frame: number; duration: number }) {
+  const pct = Math.min(1, frame / duration)
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 10,
+        background: "rgba(255,255,255,0.06)",
+        zIndex: 10,
+      }}
+    >
+      <div
+        style={{
+          width: `${pct * 100}%`,
+          height: "100%",
+          background: `linear-gradient(90deg, #16a34a, ${GREEN})`,
+          boxShadow: `0 0 18px rgba(34,197,94,0.8)`,
+        }}
+      />
+    </div>
+  )
+}
+
 // ── PassPlus "PP" logo mark ────────────────────────────────────────────────
-function PPLogo({ size = 96 }: { size?: number }) {
+function PPLogo({ size = 96, glow = 0 }: { size?: number; glow?: number }) {
   return (
     <div
       style={{
@@ -46,6 +148,7 @@ function PPLogo({ size = 96 }: { size?: number }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        boxShadow: `0 0 ${40 * glow}px rgba(34,197,94,${0.55 * glow})`,
       }}
     >
       <span
@@ -53,7 +156,7 @@ function PPLogo({ size = 96 }: { size?: number }) {
           fontFamily: FONT_FAMILY,
           fontWeight: 800,
           fontSize: size * 0.44,
-          color: BG,
+          color: "#000",
           letterSpacing: "-0.03em",
           lineHeight: 1,
         }}
@@ -64,17 +167,140 @@ function PPLogo({ size = 96 }: { size?: number }) {
   )
 }
 
+// ── countdown ring (last seconds of the question scene) ────────────────────
+function CountdownRing({ frame }: { frame: number }) {
+  const START = S3 - 190 // appears ~6.3s before the reveal
+  const DURATION = 180 // 6 seconds
+  if (frame < START) return null
+
+  const appear = eased(frame, START, START + 15, [0, 1])
+  const t = Math.min(1, (frame - START) / DURATION)
+  const secondsLeft = Math.max(1, Math.ceil(6 - t * 6))
+  // pulse on each second boundary
+  const withinSecond = ((frame - START) % 30) / 30
+  const pulse = 1 + 0.1 * Math.max(0, 1 - withinSecond * 3)
+
+  const R = 52
+  const CIRC = 2 * Math.PI * R
+  const color = secondsLeft <= 2 ? "#f59e0b" : GREEN
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        bottom: 110,
+        left: 0,
+        right: 0,
+        display: "flex",
+        justifyContent: "center",
+        opacity: appear,
+      }}
+    >
+      <div
+        style={{
+          position: "relative",
+          width: 130,
+          height: 130,
+          transform: `scale(${pulse})`,
+        }}
+      >
+        <svg width={130} height={130} style={{ transform: "rotate(-90deg)" }}>
+          <circle
+            cx={65}
+            cy={65}
+            r={R}
+            fill="rgba(0,0,0,0.55)"
+            stroke="rgba(255,255,255,0.10)"
+            strokeWidth={9}
+          />
+          <circle
+            cx={65}
+            cy={65}
+            r={R}
+            fill="none"
+            stroke={color}
+            strokeWidth={9}
+            strokeLinecap="round"
+            strokeDasharray={CIRC}
+            strokeDashoffset={CIRC * t}
+            style={{ filter: `drop-shadow(0 0 10px ${color})` }}
+          />
+        </svg>
+        <span
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: FONT_FAMILY,
+            fontWeight: 800,
+            fontSize: 52,
+            color,
+          }}
+        >
+          {secondsLeft}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// ── celebration particles on the reveal ────────────────────────────────────
+function ParticleBurst({ frame, start }: { frame: number; start: number }) {
+  if (frame < start) return null
+  const t = frame - start
+  const N = 26
+  return (
+    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      {Array.from({ length: N }).map((_, i) => {
+        const seed = `p-${i}`
+        const angle = random(seed) * Math.PI * 2
+        const speed = 7 + random(seed + "s") * 13
+        const size = 10 + random(seed + "z") * 16
+        const spin = (random(seed + "r") - 0.5) * 24
+        const life = 55 + random(seed + "l") * 30
+        const p = Math.min(1, t / life)
+        if (p >= 1) return null
+        const dist = speed * t * (1 - p * 0.45)
+        const x = 540 + Math.cos(angle) * dist
+        const y = 430 + Math.sin(angle) * dist + 0.14 * t * t * 0.5
+        const opacity = 1 - p
+        const isSquare = random(seed + "q") > 0.5
+        const color =
+          random(seed + "c") > 0.35 ? GREEN : random(seed + "c2") > 0.5 ? "#bbf7d0" : "#16a34a"
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: x,
+              top: y,
+              width: size,
+              height: isSquare ? size : size * 0.45,
+              background: color,
+              borderRadius: isSquare ? 3 : size,
+              opacity,
+              transform: `rotate(${t * spin}deg)`,
+            }}
+          />
+        )
+      })}
+    </div>
+  )
+}
+
 // ── Answer card ────────────────────────────────────────────────────────────
 function AnswerCard({
   letter,
   text,
-  state, // "default" | "correct" | "wrong"
-  opacity,
+  state,
+  glow = 0,
 }: {
   letter: string
   text: string
   state: "default" | "correct" | "wrong"
-  opacity: number
+  glow?: number
 }) {
   const bgColor =
     state === "correct" ? "#052e16" : state === "wrong" ? RED_BG : CARD_BG
@@ -83,14 +309,13 @@ function AnswerCard({
   const badgeBg =
     state === "correct" ? GREEN : state === "wrong" ? "#7f1d1d" : "#1e1e1e"
   const badgeColor =
-    state === "correct" ? BG : state === "wrong" ? "#fca5a5" : GREEN
+    state === "correct" ? "#000" : state === "wrong" ? "#fca5a5" : GREEN
   const textColor =
     state === "correct" ? "#bbf7d0" : state === "wrong" ? "#fca5a5" : WHITE
 
   return (
     <div
       style={{
-        opacity,
         display: "flex",
         alignItems: "center",
         gap: 28,
@@ -100,10 +325,12 @@ function AnswerCard({
         padding: "30px 36px",
         width: "100%",
         boxSizing: "border-box",
-        transition: "all 0.3s",
+        boxShadow:
+          state === "correct" && glow > 0
+            ? `0 0 ${44 * glow}px rgba(34,197,94,${0.45 * glow})`
+            : "none",
       }}
     >
-      {/* Letter badge */}
       <div
         style={{
           width: 56,
@@ -127,7 +354,6 @@ function AnswerCard({
           {letter}
         </span>
       </div>
-      {/* Answer text */}
       <span
         style={{
           fontFamily: FONT_FAMILY,
@@ -153,62 +379,50 @@ export function DailyQuestion({
   audioSrc,
 }: DailyQuestionProps) {
   const frame = useCurrentFrame()
-  const { fps } = useVideoConfig()
-
-  // ── Scene 1: intro (frames 0-90) ────────────────────────────────────────
-  const logoScale = eased(frame, 0, 30, [0.6, 1])
-  const logoOpacity = eased(frame, 0, 25, [0, 1])
-  const taglineOpacity = eased(frame, 30, 55, [0, 1])
-  const taglineY = eased(frame, 30, 55, [20, 0])
-
-  // scene 1 exits at frame 75
-  const scene1Opacity = frame < 75 ? 1 : eased(frame, 75, 90, [1, 0])
-
-  // ── Scene 2: question + answers (frames 90-600) ─────────────────────────
-  const s2Start = 90
-  const scene2Opacity = eased(frame, s2Start, s2Start + 15, [0, 1])
-
-  const domainOpacity = eased(frame, s2Start, s2Start + 20, [0, 1])
-
-  const questionOpacity = eased(frame, s2Start + 15, s2Start + 45, [0, 1])
-  const questionY = eased(frame, s2Start + 15, s2Start + 45, [40, 0])
-
-  // Answers stagger in, 6 frames (~200ms at 30fps) apart
-  const answerDelay = 6
-  const answerStart = s2Start + 55
-  const answerOpacities = (["A", "B", "C", "D"] as const).map((_, i) =>
-    eased(frame, answerStart + i * answerDelay, answerStart + i * answerDelay + 18, [0, 1])
-  )
-
-  // scene 2 fades out between frames 580-600
-  const scene2ExitOpacity =
-    frame < 580 ? 1 : eased(frame, 580, 600, [1, 0])
-
-  // ── Scene 3: reveal (frames 600-840) ────────────────────────────────────
-  const s3Start = 600
-  const scene3Opacity = eased(frame, s3Start, s3Start + 15, [0, 1])
-
-  const answerLabelOpacity = eased(frame, s3Start + 10, s3Start + 30, [0, 1])
-  const answerLabelScale = eased(frame, s3Start + 10, s3Start + 30, [0.85, 1])
-
-  const explanationOpacity = eased(frame, s3Start + 40, s3Start + 70, [0, 1])
-  const explanationY = eased(frame, s3Start + 40, s3Start + 70, [24, 0])
-
-  // correct card pulses green: quick brightness flash over first 20 frames of scene 3
-  const correctFlash = eased(frame, s3Start, s3Start + 20, [0, 1])
-  // wrong cards settle to red
-  const wrongSettle = eased(frame, s3Start, s3Start + 25, [0, 1])
-
-  const scene3ExitOpacity =
-    frame < 825 ? 1 : eased(frame, 825, 840, [1, 0])
-
-  // ── Scene 4: outro (frames 840-900) ─────────────────────────────────────
-  const s4Start = 840
-  const scene4Opacity = eased(frame, s4Start, s4Start + 20, [0, 1])
-  const urlY = eased(frame, s4Start, s4Start + 25, [30, 0])
-
-  // ── helpers ──────────────────────────────────────────────────────────────
+  const { fps, durationInFrames } = useVideoConfig()
   const letters = ["A", "B", "C", "D"] as const
+
+  // ── Scene 1: intro (0 - S2) ──────────────────────────────────────────────
+  const logoSpring = spring({ frame, fps, config: { damping: 10, stiffness: 120, mass: 0.8 } })
+  const logoGlow = eased(frame, 8, 35, [0, 1])
+  const ringScale = eased(frame, 6, 60, [0.4, 2.4])
+  const ringOpacity = eased(frame, 6, 60, [0.7, 0])
+  const titleSpring = spring({ frame: frame - 22, fps, config: { damping: 13, stiffness: 110 } })
+  const tagOpacity = eased(frame, 40, 62, [0, 1])
+  const tagSpacing = eased(frame, 40, 75, [0.25, 0.04])
+  // zoom-through exit
+  const s1ExitScale = eased(frame, 72, S2, [1, 1.6], easeInOut)
+  const s1ExitOpacity = eased(frame, 72, S2, [1, 0])
+
+  // ── Scene 2: question + answers (S2 - S3) ────────────────────────────────
+  const pillSpring = spring({ frame: frame - S2, fps, config: { damping: 13, stiffness: 130 } })
+  const qBlur = eased(frame, S2 + 12, S2 + 45, [14, 0])
+  const qOpacity = eased(frame, S2 + 12, S2 + 45, [0, 1])
+  const qY = eased(frame, S2 + 12, S2 + 45, [50, 0])
+  const answerStart = S2 + 52
+  const answerDelay = 7
+  // slide-up + fade exit
+  const s2ExitY = eased(frame, S3 - 18, S3, [0, -70], easeInOut)
+  const s2ExitOpacity = eased(frame, S3 - 18, S3, [1, 0])
+
+  // ── Scene 3: reveal (S3 - S4) ────────────────────────────────────────────
+  const s3Enter = spring({ frame: frame - S3, fps, config: { damping: 14, stiffness: 100 } })
+  const labelSpring = spring({ frame: frame - (S3 + 8), fps, config: { damping: 9, stiffness: 150, mass: 0.7 } })
+  const correctGlow = eased(frame, S3 + 6, S3 + 30, [0, 1])
+  const correctScale = 1 + 0.03 * spring({ frame: frame - (S3 + 6), fps, config: { damping: 8, stiffness: 140 } })
+  const wrongSettle = eased(frame, S3 + 4, S3 + 28, [1, 0.35])
+  const wrongShrink = eased(frame, S3 + 4, S3 + 28, [1, 0.97])
+  const explOpacity = eased(frame, S3 + 42, S3 + 72, [0, 1])
+  const explY = eased(frame, S3 + 42, S3 + 72, [30, 0])
+  const s3ExitScale = eased(frame, S4 - 16, S4, [1, 0.94], easeInOut)
+  const s3ExitOpacity = eased(frame, S4 - 16, S4, [1, 0])
+
+  // ── Scene 4: outro (S4 - end) ────────────────────────────────────────────
+  const outroLogo = spring({ frame: frame - S4, fps, config: { damping: 10, stiffness: 120, mass: 0.8 } })
+  const urlSpring = spring({ frame: frame - (S4 + 10), fps, config: { damping: 13, stiffness: 110 } })
+  const ctaOpacity = eased(frame, S4 + 26, S4 + 44, [0, 1])
+  // shimmer sweep across the URL
+  const shimmerX = eased(frame, S4 + 18, S4 + 55, [-120, 120], easeInOut)
 
   return (
     <div
@@ -221,12 +435,13 @@ export function DailyQuestion({
         position: "relative",
       }}
     >
-
-      {/* Voiceover audio - plays from frame 0 if audioSrc is provided */}
       {audioSrc && <Audio src={audioSrc} startFrom={0} />}
 
+      <AmbientBackground frame={frame} />
+      <ProgressBar frame={frame} duration={durationInFrames} />
+
       {/* ── SCENE 1: Intro ─────────────────────────────────────────────── */}
-      {frame < 90 && (
+      {frame < S2 && (
         <div
           style={{
             position: "absolute",
@@ -235,47 +450,55 @@ export function DailyQuestion({
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 40,
-            opacity: scene1Opacity,
+            gap: 44,
+            opacity: s1ExitOpacity,
+            transform: `scale(${s1ExitScale})`,
           }}
         >
-          {/* Logo */}
-          <div
-            style={{
-              transform: `scale(${logoScale})`,
-              opacity: logoOpacity,
-            }}
-          >
-            <PPLogo size={140} />
+          <div style={{ position: "relative" }}>
+            {/* expanding pulse ring behind the logo */}
+            <div
+              style={{
+                position: "absolute",
+                inset: -20,
+                borderRadius: 48,
+                border: `3px solid ${GREEN}`,
+                opacity: ringOpacity,
+                transform: `scale(${ringScale})`,
+              }}
+            />
+            <div style={{ transform: `scale(${logoSpring})` }}>
+              <PPLogo size={150} glow={logoGlow} />
+            </div>
           </div>
 
-          {/* Tagline */}
           <div
             style={{
-              opacity: taglineOpacity,
-              transform: `translateY(${taglineY}px)`,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: 8,
+              gap: 10,
+              transform: `translateY(${(1 - titleSpring) * 46}px)`,
+              opacity: titleSpring,
             }}
           >
             <span
               style={{
-                fontWeight: 700,
-                fontSize: 52,
-                color: GREEN,
+                fontWeight: 800,
+                fontSize: 58,
+                color: WHITE,
                 letterSpacing: "-0.02em",
               }}
             >
-              PassPlus
+              Pass<span style={{ color: GREEN }}>Plus</span>
             </span>
             <span
               style={{
                 fontWeight: 500,
                 fontSize: 34,
                 color: MUTED,
-                letterSpacing: "0.01em",
+                opacity: tagOpacity,
+                letterSpacing: `${tagSpacing}em`,
               }}
             >
               Daily Security+ Question
@@ -285,7 +508,7 @@ export function DailyQuestion({
       )}
 
       {/* ── SCENE 2: Question + Answers ────────────────────────────────── */}
-      {frame >= s2Start && frame < 600 && (
+      {frame >= S2 && frame < S3 && (
         <div
           style={{
             position: "absolute",
@@ -293,14 +516,13 @@ export function DailyQuestion({
             display: "flex",
             flexDirection: "column",
             padding: "100px 72px",
-            gap: 0,
-            opacity: Math.min(scene2Opacity, scene2ExitOpacity),
+            opacity: s2ExitOpacity,
+            transform: `translateY(${s2ExitY}px)`,
           }}
         >
-          {/* Domain pill */}
+          {/* Domain pill springs in from the left */}
           <div
             style={{
-              opacity: domainOpacity,
               display: "inline-flex",
               alignSelf: "flex-start",
               background: "rgba(34,197,94,0.12)",
@@ -308,25 +530,21 @@ export function DailyQuestion({
               borderRadius: 100,
               padding: "10px 28px",
               marginBottom: 48,
+              opacity: pillSpring,
+              transform: `translateX(${(1 - pillSpring) * -80}px)`,
             }}
           >
-            <span
-              style={{
-                fontWeight: 600,
-                fontSize: 26,
-                color: GREEN,
-                letterSpacing: "0.01em",
-              }}
-            >
+            <span style={{ fontWeight: 600, fontSize: 26, color: GREEN }}>
               {domain}
             </span>
           </div>
 
-          {/* Question */}
+          {/* Question: blur-to-sharp entrance */}
           <div
             style={{
-              opacity: questionOpacity,
-              transform: `translateY(${questionY}px)`,
+              opacity: qOpacity,
+              transform: `translateY(${qY}px)`,
+              filter: `blur(${qBlur}px)`,
               marginBottom: 64,
             }}
           >
@@ -343,140 +561,139 @@ export function DailyQuestion({
             </p>
           </div>
 
-          {/* Answer cards */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 24,
-            }}
-          >
-            {letters.map((letter, i) => (
-              <div
-                key={letter}
-                style={{
-                  opacity: answerOpacities[i],
-                  transform: `translateY(${eased(
-                    frame,
-                    answerStart + i * answerDelay,
-                    answerStart + i * answerDelay + 18,
-                    [20, 0]
-                  )}px)`,
-                }}
-              >
-                <AnswerCard
-                  letter={letter}
-                  text={answers[letter]}
-                  state="default"
-                  opacity={1}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ── SCENE 3: Reveal ────────────────────────────────────────────── */}
-      {frame >= s3Start && frame < 840 && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            flexDirection: "column",
-            padding: "100px 72px",
-            gap: 0,
-            opacity: Math.min(scene3Opacity, scene3ExitOpacity),
-          }}
-        >
-          {/* Domain pill */}
-          <div
-            style={{
-              display: "inline-flex",
-              alignSelf: "flex-start",
-              background: "rgba(34,197,94,0.12)",
-              border: "1.5px solid rgba(34,197,94,0.3)",
-              borderRadius: 100,
-              padding: "10px 28px",
-              marginBottom: 48,
-            }}
-          >
-            <span style={{ fontWeight: 600, fontSize: 26, color: GREEN }}>
-              {domain}
-            </span>
-          </div>
-
-          {/* "Answer: X" label */}
-          <div
-            style={{
-              opacity: answerLabelOpacity,
-              transform: `scale(${answerLabelScale})`,
-              transformOrigin: "left center",
-              marginBottom: 40,
-            }}
-          >
-            <span
-              style={{
-                fontWeight: 800,
-                fontSize: 52,
-                color: GREEN,
-                letterSpacing: "-0.01em",
-              }}
-            >
-              Answer: {correct}
-            </span>
-          </div>
-
-          {/* Answer cards with correct/wrong states */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 48 }}>
-            {letters.map((letter) => {
-              const isCorrect = letter === correct
-              const state: "correct" | "wrong" | "default" = isCorrect
-                ? "correct"
-                : "wrong"
-              const opacity = isCorrect
-                ? interpolate(correctFlash, [0, 1], [0.7, 1], { extrapolateRight: "clamp" })
-                : interpolate(wrongSettle, [0, 1], [1, 0.4], { extrapolateRight: "clamp" })
+          {/* Answers spring in, alternating sides */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            {letters.map((letter, i) => {
+              const s = spring({
+                frame: frame - (answerStart + i * answerDelay),
+                fps,
+                config: { damping: 13, stiffness: 120, mass: 0.9 },
+              })
+              const fromX = (i % 2 === 0 ? -1 : 1) * 110
               return (
-                <AnswerCard
+                <div
                   key={letter}
-                  letter={letter}
-                  text={answers[letter]}
-                  state={state}
-                  opacity={opacity}
-                />
+                  style={{
+                    opacity: s,
+                    transform: `translateX(${(1 - s) * fromX}px) scale(${0.94 + s * 0.06})`,
+                  }}
+                >
+                  <AnswerCard letter={letter} text={answers[letter]} state="default" />
+                </div>
               )
             })}
           </div>
 
-          {/* Explanation */}
-          <div
-            style={{
-              opacity: explanationOpacity,
-              transform: `translateY(${explanationY}px)`,
-              background: "#0d0d0d",
-              border: "1.5px solid #1f1f1f",
-              borderRadius: 20,
-              padding: "32px 40px",
-            }}
-          >
-            <p
-              style={{
-                fontWeight: 400,
-                fontSize: 30,
-                color: MUTED,
-                lineHeight: 1.6,
-                margin: 0,
-              }}
-            >
-              {explanation}
-            </p>
-          </div>
+          <CountdownRing frame={frame} />
         </div>
       )}
 
+      {/* ── SCENE 3: Reveal ────────────────────────────────────────────── */}
+      {frame >= S3 && frame < S4 && (
+        <>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              flexDirection: "column",
+              padding: "100px 72px",
+              opacity: Math.min(s3Enter * 2, s3ExitOpacity),
+              transform: `scale(${(0.96 + s3Enter * 0.04) * s3ExitScale})`,
+            }}
+          >
+            <div
+              style={{
+                display: "inline-flex",
+                alignSelf: "flex-start",
+                background: "rgba(34,197,94,0.12)",
+                border: "1.5px solid rgba(34,197,94,0.3)",
+                borderRadius: 100,
+                padding: "10px 28px",
+                marginBottom: 48,
+              }}
+            >
+              <span style={{ fontWeight: 600, fontSize: 26, color: GREEN }}>
+                {domain}
+              </span>
+            </div>
+
+            {/* "Answer: X" springs in with overshoot */}
+            <div
+              style={{
+                opacity: Math.min(1, labelSpring * 1.4),
+                transform: `scale(${labelSpring})`,
+                transformOrigin: "left center",
+                marginBottom: 40,
+              }}
+            >
+              <span
+                style={{
+                  fontWeight: 800,
+                  fontSize: 54,
+                  color: GREEN,
+                  letterSpacing: "-0.01em",
+                  textShadow: `0 0 30px rgba(34,197,94,${0.5 * correctGlow})`,
+                }}
+              >
+                Answer: {correct}
+              </span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 48 }}>
+              {letters.map((letter) => {
+                const isCorrect = letter === correct
+                return (
+                  <div
+                    key={letter}
+                    style={{
+                      opacity: isCorrect ? 1 : wrongSettle,
+                      transform: isCorrect
+                        ? `scale(${correctScale})`
+                        : `scale(${wrongShrink})`,
+                    }}
+                  >
+                    <AnswerCard
+                      letter={letter}
+                      text={answers[letter]}
+                      state={isCorrect ? "correct" : "wrong"}
+                      glow={isCorrect ? correctGlow : 0}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+
+            <div
+              style={{
+                opacity: explOpacity,
+                transform: `translateY(${explY}px)`,
+                background: "rgba(13,13,13,0.9)",
+                border: "1.5px solid #1f1f1f",
+                borderRadius: 20,
+                padding: "32px 40px",
+              }}
+            >
+              <p
+                style={{
+                  fontWeight: 400,
+                  fontSize: 30,
+                  color: MUTED,
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                {explanation}
+              </p>
+            </div>
+          </div>
+
+          <ParticleBurst frame={frame} start={S3 + 8} />
+        </>
+      )}
+
       {/* ── SCENE 4: Outro ─────────────────────────────────────────────── */}
-      {frame >= s4Start && (
+      {frame >= S4 && (
         <div
           style={{
             position: "absolute",
@@ -485,40 +702,47 @@ export function DailyQuestion({
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 28,
-            opacity: scene4Opacity,
+            gap: 32,
           }}
         >
-          {/* Small logo */}
-          <PPLogo size={80} />
+          <div style={{ transform: `scale(${outroLogo})` }}>
+            <PPLogo size={90} glow={outroLogo} />
+          </div>
 
-          {/* URL */}
           <div
             style={{
-              transform: `translateY(${urlY}px)`,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               gap: 16,
+              opacity: urlSpring,
+              transform: `translateY(${(1 - urlSpring) * 36}px)`,
             }}
           >
             <span
               style={{
+                position: "relative",
                 fontWeight: 800,
-                fontSize: 56,
-                color: GREEN,
+                fontSize: 58,
                 letterSpacing: "-0.02em",
+                color: GREEN,
+                overflow: "hidden",
+                padding: "0 8px",
               }}
             >
               studypassplus.com
+              {/* shimmer sweep */}
+              <span
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%)",
+                  transform: `translateX(${shimmerX}%)`,
+                }}
+              />
             </span>
-            <span
-              style={{
-                fontWeight: 400,
-                fontSize: 32,
-                color: MUTED,
-              }}
-            >
+            <span style={{ fontWeight: 400, fontSize: 32, color: MUTED, opacity: ctaOpacity }}>
               Free to try. No signup.
             </span>
           </div>
