@@ -39,3 +39,20 @@ create index if not exists presence_last_seen_idx on public.presence (last_seen)
 alter table public.presence enable row level security;
 -- No anon/authenticated policies: all access goes through
 -- /api/presence which uses the service-role client.
+
+-- ---------------------------------------------------------------
+-- user_progress
+-- Cross-device progress sync for signed-in paid users. One row per
+-- paid email holding a jsonb snapshot of study progress (streak,
+-- readiness history, domain mastery, exam date, pace).
+-- ---------------------------------------------------------------
+create table if not exists public.user_progress (
+  email      text        primary key,
+  data       jsonb       not null,
+  updated_at timestamptz default now() not null
+);
+
+alter table public.user_progress enable row level security;
+-- No anon/authenticated policies: all access goes through
+-- /api/progress which verifies the JWT + paid status and uses
+-- the service-role client.

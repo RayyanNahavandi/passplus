@@ -11,6 +11,22 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "best-security-plus-practice-tests",
+    title: "The Best Security+ SY0-701 Practice Tests in 2026, Compared by Price",
+    description:
+      "CertMaster, Jason Dion, Pocket Prep, Professor Messer, ExamCompass, and PassPlus compared honestly by price, PBQ coverage, and question quality.",
+    date: "July 10, 2026",
+    readTime: "7 min read",
+  },
+  {
+    slug: "pocket-prep-vs-passplus",
+    title: "Pocket Prep vs PassPlus for CompTIA - An Honest Comparison",
+    description:
+      "Pocket Prep charges a monthly subscription. PassPlus is a $9.99 one-time unlock. An honest breakdown of where each one is actually better.",
+    date: "July 10, 2026",
+    readTime: "6 min read",
+  },
+  {
     slug: "free-a-plus-core-1-practice-questions",
     title: "Free A+ Core 1 220-1101 Practice Questions. No Signup Required.",
     description:

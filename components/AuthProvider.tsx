@@ -5,11 +5,13 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react"
 import type { User } from "@supabase/supabase-js"
 import { supabase } from "@/lib/supabase"
 import { unlock } from "@/lib/quiz-store"
+import { PROGRESS_EVENT, pushProgress, syncProgress } from "@/lib/progress-sync"
 
 interface AuthContextType {
   user: User | null
@@ -39,6 +41,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
   const [isPaid, setIsPaid] = useState(false)
 
+  // Latest access token for the paid user, used by the progress-push listener.
+  // Null until paid status is confirmed, so free users never hit /api/progress.
+  const paidTokenRef = useRef<string | null>(null)
+  const hasSyncedRef = useRef(false)
+
   // Moved inside the component so it can call setIsPaid.
   // Called on every page load and auth state change for logged-in users.
   // This makes Supabase the source of truth rather than localStorage alone.
@@ -56,6 +63,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         unlock()          // persist to localStorage + cookie for sync reads
         setIsPaid(true)   // reactive signal for components
         console.log("[auth] paid status confirmed from Supabase")
+        paidTokenRef.current = accessToken
+        // Pull + merge + push cross-device progress once per app load.
+        if (!hasSyncedRef.current) {
+          hasSyncedRef.current = true
+          syncProgress(accessToken)
+        }
       }
     } catch (err) {
       console.error("[auth] check-paid request failed:", err)
@@ -87,10 +100,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe()
   }, [syncPaidStatus])
 
+  // Debounced push whenever durable progress changes (quiz-store dispatches
+  // PROGRESS_EVENT). Only fires for confirmed paid users.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null
+    const onProgress = () => {
+      const token = paidTokenRef.current
+      if (!token) return
+      if (timer) clearTimeout(timer)
+      timer = setTimeout(() => pushProgress(token), 5_000)
+    }
+    window.addEventListener(PROGRESS_EVENT, onProgress)
+    return () => {
+      window.removeEventListener(PROGRESS_EVENT, onProgress)
+      if (timer) clearTimeout(timer)
+    }
+  }, [])
+
   const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut()
     if (error) console.error("[auth] signOut error:", error.message, error)
     setIsPaid(false)
+    paidTokenRef.current = null
+    hasSyncedRef.current = false
     if (typeof window !== "undefined") {
       localStorage.removeItem("passplus_unlocked")
       document.cookie =

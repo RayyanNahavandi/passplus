@@ -8,7 +8,15 @@ import { aplusPracticeQuestions } from "@/data/aplusPracticeQuestions"
 import { aplusExamQuestions } from "@/data/aplusExamQuestions"
 import { getPBQsForCert, getFreePBQsForCert } from "@/data/pbqQuestions"
 
+import { PROGRESS_EVENT } from "@/lib/progress-sync"
+
 type Cert = "secplus" | "netplus" | "aplus"
+
+// Signals AuthProvider to push a progress snapshot for paid users.
+function notifyProgressChanged(): void {
+  if (typeof window === "undefined") return
+  window.dispatchEvent(new Event(PROGRESS_EVENT))
+}
 
 export interface QuizSession {
   questions: Question[]
@@ -244,6 +252,7 @@ export function updateStreak(): { count: number; milestone: number | null } {
 
   const newCount = current.lastDate === yesterday ? current.count + 1 : 1
   localStorage.setItem("passplus_streak", JSON.stringify({ count: newCount, lastDate: today }))
+  notifyProgressChanged()
 
   return {
     count: newCount,
@@ -281,6 +290,7 @@ export function recordQuizScore(score: number, total: number): void {
     }
     localStorage.setItem("passplus_pace", JSON.stringify(pace))
   } catch { /* ignore */ }
+  notifyProgressChanged()
 }
 
 export function getReadinessScore(): {
@@ -318,6 +328,7 @@ export function getExamDate(): string | null {
 export function setExamDate(date: string): void {
   if (typeof window === "undefined") return
   localStorage.setItem("passplus_exam_date", date)
+  notifyProgressChanged()
 }
 
 export function clearExamDate(): void {
@@ -420,6 +431,7 @@ export function recordDomainMastery(
     store[cert] = certStats
     localStorage.setItem("passplus_domain_mastery", JSON.stringify(store))
   } catch { /* ignore */ }
+  notifyProgressChanged()
 }
 
 export function getDomainMastery(

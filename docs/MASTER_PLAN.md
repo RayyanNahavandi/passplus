@@ -54,6 +54,9 @@ that lets people taste every premium feature before paying.
 - [x] Accessibility pass: WCAG AA contrast, focus rings, cursor feedback, 44px touch targets
 - [x] Design cleanup: all arrow glyphs and arrow icons removed from buttons
 - [x] SEO: 13 blog posts, sitemap, FAQ schema, consistent counts everywhere
+- [x] Cross-device progress sync for paid users (`user_progress` table, `/api/progress`,
+      pull/merge/push in AuthProvider; streak, readiness history, mastery, exam date)
+- [x] Buyer-intent blog posts: Pocket Prep comparison + Security+ practice test roundup
 
 ## Video / Social Pipeline (Remotion)
 
@@ -79,12 +82,14 @@ Two pieces, both in this repo:
 ## Roadmap
 
 ### Now / next
-- [ ] Run the `presence` table SQL in Supabase (blocks the live counter - nothing breaks
-      without it, the badge just stays hidden)
-- [ ] Rotate the legacy unlock/support tokens that shipped in old public bundles
-      (`UNLOCK_TOKENS` / `SUPPORT_TOKEN` in Vercel env; never rotate silently)
+- [x] Run the `presence` table SQL in Supabase (done 2026-07-10)
+- [ ] Run the `user_progress` table SQL in Supabase (blocks cross-device sync - nothing
+      breaks without it, /api/progress just fails quietly)
+- [ ] Rotate `UNLOCK_TOKENS` / `SUPPORT_TOKEN` **monthly** (decided 2026-07-10: kept
+      active because customers use them for account recovery; never rotate silently)
 - [ ] Watch conversion after the free-PBQ + free-explanation launch (GA events:
       `unlock_clicked`, `unlock_clicked_teaser`, `pbq_*`)
+- [ ] Email capture for free users (daily-question opt-in on /daily or results page)
 
 ### Content
 - [ ] Keep growing banks toward ~600 per cert; **every addition requires the count sweep**
@@ -94,7 +99,6 @@ Two pieces, both in this repo:
 
 ### Product ideas (unscheduled, revisit by demand)
 - [ ] Spaced-repetition review queue for missed questions
-- [ ] Cross-device progress sync for paid accounts (progress currently per browser)
 - [ ] Light mode (skipped deliberately: ~50 dark-tuned colors need an audit first)
 - [ ] GA Realtime globe/demographics (skipped: needs Google Cloud service account +
       3D globe library; the Supabase counter covers the social-proof need)
