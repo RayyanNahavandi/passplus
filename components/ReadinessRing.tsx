@@ -10,7 +10,7 @@ interface ReadinessRingProps {
 }
 
 function ringColor(pct: number): string {
-  if (pct >= 85) return "#4ade80" // accent-green
+  if (pct >= 85) return "#22C55E" // accent-green
   if (pct >= 70) return "#f59e0b" // amber-500
   return "#f87171"                // red-400
 }

@@ -789,7 +789,7 @@ export default function Home() {
                 m.tier === "Mastered"
                   ? "bg-accent-green/10 border-accent-green/25 text-accent-green"
                   : m.tier === "Proficient"
-                  ? "bg-green-500/10 border-green-500/20 text-green-400"
+                  ? "bg-accent-green/5 border-accent-green/15 text-accent-green/70"
                   : m.tier === "Familiar"
                   ? "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
                   : "bg-card border-border text-muted-foreground"

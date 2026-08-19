@@ -75,7 +75,7 @@ export function DailyClient({
   }
 
   const shareText = encodeURIComponent(
-    "Can you answer today's Security+ Question of the Day? 🔐"
+    "Can you answer today's Security+ Question of the Day?"
   )
   const shareUrl = encodeURIComponent(DAILY_URL)
 
@@ -151,7 +151,7 @@ export function DailyClient({
                   : "#222222"
               const textClass =
                 variant === "correct"
-                  ? "text-green-400"
+                  ? "text-accent-green"
                   : variant === "wrong"
                   ? "text-red-400"
                   : "text-foreground"

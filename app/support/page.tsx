@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { motion } from "motion/react"
-import { Mail, Lock } from "lucide-react"
+import { Mail, Lock, CheckCircle } from "lucide-react"
 import { Logo } from "@/components/Logo"
 import { unlock } from "@/lib/quiz-store"
 
@@ -81,7 +81,7 @@ function SupportForm() {
           animate={{ opacity: 1, scale: 1 }}
           className="flex flex-col items-center gap-2"
         >
-          <span className="text-accent-green text-2xl">✓</span>
+          <CheckCircle className="w-7 h-7 text-accent-green" />
           <p className="text-sm font-medium text-accent-green">Access restored!</p>
           <p className="text-xs text-muted-foreground">Redirecting to quiz…</p>
         </motion.div>
