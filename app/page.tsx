@@ -302,9 +302,11 @@ export default function Home() {
           <span className="font-semibold text-sm tracking-tight">PassPlus</span>
         </motion.div>
 
-        {/* Centered welcome greeting - logged-in users only */}
+        {/* Centered welcome greeting - logged-in users only. Hidden on mobile
+            (md and below) where the narrow nav would overlap the logo; a
+            dedicated mobile greeting row is rendered below the nav instead. */}
         {user && greeting && (
-          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center leading-snug pointer-events-none max-w-[45%]">
+          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 flex-col items-center leading-snug pointer-events-none max-w-[45%]">
             <span className="text-sm sm:text-base font-semibold text-foreground truncate max-w-full">
               {greeting.line1}
             </span>
@@ -565,6 +567,16 @@ export default function Home() {
           </div>
         )}
       </nav>
+
+      {/* Mobile welcome greeting - own row below the nav so it never overlaps
+          the logo on narrow screens (desktop shows it centered inside the nav). */}
+      {user && greeting && (
+        <div className="md:hidden px-6 pb-2 -mt-1 flex justify-center">
+          <span className="text-sm font-semibold text-foreground truncate max-w-full text-center">
+            {greeting.line1}
+          </span>
+        </div>
+      )}
 
       {/* Hero */}
       <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-20 sm:py-28 gap-14">
