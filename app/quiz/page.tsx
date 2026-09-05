@@ -20,6 +20,8 @@ import {
   createPBQSession,
   saveSession,
   loadSession,
+  clearSession,
+  isSessionValid,
   isUnlocked,
   unlock,
   updateStreak,
@@ -128,18 +130,46 @@ export default function QuizPage() {
     // whenever any PBQ is still unanswered.
     const pbqPending =
       existing?.pbqIds?.some((id) => !existing.pbqResults?.[id]) ?? false
-    if (
+    // A resumable session must also be structurally valid. isSessionValid
+    // rejects corrupted state (out-of-bounds index into a non-empty bank, holes
+    // in the questions array, empty bank with no pending PBQs) so a bad session
+    // can never re-render "No questions found" on every reload and trap the user.
+    const resumable =
       existing &&
       !sessionNeedsUpgrade &&
       (existing.currentIndex < existing.questions.length || pbqPending) &&
-      existingCert === certParam
-    ) {
+      existingCert === certParam &&
+      isSessionValid(existing)
+
+    if (existing && !resumable) {
+      console.warn("[quiz] discarding non-resumable session", {
+        cert: existingCert,
+        examMode: existing.examMode,
+        currentIndex: existing.currentIndex,
+        questionCount: existing.questions?.length,
+        pbqPending,
+        sessionNeedsUpgrade,
+        valid: isSessionValid(existing),
+      })
+    }
+
+    if (resumable) {
+      console.log("[quiz] resuming session", {
+        cert: existingCert,
+        examMode: existing.examMode,
+        currentIndex: existing.currentIndex,
+        questionCount: existing.questions.length,
+        pbqPending,
+      })
       setSession(existing)
       // Restore selected answer if resuming a session on an already-answered question
       const q = existing.questions[existing.currentIndex]
       if (q) setSelected(existing.answers[q.id] ?? null)
     } else {
+      // Wipe any corrupted session before starting fresh so no stale key lingers.
+      clearSession()
       const s = createSession("normal", undefined, { cert: certParam })
+      console.log("[quiz] created fresh session", { cert: certParam })
       saveSession(s)
       setSession(s)
     }
@@ -209,6 +239,11 @@ export default function QuizPage() {
   const handleStartExam = useCallback(() => {
     const s = createExamSession(session?.cert ?? "secplus")
     const updated: QuizSession = { ...s, examMode: true, examStartedAt: Date.now() }
+    console.log("[quiz] exam session started", {
+      cert: updated.cert,
+      questionCount: updated.questions.length,
+      pbqCount: updated.pbqIds?.length ?? 0,
+    })
     saveSession(updated)
     setSession(updated)
     setSelected(null)
@@ -379,6 +414,10 @@ export default function QuizPage() {
     }
 
     if (nextIndex >= session.questions.length) {
+      console.log("[quiz] reached end of question set - showing summary", {
+        examMode: session.examMode,
+        total: session.questions.length,
+      })
       saveSession({ ...session, currentIndex: nextIndex })
       setShowSummary(true)
       return
@@ -424,8 +463,14 @@ export default function QuizPage() {
       if (!remaining && updated.questions.length === 0) {
         // PBQ-only drill finished: go straight to results without updating
         // state so the empty-question guard never flashes.
+        console.log("[quiz] PBQ-only drill complete - going to results")
         router.push("/results")
         return
+      }
+      if (!remaining) {
+        console.log("[quiz] PBQ phase complete - entering MCQ phase", {
+          questionCount: updated.questions.length,
+        })
       }
       setSession(updated)
     },
@@ -557,6 +602,35 @@ export default function QuizPage() {
     handleToggleFlag,
   ])
 
+  // Safety net: if an active session ever has no current question and none of
+  // the legitimate no-question states are active (paywall, mode select, PBQ
+  // phase, end-of-session summary), the UI would otherwise render a dead-end
+  // "No questions found" screen and trap the user. Instead, persist whatever
+  // progress exists, clear the corrupted session, and return home. Redirects
+  // must happen in an effect, never during render.
+  const invalidActiveState =
+    !loading &&
+    session !== null &&
+    !currentQuestion &&
+    !showPaywall &&
+    !showModeSelect &&
+    !inPbqPhase &&
+    !showSummary
+  useEffect(() => {
+    if (!invalidActiveState) return
+    console.error("[quiz] invalid active session state - recovering to home", {
+      cert: session?.cert,
+      examMode: session?.examMode,
+      currentIndex: session?.currentIndex,
+      questionCount: session?.questions?.length,
+    })
+    // Answers/score are already persisted on every answer, so the user's
+    // progress is safe. Clear only the corrupted session record so the broken
+    // state can never be resumed and re-trap them on the next load.
+    clearSession()
+    router.replace("/")
+  }, [invalidActiveState, session, router])
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -571,10 +645,21 @@ export default function QuizPage() {
     )
   }
 
-  if (!session || (!currentQuestion && !showPaywall && !showModeSelect && !inPbqPhase)) {
+  // Note: showSummary is included so the end-of-session summary overlay (which
+  // legitimately has no current question) is never replaced by this fallback.
+  // When the state is genuinely invalid, the recovery effect above redirects
+  // home; we show a neutral message meanwhile instead of a dead-end.
+  if (
+    !session ||
+    (!currentQuestion &&
+      !showPaywall &&
+      !showModeSelect &&
+      !inPbqPhase &&
+      !showSummary)
+  ) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-        <p className="text-muted-foreground text-sm">No questions found.</p>
+        <p className="text-muted-foreground text-sm">Returning home…</p>
         <Link href="/" className="text-accent-green text-sm hover:underline">
           Back home
         </Link>

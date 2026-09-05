@@ -190,7 +190,44 @@ export function createPBQSession(cert: Cert = "secplus"): QuizSession {
 
 export function saveSession(session: QuizSession): void {
   if (typeof window === "undefined") return
-  localStorage.setItem("passplus_session", JSON.stringify(session))
+  try {
+    localStorage.setItem("passplus_session", JSON.stringify(session))
+  } catch (err) {
+    // Never let a storage failure (e.g. QuotaExceededError from serializing a
+    // large exam session on every answer) throw out of a click handler and
+    // freeze the quiz. Try to reclaim space by dropping other progress caches,
+    // then retry once; if it still fails, the in-memory session keeps working.
+    console.warn("[quiz-store] saveSession failed, attempting recovery", err)
+    try {
+      localStorage.removeItem("passplus_quiz_history")
+      localStorage.removeItem("passplus_pace")
+      localStorage.setItem("passplus_session", JSON.stringify(session))
+    } catch (err2) {
+      console.error("[quiz-store] saveSession failed after recovery", err2)
+    }
+  }
+}
+
+/**
+ * Structural validity check for a loaded session. A session is only safe to
+ * resume if the index points at a real question (or it is a PBQ-only session
+ * with pending PBQs). Anything else (out-of-bounds index into a non-empty
+ * bank, holes in the questions array, empty bank with no PBQs) is treated as
+ * corrupted and discarded so the user is never trapped on reload.
+ */
+export function isSessionValid(session: QuizSession | null): boolean {
+  if (!session) return false
+  if (!Array.isArray(session.questions)) return false
+  const pbqPending =
+    session.pbqIds?.some((id) => !session.pbqResults?.[id]) ?? false
+  // A PBQ-only session (no MCQs) is valid while any PBQ is still pending.
+  if (session.questions.length === 0) return pbqPending
+  // Index at the exact end means the MCQ phase is finished; only valid if a
+  // PBQ is still pending, otherwise it is a completed/out-of-bounds session.
+  if (session.currentIndex >= session.questions.length) return pbqPending
+  if (session.currentIndex < 0) return false
+  // The question at the current index must actually exist.
+  return session.questions[session.currentIndex] != null
 }
 
 export function loadSession(): QuizSession | null {
