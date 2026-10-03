@@ -186,7 +186,7 @@ export function DailyClient({
                   }}
                   whileHover={!answered && !shouldReduce ? { scale: 1.01 } : {}}
                   whileTap={!answered && !shouldReduce ? { scale: 0.98 } : {}}
-                  className="flex items-start gap-3 w-full text-left px-4 py-3.5 rounded-xl border text-sm leading-relaxed disabled:cursor-default"
+                  className="flex items-start gap-3 w-full text-left px-4 py-3.5 rounded-xl border text-sm leading-relaxed cursor-pointer disabled:cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 focus-visible:ring-offset-1"
                   style={
                     shouldReduce
                       ? { backgroundColor: bgColor, borderColor: borderColor, minHeight: 44 }

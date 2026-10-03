@@ -664,7 +664,7 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => sendGAEvent("event", "unlock_clicked")}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition active:scale-[0.98] motion-reduce:active:scale-100 text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
                   Unlock All 1540 Questions - $9.99
                 </a>
@@ -674,7 +674,7 @@ export default function Home() {
                 <Link
                   href="/quiz?cert=aplus"
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "aplus" })}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition active:scale-[0.98] motion-reduce:active:scale-100 text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
                   {isUnlocked ? "Start Quiz" : "Start Free Quiz"}
                 </Link>
@@ -689,7 +689,7 @@ export default function Home() {
                 <Link
                   href="/quiz?cert=netplus"
                   onClick={() => sendGAEvent("event", "quiz_started", { cert: "netplus" })}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition active:scale-[0.98] motion-reduce:active:scale-100 text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
                   {isUnlocked ? "Start Quiz" : "Start Free Quiz"}
                 </Link>
@@ -704,7 +704,7 @@ export default function Home() {
                 <Link
                   href="/quiz"
                   onClick={() => sendGAEvent("event", "quiz_started")}
-                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition-all text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
+                  className="group flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover text-black font-semibold px-10 py-4 rounded-xl transition active:scale-[0.98] motion-reduce:active:scale-100 text-base w-full sm:w-auto min-h-[52px] shadow-[0_0_24px_-4px_rgba(34,197,94,0.45)] hover:shadow-[0_0_32px_-4px_rgba(34,197,94,0.55)]"
                 >
                   {isUnlocked ? "Start Quiz" : "Start Free Quiz"}
                 </Link>
@@ -1006,7 +1006,7 @@ export default function Home() {
           <motion.div
             initial={shouldReduce ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 12 }}
             animate={shouldReduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
-            transition={shouldReduce ? { duration: 0.15 } : { type: "spring", stiffness: 400, damping: 30 }}
+            transition={shouldReduce ? { duration: 0.15 } : { type: "spring", stiffness: 400, damping: 40 }}
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-sm bg-card border border-border rounded-2xl p-7 flex flex-col gap-5 shadow-2xl"
           >

@@ -317,7 +317,7 @@ export default function ResultsPage() {
               <ScoreCounter
                 target={pct}
                 shouldReduce={!!shouldReduce}
-                className={`text-6xl sm:text-7xl font-bold block mb-2 tabular-nums ${grade.color}`}
+                className={`text-6xl sm:text-7xl font-bold tracking-tighter block mb-2 tabular-nums ${grade.color}`}
                 suffix="%"
               />
               <div className={`text-base font-semibold tracking-wide ${grade.color}`}>

@@ -92,7 +92,7 @@ export default function BlogPost() {
             <span>6 min read</span>
           </div>
 
-          <h1 className="text-3xl font-bold leading-tight mb-8">
+          <h1 className="text-3xl font-bold tracking-tight leading-tight mb-8">
             Free A+ Core 1 220-1101 Practice Questions. No Signup Required.
           </h1>
 

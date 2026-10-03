@@ -273,7 +273,7 @@ export default function LoginPage() {
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm mt-1"
+                    className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold py-3 rounded-xl transition active:scale-[0.98] motion-reduce:active:scale-100 min-h-[44px] text-sm mt-1"
                   >
                     {status === "loading" ? (
                       <span className="w-4 h-4 rounded-full border-2 border-black/30 border-t-black animate-spin" />
@@ -445,7 +445,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold py-3 rounded-xl transition-colors min-h-[44px] text-sm mt-1"
+                className="flex items-center justify-center gap-2 bg-accent-green hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold py-3 rounded-xl transition active:scale-[0.98] motion-reduce:active:scale-100 min-h-[44px] text-sm mt-1"
               >
                 {status === "loading" ? (
                   <span className="w-4 h-4 rounded-full border-2 border-black/30 border-t-black animate-spin" />

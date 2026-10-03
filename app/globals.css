@@ -223,3 +223,31 @@
     animation: none;
   }
 }
+
+/* Respect OS-level transparency/contrast preferences (Apple HIG material rules).
+   Translucent chrome (backdrop-blur headers, modals, glass chips) becomes solid
+   so text stays legible for users who reduce transparency or raise contrast. */
+@media (prefers-reduced-transparency: reduce) {
+  [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  [class*="bg-background/"] {
+    background-color: var(--background) !important;
+  }
+  [class*="bg-card/"] {
+    background-color: var(--card) !important;
+  }
+}
+@media (prefers-contrast: more) {
+  [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  [class*="bg-background/"] {
+    background-color: var(--background) !important;
+  }
+  [class*="bg-card/"] {
+    background-color: var(--card) !important;
+  }
+}

@@ -94,7 +94,7 @@ export default function BlogPost() {
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl font-bold leading-tight mb-8">
+          <h1 className="text-3xl font-bold tracking-tight leading-tight mb-8">
             Free Security+ SY0-701 Practice Questions - No Signup Required
           </h1>
 

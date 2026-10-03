@@ -1966,7 +1966,7 @@ function PaywallOverlay({
             <div className="flex items-center justify-center gap-3">
               {/* Struck-through anchor price */}
               <span className="text-lg line-through text-muted-foreground/50">$29.99</span>
-              <span className="text-4xl font-bold text-foreground">$9.99</span>
+              <span className="text-4xl font-bold tracking-tight text-foreground">$9.99</span>
             </div>
             <div className="text-xs text-muted-foreground mt-1">
               one-time payment · lifetime access · no subscription
