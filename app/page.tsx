@@ -644,8 +644,8 @@ export default function Home() {
                 onClick={() => setSelectedCert(cert.id)}
                 className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all cursor-pointer ${
                   selectedCert === cert.id
-                    ? "bg-accent-green/10 border-accent-green/40 text-foreground shadow-[0_0_16px_-4px_rgba(34,197,94,0.25)]"
-                    : "bg-card border-border text-muted-foreground hover:border-accent-green/30 hover:text-foreground"
+                    ? "bg-accent-green/10 backdrop-blur-xl border-accent-green/40 text-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_16px_-4px_rgba(34,197,94,0.25)]"
+                    : "bg-white/[0.06] backdrop-blur-xl border-white/[0.12] text-muted-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] hover:border-accent-green/40 hover:bg-white/[0.09] hover:text-foreground"
                 }`}
               >
                 <span>{cert.label}</span>
@@ -736,7 +736,7 @@ export default function Home() {
 
           <motion.div
             {...fadeUp(0.3)}
-            className="inline-flex items-center gap-2 border border-border rounded-full px-3.5 py-1.5 text-xs text-muted-foreground bg-card/50"
+            className="inline-flex items-center gap-2 border border-white/[0.12] rounded-full px-3.5 py-1.5 text-xs text-muted-foreground bg-white/[0.06] backdrop-blur-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]"
           >
             <Zap className="w-3 h-3 text-accent-green" />
             Security+ · Network+ · A+ · 1540 questions · PBQs · Practice + Exam Mode
@@ -757,7 +757,7 @@ export default function Home() {
               whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-20px" }}
               transition={{ delay: i * 0.07, duration: 0.4, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center gap-1 bg-card border border-border hover:border-accent-green/30 rounded-xl h-24 px-3 transition-all hover:shadow-[0_0_20px_-8px_rgba(34,197,94,0.18)]"
+              className="group relative overflow-hidden flex flex-col items-center justify-center gap-1 rounded-xl h-24 px-3 bg-white/[0.06] backdrop-blur-xl border border-white/[0.12] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_8px_24px_-14px_rgba(0,0,0,0.7)] transition-all hover:border-accent-green/40 hover:bg-white/[0.09] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.16),0_0_24px_-6px_rgba(34,197,94,0.22)] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent"
             >
               <span className="text-2xl font-bold tabular-nums">{stat.value}</span>
               <span className="text-xs text-muted-foreground text-center">
