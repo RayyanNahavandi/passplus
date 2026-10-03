@@ -152,9 +152,11 @@ export function AcronymsClient({ acronyms }: { acronyms: Acronym[] }) {
     return () => window.removeEventListener("keydown", onKey)
   }, [phase, current, flipped, markKnown, markLearning])
 
-  const sortedAll = useMemo(
-    () => [...acronyms].sort((a, b) => a.acronym.localeCompare(b.acronym)),
-    [acronyms]
+  // Only the pool this user can access is rendered in the reference list —
+  // the paid acronyms are never sent to the client as readable text.
+  const sortedVisible = useMemo(
+    () => [...pool].sort((a, b) => a.acronym.localeCompare(b.acronym)),
+    [pool]
   )
 
   return (
@@ -330,10 +332,11 @@ export function AcronymsClient({ acronyms }: { acronyms: Acronym[] }) {
                 </div>
               )}
 
-              {/* Full list (SEO + reference) */}
+              {/* Reference list — limited to the user's accessible pool */}
               <FullList
-                sortedAll={sortedAll}
+                items={sortedVisible}
                 total={total}
+                lockedCount={unlocked ? 0 : total - poolSize}
                 showAll={showAll}
                 onToggle={() => setShowAll((s) => !s)}
               />
@@ -489,13 +492,15 @@ export function AcronymsClient({ acronyms }: { acronyms: Acronym[] }) {
 }
 
 function FullList({
-  sortedAll,
+  items,
   total,
+  lockedCount,
   showAll,
   onToggle,
 }: {
-  sortedAll: Acronym[]
+  items: Acronym[]
   total: number
+  lockedCount: number
   showAll: boolean
   onToggle: () => void
 }) {
@@ -507,7 +512,9 @@ function FullList({
       >
         <span className="inline-flex items-center gap-2">
           <BookOpen className="w-4 h-4 text-accent-green" />
-          Full acronym list ({total})
+          {lockedCount > 0
+            ? `Acronym list (${items.length} of ${total})`
+            : `Full acronym list (${total})`}
         </span>
         <ChevronDown
           className={`w-4 h-4 text-muted-foreground transition-transform ${showAll ? "rotate-180" : ""}`}
@@ -515,7 +522,7 @@ function FullList({
       </button>
       <div className={showAll ? "block" : "hidden"}>
         <dl className="divide-y divide-border">
-          {sortedAll.map((a) => (
+          {items.map((a) => (
             <div
               key={a.acronym}
               className="flex items-baseline gap-4 px-5 py-2.5 text-sm"
@@ -527,6 +534,15 @@ function FullList({
             </div>
           ))}
         </dl>
+        {lockedCount > 0 && (
+          <a
+            href={STRIPE_URL}
+            className="flex items-center justify-center gap-2 px-5 py-4 border-t border-border text-sm font-medium text-muted-foreground hover:text-accent-green hover:bg-accent-green/[0.04] transition-colors"
+          >
+            <Lock className="w-4 h-4" />
+            + {lockedCount} more acronyms with Pro
+          </a>
+        )}
       </div>
     </div>
   )
