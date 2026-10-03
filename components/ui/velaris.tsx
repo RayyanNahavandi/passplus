@@ -61,9 +61,11 @@ float snoise(vec2 v){
 float fbm(vec2 p){
   float v = 0.0;
   float a = 0.5;
-  for (int i = 0; i < 5; i++) {
+  // Few octaves + gentle lacunarity keep this a soft bloom rather than
+  // turbulent "smoke" — the eye reads it as calm ambient light.
+  for (int i = 0; i < 3; i++) {
     v += a * snoise(p);
-    p *= 2.0;
+    p *= 1.7;
     a *= 0.5;
   }
   return v;
@@ -79,8 +81,8 @@ void main(){
   p.x *= u_resolution.x / u_resolution.y;
 
   float t = u_time;
-  float n1 = fbm(p * 1.4 + vec2(t * 0.06, t * 0.04));
-  float n2 = fbm(p * 2.1 - vec2(t * 0.05, t * 0.08) + n1);
+  float n1 = fbm(p * 0.9 + vec2(t * 0.06, t * 0.04));
+  float n2 = fbm(p * 1.3 - vec2(t * 0.05, t * 0.08) + n1);
   float n = 0.5 + 0.5 * (n1 * 0.6 + n2 * 0.4);
 
   // Blend palette across the noise field.

@@ -306,10 +306,10 @@ export default function Home() {
         <Velaris
           bg="#0A0A0A"
           colors={["#22c55e", "#16a34a", "#065f46", "#0A0A0A"]}
-          speed={0.9}
-          grain={0.12}
+          speed={0.45}
+          grain={0.04}
           height="100%"
-          className="h-full w-full opacity-[0.55]"
+          className="h-full w-full opacity-[0.32]"
         />
       </div>
       <nav ref={navRef} className="relative px-6 py-4 flex items-center justify-between">
