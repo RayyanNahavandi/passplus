@@ -910,7 +910,7 @@ export default function Home() {
               whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-20px" }}
               transition={{ delay: i * 0.1, duration: 0.4, ease: "easeOut" }}
-              className="flex flex-col gap-4 p-6 bg-card border border-border hover:border-accent-green/30 rounded-2xl transition-all hover:shadow-[0_0_20px_-6px_rgba(34,197,94,0.14)]"
+              className="group relative overflow-hidden flex flex-col gap-4 p-6 rounded-2xl bg-card/50 backdrop-blur-xl border border-white/[0.08] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_8px_24px_-14px_rgba(0,0,0,0.7)] transition-all hover:border-accent-green/30 hover:bg-card/60 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_24px_-6px_rgba(34,197,94,0.18)] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent"
             >
               <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
                 {f.icon}
