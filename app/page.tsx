@@ -579,8 +579,22 @@ export default function Home() {
       )}
 
       {/* Hero */}
-      <section className="flex flex-1 flex-col items-center justify-center text-center px-6 py-20 sm:py-28 gap-14">
-        <div className="flex flex-col items-center gap-7 max-w-3xl w-full">
+      <section className="relative isolate overflow-hidden flex flex-1 flex-col items-center justify-center text-center px-6 py-20 sm:py-28 gap-14">
+        {/* Ambient background - aurora glow + grid. Decorative, reduced-motion safe. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_70%_55%_at_50%_0%,black,transparent)]" />
+          <motion.div
+            className="absolute left-1/2 top-[-12%] h-[460px] w-[680px] max-w-[95vw] -translate-x-1/2 rounded-full bg-accent-green/25 blur-[130px]"
+            animate={shouldReduce ? undefined : { opacity: [0.4, 0.65, 0.4], scale: [1, 1.07, 1] }}
+            transition={shouldReduce ? undefined : { duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute left-[18%] top-[22%] h-[320px] w-[320px] rounded-full bg-emerald-500/10 blur-[120px]"
+            animate={shouldReduce ? undefined : { opacity: [0.2, 0.42, 0.2], x: [0, 26, 0] }}
+            transition={shouldReduce ? undefined : { duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+        <div className="relative flex flex-col items-center gap-7 max-w-3xl w-full">
           <motion.p
             {...fadeUp(0)}
             className="text-sm text-accent-green font-medium tracking-wide"
@@ -608,7 +622,7 @@ export default function Home() {
             className="text-5xl sm:text-7xl font-bold tracking-tighter leading-[1.03]"
           >
             Pass your{" "}
-            <span className="text-accent-green">CompTIA cert</span>
+            <span className="text-gradient-green">CompTIA cert</span>
             {" "}with confidence
           </motion.h1>
 

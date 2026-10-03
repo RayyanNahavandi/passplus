@@ -224,6 +224,32 @@
   }
 }
 
+/* Flowing gradient text (21st.dev-style animated gradient). Falls back to a
+   solid accent fill when motion is reduced. */
+@keyframes gradient-pan {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+.text-gradient-green {
+  background-image: linear-gradient(90deg, #22c55e, #86efac, #22c55e);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient-green {
+    animation: none;
+    background-image: none;
+    color: var(--color-accent-green, #22c55e);
+  }
+}
+
 /* Respect OS-level transparency/contrast preferences (Apple HIG material rules).
    Translucent chrome (backdrop-blur headers, modals, glass chips) becomes solid
    so text stays legible for users who reduce transparency or raise contrast. */
