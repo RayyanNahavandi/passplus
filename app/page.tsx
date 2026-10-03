@@ -880,12 +880,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="relative isolate px-6 py-16 sm:py-24">
-        {/* Ambient light so the glass cards have colour to refract. Decorative. */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute left-1/4 top-1/3 h-[360px] w-[360px] -translate-x-1/2 rounded-full bg-accent-green/15 blur-[120px]" />
-          <div className="absolute right-1/4 bottom-1/4 h-[320px] w-[320px] translate-x-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
-        </div>
+      <section className="px-6 py-16 sm:py-24">
         <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-5">
           {[
             {
