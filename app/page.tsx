@@ -10,6 +10,7 @@ import { Logo } from "@/components/Logo"
 import { useAuth } from "@/components/AuthProvider"
 import { getStreak, getReadinessScore, getExamCountdown, getDomainMastery, DOMAIN_NAMES, unlock } from "@/lib/quiz-store"
 import { ReadinessRing } from "@/components/ReadinessRing"
+import { Velaris } from "@/components/ui/velaris"
 import { supabase } from "@/lib/supabase"
 
 type Testimonial = {
@@ -294,7 +295,23 @@ export default function Home() {
   })
 
   return (
-    <main className="flex flex-col min-h-screen bg-background">
+    <main className="relative isolate flex flex-col min-h-screen bg-background">
+      {/* Flowing WebGL gradient backdrop spanning behind the nav + hero. It
+          dissolves into the page background toward the bottom so there is no
+          hard seam. Decorative; reduced-motion safe (static frame). */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[760px] [mask-image:linear-gradient(to_bottom,black_55%,transparent_100%)]"
+      >
+        <Velaris
+          bg="#0A0A0A"
+          colors={["#22c55e", "#16a34a", "#065f46", "#0A0A0A"]}
+          speed={0.9}
+          grain={0.12}
+          height="100%"
+          className="h-full w-full opacity-[0.55]"
+        />
+      </div>
       <nav ref={navRef} className="relative px-6 py-4 flex items-center justify-between">
         {/* Logo - always visible */}
         <motion.div className="flex items-center gap-2" {...fadeUp(0)}>
@@ -579,21 +596,7 @@ export default function Home() {
       )}
 
       {/* Hero */}
-      <section className="relative isolate overflow-hidden flex flex-1 flex-col items-center justify-center text-center px-6 py-20 sm:py-28 gap-14">
-        {/* Ambient background - aurora glow + grid. Decorative, reduced-motion safe. */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_70%_55%_at_50%_0%,black,transparent)]" />
-          <motion.div
-            className="absolute left-1/2 top-[-12%] h-[460px] w-[680px] max-w-[95vw] -translate-x-1/2 rounded-full bg-accent-green/25 blur-[130px]"
-            animate={shouldReduce ? undefined : { opacity: [0.4, 0.65, 0.4], scale: [1, 1.07, 1] }}
-            transition={shouldReduce ? undefined : { duration: 9, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute left-[18%] top-[22%] h-[320px] w-[320px] rounded-full bg-emerald-500/10 blur-[120px]"
-            animate={shouldReduce ? undefined : { opacity: [0.2, 0.42, 0.2], x: [0, 26, 0] }}
-            transition={shouldReduce ? undefined : { duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
+      <section className="relative flex flex-1 flex-col items-center justify-center text-center px-6 py-20 sm:py-28 gap-14">
         <div className="relative flex flex-col items-center gap-7 max-w-3xl w-full">
           <motion.p
             {...fadeUp(0)}
