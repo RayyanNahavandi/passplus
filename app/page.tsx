@@ -880,7 +880,12 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="px-6 py-16 sm:py-24">
+      <section className="relative isolate px-6 py-16 sm:py-24">
+        {/* Ambient light so the glass cards have colour to refract. Decorative. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute left-1/4 top-1/3 h-[360px] w-[360px] -translate-x-1/2 rounded-full bg-accent-green/15 blur-[120px]" />
+          <div className="absolute right-1/4 bottom-1/4 h-[320px] w-[320px] translate-x-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
+        </div>
         <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-5">
           {[
             {
@@ -910,7 +915,7 @@ export default function Home() {
               whileInView={shouldReduce ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-20px" }}
               transition={{ delay: i * 0.1, duration: 0.4, ease: "easeOut" }}
-              className="group relative overflow-hidden flex flex-col gap-4 p-6 rounded-2xl bg-card/50 backdrop-blur-xl border border-white/[0.08] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_8px_24px_-14px_rgba(0,0,0,0.7)] transition-all hover:border-accent-green/30 hover:bg-card/60 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_0_24px_-6px_rgba(34,197,94,0.18)] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent"
+              className="group relative overflow-hidden flex flex-col gap-4 p-6 rounded-2xl bg-white/[0.06] backdrop-blur-2xl border border-white/[0.12] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12),0_10px_30px_-12px_rgba(0,0,0,0.8)] transition-all hover:border-accent-green/40 hover:bg-white/[0.09] hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_0_30px_-6px_rgba(34,197,94,0.25)] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent after:pointer-events-none after:absolute after:inset-0 after:rounded-2xl after:bg-gradient-to-br after:from-white/[0.07] after:via-transparent after:to-transparent"
             >
               <div className="w-10 h-10 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center justify-center">
                 {f.icon}
