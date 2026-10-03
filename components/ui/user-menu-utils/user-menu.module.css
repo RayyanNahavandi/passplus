@@ -1,0 +1,490 @@
+/*
+ * UserMenu styles — self-contained CSS Module.
+ *
+ * All design values live on `.root` as namespaced `--um-*` custom properties so
+ * this component can never clobber the host app's global theme. Defaults are
+ * tuned to PassPlus's dark surface (#0A0A0A page, #111 cards, #22C55E accent),
+ * but each one falls back to the host token where one exists, so the menu
+ * tracks the app if those are themed. The portal panel is rendered on
+ * <body>, which sits under the app's `.dark` class, so it inherits correctly.
+ */
+
+.root {
+  /* Surfaces */
+  --um-panel: var(--card, #111111);
+  --um-trigger-bg: transparent;
+  --um-trigger-hover: color-mix(in oklab, var(--foreground, #fafafa) 8%, transparent);
+  --um-highlight: color-mix(in oklab, var(--foreground, #fafafa) 9%, transparent);
+  --um-segment-track: color-mix(in oklab, var(--foreground, #fafafa) 7%, transparent);
+  --um-thumb: color-mix(in oklab, var(--foreground, #fafafa) 14%, transparent);
+  --um-scrim: rgb(0 0 0 / 0.55);
+
+  /* Text */
+  --um-text: var(--foreground, #fafafa);
+  --um-text-muted: var(--muted-foreground, #82828b);
+  --um-text-faint: color-mix(in oklab, var(--foreground, #fafafa) 45%, transparent);
+
+  /* Lines */
+  --um-border: var(--border, #222222);
+  --um-separator: color-mix(in oklab, var(--foreground, #fafafa) 8%, transparent);
+
+  /* Accent */
+  --um-accent: var(--primary, #22c55e);
+  --um-danger: var(--destructive, #ef4444);
+
+  /* Presence */
+  --um-available: #22c55e;
+  --um-busy: #f59e0b;
+  --um-away: #71717a;
+
+  /* Shape */
+  --um-radius-panel: 16px;
+  --um-radius-row: 10px;
+  --um-radius-pill: 9999px;
+
+  /* Elevation */
+  --um-shadow:
+    0 20px 48px rgb(0 0 0 / 0.45),
+    0 3px 10px rgb(0 0 0 / 0.3),
+    inset 0 0 0 1px var(--um-border);
+
+  position: relative;
+  display: inline-flex;
+  font-family: var(--font-sans, inherit);
+}
+
+/* ─────────────────────────── Trigger ─────────────────────────── */
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px;
+  border: 0;
+  border-radius: var(--um-radius-pill);
+  background: var(--um-trigger-bg);
+  color: var(--um-text);
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.16s ease,
+    box-shadow 0.16s ease;
+}
+.trigger[data-name] {
+  padding-right: 10px;
+}
+.trigger:hover {
+  background: var(--um-trigger-hover);
+}
+.trigger:focus-visible {
+  box-shadow: 0 0 0 2px var(--um-panel), 0 0 0 4px var(--um-accent);
+}
+.trigger[data-state="open"] {
+  background: var(--um-trigger-hover);
+}
+
+.triggerName {
+  display: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chevron {
+  display: none;
+  color: var(--um-text-muted);
+  transition: transform 0.2s ease;
+}
+.trigger[data-state="open"] .chevron {
+  transform: rotate(180deg);
+}
+@media (min-width: 640px) {
+  .trigger[data-name] .triggerName,
+  .trigger[data-name] .chevron {
+    display: inline-flex;
+  }
+}
+
+/* ─────────────────────────── Face / avatar ─────────────────────────── */
+
+.face {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border-radius: var(--um-radius-pill);
+}
+.face[data-size="sm"] {
+  width: 32px;
+  height: 32px;
+}
+.face[data-size="md"] {
+  width: 40px;
+  height: 40px;
+}
+.portrait {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  user-select: none;
+}
+.initials {
+  display: grid;
+  place-items: center;
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--um-text);
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--um-accent) 30%, var(--um-panel)),
+    var(--um-panel)
+  );
+  box-shadow: inset 0 0 0 1px var(--um-border);
+}
+.face[data-size="md"] .initials {
+  font-size: 0.85rem;
+}
+
+/* ─────────────────────────── Presence dot ─────────────────────────── */
+
+.dot {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 11px;
+  height: 11px;
+  border-radius: var(--um-radius-pill);
+  box-shadow: 0 0 0 2px var(--um-panel);
+  background: var(--um-available);
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+/* In header/segment contexts (no positioned parent sizing) keep it inline-sized. */
+.rowLabel ~ * .dot,
+.segment .dot,
+.icon .dot {
+  position: static;
+  box-shadow: none;
+}
+.dot[data-status="available"] {
+  background: var(--um-available);
+}
+.dot[data-status="busy"] {
+  background: var(--um-busy);
+}
+/* Busy: a bar carved across the dot. */
+.dot[data-status="busy"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 60%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--um-panel);
+}
+/* Away: hollow ring. */
+.dot[data-status="away"] {
+  background: var(--um-away);
+}
+.dot[data-status="away"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 45%;
+  height: 45%;
+  border-radius: var(--um-radius-pill);
+  background: var(--um-panel);
+}
+.dot[data-status="offline"] {
+  background: var(--um-away);
+}
+
+/* ─────────────────────────── Panel ─────────────────────────── */
+
+.panel {
+  position: fixed;
+  z-index: 60;
+  width: 288px;
+  max-width: calc(100vw - 24px);
+  padding: 6px;
+  transform-origin: var(--origin-x, 100%) var(--origin-y, 0px);
+  background: var(--um-panel);
+  border-radius: var(--um-radius-panel);
+  box-shadow: var(--um-shadow);
+  color: var(--um-text);
+  outline: none;
+  will-change: transform, opacity;
+}
+.panel[data-inline] {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+}
+.panel[data-inline][data-align="start"] {
+  right: auto;
+  left: 0;
+}
+
+/* ─────────────────────────── Header ─────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 12px;
+}
+.identity {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--um-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.plan {
+  flex: none;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 3px 7px;
+  border-radius: var(--um-radius-pill);
+  color: var(--um-accent);
+  background: color-mix(in oklab, var(--um-accent) 16%, transparent);
+}
+.email {
+  font-size: 0.8125rem;
+  color: var(--um-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─────────────────────────── List ─────────────────────────── */
+
+.list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 0;
+  border-radius: var(--um-radius-row);
+  background: var(--um-highlight);
+  pointer-events: none;
+}
+.highlight[data-tone="danger"] {
+  background: color-mix(in oklab, var(--um-danger) 15%, transparent);
+}
+.separator {
+  height: 1px;
+  margin: 5px 8px;
+  background: var(--um-separator);
+}
+
+.item,
+.row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--um-radius-row);
+  background: transparent;
+  color: var(--um-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.row {
+  cursor: default;
+}
+.item[data-tone="danger"] {
+  color: var(--um-danger);
+}
+.icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--um-text-muted);
+}
+.item[data-tone="danger"] .icon {
+  color: var(--um-danger);
+}
+.itemLabel,
+.rowLabel {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rowLabel {
+  color: var(--um-text);
+}
+
+/* ─────────────────────────── Shortcut keys ─────────────────────────── */
+
+.keys {
+  display: inline-flex;
+  gap: 3px;
+  flex: none;
+}
+.key {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--um-text-muted);
+  background: var(--um-segment-track);
+  box-shadow: inset 0 0 0 1px var(--um-border);
+}
+
+/* ─────────────────────────── Segmented switch ─────────────────────────── */
+
+.segments {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--count, 3), 1fr);
+  flex: none;
+  padding: 3px;
+  border-radius: var(--um-radius-pill);
+  background: var(--um-segment-track);
+}
+.thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / var(--count, 3));
+  border-radius: var(--um-radius-pill);
+  background: var(--um-thumb);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  transform: translateX(calc(var(--index, 0) * 100%));
+  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.segment {
+  position: relative;
+  z-index: 1;
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  color: var(--um-text-muted);
+  cursor: pointer;
+  border-radius: var(--um-radius-pill);
+  outline: none;
+  transition: color 0.16s ease;
+}
+.segment[aria-checked="true"] {
+  color: var(--um-text);
+}
+.segment:focus-visible {
+  box-shadow: 0 0 0 2px var(--um-panel), 0 0 0 4px var(--um-accent);
+}
+
+/* ─────────────────────────── Rise (text swap) ─────────────────────────── */
+
+.rise {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+/* ─────────────────────────── Spinner ─────────────────────────── */
+
+.spinner {
+  animation: um-spin 0.7s linear infinite;
+}
+@keyframes um-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─────────────────────────── Bottom sheet (compact) ─────────────────────────── */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--um-scrim);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: auto;
+  z-index: 61;
+  width: 100%;
+  max-width: 100%;
+  padding: 8px 10px calc(10px + env(safe-area-inset-bottom, 0px));
+  border-radius: 22px 22px 0 0;
+  transform-origin: center bottom;
+}
+.handle {
+  display: block;
+  width: 36px;
+  height: 4px;
+  margin: 2px auto 10px;
+  border-radius: var(--um-radius-pill);
+  background: color-mix(in oklab, var(--um-text, #fafafa) 20%, transparent);
+}
+.sheet .item,
+.sheet .row {
+  min-height: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb,
+  .spinner,
+  .chevron,
+  .trigger {
+    transition: none;
+    animation: none;
+  }
+}
